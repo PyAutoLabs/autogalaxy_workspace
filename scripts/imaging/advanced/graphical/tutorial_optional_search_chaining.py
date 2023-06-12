@@ -1,0 +1,205 @@
+"""
+Tutorial Optional: Search Chaining
+==================================
+
+The graphical model examples compose a fit individual models to large datasets.
+
+For complex models, one may need to combine graphical models with search chaining in order to ensure that models
+are initialized in a robust manner, ensuring automated modeling.
+
+This example script shows how models can be fitted via chaining and output /loaded from to .json files in order
+to combine search chaining with graphical models.
+"""
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
+import json
+from os import path
+import os
+import autofit as af
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+
+"""
+__Dataset__
+
+For each dataset in our sample we set up the correct path and load it by iterating over a for loop. 
+"""
+dataset_label = "samples"
+dataset_type = "imaging"
+dataset_sample_name = "dev"
+
+dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
+
+total_datasets = 3
+
+dataset_list = []
+
+for dataset_index in range(total_datasets):
+    dataset_sample_path = path.join(dataset_path, f"dataset_{dataset_index}")
+
+    dataset_list.append(
+        ag.Imaging.from_fits(
+            data_path=path.join(dataset_sample_path, "data.fits"),
+            psf_path=path.join(dataset_sample_path, "psf.fits"),
+            noise_map_path=path.join(dataset_sample_path, "noise_map.fits"),
+            pixel_scales=0.1,
+        )
+    )
+
+"""
+__Mask__
+
+We now mask each galaxy in our dataset, using the imaging list we created above.
+
+We will assume a 3.0" mask for every galaxy in the dataset is appropriate.
+"""
+masked_imaging_list = []
+
+for dataset in dataset_list:
+    mask = ag.Mask2D.circular(
+        shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
+    )
+
+    masked_imaging_list.append(dataset.apply_mask(mask=mask))
+
+"""
+__Paths__
+
+The path the results of all model-fits are output:
+"""
+path_prefix = path.join("imaging", "graphical", "tutorial_optional_search_chaining")
+
+"""
+__Model__
+
+We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
+example we fit a model where:
+
+ - The galaxy's bulge is a parametric `Sersic` bulge with its centre fixed to the input 
+ value of (0.0, 0.0) [5 parameters]. 
+
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=5.
+"""
+bulge = af.Model(ag.lp.Sersic)
+bulge.centre = (0.0, 0.0)
+
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+"""
+__Search + Analysis + Model-Fit__
+
+For each dataset we now create a non-linear search, analysis and perform the model-fit using this model.
+
+Results are output to a unique folder named using the `dataset_index`.
+"""
+result_1_list = []
+
+for dataset_index, masked_dataset in enumerate(masked_imaging_list):
+    dataset_name_with_index = f"dataset_{dataset_index}"
+    path_prefix_with_index = path.join(path_prefix, dataset_name_with_index)
+
+    search_1 = af.DynestyStatic(
+        path_prefix=path_prefix,
+        name="search[1]__light_sersic",
+        unique_tag=dataset_name_with_index,
+        nlive=50,
+    )
+
+    analysis_1 = ag.AnalysisImaging(dataset=masked_dataset)
+
+    result_1 = search_1.fit(model=model, analysis=analysis_1)
+    result_1_list.append(result_1)
+
+"""
+__Model (Search 2)__
+
+We use the results of search 1 to create the galaxy models fitted in search 2, where:
+
+ - The galaxy's bulge is again a parametric `Sersic` bulge [7 parameters: priors passed from search 1]. 
+
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=7.
+
+Prior passing via search chaining is now specific to each result, thus this operates on a list via for loop.
+"""
+
+model_2_list = []
+
+for result_1 in result_1_list:
+    source = result_1.model.galaxies.galaxy
+
+    bulge = af.Model(ag.lp.Sersic)
+    bulge.take_attributes(result_1.model.galaxies.galaxy.bulge)
+
+    galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
+
+    model_2 = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+    model_2_list.append(model_2)
+
+"""
+__Search + Analysis + Model-Fit (Search 2)__
+
+We now create the non-linear search, analysis and perform the model-fit using this model.
+
+You may wish to inspect the `model.info` file of the search 2 model-fit to ensure the priors were passed correctly, as 
+well as the checkout the results to ensure an accurate power-law mass model is inferred.
+"""
+result_2_list = []
+
+for dataset_index, masked_dataset in enumerate(masked_imaging_list):
+    dataset_name_with_index = f"dataset_{dataset_index}"
+    path_prefix_with_index = path.join(path_prefix, dataset_name_with_index)
+
+    search_2 = af.DynestyStatic(
+        path_prefix=path_prefix,
+        name="search[2]__light_sersic",
+        unique_tag=dataset_name_with_index,
+        nlive=75,
+    )
+
+    analysis_2 = ag.AnalysisImaging(dataset=masked_dataset)
+
+    result_2 = search_2.fit(model=model_2, analysis=analysis_2)
+    result_2_list.append(result_2)
+
+"""
+__Model Output__
+
+The model can also be output to a .`json` file and loaded in another Python script.
+
+This is not necessary for combining search chaining and graphical models, but can help make scripts shorter if the
+search chaining takes up a lot of lines of Python.
+"""
+model_path = path.join("imaging", "graphical", "models", "initial")
+
+for dataset_index, model in enumerate(model_2_list):
+    model_dataset_path = path.join(model_path, f"dataset_{dataset_index}")
+
+    os.makedirs(model_dataset_path, exist_ok=True)
+
+    model_file = path.join(model_dataset_path, "model.json")
+
+    with open(model_file, "w") as f:
+        json.dump(model.dict(), f, indent=4)
+
+
+"""
+__Model Loading__
+
+We can load the model above as follows.
+"""
+model_path = path.join("imaging", "graphical", "models", "initial")
+
+model_list = []
+
+for dataset_index in range(total_datasets):
+    model_file = path.join(model_path, f"dataset_{dataset_index}", "model.json")
+
+    model = af.Collection.from_json(file=model_file)
+
+    model_list.append(model)
