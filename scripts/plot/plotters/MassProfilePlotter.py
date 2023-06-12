@@ -1,0 +1,119 @@
+"""
+Plots: MassProfilePlotter
+=========================
+
+This example illustrates how to plot a `MassProfile` using a `MassProfilePlotter`.
+
+PyAutoGalaxy is currently focused on galaxy morphology studies, hence why the workspace focuses on fitting light
+profiles. Nevertheless, for the project PyAutoGalaxy there are many mass profiles in PyAutoGalaxy, which may be
+of interest to PyAutoGalaxy users. This script shows how to visualize them.
+"""
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+
+"""
+__Mass Profile__
+
+First, lets create a simple `MassProfile` which we'll plot.
+"""
+mass = ag.mp.Isothermal(
+    centre=(0.0, 0.0),
+    einstein_radius=1.6,
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=45.0),
+)
+
+"""
+__Grid__
+
+We also need the 2D grid the `MassProfile` is evaluated on.
+"""
+grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
+
+"""
+__Figures__
+
+We now pass the mass profile and grid to a `MassProfilePlotter` and call various `figure_*` methods to 
+plot different attributes in 1D and 2D.
+"""
+mass_profile_plotter = aplt.MassProfilePlotter(mass_profile=mass, grid=grid)
+mass_profile_plotter.figures_2d(
+    convergence=True,
+    potential=True,
+    deflections_y=True,
+    deflections_x=True,
+    magnification=True,
+)
+mass_profile_plotter.figures_1d(convergence=True, potential=True)
+
+"""
+__Include__
+
+A `MassProfile` and its `Grid2D` contains the following attributes which can be plotted automatically via 
+the `Include2D` object.
+
+(By default, a `Grid2D` does not contain a `Mask2D`, we therefore manually created a `Grid2D` with a mask to illustrate
+plotting its mask and border below).
+"""
+include = aplt.Include2D(
+    origin=True,
+    mask=True,
+    border=True,
+    mass_profile_centres=True,
+    tangential_critical_curves=True,
+    radial_critical_curves=True,
+)
+
+mask = ag.Mask2D.circular_annular(
+    shape_native=grid.shape_native,
+    pixel_scales=grid.pixel_scales,
+    inner_radius=0.3,
+    outer_radius=2.0,
+)
+masked_grid = ag.Grid2D.from_mask(mask=mask)
+
+mass_profile_plotter = aplt.MassProfilePlotter(
+    mass_profile=mass, grid=masked_grid, include_2d=include
+)
+mass_profile_plotter.figures_2d(convergence=True)
+
+"""
+__Errors__
+
+Using a `MassProfilePDFPlotter`, we can make 1D plots that show the errors of a mass model estimated via a model-fit. 
+
+Here, the `mass_profile_pdf_list` is a list of `MassProfile` objects that are drawn randomly from the PDF of a 
+model-fit (the database tutorials show how these can be easily computed after a model fit). 
+
+These are used to estimate the errors at an input `sigma` value of: 
+
+ - The 1D mass profile, which is plotted as a shaded region on the figure. 
+ - The median `einstein_radius` with errors, which are plotted as vertical lines.
+
+Below, we manually input two `MassProfiles` that clearly show these errors on the figure.
+"""
+mass_0 = ag.mp.Isothermal(
+    centre=(0.0, 0.0),
+    einstein_radius=1.5,
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=45.0),
+)
+
+mass_1 = ag.mp.Isothermal(
+    centre=(0.0, 0.0),
+    einstein_radius=1.7,
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=45.0),
+)
+
+mass_profile_pdf_plotter = aplt.MassProfilePDFPlotter(
+    mass_profile_pdf_list=[mass_0, mass_1], grid=grid, sigma=3.0
+)
+mass_profile_pdf_plotter.figures_1d(convergence=True, potential=True)
+
+"""
+Finish.
+"""
