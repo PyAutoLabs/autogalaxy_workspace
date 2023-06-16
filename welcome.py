@@ -129,7 +129,7 @@ input(
     folder. It is up to you how you would prefer to use PyAutoGalaxy. With these folders, you can find the following
     packages:
     
-    - howtogalaxy: Jupyter notebook tutorials introducing beginners to strong gravitational galaxying, describing how to
+    - howtogalaxy: Jupyter notebook lectures introducing beginners to strong gravitational galaxying, describing how to
      perform scientific analysis of galaxy data and detailing the PyAutoGalaxy API. A great starting point for new users!
     
     - overview: An overview of all PyAutoGalaxy's main features.

@@ -24,7 +24,7 @@ Getting Started
 We recommend new users begin by looking at the following notebooks: 
 
 - ``notebooks/overview``: Examples giving an overview of **PyAutoGalaxy**'s core features.
-- ``notebooks/howtogalaxy``: Detailed step-by-step Jupyter notebook tutorials on how to use **PyAutoGalaxy**.
+- ``notebooks/howtogalaxy``: Detailed step-by-step Jupyter notebook lectures on how to use **PyAutoGalaxy**.
 
 Installation
 ------------
@@ -60,7 +60,7 @@ The workspace includes the following main directories:
 The examples in the ``notebooks`` and ``scripts`` folders are structured as follows:
 
 - ``overview``: Examples giving an overview of **PyAutoGalaxy**'s core features.
-- ``howtogalaxy``: Detailed step-by-step Jupyter notebook tutorials on how to use **PyAutoGalaxy**.
+- ``howtogalaxy``: Detailed step-by-step Jupyter notebook lectures on how to use **PyAutoGalaxy**.
 
 - ``imaging``: Examples for analysing and simulating CCD imaging data (e.g. Hubble, Euclid).
 - ``interferometer``: Examples for analysing and simulating interferometer datasets (e.g. ALMA, JVLA).

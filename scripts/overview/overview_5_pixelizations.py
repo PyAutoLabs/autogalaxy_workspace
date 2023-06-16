@@ -93,6 +93,20 @@ fit_plotter = aplt.FitImagingPlotter(fit=fit)
 fit_plotter.figures_2d_of_galaxies(galaxy_index=0, model_image=True)
 
 """
+__Positive Only Solver__
+
+All pixelized source reconstructions use a positive-only solver, meaning that every source-pixel is only allowed
+to reconstruct positive flux values. This ensures that the source reconstruction is physical and that we don't
+reconstruct negative flux values that don't exist in the real source galaxy (a common systematic solution in lens
+analysis).
+
+It may be surprising to hear that this is a feature worth pointing out, but it turns out setting up the linear algebra
+to enforce positive reconstructions is difficult to make efficient. A lot of development time went into making this
+possible, where a bespoke fast non-negative linear solver was developed to achieve this.
+
+Other methods in the literature often do not use a positive only solver, and therefore suffer from these 
+unphysical solutions, which can degrade the results of lens model in general.
+
 __Why Use Pixelizations?__
 
 From the perspective of a scientific analysis, it may be unclear what the benefits of using an inversion to 
