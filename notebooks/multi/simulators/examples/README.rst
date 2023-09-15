@@ -5,7 +5,7 @@ Notes
 -----
 
 The ``multi`` extends the ``imaging`` package and readers should refer to the ``imaging`` package for descriptions of
-how to simulate a wider variety of galaxyes.
+how to simulate a wider variety of galaxies.
 
 Files (Advanced)
 ----------------

@@ -176,7 +176,7 @@ __Search + Model Fit__
 
 Fitting the model uses the same API we introduced in previous overviews.
 """
-search = af.DynestyStatic(path_prefix="overview", name="multiwavelength")
+search = af.Nautilus(path_prefix="overview", name="multiwavelength")
 
 """
 The result object returned by this model-fit is a list of `Result` objects, because we used a combined analysis.

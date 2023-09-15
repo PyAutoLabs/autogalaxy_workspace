@@ -116,11 +116,11 @@ We now create the non-linear search, analysis and perform the model-fit using th
 You may wish to inspect the results of the search 1 model-fit to ensure a fast non-linear search has been provided that 
 provides a reasonably accurate model.
 """
-search_1 = af.DynestyStatic(
+search_1 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[1]__parametric",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
 )
 
 analysis_1 = ag.AnalysisImaging(dataset=dataset)
@@ -184,11 +184,11 @@ analysis_2 = ag.AnalysisImaging(
     dataset=dataset, settings_pixelization=ag.SettingsPixelization(use_border=True)
 )
 
-search_2 = af.DynestyStatic(
+search_2 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[2]__pixelization_fixed_parametric",
     unique_tag=dataset_name,
-    nlive=40,
+    n_live=80,
 )
 
 result_2 = search_2.fit(model=model_2, analysis=analysis_2)
@@ -246,11 +246,11 @@ __Analysis + Search + Model-Fit (Search 3)__
 
 We now create the non-linear search and perform the model-fit using this model.
 """
-search_3 = af.DynestyStatic(
+search_3 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[3]__parametric_and_pixelization",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
 )
 
 analysis_3 = ag.AnalysisImaging(dataset=dataset)

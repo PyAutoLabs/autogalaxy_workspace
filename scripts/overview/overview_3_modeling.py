@@ -102,7 +102,7 @@ __Non-linear Search__
 We now choose the non-linear search, which is the fitting method used to determine the set of `LightProfile` (e.g.
 bulge and disk) parameters that best-fit our data.
 
-In this example we use `dynesty` (https://github.com/joshspeagle/dynesty), a nested sampling algorithm that is
+In this example we use `nautilus` (https://github.com/joshspeagle/nautilus), a nested sampling algorithm that is
 very effective at modeling.
 
 **PyAutoGalaxy** supports many model-fitting algorithms, including maximum likelihood estimators and MCMC, which are
@@ -110,7 +110,7 @@ documented throughout the workspace.
 
 The `path_prefix` and `name` determine the output folders the results are written too on hard-disk.
 """
-search = af.DynestyStatic(path_prefix="overview", name="modeling")
+search = af.Nautilus(path_prefix="overview", name="modeling")
 
 """
 __Analysis__
@@ -180,7 +180,7 @@ print(
 __Model-Fit__
 
 To perform the model-fit we pass the model and analysis to the search's fit method. This will output results (e.g.,
-dynesty samples, model parameters, visualization) to hard-disk.
+nautilus samples, model parameters, visualization) to hard-disk.
 
 Once running you should checkout the `autogalaxy_workspace/output` folder, which is where the results of the search are 
 written to hard-disk (in the `overview_modeling` folder) on-the-fly. This includes model parameter estimates with 
@@ -257,7 +257,7 @@ galaxy_model = af.Model(
 
 """
 This aligns the bulge and disk centres in the galaxy model, reducing the
-number of free parameter fitted for by Dynesty by 2.
+number of free parameter fitted for by Nautilus by 2.
 """
 galaxy_model.bulge.centre = galaxy_model.disk.centre
 

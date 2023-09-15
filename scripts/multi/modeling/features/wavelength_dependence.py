@@ -204,15 +204,15 @@ analysis.n_cores = 1
 __Search__
 
 The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Dynesty (https://dynesty.readthedocs.io/en/latest/).
+Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("multi", "modeling"),
     name="wavelength_dependence",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
     number_of_cores=1,
 )
 

@@ -55,7 +55,7 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below performs a model-fit using dynesty. 
+The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 
@@ -88,11 +88,11 @@ bulge_1.centre = (0.0, 1.0)
 galaxy_1 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_1)
 
 model = af.Collection(galaxies=af.Collection(galaxy_0=galaxy_0, galaxy_1=galaxy_1))
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[bulge]__x2",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)
@@ -192,7 +192,7 @@ __Refitting__
 Using the API introduced in the first tutorial, we can also refit the data locally. 
 
 This allows us to inspect how the plane changes for models with similar log likelihoods. Below, we create and plot
-the plane of the 100th last accepted model by dynesty.
+the plane of the 100th last accepted model by nautilus.
 """
 samples = result.samples
 

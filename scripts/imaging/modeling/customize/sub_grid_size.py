@@ -87,7 +87,7 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "settings"),
     name="sub_grid_size",
     unique_tag=dataset_name,

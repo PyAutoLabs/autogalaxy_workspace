@@ -130,12 +130,12 @@ __Search + Analysis + Model-Fit (Search 1)__
 """
 analysis_1 = ag.AnalysisImaging(dataset=dataset)
 
-search_1 = af.DynestyStatic(
+search_1 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[1]__left_galaxy_light[bulge]",
     unique_tag=dataset_name,
-    nlive=30,
-    dlogz=5.0,
+    n_live=75,
+    f_live=5.0,
 )
 
 result_1 = search_1.fit(model=model_1, analysis=analysis_1)
@@ -185,12 +185,12 @@ __Search + Analysis + Model-Fit (Search 2)__
 """
 analysis = ag.AnalysisImaging(dataset=dataset)
 
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path_prefix,
     name="search[2]__right_galaxy_light[bulge]",
     unique_tag=dataset_name,
-    nlive=30,
-    dlogz=5.0,
+    n_live=75,
+    f_live=5.0,
 )
 
 result_2 = search.fit(model=model_2, analysis=analysis)
@@ -243,12 +243,12 @@ __Search + Analysis + Model-Fit (Search 3)__
 """
 analysis_3 = ag.AnalysisImaging(dataset=dataset)
 
-search_3 = af.DynestyStatic(
+search_3 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[3]_light_x2[bulge]",
     unique_tag=dataset_name,
-    nlive=60,
-    dlogz=0.3,
+    n_live=100,
+    f_live=0.3,
 )
 
 result_3 = search.fit(model=model_3, analysis=analysis_3)

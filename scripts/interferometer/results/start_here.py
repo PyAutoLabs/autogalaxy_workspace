@@ -34,7 +34,7 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below performs a model-fit using dynesty. 
+The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 """
@@ -62,11 +62,11 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("interferometer", "modeling"),
     name="light[bulge_disk]",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
     number_of_cores=1,
 )
 
@@ -84,7 +84,7 @@ print(result.info)
 """
 __Samples__
 
-The result's `Samples` object contains the complete set of non-linear search dynesty samples, where each sample 
+The result's `Samples` object contains the complete set of non-linear search nautilus samples, where each sample 
 corresponds to a set of model parameters that were evaluated and accepted. 
 
 The examples script `autogalaxy_workspace/*/imaging/results/examples/samples.py` provides a detailed description of 

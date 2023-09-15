@@ -1,4 +1,4 @@
-The ``graphical`` folder contains examples scripts illustrating how to fit a galaxy model to many galaxyes simultaneously
+The ``graphical`` folder contains examples scripts illustrating how to fit a galaxy model to many galaxies simultaneously
 using graphical model, hierarchical models and expectation propagation.
 
 **PyAutoFit** has dedicated tutorials describing graphical models, which I recommend users not familiar with

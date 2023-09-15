@@ -176,11 +176,11 @@ Note how we don't have to do that in this script, owing to our use of linear lig
 """
 __Search__
 """
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("multi", "modeling"),
     name="light[bulge_disk_linear]",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
     number_of_cores=2,
 )
 

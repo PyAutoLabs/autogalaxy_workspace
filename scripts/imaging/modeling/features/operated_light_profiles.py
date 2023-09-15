@@ -126,16 +126,15 @@ print(model.info)
 __Search__
 
 The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Dynesty (https://dynesty.readthedocs.io/en/latest/).
+Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[bulge_psf]",
     unique_tag=dataset_name,
-    nlive=100,
-    walks=10,
+    n_live=150,
     number_of_cores=1,
 )
 
@@ -170,7 +169,7 @@ The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
  - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Dynesty` non-linear search. 
+ - Information on the posterior as estimated by the `Nautilus` non-linear search. 
 """
 print(result.max_log_likelihood_instance)
 

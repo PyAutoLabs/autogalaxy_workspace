@@ -24,7 +24,7 @@ etc. This mask is created as follows:
 2) Compute the absolute S/N map of that blurred image and the noise-map.
 3) Create the mask for all pixels with a S/N above a theshold value.
 
-For galaxyes without a lens light component this masks create a source-only mask. If the galaxy light is included
+For galaxies without a lens light component this masks create a source-only mask. If the galaxy light is included
 it includes the galaxy light .
 
 The following parameters determine the behaviour of this function:

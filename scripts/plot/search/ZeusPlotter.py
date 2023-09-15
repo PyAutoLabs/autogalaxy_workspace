@@ -55,7 +55,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
-We now pass the samples to a `ZeusPlotter` which will allow us to use dynesty's in-built plotting libraries to 
+We now pass the samples to a `ZeusPlotter` which will allow us to use nautilus's in-built plotting libraries to 
 make figures.
 
 The zeus readthedocs describes fully all of the methods used below 

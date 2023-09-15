@@ -17,22 +17,22 @@ This script fits an `Imaging` dataset of a galaxy with a model where:
 __Plotters__
 
 To produce images of the data `Plotter` objects are used, which are high-level wrappers of matplotlib
-code which produce high quality visualization of strong lenses.
+code which produce high quality visualization of galaxies.
 
-The `PLotter` API is described in the script `autolens_workspace/*/plot/start_here.py`.
+The `PLotter` API is described in the script `autogalaxy_workspace/*/plot/start_here.py`.
 
 __Simulation__
 
-This script fits a simulated `Imaging` dataset of a strong lens, which is produced in the
-script `autolens_workspace/*/imaging/simulators/start_here.py`
+This script fits a simulated `Imaging` dataset of a galaxy, which is produced in the
+script `autogalaxy_workspace/*/imaging/simulators/start_here.py`
 
 __Data Preparation__
 
 The `Imaging` dataset fitted in this example confirms to a number of standard that make it suitable to be fitted in
 **PyAutoGalaxy**.
 
-If you are intending to fit your own strong lens data, you will need to ensure it conforms to these standards, which are
-described in the script `autolens_workspace/*/imaging/data_preparation/start_here.ipynb`.
+If you are intending to fit your own data, you will need to ensure it conforms to these standards, which are
+described in the script `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb`.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -136,10 +136,9 @@ print(model.info)
 __Search__
 
 The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Dynesty (https://dynesty.readthedocs.io/en/latest/). We make the following changes to the Dynesty settings:
+Nautilus (https://nautilus.readthedocs.io/en/latest/). We make the following changes to the Nautilus settings:
 
- - Increase the number of live points, `nlive`, from the default value of 50 to 100. 
- - Increase the number of random walks per live point, `walks` from the default value of 5 to 10. 
+ - Increase the number of live points, `n_live`, from the default value of 50 to 100. `n_live`
  
 These changes are motivated by the higher dimensionality non-linear parameter space that including the galaxy light 
 creates, which requires more thorough sampling by the non-linear search.
@@ -173,7 +172,7 @@ the `dataset_name` to the search's `unique_tag`.
 
 __Number Of Cores__
 
-We include an input `number_of_cores`, which when above 1 means that Dynesty uses parallel processing to sample multiple 
+We include an input `number_of_cores`, which when above 1 means that Nautilus uses parallel processing to sample multiple 
 models at once on your CPU. When `number_of_cores=2` the search will run roughly two times as
 fast, for `number_of_cores=3` three times as fast, and so on. The downside is more cores on your CPU will be in-use
 which may hurt the general performance of your computer.
@@ -187,12 +186,11 @@ use a value above this.
 For users on a Windows Operating system, using `number_of_cores>1` may lead to an error, in which case it should be 
 reduced back to 1 to fix it.
 """
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[bulge_disk]",
     unique_tag=dataset_name,
-    nlive=100,
-    walks=10,
+    n_live=100,
     number_of_cores=1,
 )
 
@@ -215,7 +213,7 @@ Run times are dictated by two factors:
  - The log likelihood evaluation time: the time it takes for a single `instance` of the model to be fitted to 
    the dataset such that a log likelihood is returned.
 
- - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex lens
+ - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex
    models require more iterations to converge to a solution.
 
 The log likelihood evaluation time can be estimated before a fit using the `profile_log_likelihood_function` method,
@@ -228,7 +226,7 @@ run_time_dict, info_dict = analysis.profile_log_likelihood_function(
 """
 The overall log likelihood evaluation time is given by the `fit_time` key.
 
-For this example, it is ~0.01 seconds, which is extremely fast for modeling. More advanced lens
+For this example, it is ~0.01 seconds, which is extremely fast for modeling. More advanced
 modeling features (e.g. shapelets, multi Gaussian expansions, pixelizations) have slower log likelihood evaluation
 times (1-3 seconds), and you should be wary of this when using these features.
 
@@ -271,6 +269,33 @@ fit model!
 result = search.fit(model=model, analysis=analysis)
 
 """
+__Output Folder__
+
+Now this is running you should checkout the `autogalaxy_workspace/output` folder. This is where the results of the 
+search are written to hard-disk (in the `start_here` folder), where all outputs are human readable (e.g. as .json,
+.csv or text files).
+
+As the fit progresses, results are written to the `output` folder on the fly using the highest likelihood model found
+by the non-linear search so far. This means you can inspect the results of the model-fit as it runs, without having to
+wait for the non-linear search to terminate.
+ 
+The `output` folder includes:
+
+ - `model.info`: Summarizes the model, its parameters and their priors discussed in the next tutorial.
+ 
+ - `model.results`: Summarizes the highest likelihood model inferred so far including errors.
+ 
+ - `images`: Visualization of the highest likelihood model-fit to the dataset, (e.g. a fit subplot showing the 
+ galaxies, model data and residuals).
+ 
+ - `files`: A folder containing .fits files of the dataset, the model as a human-readable .json file, 
+ a `.csv` table of every non-linear search sample and other files containing information about the model-fit.
+ 
+ - search.summary: A file providing summary statistics on the performance of the non-linear search.
+ 
+ - `search_internal`: Internal files of the non-linear search (in this case Nautilus) used for resuming the fit and
+  visualizing the search.
+
 __Result__
 
 The search returns a result object, which whose `info` attribute shows the result in a readable format.
@@ -299,9 +324,9 @@ fit_plotter.subplot_fit()
 
 """
 The result contains the full posterior information of our non-linear search, including all parameter samples, 
-log likelihood values and tools to compute the errors on the lens model. 
+log likelihood values and tools to compute the errors on the model. 
 
-**PyAutoLens** includes visualization tools for plotting this.
+There are built in visualization tools for plotting this.
 
 The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
 parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.

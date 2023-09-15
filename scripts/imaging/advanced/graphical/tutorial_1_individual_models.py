@@ -145,11 +145,11 @@ for dataset_index, masked_dataset in enumerate(masked_imaging_list):
     dataset_name_with_index = f"dataset_{dataset_index}"
     path_prefix_with_index = path.join(path_prefix, dataset_name_with_index)
 
-    search = af.DynestyStatic(
+    search = af.Nautilus(
         path_prefix=path_prefix,
         name="search__light_sersic",
         unique_tag=dataset_name_with_index,
-        nlive=50,
+        n_live=100,
     )
 
     analysis = ag.AnalysisImaging(dataset=masked_dataset)

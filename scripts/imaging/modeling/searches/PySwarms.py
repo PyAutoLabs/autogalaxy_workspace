@@ -11,12 +11,12 @@ Information about PySwarms can be found at the following links:
  - https://pyswarms.readthedocs.io/en/latest/api/pyswarms.single.html#module-pyswarms.single.global_best
 
 An PSO algorithm only seeks to only find the maximum likelihood model, unlike MCMC or nested sampling algorithms
-like Zzeus and dynesty, which aims to map-out parameter space and infer errors on the parameters.Therefore, in 
+like Zzeus and nautilus, which aims to map-out parameter space and infer errors on the parameters.Therefore, in 
 principle, a PSO like PySwarm should fit a model very fast.
 
 In our experience, the parameter spaces fitted by models are too complex for `PySwarms` to be used without a lot
 of user attention and care.  Nevertheless, we encourage you to give it a go yourself, and let us know on the PyAutoGalaxy 
-GitHub if you find an example of a problem where `PySwarms` outperforms Dynesty!
+GitHub if you find an example of a problem where `PySwarms` outperforms Nautilus!
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -54,7 +54,7 @@ dataset = dataset.apply_mask(mask=mask)
 """
 __Model__ 
 
-In our experience, zeus is okay at initializing a model but not as good at `dynesty. It therefore benefits 
+In our experience, zeus is okay at initializing a model but not as good at `nautilus. It therefore benefits 
 from a 'starting point' which is near the highest likelihood models. We set this starting point up below using
 the start point API (see `autogalaxy_workspace/*/imaging/modeling/customize/start_point.ipynb`).
 

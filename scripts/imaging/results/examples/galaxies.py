@@ -54,7 +54,7 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below performs a model-fit using dynesty. 
+The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 
@@ -87,11 +87,11 @@ bulge_1.centre = (0.0, 1.0)
 galaxy_1 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_1)
 
 model = af.Collection(galaxies=af.Collection(galaxy_0=galaxy_0, galaxy_1=galaxy_1))
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[bulge]__x2",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)

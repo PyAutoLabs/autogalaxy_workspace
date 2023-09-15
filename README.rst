@@ -74,7 +74,7 @@ Inside these packages are packages titled ``advanced`` which only users familiar
 In the ``imaging``, ``interferometer``, and ``multi`` folders you'll find the following packages:
 
 - ``modeling``: Examples of how to fit a galaxy model to data via a non-linear search.
-- ``simulators``: Scripts for simulating realistic imaging and interferometer data of strong galaxyes.
+- ``simulators``: Scripts for simulating realistic imaging and interferometer data of strong galaxies.
 - ``data_preparation``: Tools to preprocess ``data`` before an analysis (e.g. convert units, create masks).
 - ``results``: Examples using the results of a model-fit.
 - ``advanced``: Advanced modeling scripts which use **PyAutoGalaxy**'s advanced features.
@@ -100,7 +100,7 @@ Included is the ``HowToGalaxy`` lecture series, which provides an introduction t
 galaxy modeling. It can be found in the workspace & consists of 5 chapters:
 
 - ``Introduction``: An introduction to galaxy morphology & **PyAutoGalaxy**.
-- ``Galaxy Modeling``: How to model strong galaxyes, including a primer on Bayesian analysis and model-fitting via a non-linear search .
+- ``Galaxy Modeling``: How to model strong galaxies, including a primer on Bayesian analysis and model-fitting via a non-linear search .
 - ``Search Chaining``: Chaining non-linear searches together to build model-fitting pipelines & tailor them to your own science case.
 - ``Pixelizations``: How to perform pixelized reconstructions of a galaxy.
 

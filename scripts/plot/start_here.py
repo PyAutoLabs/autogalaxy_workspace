@@ -105,7 +105,7 @@ array_plotter.figure_2d()
 """
 __Searches__
 
-Model-fits using a non-linear search (e.g. Dynesty, Emcee) produce search-specific visualization.
+Model-fits using a non-linear search (e.g. Nautilus, Emcee) produce search-specific visualization.
 
 The `autogalaxy.workspace.*.plot.search` illustrates how to perform this visualization for every search (e.g.
 `DynestyPlotter`, `EmceePlotter`.

@@ -2,16 +2,17 @@
 Searches: Emcee
 ===============
 
-Emcee (https://github.com/dfm/emcee) is an ensemble MCMC sampler.
+Nautilus (https://github.com/joshspeagle/Nautilus) is a nested sampling algorithm.
 
-An MCMC algorithm only seeks to map out the posterior of parameter space, unlike a nested sampling algorithm like
-Nautilus, which also aims to estimate the Bayesian evidence if the model. Therefore, in principle, an MCMC approach like
-Emcee should be faster than Nautilus.
+A nested sampling algorithm estimates the Bayesian evidence of a model as well as the posterior.
 
-In our experience, `Emcee` is outperformed by `Nautilus` for modeling in all circumstances, whether that be
-initializing the model, fitting a pixelized source or models with high dimensionality. Nevertheless, we encourage
-you to give it a go yourself, and let us know on the PyAutoGalaxy GitHub if you find an example of a problem where
-`Emcee` outperforms Nautilus!
+Dynesty used to be the main model-fitting algorithm used by PyAutoLens. However, we now recommend the nested sampling
+algorithm `Nautilus` instead, which is faster and more accurate than Dynesty. We include this tutorial for Dynesty
+for those who are interested in comparing the two algorithms.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the modeling `start_here.ipynb` notebook for more detailed comments.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -58,22 +59,13 @@ circumstances, we have found that is often outperformed by other searches such a
 and accuracy.
 """
 bulge = af.Model(ag.lp.Sersic)
+disk = af.Model(ag.lp.Exponential)
+bulge.centre = disk.centre
 
-bulge.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-bulge.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
-    mean=0.11, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
-)
-bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
-    mean=0.05, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
-)
-bulge.intensity = af.LogUniformPrior(lower_limit=0.5, upper_limit=1.5)
-bulge.effective_radius = af.UniformPrior(lower_limit=0.5, upper_limit=1.5)
-bulge.sersic_index = af.GaussianPrior(mean=4.0, sigma=0.5)
-
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
 
 """
 __Analysis__ 
@@ -85,23 +77,30 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 """
 __Search__
 
-Below we use emcee to fit the model, using the model with start points as described above. See the Emcee docs
+Below we use dynesty to fit the model, using the model with start points as described above. See the Dynesty docs
 for a description of what the input parameters below do.
+
+There are two important inputs worth noting:
+
+- `sample="rwalk"`: Makes dynesty use random walk nested sampling, which proved to be effective at modeling.
+- `walks-10`: Only 10 random walks are performed per sample, which is efficient for modeling.
+
 """
-search = af.Emcee(
-    path_prefix=path.join("imaging", "searches"),
-    name="Emcee",
-    unique_tag=dataset_name,
-    nwalkers=30,
-    nsteps=500,
-    initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
-    auto_correlations_settings=af.AutoCorrelationsSettings(
-        check_for_convergence=True,
-        check_size=100,
-        required_length=50,
-        change_threshold=0.01,
-    ),
-    iterations_per_update=5000,
+search = af.DynestyStatic(
+    path_prefix=path.join("searches"),
+    name="DynestyStatic",
+    nlive=50,
+    sample="rwalk",
+    walks=10,
+    bound="multi",
+    bootstrap=None,
+    enlarge=None,
+    update_interval=None,
+    facc=0.5,
+    slices=5,
+    fmove=0.9,
+    max_move=100,
+    iterations_per_update=2500,
     number_of_cores=1,
 )
 
@@ -113,8 +112,8 @@ __Result__
 We can use an `EmceePlotter` to create a corner plot, which shows the probability density function (PDF) of every
 parameter in 1D and 2D.
 """
-search_plotter = aplt.EmceePlotter(samples=result.samples)
-search_plotter.corner()
+search_plotter = aplt.DynestyPlotter(samples=result.samples)
+search_plotter.cornerplot()
 
 """
 Finish.

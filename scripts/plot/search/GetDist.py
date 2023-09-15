@@ -8,7 +8,7 @@ using GetDist:
  - https://getdist.readthedocs.io/en/latest/
 
 GetDist is an optional library which creates 1D and 2D plots of probability distribution functions (PDF)s. Its
-visualization tools has more than the in-built visualization tools of many non-linear searches (e.g. dynesty /
+visualization tools has more than the in-built visualization tools of many non-linear searches (e.g. nautilus /
 emcee) and can often produce better looking plots.
 
 GetDist was developed for the analysis of Cosmological datasets.
@@ -41,16 +41,16 @@ import autogalaxy as ag
 """
 __Model Fit__
 
-First, lets create a result via dynesty by repeating the simple model-fit that is performed in 
+First, lets create a result via nautilus by repeating the simple model-fit that is performed in 
 the `modeling/mass_total__source_parametric.py` example.
 
-We'll use dynesty in this example, but any MCMC / nested sampling non-linear search which produces samples of
+We'll use nautilus in this example, but any MCMC / nested sampling non-linear search which produces samples of
 the posterior could be used.
 """
 dataset_name = "simple__sersic"
 
-search = af.DynestyStatic(
-    path_prefix=path.join("plot"), name="GetDist", unique_tag=dataset_name, nlive=50
+search = af.Nautilus(
+    path_prefix=path.join("plot"), name="GetDist", unique_tag=dataset_name, n_live=100
 )
 
 dataset_path = path.join("dataset", "imaging", dataset_name)
@@ -85,7 +85,7 @@ GetDist uses an `MCSamples` object to store the samples of a non-linear search.
 Below, we create this object via a conversion from **PyAutoFit** `Samples`, as well as using the `names`
 and `labels` of parameters in the `Samples` object.
 
-The input `sampler="nested"` is input because we used a nested sampling, `dynesty`. For MCMC this should be
+The input `sampler="nested"` is input because we used a nested sampling, `nautilus`. For MCMC this should be
 replaced with "mcmc".
 """
 
@@ -219,13 +219,13 @@ __Plotting Multiple Samples__
 Finally, we can plot the results of multiple different non-linear searches on the same plot, using all
 of the functions above.
 
-Lets quickly make a second set of `dynesty` results and plot them on the same figure above with the results
+Lets quickly make a second set of `nautilus` results and plot them on the same figure above with the results
 of the first search.
 """
 
-dynesty = af.DynestyStatic(path_prefix="plot", name="GetDist_2")
+nautilus = af.Nautilus(path_prefix="plot", name="GetDist_2")
 
-result_extra = dynesty.fit(model=model, analysis=analysis)
+result_extra = nautilus.fit(model=model, analysis=analysis)
 
 samples_extra = result_extra.samples
 

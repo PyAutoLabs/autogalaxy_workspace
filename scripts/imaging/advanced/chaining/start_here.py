@@ -112,8 +112,8 @@ We now create the non-linear search, analysis and perform the model-fit using th
 You may wish to inspect the results of the search 1 model-fit to ensure a fast non-linear search has been provided that 
 provides a reasonably accurate model.
 """
-search_1 = af.DynestyStatic(
-    path_prefix=path_prefix, name="search[1]__api", unique_tag=dataset_name, nlive=50
+search_1 = af.Nautilus(
+    path_prefix=path_prefix, name="search[1]__api", unique_tag=dataset_name, n_live=100
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)
@@ -155,8 +155,8 @@ We now create the non-linear search, analysis and perform the model-fit using th
 You may wish to inspect the `model.info` file of the search 2 model-fit to ensure the priors were passed correctly, as 
 well as the checkout the results to ensure an accurate power-law mass model is inferred.
 """
-search_2 = af.DynestyStatic(
-    path_prefix=path_prefix, name="search[2]__api", unique_tag=dataset_name, nlive=30
+search_2 = af.Nautilus(
+    path_prefix=path_prefix, name="search[2]__api", unique_tag=dataset_name, n_live=75
 )
 
 result_2 = search_2.fit(model=model_2, analysis=analysis)
@@ -266,22 +266,12 @@ The intensity of an image depends on its units, S/N, galaxy brightness, etc. The
 one can use to generically chain the intensity of any two proflies. Thus, it makes more sense to chain them using 
 the relative value from a previous search.
 
-We can customize how priors are passed from the results of a search and non-linear search by inputting to the search 
-a `PriorPasser` object:
+We can customize how priors are passed from the results of a search and non-linear search by editing the
+ `prior_passer` settings in the `general.yaml` config file.
 
-"""
-search = af.DynestyStatic(
-    prior_passer=af.PriorPasser(sigma=2.0, use_widths=False, use_errors=True)
-)
-
-"""
-The PriorPasser allows us to customize at what sigma the error values the model results are computed at to compute
+This allows us to customize at what sigma the error values the model results are computed at to compute
 the passed sigma values and customizes whether the widths in the config file, these computed errors, or both, 
 are used to set the sigma values of the passed priors.
-
-The default values of the `PriorPasser` are found in the config file of every non-linear search, in the [prior_passer]
-section. All non-linear searches by default use a sigma value of 3.0, use_width=True and use_errors=True. We anticipate
-you should not need to change these values to get modeling to work proficiently!
 
 __EXAMPLE__
 

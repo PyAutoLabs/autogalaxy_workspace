@@ -53,7 +53,7 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below performs a model-fit using dynesty. 
+The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 """
@@ -81,11 +81,11 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[pixelization]",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
     number_of_cores=1,
 )
 

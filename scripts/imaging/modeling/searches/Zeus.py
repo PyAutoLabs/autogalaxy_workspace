@@ -5,13 +5,13 @@ Searches: Zeus
 Zeus (https://zeus-mcmc.readthedocs.io/en/latest/) is an ensemble MCMC slice sampler.
 
 An MCMC algorithm only seeks to map out the posterior of parameter space, unlike a nested sampling algorithm like
-Dynesty, which also aims to estimate the Bayesian evidence if the model. Therefore, in principle, an MCMC approach like
-Zeus should be faster than Dynesty.
+Nautilus, which also aims to estimate the Bayesian evidence if the model. Therefore, in principle, an MCMC approach like
+Zeus should be faster than Nautilus.
 
-In our experience, `Zeus`'s performance is on-par with `Dynesty`, except for initializing the model using broad
-uniformative priors. We use Dynesty by default in all examples because it requires less tuning, but we encourage
+In our experience, `Zeus`'s performance is on-par with `Nautilus`, except for initializing the model using broad
+uniformative priors. We use Nautilus by default in all examples because it requires less tuning, but we encourage
 you to give Zeus a go yourself, and let us know on the PyAutoGalaxy GitHub if you find an example of a problem where
-`Zeus` outperforms Dynesty!
+`Zeus` outperforms Nautilus!
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -48,7 +48,7 @@ dataset = dataset.apply_mask(mask=mask)
 """
 __Model__ 
 
-In our experience, zeus is okay at initializing a model but not as good at `dynesty. It therefore benefits 
+In our experience, zeus is okay at initializing a model but not as good at `nautilus. It therefore benefits 
 from a 'starting point' which is near the highest likelihood models. We set this starting point up below using
 the start point API (see `autogalaxy_workspace/*/imaging/modeling/customize/start_point.ipynb`).
 """

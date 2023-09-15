@@ -22,4 +22,4 @@ Folders (Advanced)
 In Development
 --------------
 
-- ``cluster``: Examples illustrating modeling galaxy-cluster scale strong galaxyes
+- ``cluster``: Examples illustrating modeling galaxy-cluster scale strong galaxies

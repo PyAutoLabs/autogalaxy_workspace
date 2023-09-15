@@ -1,6 +1,6 @@
 """
-Database 4: Models
-==================
+Database: Models
+================
 
 In this tutorial, we use the database to load models and `Plane`'s from a non-linear search. This allows us to
 visualize and interpret its results.
@@ -48,6 +48,17 @@ plane_gen = plane_agg.max_log_likelihood_gen_from()
 
 """
 We can now iterate over our plane generator to make the plots we desire.
+
+The `plane_gen` returns a list of `Plane` objects, as opposed to just a single `Plane`object. This is because
+only a single `Analysis` class was used in the model-fit, meaning there was only one `Plane` dataset that was
+fit. 
+
+The `multi` package of the workspace illustrates model-fits which fit multiple datasets 
+simultaneously, (e.g. multi-wavelength imaging)  by summing `Analysis` objects together, where the `plane_list` 
+would contain multiple `Plane` objects.
+
+The parameters of galaxies in the `Plane` may vary across the datasets (e.g. different light profile intensities 
+for different wavelengths), which would be reflected in the plane list.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
@@ -68,7 +79,10 @@ plane_gen = plane_agg.max_log_likelihood_gen_from()
 
 print("Maximum Log Likelihood Luminosities:")
 
-for plane in plane_gen:
+for plane_list in plane_gen:
+    # Only one `Analysis` so take first and only tracer.
+    plane = plane_list[0]
+
     luminosity = plane.galaxies[0].luminosity_within_circle_from(radius=10.0)
 
     print("Luminosity (electrons per second) = ", luminosity)
@@ -76,6 +90,7 @@ for plane in plane_gen:
 
 """
 __Errors (PDF from samples)__
+
 In this example, we will compute the errors on the axis ratio of a model. Computing the errors on a quantity 
 like the trap `density` is simple, because it is sampled by the non-linear search. The errors are therefore accessible
 via the `Samples`, by marginalizing over all over parameters via the 1D Probability Density Function (PDF).
@@ -85,7 +100,7 @@ measurement that we want to calculate but was not sampled directly by the non-li
 object has everything we need to compute the errors of derived quantities.
 
 Below, we compute the axis ratio of every model sampled by the non-linear search and use this determine the PDF 
-of the axis ratio. When combining each axis ratio we weight each value by its `weight`. For Dynesty, 
+of the axis ratio. When combining each axis ratio we weight each value by its `weight`. For Nautilus, 
 the nested sampler used by the fit, this ensures models which gave a bad fit (and thus have a low weight) do not 
 contribute significantly to the axis ratio error estimate.
 
@@ -95,7 +110,7 @@ a axis ratio is cheap, and this is probably not necessary. However, certain quan
 computational overhead is being calculated and setting a minimum weight can speed up the calculation without 
 significantly changing the inferred errors.
 
-Below, we use the `PlaneAgg` to get the `Plane` of every Dynesty sample in each model-fit. We extract from each 
+Below, we use the `PlaneAgg` to get the `Plane` of every Nautilus sample in each model-fit. We extract from each 
 plane the model's axis-ratio, store them in a list and find the value via the PDF and quantile method. This again
 uses generators, ensuring minimal memory use. 
 
@@ -110,7 +125,10 @@ weight_list_gen = plane_agg.weights_above_gen_from(minimum_weight=1e-4)
 for plane_gen, weight_gen in zip(plane_list_gen, weight_list_gen):
     axis_ratio_list = []
 
-    for plane in plane_gen:
+    for plane_list in plane_gen:
+        # Only one `Analysis` so take first and only tracer.
+        plane = plane_list[0]
+
         axis_ratio = ag.convert.axis_ratio_from(
             ell_comps=plane.galaxies[0].bulge.ell_comps
         )
@@ -141,7 +159,10 @@ plane_list_gen = plane_agg.randomly_drawn_via_pdf_gen_from(total_samples=2)
 for plane_gen in plane_list_gen:
     axis_ratio_list = []
 
-    for plane in plane_gen:
+    for plane_list in plane_gen:
+        # Only one `Analysis` so take first and only tracer.
+        plane = plane_list[0]
+
         axis_ratio = ag.convert.axis_ratio_from(
             ell_comps=plane.galaxies[0].bulge.ell_comps
         )
@@ -153,22 +174,6 @@ for plane_gen in plane_list_gen:
     )
 
     print(f"Axis-Ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
-
-
-"""
-__Pickle Files__
-
-In the modeling script, we used the pickle_files input to search.run() to pass a .pickle file from the dataset folder to 
-the database. 
-
-Our galaxy dataset was created via a simulator script, so we passed the `Plane` used to simulate the galaxy, 
-which was written as a .pickle file called `true_plane.pickle` to the search to make it accessible in the 
-database. This will allow us to directly compare the inferred model to the `truth`. 
-"""
-# true_planes = [true_plane for true_plane in agg.values("true_plane")]
-
-print("Parameters used to simulate the galaxy dataset:")
-# print(true_planes)
 
 
 """

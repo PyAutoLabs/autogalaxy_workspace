@@ -121,7 +121,7 @@ print(model.info)
 __Search__
 
 The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Dynesty (https://dynesty.readthedocs.io/en/latest/).
+Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 The folders: 
 
@@ -146,7 +146,7 @@ a new unique identifier will be generated, ensuring that the model-fit results a
 
 __Number Of Cores__
 
-We include an input `number_of_cores`, which when above 1 means that Dynesty uses parallel processing to sample multiple 
+We include an input `number_of_cores`, which when above 1 means that Nautilus uses parallel processing to sample multiple 
 models at once on your CPU. When `number_of_cores=2` the search will run roughly two times as
 fast, for `number_of_cores=3` three times as fast, and so on. The downside is more cores on your CPU will be in-use
 which may hurt the general performance of your computer.
@@ -160,11 +160,11 @@ use a value above this.
 For users on a Windows Operating system, using `number_of_cores>1` may lead to an error, in which case it should be 
 reduced back to 1 to fix it.
 """
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("interferometer", "modeling"),
     name="light_linear[bulge_disk]",
     unique_tag=dataset_name,
-    nlive=50,
+    n_live=100,
     number_of_cores=1,
 )
 
@@ -205,7 +205,7 @@ The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
  - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Dynesty` non-linear search. 
+ - Information on the posterior as estimated by the `Nautilus` non-linear search. 
 """
 print(result.max_log_likelihood_instance)
 

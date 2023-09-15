@@ -122,7 +122,7 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-search = af.DynestyStatic(
+search = af.Nautilus(
     path_prefix=path.join("imaging", "customize"),
     name="noise_covariance_matrix",
     unique_tag=dataset_name,
