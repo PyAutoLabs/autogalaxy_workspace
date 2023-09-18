@@ -1,30 +1,30 @@
 """
-Modeling: Light Parametric Linear
-=================================
+Modeling Features: Linear Light Profiles
+========================================
+
+A "linear light profile" is a variant of a standard light profile where the `intensity` parameter is solved for
+via linear algebra every time the model is fitted to the data. This uses a process called an "inversion" and it
+always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood)
+given the light profile's other parameters.
+
+Each light profile's `intensity` parameter is therefore not a free parameter in the model-fit, reducing the
+dimensionality of non-linear parameter space by the number of light profiles (in this example by 2 dimensions).
+
+This also removes the degeneracies that occur between the `intensity` and other light profile parameters
+(e.g. `effective_radius`, `sersic_index`), which are difficult degeneracies for the non-linear search to map out
+accurately. This produces more reliable lens model results and converge in fewer iterations, speeding up the overall
+analysis.
+
+The inversion has a relatively small computational cost, thus we reduce the model complexity with much expensive and
+can therefore fit models more reliably and faster!
+
+It is therefore recommended you always use linear light profiles to fit models over standard light profiles!
+
+__Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
-
-__Linear Light Profiles__
-
-This script uses a light profile variant called a 'linear light profile'. The `intensity` parameters of all parametric
-components are solved via linear algebra every time the model is fitted using a process called an inversion. This
-inversion always computes `intensity` values that give the best fit to the data (e.g. they maximize the likelihood)
-given the other parameter values of the light profile.
-
-The `intensity` parameter of each light profile is therefore not a free parameter in the model-fit, reducing the
-dimensionality of non-linear parameter space by the number of light profiles (in this example, 2) and removing the
-degeneracies that occur between the `intnensity` and other light profile
-parameters (e.g. `effective_radius`, `sersic_index`).
-
-For complex models, linear light profiles are a powerful way to simplify the parameter space to ensure the best-fit
-model is inferred.
-
-__Notes__
-
-This script is identical to `modeling/light_parametric.py` except that the light profiles are switched to linear
-light profiles.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -80,6 +80,9 @@ example we fit a model where:
  - The galaxy's disk is a linear parametric `Exponential` disk, whose centre is aligned with the bulge [3 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=9.
+
+Note how both the lens and source galaxies use linear light profiles, meaning that the `intensity` parameter of both
+is not longer a free parameter in the fit.
 
 __Coordinates__
 
@@ -222,8 +225,69 @@ plane_plotter.subplot()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
-search_plotter = aplt.DynestyPlotter(samples=result.samples)
+search_plotter = aplt.NautilusPlotter(samples=result.samples)
 search_plotter.cornerplot()
+
+"""
+The intensities of linear light profiles are not a part of the model parameterization. They therefore cannot be
+accessed in the resulting galaxies, as seen in previous tutorials, for example:
+
+`plane = result.max_log_likelihood_plane`
+`intensity = plane.galaxies[0].bulge.intensity`
+
+The intensities are also only computed once a fit is performed, as they must first be solved for via linear algebra. 
+They are therefore accessible via the `Fit` and `Inversion` objects, for example as a dictionary mapping every
+linear light profile (defined above) to the intensity values:
+"""
+fit = result_linear_light_profile.max_log_likelihood_fit
+
+print(fit.linear_light_profile_intensity_dict)
+
+"""
+To extract the `intensity` values of a specific component in the model, we use that component as defined in the
+`max_log_likelihood_plane`.
+"""
+plane = fit.plane
+
+bulge = plane.galaxies[0].bulge
+disk = plane.galaxies[0].disk
+
+print(
+    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge]}"
+)
+print(
+    f"\n Intensity of disk (lp_linear.Exponential) = {fit.linear_light_profile_intensity_dict[disk]}"
+)
+
+"""
+A `Plane` where all linear light profile objects are replaced with ordinary light profiles using the solved 
+for `intensity` values is also accessible.
+
+For example, the linear light profile `Sersic` of the `bulge` component above has a solved for `intensity` of ~0.75. 
+
+The `Plane` created below instead has an ordinary light profile with an `intensity` of ~0.75.
+"""
+plane = fit.model_obj_linear_light_profiles_to_light_profiles
+
+print(
+    f"Intensity via Plane With Ordinary Light Profiles = {plane.galaxies[0].bulge.intensity}"
+)
+
+"""
+__Visualization__
+
+Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
+have an `intensity` value.
+
+Therefore, the object created above which replaces all linear light profiles with ordinary light profiles must be
+used for visualization:
+"""
+plane = fit.model_obj_linear_light_profiles_to_light_profiles
+plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
+plane_plotter.figures_2d(image=True)
+
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=plane.galaxies[0], grid=dataset.grid)
+galaxy_plotter.figures_2d(image=True)
 
 """
 Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.

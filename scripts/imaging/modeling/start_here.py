@@ -135,27 +135,20 @@ print(model.info)
 """
 __Search__
 
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Nautilus (https://nautilus.readthedocs.io/en/latest/). We make the following changes to the Nautilus settings:
+The model is fitted to the data using a non-linear search. 
 
- - Increase the number of live points, `n_live`, from the default value of 50 to 100. `n_live`
- 
-These changes are motivated by the higher dimensionality non-linear parameter space that including the galaxy light 
-creates, which requires more thorough sampling by the non-linear search.
+All examples in the autogalaxy workspace use the nested sampling algorithm 
+Nautilus (https://nautilus-sampler.readthedocs.io/en/latest/), which extensive testing has revealed gives the most 
+accurate and efficient modeling results.
 
-The folders: 
+Nautilus has one main setting that trades-off accuracy and computational run-time, the number of `live_points`. 
+A higher number of live points gives a more accurate result, but increases the run-time. A lower value may give 
+less reliable modeling (e.g. the fit may infer a local maxima), but is faster. 
 
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
- - `autogalaxy_workspace/*/imaging/modeling/customize`
-  
-Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
-model-fit, including the priors on the model. 
-
-If you are unclear of what a non-linear search is, checkout chapter 2 of the **HowToGalaxy** lectures.
-
-The `name` and `path_prefix` below specify the path where results ae stored in the output folder:  
-
- `/autogalaxy_workspace/output/imaging/simple__sersic/mass[sie]/unique_identifier`.
+The suitable value depends on the model complexity whereby models with more parameters require more live points. 
+The default value of 200 is sufficient for the vast majority of common galaxy models. Lower values often given reliable
+results though, and speed up the run-times. In this example, given the model is quite simple (N=21 parameters), we 
+reduce the number of live points to 100 to speed up the run-time.
 
 __Unique Identifier__
 
@@ -185,6 +178,25 @@ use a value above this.
 
 For users on a Windows Operating system, using `number_of_cores>1` may lead to an error, in which case it should be 
 reduced back to 1 to fix it.
+
+__Iterations Per Update__
+
+Every N iterations, the non-linear search outputs the current results to the folder `autogalaxy_workspace/output`,
+which includes producing visualization. 
+
+Depending on how long it takes for the model to be fitted to the data (see discussion about run times below), 
+this can take up a large fraction of the run-time of the non-linear search.
+
+For this fit, the fit is very fast, thus we set a high value of `iterations_per_update=10000` to ensure these updates
+so not slow down the overall speed of the model-fit.
+
+NOTE: `Nautilus` does not currently support `iterations_per_update` and therefore on-the-fly output of results
+is disabled. However, you can output the best-fit results by cancelling the job (Ctrl + C for Python script,
+kill cell for Jupyter notebook) and restarting. 
+
+Nautilus produces a significant improvement to lens modeling over other libraries (e.g. Dynesty, MultiNest, Emcee) 
+therefore although on-the-fly output is not natively supported, we switched it to the default fitter given the 
+significantly improved model-fits. 
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
@@ -192,6 +204,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     number_of_cores=1,
+    iterations_per_update=10000,
 )
 
 """
@@ -248,8 +261,9 @@ For this example, we conservatively estimate that the non-linear search will per
 parameter in the model. This is an upper limit, with models typically converging in far fewer iterations.
 
 If you perform the fit over multiple CPUs, you can divide the run time by the number of cores to get an estimate of
-the time it will take to fit the model. However, above ~6 cores the speed-up from parallelization is less efficient and
-does not scale linearly with the number of cores.
+the time it will take to fit the model. Parallelization with Nautilus scales well, it speeds up the model-fit by the 
+`number_of_cores` for N < 8 CPUs and roughly `0.5*number_of_cores` for N > 8 CPUs. This scaling continues 
+for N> 50 CPUs, meaning that with super computing facilities you can always achieve fast run times!
 """
 print(
     "Estimated Run Time Upper Limit (seconds) = ",
@@ -334,9 +348,53 @@ parameter `n`). These mappings ate specified in the `config/notation.yaml` file 
 The superscripts of labels correspond to the name each component was given in the model (e.g. for the `Isothermal`
 mass its name `mass` defined when making the `Model` above is used).
 """
-search_plotter = aplt.DynestyPlotter(samples=result.samples)
+search_plotter = aplt.NautilusPlotter(samples=result.samples)
 search_plotter.cornerplot()
 
+
 """
-Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.
+This script gives a concise overview of the PyAutoGalaxy modeling API, fitting one the simplest models possible.
+So, what next? 
+
+__Features__
+
+The examples in the `autogalaxy_workspace/*/imaging/modeling/features` package illustrate other modeling features. 
+
+We recommend you checkout the following four features, because the make modeling in general more reliable and 
+efficient (you will therefore benefit from using these features irrespective of the quality of your data and 
+scientific topic of study).
+
+We recommend you now checkout the following feature:
+
+- ``linear_light_profiles.py``: The model light profiles use linear algebra to solve for their intensity, reducing model complexity.
+
+All other features may be useful to specific users with specific datasets and scientific goals, but are not useful
+for general modeling.
+
+The folders `autogalaxy_workspace/*/imaging/modeling/searches` and `autogalaxy_workspace/*/imaging/modeling/customize`
+provide guides on how to customize many other aspects of the model-fit. Check them out to see if anything
+sounds useful, but for most users you can get by without using these forms of customization!
+  
+__Data Preparation__
+
+If you are looking to fit your own CCD imaing data of a strong lens, checkout  
+the `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb` script for an overview of how data should be 
+prepared before being modeled.
+
+__HowToLens__
+
+This `start_here.py` script, and the features examples above, do not explain many details of how lens modeling is 
+performed, for example:
+
+ - How does PyAutoGalaxy perform ray-tracing and lensing calculations in order to fit a lens model?
+ - How is a lens model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed?).
+ - How does Nautilus find the highest likelihood lens models? What exactly is a "non-linear search"?
+
+You do not need to be able to answer these questions in order to fit lens models with PyAutoGalaxy and do science.
+However, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist
+
+This deeper insight is offered by the **HowToLens** Jupyter notebook lectures, found 
+at `autogalaxy_workspace/*/howtolens`. 
+
+I recommend that you check them out if you are interested in more details!
 """

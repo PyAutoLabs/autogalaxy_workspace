@@ -56,13 +56,7 @@ bulge = af.Model(ag.lp.Sersic)
 disk = af.Model(ag.lp.Exponential)
 bar = af.Model(ag.lp.Sersic)
 
-galaxy = af.Model(
-    ag.Galaxy,
-    redshift=0.5,
-    bulge=bulge,
-    disk=disk,
-    bar=bar
-)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk, bar=bar)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
@@ -112,7 +106,7 @@ galaxy = af.Model(
     redshift=0.5,
     bulge=ag.lp.Sersic,
     disk=ag.lp.Exponential,
-    bar=ag.lp.Sersic
+    bar=ag.lp.Sersic,
 )
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
@@ -128,7 +122,9 @@ bulge = af.Model(ag.lp.Sersic)
 bulge.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.intensity = af.LogUniformPrior(lower_limit=1e-4, upper_limit=1e4)
-bulge.sersic_index = af.GaussianPrior(mean=4.0, sigma=1.0, lower_limit=1.0, upper_limit=8.0)
+bulge.sersic_index = af.GaussianPrior(
+    mean=4.0, sigma=1.0, lower_limit=1.0, upper_limit=8.0
+)
 
 galaxy = af.Model(
     ag.Galaxy,
@@ -175,7 +171,9 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 # Assert that the effective radius of the bulge is larger than that of the disk.
 # (Assertions can only be added at the end of model composition, after all components
 # have been bright together in a `Collection`.
-model.add_assertion(model.galaxies.bulge.effective_radius > model.galaxies.disk.effective_radius)
+model.add_assertion(
+    model.galaxies.bulge.effective_radius > model.galaxies.disk.effective_radius
+)
 
 # Assert that the bulge effetive radius is below 3.0":
 model.add_assertion(model.galaxies.bulge.effective_radius < 3.0)

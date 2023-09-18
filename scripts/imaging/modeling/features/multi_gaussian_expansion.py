@@ -1,26 +1,49 @@
 """
-Modeling: Light Basis
-=====================
+Modeling Features: Multi Gaussian Expansion
+===========================================
+
+A multi Gaussian expansion (MGE) decomposes the galaxy light into a super positive of ~15-100 Gaussians, where
+the `intensity` of every Gaussian is solved for via a linear algebra using a process called an "inversion"
+(see the `light_parametric_linear.py` feature for a full description of this).
+
+This script fits a light model which uses an MGE consisting of 60 Gaussians. It is fitted to simulated data
+where the galaxy's light has asymmetric and irregular features, which are not well fitted by symmetric light
+profiles like the `Sersic`.
+
+__Advantages__
+
+Symmetric light profiles (e.g. elliptical Sersics) may leave significant residuals, because they fail to capture
+irregular and asymmetric morphological of galaxies (e.g. isophotal twists, an ellipticity which varies radially).
+An MGE fully captures these features and can therefore much better represent the emission of complex galaxies.
+
+The MGE model can be composed in a way that has fewer non-linear parameters than an elliptical Sersic. In this example,
+two separate groups of Gaussians are used to represent the `bulge` and `disk` of the lens, which in total correspond
+to just N=6 non-linear parameters (a `bulge` and `disk` comprising two linear Sersics would give N=10).
+
+The MGE model parameterization is also composed such that neither the `intensity` parameters or any of the
+parameters controlling the size of the Gaussians (their `sigma` values) are non-linear parameters sampled by Nautilus.
+This removes the most significant degeneracies in parameter space, making the model much more reliable and efficient
+to fit.
+
+Therefore, not only does an MGE fit more complex galaxy morphologies, it does so using fewer non-linear parameters
+in a much simpler non-linear parameter space which has far less significant parameter degeneracies!
+
+__Disadvantages__
+
+To fit an MGE model to the data, the light of the ~15-75 or more Gaussian in the MGE must be evaluated and compared
+to the data. This is slower than evaluating the light of ~2-3 Sersic profiles, producing slower computational run
+times (although the simpler non-linear parameter space will speed up the fit overall).
+
+For many science cases, the MGE can also be a less intuitive model to interpret than a Sersic profile. For example,
+it is straight forward to understand how the effective radius of a Sersic profile relates to a galaxy's size,
+or the serisc index relates to its concentration. The results of an MGE are less intuitive, and require more
+thought to interpret physically.
+
+__Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's bulge is a super position of `Gaussian`` profiles.
-
-__Basis Fitting__
-
-Fits using symmetric light profiles such as elliptical Sersics often leave significant residuals, because they do not
-capture irregular and asymmetric features within a galaxy, for example isophotal twists, varying radial ellipticity or
-disruption due to mergers.
-
-Basis fitting uses a super position of light profiles to represent the different structural components within a
-galaxy. The `intensity` value of every basis function is solved for via linear
-algebra (see `light_parametric_linear.py`), meaning that the super position can adapt so as to capture these
-irregular and asymmetric features.
-
-This example fits a galaxy with asymmetric features using two sets of bases, where each basis set represents the
-galaxy's `bulge` or` disk`. For each component, a basis of 10 elliptical Gaussians is used, where the centres,
-axis-ratio and position angles of all 10 Gausssian's are the same but their sizes `sigma` gradually increase. This
-offers the model flexibility necessary to capture asymmetric features in the galaxy.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -74,30 +97,17 @@ __Model__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a model where:
 
- - The galaxy's bulge is a superposition of 10 parametric linear `Gaussian` profiles [6 parameters]. 
+ - The galaxy's bulge is a superposition of 60 parametric linear `Gaussian` profiles [6 parameters]. 
  - The centres and elliptical components of the Gaussians are all linked together.
- - The `sigma` size of the Gaussians increases following a relation `y = a + (log10(i+1) + b)`, where `i` is the 
- Gaussian index and `a` and `b` are free parameters.
+ - The `sigma` size of the Gaussians increases in log10 increments.
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=6.
 
-__Relations__
+__Model Cookbook__
 
-The model below is composed using relations of the form `y = a + (log10(i+1) + b)`, where the values  of `a` 
-and `b` are the non-linear free parameters fitted for by `nautilus`.
+A full description of model composition, including lens model customization, is provided by the model cookbook: 
 
-Because `a` and `b` are free parameters (as opposed to `sigma` which can assume many values), we are able to 
-compose and fit `Basis` objects which can capture very complex light distributions with just N = 5-10 non-linear 
-parameters!
-
-__Coordinates__
-
-**PyAutoGalaxy** assumes that the galaxy centre is near the coordinates (0.0", 0.0"). 
-
-If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
-
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
+https://pyautolens.readthedocs.io/en/latest/general/model_cookbook.html
 """
 total_gaussians = 30
 gaussian_per_basis = 2
@@ -136,15 +146,12 @@ for j in range(gaussian_per_basis):
 
 # The Basis object groups many light profiles together into a single model component.
 
-basis = af.Model(
+bulge = af.Model(
     ag.lp_basis.Basis,
     light_profile_list=bulge_gaussian_list,
-    regularization=ag.reg.ConstantZeroth(
-        coefficient_neighbor=0.0, coefficient_zeroth=1.0
-    ),
 )
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=basis)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
@@ -152,116 +159,90 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 The `info` attribute shows the model in a readable format, which has a lot more parameters than other examples
 as it shows the parameters of every individual Gaussian.
 
-[The `info` below may not display optimally on your computer screen, for example the whitespace between parameter
-names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
-common issue in Jupyter notebooks.
-
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
-increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
-appear in a notebook).]
+This shows every single Gaussian light profile in the model, which is a lot of parameters! However, the vast
+majority of these parameters are fixed to the values we set above, so the model actually has far fewer free
+parameters than it looks!
 """
 print(model.info)
 
 """
 __Search__
 
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Nautilus (https://nautilus.readthedocs.io/en/latest/). We make the following changes to the Nautilus settings:
+The model is fitted to the data using the nested sampling algorithm Nautilus (see `start.here.py` for a 
+full description).
 
- - Increase the number of live points, `n_live`, from the default value of 50 to 100. `n_live`
- 
-These changes are motivated by the higher dimensionality non-linear parameter space that including the galaxy light 
-creates, which requires more thorough sampling by the non-linear search.
-
-The folders: 
-
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
- - `autogalaxy_workspace/*/imaging/modeling/customize`
-  
-Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
-model-fit, including the priors on the model. 
-
-If you are unclear of what a non-linear search is, checkout chapter 2 of the **HowToGalaxy** lectures.
-
-The `name` and `path_prefix` below specify the path where results ae stored in the output folder:  
-
- `/autogalaxy_workspace/output/imaging/simple__sersic/mass[sie]/unique_identifier`.
-
-__Unique Identifier__
-
-In the path above, the `unique_identifier` appears as a collection of characters, where this identifier is generated 
-based on the model, search and dataset that are used in the fit.
- 
-An identical combination of model and search generates the same identifier, meaning that rerunning the script will use 
-the existing results to resume the model-fit. In contrast, if you change the model or search, a new unique identifier 
-will be generated, ensuring that the model-fit results are output into a separate folder.
-
-We additionally want the unique identifier to be specific to the dataset fitted, so that if we fit different datasets
-with the same model and search results are output to a different folder. We achieve this below by passing 
-the `dataset_name` to the search's `unique_tag`.
-
-__Number Of Cores__
-
-We include an input `number_of_cores`, which when above 1 means that Nautilus uses parallel processing to sample multiple 
-models at once on your CPU. When `number_of_cores=2` the search will run roughly two times as
-fast, for `number_of_cores=3` three times as fast, and so on. The downside is more cores on your CPU will be in-use
-which may hurt the general performance of your computer.
-
-You should experiment to figure out the highest value which does not give a noticeable loss in performance of your 
-computer. If you know that your processor is a quad-core processor you should be able to use `number_of_cores=4`. 
-
-Above `number_of_cores=4` the speed-up from parallelization diminishes greatly. We therefore recommend you do not
-use a value above this.
-
-For users on a Windows Operating system, using `number_of_cores>1` may lead to an error, in which case it should be 
-reduced back to 1 to fix it.
+Owing to the simplicity of fitting an MGE we an use even fewer live points than other examples, reducing it to
+75 live points, speeding up converge of the non-linear search.
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="light[basis]",
     unique_tag=dataset_name,
-    n_live=150,
+    n_live=75,
     number_of_cores=1,
 )
 
 """
 __Analysis__
 
-The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
-the `Imaging` dataset.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
 )
 
 """
+__Run Time__
+
+The likelihood evaluation time for a multi-Gaussian expansion is significantly slower than standard / linear 
+light profiles. This is because the image of every Gaussian must be computed and evaluated, and each must be blurred 
+with the PSF. In this example, the evaluation time is ~0.5s, compared to ~0.01 seconds for standard light profiles.
+
+Huge gains in the overall run-time however are made thanks to the models significantly reduced complexity and lower
+number of free parameters. Furthermore, because there are not free parameters which scale the size of lens galaxy,
+this produces significantly faster convergence by Nautilus that any other lens light model. We also use fewer live
+points, further speeding up the model-fit.
+
+Overall, it is difficult to state which approach will be faster overall. However, the MGE's ability to fit the data
+more accurately and the less complex parameter due to removing parameters that scale the lens galaxy make it the 
+superior approach.
+"""
+run_time_dict, info_dict = analysis.profile_log_likelihood_function(
+    instance=model.random_instance()
+)
+
+print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
+print(
+    "Estimated Run Time Upper Limit (seconds) = ",
+    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
+    / search.number_of_cores,
+)
+
+"""
 __Model-Fit__
 
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
+We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
+for on-the-fly visualization and results).
 """
 result = search.fit(model=model, analysis=analysis)
 
 """
 __Result__
 
-The search returns a result object, which whose `info` attribute shows the result in a readable format.
+The search returns a result object, which whose `info` attribute shows the result in a readable format (if this does 
+not display clearly on your screen refer to `start_here.ipynb` for a description of how to fix this):
 
-[Above, we discussed that the `info_whitespace_length` parameter in the config files could b changed to make 
-the `model.info` attribute display optimally on your computer. This attribute also controls the whitespace of the
-`result.info` attribute.]
+This confirms there are many `Gaussian`' in the lens light model and it lists their inferred parameters.
 """
 print(result.info)
 
 """
-The `Result` object also contains:
+We plot the maximum likelihood fit, tracer images and posteriors inferred via Nautilus.
 
- - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+Checkout `autolens_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+
+In particular, checkout the results example `linear.py` which details how to extract all information about linear
+light profiles from a fit.
 """
 print(result.max_log_likelihood_instance)
 
@@ -273,14 +254,35 @@ plane_plotter.subplot()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
-search_plotter = aplt.DynestyPlotter(samples=result.samples)
+search_plotter = aplt.NautilusPlotter(samples=result.samples)
 search_plotter.cornerplot()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**, which 
-includes a dedicated tutorial for linear objects like basis functions.
+__Wrap Up__
 
-__Regularization__
+A Multi Gaussian Expansion is a powerful tool for modeling the light of galaxies, and offers a compelling method to
+fit complex light profiles with a small number of parameters
+
+__Regularization (Advanced / Unused)__
+
+An MGE can be regularized, whereby smoothness is enforced on the `intensity` values of the Gaussians. This was 
+implemented to avoid a "positive / negative" ringing effect in the lens light model reconstruction, whereby the 
+Gaussians went to a systematic solution which alternated between positive and negative values. 
+
+Regularization was intended to smooth over the `intensity` values of the Gaussians, such that the solution would prefer
+a positive-only solution. However, this did not work -- even with high levels of regularization, the Gaussians still
+went to negative values. The solution also became far from optimal, often leaving significant residuals in the lens
+light model reconstruction.
+
+This problem was solved by switching to a positive-only linear algebra solver, which is the default used 
+in **PyAutoLens** and was used for all fits performed above. The regularization feature is currently not used by
+any scientific analysis and it is recommended you skip over the example below and do not use it in your own modeling.
+
+However, its implementation is detailed below for completeness, and if you think you have a use for it in your own
+modeling then go ahead! Indeed, even with a positive-only solver, it may be that regularization helps prevent overfitting
+in certain situations.
+
+__Description__
 
 There is one downside to `Basis` functions, we may compose a model with too much freedom. The `Basis` (e.g. our 20
 Gaussians) may overfit noise in the data, or possible the galaxyed source galaxy emission -- neither of which we 
@@ -318,9 +320,5 @@ search = af.Nautilus(
 result = search.fit(model=model, analysis=analysis)
 
 """
-To learn more about Basis functions, regularization and when you should use them, checkout the 
-following **HowToGalaxy** tutorials:
-
- - `howtogalaxy/chapter_2_lens_modeling/tutorial_5_linear_profiles.ipynb`.
- - `howtogalaxy/chapter_4_pixelizations/tutorial_4_bayesian_regularization.ipynb.
+Finish.
 """

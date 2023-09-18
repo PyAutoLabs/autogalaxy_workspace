@@ -203,7 +203,7 @@ We can show this by plotting the 1D and 2D PDF's of each model fit
 """
 
 for samples in samples_list:
-    search_plotter = aplt.DynestyPlotter(samples=samples)
+    search_plotter = aplt.NautilusPlotter(samples=samples)
     search_plotter.cornerplot()
 
 
