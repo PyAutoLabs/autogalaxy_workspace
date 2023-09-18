@@ -39,6 +39,18 @@ it is straight forward to understand how the effective radius of a Sersic profil
 or the serisc index relates to its concentration. The results of an MGE are less intuitive, and require more
 thought to interpret physically.
 
+__Positive Only Solver__
+
+Many codes which use linear algebra typically rely on a linear algabra solver which allows for positive and negative
+values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
+
+This is problematic, as it means that negative surface brightnesses values can be computed to represent a galaxy's
+light, which is clearly unphysical. For an MGE, this produces a positive-negative "ringing", where the
+Gaussians alternate between large positive and negative values. This is clearly undesirable and unphysical.
+
+**PyAutoGalaxys** uses a positive only linear algebra solver which has been extensively optimized to ensure it is as fast
+as positive-negative solvers. This ensures that all light profile intensities are positive and therefore physical.
+
 __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
