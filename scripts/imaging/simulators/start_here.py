@@ -149,7 +149,7 @@ __Plane Output__
 Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
 are safely stored and available to check how the dataset was simulated in the future. 
 
-This can be loaded via the method `Plane.from_json`.
+This can be loaded via the method `plane = ag.from_json()`.
 """
 ag.output_to_json(
     obj=plane,

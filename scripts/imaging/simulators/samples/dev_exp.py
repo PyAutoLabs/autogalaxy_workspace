@@ -174,9 +174,12 @@ for sample_index in range(total_datasets):
     Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
     are safely stored and available to check how the dataset was simulated in the future. 
 
-    This can be loaded via the method `Plane.from_json`.
+    This can be loaded via the method `plane = ag.from_json()`.
     """
-    plane.output_to_json(file_path=path.join(dataset_sample_path, "plane.json"))
+    ag.output_to_json(
+        obj=plane,
+        file_path=path.join(dataset_sample_path, "plane.json"),
+    )
 
     """
     The dataset can be viewed in the 
