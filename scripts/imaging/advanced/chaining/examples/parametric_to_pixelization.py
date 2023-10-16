@@ -83,7 +83,7 @@ path_prefix = path.join("imaging", "chaining", "parametric_to_pixelization")
 """
 __Model__
 
-In search 1 we fit a model where:
+Search 1 we fit a model where:
 
  - The galaxy's bulge is an `Sersic` with fixed centre [5 parameters].
  
@@ -149,7 +149,7 @@ We use the results of search 1 to create the model fitted in search 2, where:
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=1.
 
-This search allows us to very efficiently set up the resolution of the pixelization and regularization coefficient 
+This search allows us to very efficiently set up the resolution of the mesh and regularization coefficient 
 of the regularization scheme, before using these models to refit the galaxy mass model.
 
 The term `model` below passes the source model as model-components that are to be fitted for by the 

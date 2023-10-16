@@ -107,7 +107,47 @@ inversion_plotter = aplt.InversionPlotter(inversion=inversion)
 # inversion_plotter.figures_2d(reconstructed_image=True)
 
 """
-__Linear Objects__
+__Intensities__
+
+The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
+in the `model.results` file.
+
+To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_plane`,
+which has already performed the inversion and therefore the galaxy light profiles have their solved for
+`intensity`'s associated with them.
+"""
+plane = result.max_log_likelihood_plane
+
+print(plane.galaxies[0].intensity)
+
+"""
+The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
+"""
+fit = result.max_log_likelihood_fit
+
+plane = fit.plane
+
+print(plane.galaxies[0].intensity)
+
+"""
+__Visualization__
+
+Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
+have an `intensity` value.
+
+Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
+used for visualization:
+"""
+plane = result.max_log_likelihood_plane
+
+plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
+plane_plotter.figures_2d(image=True)
+
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=plane.galaxies[0], grid=dataset.grid)
+galaxy_plotter.figures_2d(image=True)
+
+"""
+__Linear Objects (Internal Source Code)__
 
 An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`. 
 
@@ -149,7 +189,7 @@ print(
 )
 
 """
-__Intensities__
+__Intensities (Internal Source Code)__
 
 The intensities of linear light profiles are not a part of the model parameterization and therefore cannot be
 accessed in the resulting galaxies, as seen in previous tutorials, for example:
@@ -196,22 +236,6 @@ plane = fit.model_obj_linear_light_profiles_to_light_profiles
 print(
     f"Intensity via Plane With Ordinary Light Profiles = {plane.galaxies[0].bulge.intensity}"
 )
-
-"""
-__Visualization__
-
-Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
-have an `intensity` value.
-
-Therefore, the object created above which replaces all linear light profiles with ordinary light profiles must be
-used for visualization:
-"""
-plane = fit.model_obj_linear_light_profiles_to_light_profiles
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
-plane_plotter.figures_2d(image=True)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=plane.galaxies[0], grid=dataset.grid)
-galaxy_plotter.figures_2d(image=True)
 
 """
 Finish.

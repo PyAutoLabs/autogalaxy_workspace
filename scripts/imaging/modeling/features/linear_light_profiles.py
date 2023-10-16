@@ -240,49 +240,27 @@ search_plotter = aplt.NautilusPlotter(samples=result.samples)
 search_plotter.cornerplot()
 
 """
-The intensities of linear light profiles are not a part of the model parameterization. They therefore cannot be
-accessed in the resulting galaxies, as seen in previous tutorials, for example:
+__Intensities__
 
-`plane = result.max_log_likelihood_plane`
-`intensity = plane.galaxies[0].bulge.intensity`
+The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
+in the `model.results` file.
 
-The intensities are also only computed once a fit is performed, as they must first be solved for via linear algebra. 
-They are therefore accessible via the `Fit` and `Inversion` objects, for example as a dictionary mapping every
-linear light profile (defined above) to the intensity values:
+To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_plane`,
+which has already performed the inversion and therefore the galaxy light profiles have their solved for
+`intensity`'s associated with them.
 """
-fit = result_linear_light_profile.max_log_likelihood_fit
+plane = result.max_log_likelihood_plane
 
-print(fit.linear_light_profile_intensity_dict)
+print(plane.galaxies[0].intensity)
 
 """
-To extract the `intensity` values of a specific component in the model, we use that component as defined in the
-`max_log_likelihood_plane`.
+The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
 """
+fit = result.max_log_likelihood_fit
+
 plane = fit.plane
 
-bulge = plane.galaxies[0].bulge
-disk = plane.galaxies[0].disk
-
-print(
-    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge]}"
-)
-print(
-    f"\n Intensity of disk (lp_linear.Exponential) = {fit.linear_light_profile_intensity_dict[disk]}"
-)
-
-"""
-A `Plane` where all linear light profile objects are replaced with ordinary light profiles using the solved 
-for `intensity` values is also accessible.
-
-For example, the linear light profile `Sersic` of the `bulge` component above has a solved for `intensity` of ~0.75. 
-
-The `Plane` created below instead has an ordinary light profile with an `intensity` of ~0.75.
-"""
-plane = fit.model_obj_linear_light_profiles_to_light_profiles
-
-print(
-    f"Intensity via Plane With Ordinary Light Profiles = {plane.galaxies[0].bulge.intensity}"
-)
+print(plane.galaxies[0].intensity)
 
 """
 __Visualization__
@@ -290,10 +268,11 @@ __Visualization__
 Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
 have an `intensity` value.
 
-Therefore, the object created above which replaces all linear light profiles with ordinary light profiles must be
+Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
 used for visualization:
 """
-plane = fit.model_obj_linear_light_profiles_to_light_profiles
+plane = result.max_log_likelihood_plane
+
 plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
 plane_plotter.figures_2d(image=True)
 

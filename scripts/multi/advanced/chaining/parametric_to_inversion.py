@@ -109,7 +109,7 @@
 # """
 # __Model (Search 1)__
 #
-# In search 1 we fit a galaxy model where:
+# Search 1 we fit a galaxy model where:
 #
 #  - The galaxy galaxy's total mass distribution is an `Isothermal` and `ExternalShear` [7 parameters].
 #  - The source galaxy's light is a parametric `Sersic`, where the `intensity` parameter of the source galaxy
