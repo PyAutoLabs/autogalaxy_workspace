@@ -152,7 +152,10 @@ are safely stored and available to check how the dataset was simulated in the fu
 
 This can be loaded via the method `Plane.from_json`.
 """
-plane.output_to_json(file_path=path.join(dataset_path, "plane.json"))
+ag.output_to_json(
+    obj=plane,
+    file_path=path.join(dataset_path, "plane.json"),
+)
 
 """
 __Info__
