@@ -150,9 +150,7 @@ for data, noise_map, psf, settings_dataset in zip(
     data_gen, noise_map_gen, psf_gen, settings_dataset_gen
 ):
     data = ag.Array2D.from_primary_hdu(primary_hdu=data)
-    noise_map = ag.Array2D.from_primary_hdu(
-        primary_hdu=noise_map
-    )
+    noise_map = ag.Array2D.from_primary_hdu(primary_hdu=noise_map)
     psf = ag.Kernel2D.from_primary_hdu(primary_hdu=psf)
 
     dataset = ag.Imaging(
@@ -179,7 +177,6 @@ This section is optional, and I advise you only follow it if the `FitImagingAgg`
 
 
 def make_imaging_gen(fit):
-
     data = ag.Array2D.from_primary_hdu(primary_hdu=fit.value(name="dataset.data"))
     noise_map = ag.Array2D.from_primary_hdu(
         primary_hdu=fit.value(name="dataset.noise_map")
