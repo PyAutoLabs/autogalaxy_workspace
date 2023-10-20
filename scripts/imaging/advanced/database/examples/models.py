@@ -62,7 +62,11 @@ for different wavelengths), which would be reflected in the plane list.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
-for plane in plane_gen:
+for plane_list in plane_gen:
+
+    # Only one `Analysis` so take first and only plane.
+    plane = plane_list[0]
+
     plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
     plane_plotter.figures_2d(convergence=True, potential=True)
 
@@ -123,6 +127,7 @@ plane_list_gen = plane_agg.all_above_weight_gen_from(minimum_weight=1e-4)
 weight_list_gen = plane_agg.weights_above_gen_from(minimum_weight=1e-4)
 
 for plane_gen, weight_gen in zip(plane_list_gen, weight_list_gen):
+
     axis_ratio_list = []
 
     for plane_list in plane_gen:
@@ -137,11 +142,14 @@ for plane_gen, weight_gen in zip(plane_list_gen, weight_list_gen):
 
     weight_list = [weight for weight in weight_gen]
 
-    median_axis_ratio, upper_axis_ratio, lower_axis_ratio = af.marginalize(
-        parameter_list=axis_ratio_list, sigma=3.0, weight_list=weight_list
-    )
+    try:
+        median_axis_ratio, upper_axis_ratio, lower_axis_ratio = af.marginalize(
+            parameter_list=axis_ratio_list, sigma=3.0, weight_list=weight_list
+        )
 
-    print(f"Axis-Ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
+        print(f"Axis-Ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
+    except IndexError:
+        pass
 
 """
 __Errors (Random draws from PDF)__
