@@ -20,6 +20,10 @@ but can be used for the maximum likelihood estimator / MCMC methods PyAutoGalaxy
 
 The benefit of the starting point API is that one can tell the non-linear search where to look in parameter space
 (ensuring a fast and robust fit) but retain uninformative priors which will not lead to over-confident errors.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -54,8 +58,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0

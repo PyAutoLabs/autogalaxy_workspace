@@ -17,6 +17,10 @@ principle, a PSO like PySwarm should fit a model very fast.
 In our experience, the parameter spaces fitted by models are too complex for `PySwarms` to be used without a lot
 of user attention and care.  Nevertheless, we encourage you to give it a go yourself, and let us know on the PyAutoGalaxy 
 GitHub if you find an example of a problem where `PySwarms` outperforms Nautilus!
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

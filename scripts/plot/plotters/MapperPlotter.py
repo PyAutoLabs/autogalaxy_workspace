@@ -3,6 +3,10 @@ Plots: MapperPlotter
 ====================
 
 This example illustrates how to plot a `Mapper` using a `MapperPlotter`.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `plot/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -50,7 +54,8 @@ The `Mapper` maps pixels from the image-plane of our `Imaging` data to its sourc
 Lets create a `Plane` which we will use to create the `Mapper`.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.VoronoiMagnification(shape=(25, 25)),
+    image_mesh=ag.image_mesh.Overlay(shape=(25, 25)),
+    mesh=ag.mesh.Voronoi(),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 

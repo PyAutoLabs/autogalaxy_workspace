@@ -29,6 +29,10 @@ __Inversions__
 Only fits using regular light profiles support noise covariance fits. Inversions (e.g. using linear light profiles
 or a pixelization) do not support noise covariance, as it is not currently accounted for in the linear algebra
 calculations.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -90,8 +94,7 @@ dataset = ag.Imaging.from_fits(
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 
 The mask is also applied to the `noise_covariance_matrix`, to ensure only covariance within the mask is accounted for.
 

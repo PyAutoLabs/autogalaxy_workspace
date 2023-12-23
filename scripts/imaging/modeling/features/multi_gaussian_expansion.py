@@ -2,12 +2,12 @@
 Modeling Features: Multi Gaussian Expansion
 ===========================================
 
-A multi Gaussian expansion (MGE) decomposes the galaxy light into a super positive of ~15-100 Gaussians, where
+A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where
 the `intensity` of every Gaussian is solved for via a linear algebra using a process called an "inversion"
 (see the `light_parametric_linear.py` feature for a full description of this).
 
 This script fits a light model which uses an MGE consisting of 60 Gaussians. It is fitted to simulated data
-where the galaxy's light has asymmetric and irregular features, which are not well fitted by symmetric light
+where the galaxy's light has asymmetric and irregular features, which fitted poorly by symmetric light
 profiles like the `Sersic`.
 
 __Advantages__
@@ -18,7 +18,7 @@ An MGE fully captures these features and can therefore much better represent the
 
 The MGE model can be composed in a way that has fewer non-linear parameters than an elliptical Sersic. In this example,
 two separate groups of Gaussians are used to represent the `bulge` and `disk` of the lens, which in total correspond
-to just N=6 non-linear parameters (a `bulge` and `disk` comprising two linear Sersics would give N=10).
+to just N=6 non-linear parameters (a `bulge` and `disk` comprising two linear Sersics has N=10 parameters).
 
 The MGE model parameterization is also composed such that neither the `intensity` parameters or any of the
 parameters controlling the size of the Gaussians (their `sigma` values) are non-linear parameters sampled by Nautilus.
@@ -56,6 +56,10 @@ __Model__
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's bulge is a super position of `Gaussian`` profiles.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -91,8 +95,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -109,7 +112,7 @@ __Model__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a model where:
 
- - The galaxy's bulge is a superposition of 60 parametric linear `Gaussian` profiles [6 parameters]. 
+ - The galaxy's bulge is 60 parametric linear `Gaussian` profiles [6 parameters]. 
  - The centres and elliptical components of the Gaussians are all linked together.
  - The `sigma` size of the Gaussians increases in log10 increments.
 
@@ -184,7 +187,7 @@ The model is fitted to the data using the nested sampling algorithm Nautilus (se
 full description).
 
 Owing to the simplicity of fitting an MGE we an use even fewer live points than other examples, reducing it to
-75 live points, speeding up converge of the non-linear search.
+75 live points, speeding up convergence of the non-linear search.
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),

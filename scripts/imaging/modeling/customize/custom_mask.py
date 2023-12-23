@@ -17,6 +17,10 @@ __Disadvantages__
 Pixels containing no galaxy emission may still constrain the model, if a model incorrectly
 predicts that flux will appear in these image pixels. By using a custom mask, the model-fit will not be penalized for
 incorrectly predicting flux in these image-pixels (As the mask has removed them from the fit).
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

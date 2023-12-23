@@ -22,6 +22,10 @@ This example fits a galaxy with asymmetric features using two sets of bases, whe
 galaxy's `bulge` or` disk`. For each component, a basis of 10 elliptical Gaussians is used, where the centres,
 axis-ratio and position angles of all 10 Gausssian's are the same but their sizes `sigma` gradually increase. This
 offers the model flexibility necessary to capture asymmetric features in the galaxy.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -225,8 +229,7 @@ print(result.info)
 The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+ - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.Information on the posterior as estimated by the `Nautilus` non-linear search. 
 """
 print(result.max_log_likelihood_instance)
 

@@ -30,6 +30,10 @@ possible, where a bespoke fast non-negative linear solver was developed to achie
 
 Other methods in the literature often do not use a positive only solver, and therefore suffer from these
 unphysical solutions, which can degrade the results of lens model in general.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -185,8 +189,7 @@ print(result.info)
 The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+ - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.Information on the posterior as estimated by the `Nautilus` non-linear search. 
 """
 print(result.max_log_likelihood_instance)
 

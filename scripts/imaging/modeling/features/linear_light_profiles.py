@@ -7,18 +7,29 @@ via linear algebra every time the model is fitted to the data. This uses a proce
 always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood)
 given the light profile's other parameters.
 
+Based on the advantages below, we recommended you always use linear light profiles to fit models over standard
+light profiles!
+
+__Advantages__
+
 Each light profile's `intensity` parameter is therefore not a free parameter in the model-fit, reducing the
 dimensionality of non-linear parameter space by the number of light profiles (in this example by 2 dimensions).
 
 This also removes the degeneracies that occur between the `intensity` and other light profile parameters
 (e.g. `effective_radius`, `sersic_index`), which are difficult degeneracies for the non-linear search to map out
-accurately. This produces more reliable lens model results and converge in fewer iterations, speeding up the overall
-analysis.
+accurately. This produces more reliable lens model results and the fit converges in fewer iterations, speeding up the
+overall analysis.
 
-The inversion has a relatively small computational cost, thus we reduce the model complexity with much expensive and
+The inversion has a relatively small computational cost, thus we reduce the model complexity without much slow-down and
 can therefore fit models more reliably and faster!
 
-It is therefore recommended you always use linear light profiles to fit models over standard light profiles!
+__Disadvantages__
+
+Althought the computation time of the inversion is small, it is not non-negligable. It is approximately 3-4x slower
+than using a standard light profile.
+
+The gains in run times due to the simpler non-linear parameter space therefore are somewhat balanced by the slower
+likelihood calculation.
 
 __Positive Only Solver__
 
@@ -36,6 +47,10 @@ __Model__
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -69,8 +84,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -92,17 +106,8 @@ example we fit a model where:
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=9.
 
-Note how both the lens and source galaxies use linear light profiles, meaning that the `intensity` parameter of both
-is not longer a free parameter in the fit.
-
-__Coordinates__
-
-**PyAutoGalaxy** assumes that the galaxy centre is near the coordinates (0.0", 0.0"). 
-
-If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
-
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
+Note how both light profiles use linear light profiles, meaning that the `intensity` parameter of both is no longer a 
+free parameter in the fit.
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -113,118 +118,91 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-The `info` attribute shows the model in a readable format.
+The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
+`start_here.ipynb` for a description of how to fix this).
 
-[The `info` below may not display optimally on your computer screen, for example the whitespace between parameter
-names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
-common issue in Jupyter notebooks.
-
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
-increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
-appear in a notebook).]
+This confirms that the light profiles of the lens and source galaxies do not include an `intensity` parameter.
 """
 print(model.info)
 
 """
 __Search__
 
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Nautilus (https://nautilus.readthedocs.io/en/latest/). We make the following changes to the Nautilus settings:
+The model is fitted to the data using the nested sampling algorithm Nautilus (see `start.here.py` for a 
+full description).
 
- - Increase the number of live points, `n_live`, from the default value of 50 to 100. `n_live`
- 
-These changes are motivated by the higher dimensionality non-linear parameter space that including the galaxy light 
-creates, which requires more thorough sampling by the non-linear search.
-
-The folders: 
-
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
- - `autogalaxy_workspace/*/imaging/modeling/customize`
-  
-Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
-model-fit, including the priors on the model. 
-
-If you are unclear of what a non-linear search is, checkout chapter 2 of the **HowToGalaxy** lectures.
-
-The `name` and `path_prefix` below specify the path where results ae stored in the output folder:  
-
- `/autogalaxy_workspace/output/imaging/simple__sersic/mass[sie]/unique_identifier`.
-
-__Unique Identifier__
-
-In the path above, the `unique_identifier` appears as a collection of characters, where this identifier is generated 
-based on the model, search and dataset that are used in the fit.
- 
-An identical combination of model and search generates the same identifier, meaning that rerunning the script will use 
-the existing results to resume the model-fit. In contrast, if you change the model or search, a new unique identifier 
-will be generated, ensuring that the model-fit results are output into a separate folder.
-
-We additionally want the unique identifier to be specific to the dataset fitted, so that if we fit different datasets
-with the same model and search results are output to a different folder. We achieve this below by passing 
-the `dataset_name` to the search's `unique_tag`.
-
-__Number Of Cores__
-
-We include an input `number_of_cores`, which when above 1 means that Nautilus uses parallel processing to sample multiple 
-models at once on your CPU. When `number_of_cores=2` the search will run roughly two times as
-fast, for `number_of_cores=3` three times as fast, and so on. The downside is more cores on your CPU will be in-use
-which may hurt the general performance of your computer.
-
-You should experiment to figure out the highest value which does not give a noticeable loss in performance of your 
-computer. If you know that your processor is a quad-core processor you should be able to use `number_of_cores=4`. 
-
-Above `number_of_cores=4` the speed-up from parallelization diminishes greatly. We therefore recommend you do not
-use a value above this.
-
-For users on a Windows Operating system, using `number_of_cores>1` may lead to an error, in which case it should be 
-reduced back to 1 to fix it.
+In the `start_here.py` example 150 live points (`n_live=100`) were used to sample parameter space. For the linear
+light profiles this is reduced to 75, as the simpler parameter space means we need fewer live points to map it out
+accurately. This will lead to faster run times.
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
-    name="light[bulge_disk_linear]",
+    name="linear_light_profiles",
     unique_tag=dataset_name,
-    n_live=150,
+    n_live=75,
     number_of_cores=1,
 )
 
 """
 __Analysis__
 
-The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
-the `Imaging` dataset.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
 )
 
 """
+__Run Time__
+
+For standard light profiles, the log likelihood evaluation time is of order ~0.01 seconds for this dataset.
+
+For linear light profiles, the log likelihood evaluation increases to around ~0.05 seconds per likelihood evaluation.
+This is still fast, but it does mean that the fit may take around five times longer to run.
+
+However, because two free parameters have been removed from the model (the `intensity` of the bulge and disk), the 
+total number of likelihood evaluations will reduce. Furthermore, the simpler parameter space likely means that the 
+fit will take less than 10000 per free parameter to converge. This is aided further by the reduction in `n_live` to 75.
+
+Fits using standard light profiles and linear light profiles therefore take roughly the same time to run. However,
+the simpler parameter space of linear light profiles means that the model-fit is more reliable, less susceptible to
+converging to an incorrect solution and scales better if even more light profiles are included in the model.
+"""
+run_time_dict, info_dict = analysis.profile_log_likelihood_function(
+    instance=model.random_instance()
+)
+
+print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
+print(
+    "Estimated Run Time Upper Limit (seconds) = ",
+    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
+    / search.number_of_cores,
+)
+
+
+"""
 __Model-Fit__
 
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
+We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
+for on-the-fly visualization and results).
 """
 result = search.fit(model=model, analysis=analysis)
 
 """
 __Result__
 
-The search returns a result object, which whose `info` attribute shows the result in a readable format.
+The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
+`start_here.ipynb` for a description of how to fix this).
 
-[Above, we discussed that the `info_whitespace_length` parameter in the config files could b changed to make 
-the `model.info` attribute display optimally on your computer. This attribute also controls the whitespace of the
-`result.info` attribute.]
+This confirms that `intensity` parameters are not inferred by the model-fit.
 """
 print(result.info)
 
 """
-The `Result` object also contains:
+We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
 
- - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
+the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 
@@ -281,4 +259,7 @@ galaxy_plotter.figures_2d(image=True)
 
 """
 Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.
+
+In particular, checkout the results example `linear.py` which details how to extract all information about linear
+light profiles from a fit.
 """

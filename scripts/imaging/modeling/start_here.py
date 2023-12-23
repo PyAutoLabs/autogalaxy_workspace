@@ -48,8 +48,10 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Load and plot the galaxy dataset `simple` via .fits files, which we will fit with 
-the model.
+Load the strong dataset `simple` via .fits files, which is a data format used by astronomers to store images.
+
+The `pixel_scales` define the arc-second to pixel conversion factor of the image, which for the dataset we are using 
+is 0.1" / pixel.
 """
 dataset_name = "simple"
 dataset_path = path.join("dataset", "imaging", dataset_name)
@@ -61,14 +63,23 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
+"""
+Use an `ImagingPlotter` the plot the data, including: 
+
+ - `data`: The image of the strong lens.
+ - `noise_map`: The noise-map of the image, which quantifies the noise in every pixel as their RMS values.
+ - `psf`: The point spread function of the image, which describes the blurring of the image by the telescope optics.
+ - `signal_to_noise_map`: Quantifies the signal-to-noise in every pixel.
+"""
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data. 
+
+Below, we create a 3.0 arcsecond circular mask and apply it to the `Imaging` object that the model fits.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -76,16 +87,23 @@ mask = ag.Mask2D.circular(
 
 dataset = dataset.apply_mask(mask=mask)
 
+"""
+If we plot the masked data, the mask removes the exterior regions of the image where there is no emission from the 
+galaxy.
+
+The mask used to fit the data can be customized, as described in 
+the script `autogalaxy_workspace/*/imaging/modeling/customize/custom_mask.py`
+"""
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
 __Model__
 
-We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
-example we fit a model where:
+In this example we compose a model where:
 
  - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
+
  - The galaxy's disk is a parametric `Exponential` disk, whose centre is aligned with the bulge [4 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
@@ -95,8 +113,10 @@ __Model Composition__
 The API below for composing a model uses the `Model` and `Collection` objects, which are imported from 
 **PyAutoGalaxy**'s parent project **PyAutoFit** 
 
-The API is is fairly self explanatory and is straight forward to extend, for example adding more light profiles
+The API is fairly self explanatory and is straight forward to extend, for example adding more light profiles
 to the galaxy.
+
+__Model Cookbook__
 
 A full description of model composition, including model customization, is provided by the model cookbook: 
 
@@ -189,7 +209,7 @@ correctly, requiring a Python script to be run, often from a command line termin
 To fix these issues, the Python script needs to be adapted to use an `if __name__ == "__main__":` API, as this allows
 the Python `multiprocessing` module to allocate threads and jobs correctly. An adaptation of this example script 
 is provided at `autolens_workspace/scripts/imaging/modeling/customize/parallel.py`, which will hopefully run 
-successfully inparallel on your computer!
+successfully in parallel on your computer!
 
 Therefore if paralellization for this script doesn't work, check out the `parallel.py` example. You will need to update
 all scripts you run to use the this format and API. 
@@ -209,7 +229,7 @@ NOTE: `Nautilus` does not currently support `iterations_per_update` and therefor
 is disabled. However, you can output the best-fit results by cancelling the job (Ctrl + C for Python script,
 kill cell for Jupyter notebook) and restarting. 
 
-Nautilus produces a significant improvement to lens modeling over other libraries (e.g. Dynesty, MultiNest, Emcee) 
+Nautilus produces a significant improvement to modeling over other libraries (e.g. Dynesty, MultiNest, Emcee) 
 therefore although on-the-fly output is not natively supported, we switched it to the default fitter given the 
 significantly improved model-fits. 
 """
@@ -225,15 +245,22 @@ search = af.Nautilus(
 """
 __Analysis__
 
-The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
-the `Imaging` dataset.
+We next create an `AnalysisImaging` object, which can be given many inputs customizing how the model is fitted to the 
+data (in this example they are omitted for simplicity).
+
+Internally, this object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
+the `Imaging` dataset. 
+
+It is not vital that you as a user understand the details of how the `log_likelihood_function` fits a model to 
+data, but interested readers can find a step-by-step guide of the likelihood 
+function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
 """
 analysis = ag.AnalysisImaging(dataset=dataset)
 
 """
 __Run Times__
 
-modeling can be a computationally expensive process. When fitting complex models to high resolution datasets 
+Modeling can be a computationally expensive process. When fitting complex models to high resolution datasets 
 run times can be of order hours, days, weeks or even months.
 
 Run times are dictated by two factors:
@@ -392,24 +419,24 @@ sounds useful, but for most users you can get by without using these forms of cu
   
 __Data Preparation__
 
-If you are looking to fit your own CCD imaing data of a strong lens, checkout  
+If you are looking to fit your own CCD imaging data of a strong lens, checkout  
 the `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb` script for an overview of how data should be 
 prepared before being modeled.
 
-__HowToLens__
+__HowToGalaxy__
 
-This `start_here.py` script, and the features examples above, do not explain many details of how lens modeling is 
+This `start_here.py` script, and the features examples above, do not explain many details of how modeling is 
 performed, for example:
 
- - How does PyAutoGalaxy perform ray-tracing and lensing calculations in order to fit a lens model?
- - How is a lens model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed?).
- - How does Nautilus find the highest likelihood lens models? What exactly is a "non-linear search"?
+ - How does PyAutoGalaxy perform calculations which determine how a gaalxy emits light and therefore fit a model?
+ - How is the model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed?).
+ - How does Nautilus find the highest likelihood models? What exactly is a "non-linear search"?
 
-You do not need to be able to answer these questions in order to fit lens models with PyAutoGalaxy and do science.
+You do not need to be able to answer these questions in order to fit models with PyAutoGalaxy and do science.
 However, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist
 
-This deeper insight is offered by the **HowToLens** Jupyter notebook lectures, found 
-at `autogalaxy_workspace/*/howtolens`. 
+This deeper insight is offered by the **HowToGalaxy** Jupyter notebook lectures, found 
+at `autogalaxy_workspace/*/howtogalaxy`. 
 
 I recommend that you check them out if you are interested in more details!
 """

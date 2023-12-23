@@ -38,6 +38,10 @@ The **PyAutoFit** source code has the following example objects (accessed via `a
  - `Gaussian`: a model component representing a 1D Gaussian profile.
 
 These are functionally identical to the `Analysis` and `Gaussian` objects you have seen elsewhere in the workspace.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -72,8 +76,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0

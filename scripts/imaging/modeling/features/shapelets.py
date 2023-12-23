@@ -26,7 +26,7 @@ Shapelets are described in full in the following papers:
 
  https://arxiv.org/abs/astro-ph/0105178
 
- __Positive Only Solver__
+__Positive Only Solver__
 
 Many codes which use linear algebra typically rely on a linear algabra solver which allows for positive and negative
 values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
@@ -37,6 +37,10 @@ Gaussians alternate between large positive and negative values. This is clearly 
 
 **PyAutoLens** uses a positive only linear algebra solver which has been extensively optimized to ensure it is as fast
 as positive-negative solvers. This ensures that all light profile intensities are positive and therefore physical.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -72,8 +76,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -99,15 +102,6 @@ The number of free parameters and therefore the dimensionality of non-linear par
 
 Note how this Shapelet model can capture features more complex than a Sersic, but has fewer non-linear parameters
 (N=3 compared to N=7 for a `Sersic`).
-
-__Coordinates__
-
-**PyAutoGalaxy** assumes that the galaxy centre is near the coordinates (0.0", 0.0"). 
-
-If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
-
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
 """
 # shapelets_bulge_list = af.Collection(
 #     af.Model(ag.lp_shapelets.ShapeletCartesian) for _ in range(20)
@@ -253,8 +247,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
-the `Imaging` dataset.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
@@ -263,31 +256,26 @@ analysis = ag.AnalysisImaging(
 """
 __Model-Fit__
 
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
+We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
+for on-the-fly visualization and results).
 """
 result = search.fit(model=model, analysis=analysis)
 
 """
 __Result__
 
-The search returns a result object, which whose `info` attribute shows the result in a readable format.
+The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
+`start_here.ipynb` for a description of how to fix this).
 
-[Above, we discussed that the `info_whitespace_length` parameter in the config files could b changed to make 
-the `model.info` attribute display optimally on your computer. This attribute also controls the whitespace of the
-`result.info` attribute.]
+This confirms that `intensity` parameters are not inferred by the model-fit.
 """
 print(result.info)
 
 """
-The `Result` object also contains:
+We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
 
- - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
+the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 

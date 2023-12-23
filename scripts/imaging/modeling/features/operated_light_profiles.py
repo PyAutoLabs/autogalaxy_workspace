@@ -24,6 +24,10 @@ compact model emission lands in.
 Operated light profiles offer an alternative approach, whereby the light profile is assumed to have already been
 convolved with the PSF. This operated light profile is then fitted directly to the point-source emission, which as
 discussed above shows the PSF features.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -58,8 +62,7 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -141,19 +144,15 @@ search = af.Nautilus(
 """
 __Analysis__
 
-The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
-the `Imaging` dataset. 
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
 """
 analysis = ag.AnalysisImaging(dataset=dataset)
 
 """
 __Model-Fit__
 
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
+We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
+for on-the-fly visualization and results).
 """
 result = search.fit(model=model, analysis=analysis)
 
@@ -165,11 +164,10 @@ The search returns a result object, which whose `info` attribute shows the resul
 print(result.info)
 
 """
-The `Result` object also contains:
+We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
 
- - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
- - Information on the posterior as estimated by the `Nautilus` non-linear search. 
+The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
+the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 

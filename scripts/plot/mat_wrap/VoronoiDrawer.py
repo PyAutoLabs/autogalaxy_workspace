@@ -4,6 +4,10 @@ Plots: VoronoiDrawer
 
 This example illustrates how to customize the appearance of the Voronoi mesh of a Voronoi mesh using the
 `VoronoiDrawer` object.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `plot/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -46,7 +50,8 @@ The `Inversion` maps pixels from the image-plane of our `Imaging` data to its so
 Lets create a `Plane` which we will use to create the `Inversion`.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.VoronoiMagnification(shape=(25, 25)),
+    image_mesh=ag.image_mesh.Overlay(shape=(25, 25)),
+    mesh=ag.mesh.Voronoi(),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 

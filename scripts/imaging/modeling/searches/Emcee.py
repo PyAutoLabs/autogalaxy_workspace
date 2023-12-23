@@ -12,6 +12,10 @@ In our experience, `Emcee` is outperformed by `Nautilus` for modeling in all cir
 initializing the model, fitting a pixelized source or models with high dimensionality. Nevertheless, we encourage
 you to give it a go yourself, and let us know on the PyAutoGalaxy GitHub if you find an example of a problem where
 `Emcee` outperforms Nautilus!
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

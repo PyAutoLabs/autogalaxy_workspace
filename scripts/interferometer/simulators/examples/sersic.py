@@ -5,6 +5,10 @@ Simulator: Sersic
 This script simulates `Interferometer` data of a galaxy where:
 
  - The galaxy's bulge is an `Sersic`.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

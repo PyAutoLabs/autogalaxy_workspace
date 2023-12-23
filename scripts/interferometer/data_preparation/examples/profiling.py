@@ -128,11 +128,12 @@ __Tracer__
 Set up the `Tracer` used to profile each method, which:
  
  - Does not implement mass or light profiles for the galaxy.
- - Uses a `DelaunayMagnification` mesh with `Constant` regularization to fit the data and thus profile the 
+ - Uses an `Overlay` image-mesh, `Delaunay` mesh and `Constant` regularization to fit the data and thus profile the 
   `Inversion` run time.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.DelaunayMagnification(shape=(30, 30)),
+    image_mesh=ag.image_mesh.Overlay(shape=(30, 30)),
+    mesh=ag.mesh.Delaunay(),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 

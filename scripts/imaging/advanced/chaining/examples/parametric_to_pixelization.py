@@ -181,7 +181,7 @@ __Analysis + Search + Model-Fit (Search 2)__
 We now create the non-linear search and perform the model-fit using this model.
 """
 analysis_2 = ag.AnalysisImaging(
-    dataset=dataset, settings_pixelization=ag.SettingsPixelization(use_border=True)
+    dataset=dataset, settings_inversion=ag.SettingsInversion(relocate_pix_border=True)
 )
 
 search_2 = af.Nautilus(

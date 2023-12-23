@@ -12,6 +12,10 @@ In our experience, `Zeus`'s performance is on-par with `Nautilus`, except for in
 uniformative priors. We use Nautilus by default in all examples because it requires less tuning, but we encourage
 you to give Zeus a go yourself, and let us know on the PyAutoGalaxy GitHub if you find an example of a problem where
 `Zeus` outperforms Nautilus!
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

@@ -122,7 +122,7 @@ You can do this by passing the settings objects, which overwrite the ones used b
 fit_agg = ag.agg.FitImagingAgg(
     aggregator=agg,
     settings_dataset=ag.SettingsImaging(sub_size=4),
-    settings_pixelization=ag.SettingsPixelization(use_border=False),
+    settings_inversion=ag.SettingsInversion(relocate_pix_border=False),
 )
 fit_gen = fit_agg.max_log_likelihood_gen_from()
 

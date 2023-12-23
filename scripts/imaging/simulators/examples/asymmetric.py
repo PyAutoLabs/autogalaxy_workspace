@@ -10,6 +10,10 @@ The galaxy's light is derived from a Multi-Gaussian Expansion (MGE) fit to a mas
 
 The simulated galaxy has irregular and asymmetric features in the galaxy, including a twist in the isophotes of its
 emission.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

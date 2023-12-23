@@ -27,6 +27,10 @@ __Light SNR Profiles__
 This script uses the signal-to-noise based light profiles described in the
 script `imaging/simulators/misc/manual_signal_to_noise_ratio.ipynb`, to make it straight forward to ensure every galaxy
 is visible in each image.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

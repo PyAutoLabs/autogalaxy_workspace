@@ -5,6 +5,10 @@ Simulator: AO
 This script simulates `Imaging` of a galaxy where:
 
  - The resolution, PSF and S/N are representative of Keck adaptics optics imaging.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

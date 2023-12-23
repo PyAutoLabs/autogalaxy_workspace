@@ -157,7 +157,8 @@
 #
 #  - The galaxy galaxy's total mass distribution is again an `Isothermal` and `ExternalShear` [7 parameters:
 #  priors initialized from search 1].
-#  - The source-galaxy's light uses a `DelaunayMagnification` mesh [2 parameters].
+#  - The source galaxy's ligth uses an `Overlay` image-mesh [2 parameters].
+#  - The source-galaxy's light uses a `Delaunay` mesh [0 parameters].
 #  - This pixelization is regularized using a `ConstantSplit` scheme which smooths every source pixel
 #  equally, where its `regularization_coefficient` varies across the datasets [2 parameter].
 #
@@ -170,7 +171,7 @@
 # source = af.Model(
 #     ag.Galaxy,
 #     redshift=1.0,
-#     pixelization=ag.mesh.DelaunayMagnification,
+#     pixelization=ag.mesh.Delaunay,
 #     regularization=ag.reg.ConstantSplit,
 # )
 # model = af.Collection(galaxies=af.Collection(galaxy=galaxy, source=source))

@@ -7,6 +7,10 @@ This example illustrates how to plot a `MassProfile` using a `MassProfilePlotter
 PyAutoGalaxy is currently focused on galaxy morphology studies, hence why the workspace focuses on fitting light
 profiles. Nevertheless, for the project PyAutoGalaxy there are many mass profiles in PyAutoGalaxy, which may be
 of interest to PyAutoGalaxy users. This script shows how to visualize them.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `plot/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here

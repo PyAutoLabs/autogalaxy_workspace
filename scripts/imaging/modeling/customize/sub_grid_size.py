@@ -8,6 +8,10 @@ so as to provide a more accurate model of its image.
 
 **Benefit**: Higher level of sub-gridding provide a more accurate estimate of the surface brightness in every image-pixel.
 **Downside**: Higher levels of sub-gridding require longer calculations and higher memory usage.
+
+__Start Here Notebook__
+
+If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -64,8 +68,7 @@ dataset = dataset.apply_settings(
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data, which we define
-and use to set up the `Imaging` object that the model fits.
+Define a 3.0" circular mask, which includes the emission of the galaxy.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
