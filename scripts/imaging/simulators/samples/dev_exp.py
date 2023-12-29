@@ -41,7 +41,7 @@ dataset_sample_name = "dev_exp"
 
 """
 The path where the dataset will be output, which in this case is:
-`/autogalaxy_workspace/dataset/imaging/sample/light_sersic_0`
+`/autogalaxy_workspace/dataset/imaging/sample/dev_exp_0`
 """
 dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
 
