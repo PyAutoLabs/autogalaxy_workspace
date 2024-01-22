@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 from os import path
-import autogalaxy as ag 
+import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """

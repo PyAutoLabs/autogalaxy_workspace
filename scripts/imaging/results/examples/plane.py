@@ -131,6 +131,24 @@ Below, we use the grid of the `imaging` to computed the image on, which is the g
 image = plane.image_2d_from(grid=dataset.grid)
 
 """
+__Log10__
+
+The light distributions of galaxies are closer to a log10 distribution than a linear one. 
+
+This means that when we plot an image of a light profile, its appearance is better highlighted when we take the
+logarithm of its values and plot it in log10 space.
+
+The `MatPlot2D` object has an input `use_log10`, which will do this automatically when we call the `figures_2d` method.
+Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
+"""
+plane_plotter = aplt.PlanePlotter(
+    plane=plane,
+    grid=mask.derive_grid.all_false_sub_1,
+    mat_plot_2d=aplt.MatPlot2D(use_log10=True),
+)
+plane_plotter.figures_2d(image=True)
+
+"""
 __Data Structures Slim / Native__
 
 The image above is returned as a 1D numpy array. 

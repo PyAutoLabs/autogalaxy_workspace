@@ -113,7 +113,7 @@ plane_plotter = aplt.PlanePlotter(plane=plane, grid=mask.derive_grid.all_false_s
 plane_plotter.subplot_plane()
 
 """
-__Individual galaxy Components__
+__Individual Galaxy Components__
 
 We are able to create an image of each galaxy as follows, which includes the emission of only one galaxy at a
 time.
@@ -197,6 +197,24 @@ We'll use the former API from here on.
 Whilst its a bit less clear and concise, it is more representative of the internal **PyAutoGalaxy** source code and
 therefore gives a clearer sense of how the internals work.
 
+__Log10__
+
+The light distributions of galaxies are closer to a log10 distribution than a linear one. 
+
+This means that when we plot an image of a light profile, its appearance is better highlighted when we take the
+logarithm of its values and plot it in log10 space.
+
+The `MatPlot2D` object has an input `use_log10`, which will do this automatically when we call the `figures_2d` method.
+Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
+"""
+bulge_plotter = aplt.LightProfilePlotter(
+    light_profile=plane.galaxies[0].bulge,
+    grid=dataset.grid,
+    mat_plot_2d=aplt.MatPlot2D(use_log10=True),
+)
+bulge_plotter.figures_2d(image=True)
+
+"""
 __Galaxies__
 
 Above, we extract the `bulge` light profiles of each galaxy. 
