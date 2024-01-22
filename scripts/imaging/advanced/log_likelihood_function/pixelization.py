@@ -859,8 +859,7 @@ plane = ag.Plane(galaxies=[galaxy])
 fit = ag.FitImaging(
     dataset=masked_dataset,
     plane=plane,
-    settings_inversion=ag.SettingsInversion(use_w_tilde=False),
-    settings_inversion=ag.SettingsInversion(relocate_pix_border=True),
+    settings_inversion=ag.SettingsInversion(use_w_tilde=False, relocate_pix_border=True),
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
