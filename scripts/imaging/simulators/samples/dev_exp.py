@@ -115,7 +115,7 @@ __Sample Instances__
 Within a for loop, we will now generate instances of each simulated galaxy using the `Model`'s defined above.
 This loop will run for `total_datasets` iterations, which sets the number of galaxies that are simulated.
 
-Each iteration of the for loop creates a plane and use this to simulate the imaging dataset.
+Each iteration of the for loop creates galaxies to simulate the imaging dataset.
 """
 total_datasets = 3
 
@@ -127,17 +127,17 @@ for sample_index in range(total_datasets):
     """
     __Plane__
     
-    Use the sample's lens  galaxies to setup a plane, which will generate the image for the 
+    Use the sample's galaxies to generate the image for the 
     simulated `Imaging` dataset.
     
     The steps below are expanded on in other `imaging/simulator` scripts, so check them out if anything below is unclear.
     """
-    plane = ag.Plane(galaxies=[galaxy])
+    galaxies = ag.Galaxies(galaxies=[galaxy])
 
-    plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-    plane_plotter.figures_2d(image=True)
+    galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+    galaxies_plotter.figures_2d(image=True)
 
-    dataset = simulator.via_plane_from(plane=plane, grid=grid)
+    dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 
     dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
     dataset_plotter.subplot_dataset()
@@ -159,7 +159,7 @@ for sample_index in range(total_datasets):
     """
     __Visualize__
     
-    Output a subplot of the simulated dataset, the image and the plane's quantities to the dataset path as .png files.
+    Output a subplot of the simulated dataset, the image and the galaxies quantities to the dataset path as .png files.
     """
     mat_plot = aplt.MatPlot2D(
         output=aplt.Output(path=dataset_sample_path, format="png")
@@ -169,8 +169,10 @@ for sample_index in range(total_datasets):
     dataset_plotter.subplot_dataset()
     dataset_plotter.figures_2d(data=True)
 
-    plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid, mat_plot_2d=mat_plot)
-    plane_plotter.subplot()
+    galaxies_plotter = aplt.GalaxiesPlotter(
+        galaxies=galaxies, grid=grid, mat_plot_2d=mat_plot
+    )
+    galaxies_plotter.subplot()
 
     """
     __Plane Output__
@@ -178,11 +180,11 @@ for sample_index in range(total_datasets):
     Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
     are safely stored and available to check how the dataset was simulated in the future. 
 
-    This can be loaded via the method `plane = ag.from_json()`.
+    This can be loaded via the method `galaxies = ag.from_json()`.
     """
     ag.output_to_json(
-        obj=plane,
-        file_path=path.join(dataset_sample_path, "plane.json"),
+        obj=galaxies,
+        file_path=path.join(dataset_sample_path, "galaxies.json"),
     )
 
     """

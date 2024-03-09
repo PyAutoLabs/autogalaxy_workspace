@@ -9,5 +9,5 @@ Files (Beginner)
 - ``overview_3_modeling.py``: Fitting a model to data with a non-linear search.
 - ``overview_4_simulate.py``: Simulating CCD imaging data of a galaxy.
 - ``overview_5_pixelizations.py``: Reconstructing a galaxy on a pixel-grid.
-- ``overview_6_interferometer.py``: Fitting interferometer data in the uv-plane.
+- ``overview_6_interferometer.py``: Fitting interferometer data in the uv-galaxies.
 - ``overview_7_multi_wavelength.py``: Fitting multiple datasets at different wavelengths simultaneously.

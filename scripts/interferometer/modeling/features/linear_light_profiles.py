@@ -212,11 +212,11 @@ The `Result` object also contains:
 """
 print(result.max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane,
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies,
     grid=real_space_mask.derive_grid.unmasked_sub_1,
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 fit_plotter = aplt.FitInterferometerPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 fit_plotter.subplot_fit_dirty_images()

@@ -55,9 +55,9 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitInterferometer(dataset=dataset, plane=plane)
+fit = ag.FitInterferometer(dataset=dataset, galaxies=galaxies)
 
 """
 __Figures__
@@ -106,7 +106,7 @@ fit_plotter.subplot_fit()
 fit_plotter.subplot_fit_dirty_images()
 
 """
-The plane images can be combined to plot the appearance of the galaxy in real-space.
+The images can be combined to plot the appearance of the galaxy in real-space.
 """
 fit_plotter.subplot_fit_real_space()
 

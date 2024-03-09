@@ -228,12 +228,12 @@ search_plotter = aplt.NautilusPlotter(samples=result.samples)
 search_plotter.cornerplot()
 
 """
-The result also contains the maximum log likelihood `Plane` and `FitImaging` objects which can easily be plotted.
+The result also contains the maximum log likelihood `Galaxies` and `FitImaging` objects which can easily be plotted.
 """
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=dataset.grid
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=dataset.grid
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()

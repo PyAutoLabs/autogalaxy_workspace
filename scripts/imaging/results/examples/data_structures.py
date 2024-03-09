@@ -96,12 +96,14 @@ result = search.fit(model=model, analysis=analysis)
 """
 __Max Likelihood Plane__
 
-As seen elsewhere in the workspace, the result contains a `max_log_likelihood_plane` which we can visualize.
+As seen elsewhere in the workspace, the result contains a `max_log_likelihood_galaxies` which we can visualize.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=mask.derive_grid.all_false_sub_1)
-plane_plotter.subplot_plane()
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=mask.derive_grid.all_false_sub_1
+)
+galaxies_plotter.subplot_galaxies()
 
 """
 __Data Structures Slim / Native__
@@ -113,7 +115,7 @@ This includes the galaxy light and galaxyed source images.
 
 Below, we use the grid of the `imaging` to computed the image on, which is the grid used to fit to the data.
 """
-image = plane.image_2d_from(grid=dataset.grid)
+image = galaxies.image_2d_from(grid=dataset.grid)
 
 """
 If we print the type of the `image` we note that it is an `Array2D`, which is a data structure that inherits 
@@ -162,7 +164,7 @@ perform ray tracing, but is chosen here so that the `print()` statements display
 """
 grid = ag.Grid2D.uniform(shape_native=(5, 5), pixel_scales=0.1)
 
-image = plane.image_2d_from(grid=grid)
+image = galaxies.image_2d_from(grid=grid)
 
 print(image.slim)
 print(image.native)
@@ -192,7 +194,7 @@ print(grid_sub.sub_shape_slim)
 The image computed using this grid does not have a `native` shape (5,5), but instead shape (20, 20). This is because 
 each image pixel has been split into a 4x4 sub pixel (e.g. 4 * 5 = 20):
 """
-image = plane.image_2d_from(grid=grid_sub)
+image = galaxies.image_2d_from(grid=grid_sub)
 
 print(image.native.shape)
 print(image.shape)
@@ -235,7 +237,7 @@ We can use an irregular 2D (y,x) grid of coordinates for this. The grid below ev
 """
 grid_irregular = ag.Grid2DIrregular(values=[[1.0, 1.0], [1.0, 2.0], [2.0, 2.0]])
 
-image = plane.image_2d_from(grid=grid_irregular)
+image = galaxies.image_2d_from(grid=grid_irregular)
 
 print(image)
 
@@ -250,7 +252,7 @@ from the image-plane to the source-plane via a galaxy galaxy mass model.
 
 To indicate that a quantities is a vector, **PyAutoGalaxy** uses the label `_yx`
 """
-deflections_yx_2d = plane.deflections_yx_2d_from(grid=dataset.grid)
+deflections_yx_2d = galaxies.deflections_yx_2d_from(grid=dataset.grid)
 
 """
 If we print the type of the `deflections_yx` we note that it is a `VectorYX2D`.
@@ -283,21 +285,21 @@ values more precisely:
 """
 grid = ag.Grid2D.uniform(shape_native=(3, 3), pixel_scales=0.1)
 
-deflections_yx_2d = plane.deflections_yx_2d_from(grid=grid)
+deflections_yx_2d = galaxies.deflections_yx_2d_from(grid=grid)
 
 print(deflections_yx_2d.slim)
 print(deflections_yx_2d.native)
 
 grid_sub = ag.Grid2D.uniform(shape_native=(3, 3), pixel_scales=0.1, sub_size=2)
 
-deflections_yx_2d = plane.deflections_yx_2d_from(grid=grid_sub)
+deflections_yx_2d = galaxies.deflections_yx_2d_from(grid=grid_sub)
 
 print(deflections_yx_2d.binned.slim)
 print(deflections_yx_2d.binned.native)
 
 grid_irregular = ag.Grid2DIrregular(values=[[1.0, 1.0], [1.0, 2.0], [2.0, 2.0]])
 
-deflections_yx_2d = plane.deflections_yx_2d_from(grid=grid_irregular)
+deflections_yx_2d = galaxies.deflections_yx_2d_from(grid=grid_irregular)
 
 print(deflections_yx_2d)
 

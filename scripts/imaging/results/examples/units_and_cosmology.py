@@ -81,9 +81,9 @@ By assuming redshifts for the galaxy  galaxies we can convert their quantities f
 Below, we compute the effective radii of the galaxy in kiloparsecs. To do this, we assume an AstroPy cosmology which 
 allows us to compute the conversion factor `kpc_per_arcsec`.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-galaxy = plane.galaxies[0]
+galaxy = galaxies[0]
 
 cosmology = ag.cosmo.Planck15()
 
@@ -103,8 +103,10 @@ units = aplt.Units(ticks_convert_factor=kpc_per_arcsec, ticks_label=" kpc")
 
 mat_plot = aplt.MatPlot2D(units=units)
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid, mat_plot_2d=mat_plot)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=dataset.grid, mat_plot_2d=mat_plot
+)
+galaxies_plotter.figures_2d(image=True)
 
 
 """
@@ -139,7 +141,7 @@ Lets compute the luminosity of the galaxy in the default internal **PyAutoGalaxy
 Below, we compute the luminosity to infinite radius, which is the total luminosity of the galaxy, but one could
 easily compute the luminosity within a specified radius instead.
 """
-galaxy = plane.galaxies[0]
+galaxy = galaxies[0]
 
 luminosity = galaxy.luminosity_within_circle_from(radius=np.inf)
 print("Luminosity (electrons / second) = ", luminosity)

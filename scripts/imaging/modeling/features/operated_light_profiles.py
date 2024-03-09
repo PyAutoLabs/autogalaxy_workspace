@@ -164,17 +164,17 @@ The search returns a result object, which whose `info` attribute shows the resul
 print(result.info)
 
 """
-We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
+We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
 
 The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
 the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=result.grid
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()

@@ -59,22 +59,22 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
-Converting a `Plane` to an `Inversion` performs a number of steps, which are handled by the `PlaneToInversion` class. 
+Converting a `Plane` to an `Inversion` performs a number of steps, which are handled by the `GalaxiesToInversion` class. 
 
-This class is where the data and plane's galaxies are combined to fit the data via the inversion.
+This class is where the data and galaxies are combined to fit the data via the inversion.
 """
-plane_to_inversion = ag.PlaneToInversion(
-    plane=plane,
+galaxies_to_inversion = ag.GalaxiesToInversion(
+    galaxies=galaxies,
     dataset=dataset,
     data=dataset.data,
     noise_map=dataset.noise_map,
     w_tilde=dataset.w_tilde,
 )
 
-inversion = plane_to_inversion.inversion
+inversion = galaxies_to_inversion.inversion
 
 """
 __Figures__

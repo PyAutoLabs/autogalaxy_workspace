@@ -17,7 +17,7 @@ import autogalaxy.plot as aplt
 """
 __Grid + Lens__
 
-In this overview we used a plane and grid to create an image of a galaxy.
+In this overview we used galaxies and grid to create an image of a galaxy.
 """
 grid = ag.Grid2D.uniform(
     shape_native=(80, 80),
@@ -36,10 +36,10 @@ galaxy = ag.Galaxy(
 )
 
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+galaxies_plotter.figures_2d(image=True)
 
 """
 __Simulator__
@@ -57,12 +57,12 @@ simulator = ag.SimulatorImaging(
 
 """
 Once we have a simulator, we can use it to create an imaging dataset which consists of an image, noise-map and 
-Point Spread Function (PSF) by passing it a plane and grid.
+Point Spread Function (PSF) by passing it a galaxies and grid.
 
-This uses the plane above to create the image of the galaxy and then add the effects that occur during data
+This uses the galaxies above to create the image of the galaxy and then add the effects that occur during data
 acquisition.
 """
-dataset = simulator.via_plane_from(plane=plane, grid=grid)
+dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 
 """
 By plotting a subplot of the `Imaging` dataset, we can see this object includes the observed image of the galaxy

@@ -52,9 +52,9 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
 We now pass the imaging to an `ImagingPlotter` and the fit to an `FitImagingPlotter`.

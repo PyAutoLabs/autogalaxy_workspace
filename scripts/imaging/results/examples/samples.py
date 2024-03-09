@@ -95,18 +95,18 @@ __Plot__
 
 We now have the `Result` object we will cover in this script. 
 
-As a reminder, in the `modeling` scripts we use the `max_log_likelihood_plane` and `max_log_likelihood_fit` to plot 
+As a reminder, in the `modeling` scripts we use the `max_log_likelihood_galaxies` and `max_log_likelihood_fit` to plot 
 the results of the fit.
 """
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=mask.derive_grid.all_false_sub_1
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false_sub_1
 )
-plane_plotter.subplot_plane()
+galaxies_plotter.subplot_galaxies()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
 """
-Results tutorials `plane.py` and `fits.py` expand on the `max_log_likelihood_plane` and `max_log_likelihood_fit`, 
+Results tutorials `galaxies.py` and `fits.py` expand on the `max_log_likelihood_galaxies` and `max_log_likelihood_fit`, 
 showing how they can be used to inspect many aspects of a model.
 
 __Samples__
@@ -193,19 +193,19 @@ print(instance.galaxies.galaxy.bulge.effective_radius)
 We can use this list of galaxies to manually create the maximum log likelihood `Plane`, which is the property of the 
 result we've used up to now!
 
-Using this plane will expanded upon in the `plane.py` results tutorial.
+Using galaxies will expanded upon in the `galaxies.py` results tutorial.
 
 (If we had the `Imaging` available we could easily use this to create the maximum log likelihood `FitImaging`).
 """
-max_lh_plane = ag.Plane(galaxies=instance.galaxies)
+max_lh_galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
-print(max_lh_plane)
+print(max_lh_galaxies)
 print(mask.derive_grid.all_false_sub_1)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=max_lh_plane, grid=mask.derive_grid.all_false_sub_1
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=max_lh_galaxies, grid=mask.derive_grid.all_false_sub_1
 )
-plane_plotter.subplot_plane()
+galaxies_plotter.subplot_galaxies()
 
 """
 __Posterior / PDF__
@@ -408,7 +408,36 @@ for sample in samples.sample_list:
 
     axis_ratio_list.append(axis_ratio)
 
-median_axis_ratio, upper_axis_ratio, lower_axis_ratio = af.marginalize(
+median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
+    parameter_list=axis_ratio_list, sigma=3.0, weight_list=samples.weight_list
+)
+
+print(f"axis_ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
+
+"""
+The calculation above could be computationally expensive, if there are many samples and the derived quantity is
+slow to compute.
+
+An alternative approach, which will provide comparable accuracy provided enough draws are used, is to sample 
+points randomy from the PDF of the model and use these to compute the derived quantity.
+
+Draws are from the PDF of the model, so the weights of the samples are accounted for and we therefore do not
+pass them to the `marginalize` function (it essentially treats all samples as having equal weight).
+"""
+random_draws = 50
+
+axis_ratio_list = []
+
+for i in range(random_draws):
+    instance = samples.draw_randomly_via_pdf()
+
+    ell_comps = instance.galaxies.lens.mass.ell_comps
+
+    axis_ratio = ag.convert.axis_ratio_from(ell_comps=ell_comps)
+
+    axis_ratio_list.append(axis_ratio)
+
+median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
     parameter_list=axis_ratio_list, sigma=3.0, weight_list=samples.weight_list
 )
 

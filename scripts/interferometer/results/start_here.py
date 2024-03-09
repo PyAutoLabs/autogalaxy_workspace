@@ -118,18 +118,18 @@ __Plane__
 The result's maximum likelihood `Plane` object contains everything necessary to perform calculations with the model
 like retrieving the images of each galaxy.
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/plane.py` provides a detailed 
+The examples script `autogalaxy_workspace/*/imaging/results/examples/galaxies.py` provides a detailed 
 description of this object, including:
 
- - Producing individual images of the galaxies in the plane.
+ - Producing individual images of the galaxies.
  - Inspecting mass model components like the convergence, potential and deflection angles.
  - Other lensing quantities like the critical curve and caustics.
 
 Below, is an example of how to use the `Plane` object to calculate the image of the galaxies.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-image = plane.image_2d_from(grid=dataset.grid)
+image = galaxies.image_2d_from(grid=dataset.grid)
 
 """
 __Fits__
@@ -165,15 +165,15 @@ the galaxies.
 The examples script `autogalaxy_workspace/*/imaging/results/examples/galaxies.py` provides a detailed description 
 of this object, including:
 
- - How to plot individual galaxy images, such as the source galaxy's image-plane and source-plane images.
+ - How to plot individual galaxy images, such as the source galaxy's image-plane and source-galaxy images.
  - Plotting the individual light profiles and mass profiles of the galaxies.
  - Making one dimensional profiles of the galaxies, such as their light and mass profiles as a function of radius.
  
 Below, is an example of how to use the `Galaxy` objects to plot the source galaxy's source-plane image.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-galaxy = plane.galaxies[0]
+galaxy = galaxies[0]
 galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
@@ -191,11 +191,11 @@ description of this object, including:
  
 Below, is an example of how to convert the effective radius of the source galaxy from arcseconds to kiloparsecs.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
 cosmology = ag.cosmo.Planck15()
 
-galaxy = plane.galaxies[0]
+galaxy = galaxies[0]
 galaxy_kpc_per_arcsec = cosmology.kpc_per_arcsec_from(redshift=galaxy.redshift)
 galaxy_effective_radius_kpc = galaxy.bulge.effective_radius * galaxy_kpc_per_arcsec
 

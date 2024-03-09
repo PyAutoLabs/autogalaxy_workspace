@@ -61,15 +61,15 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
-Converting a `Plane` to an `Inversion` performs a number of steps, which are handled by the `PlaneToInversion` class. 
+Converting a `Plane` to an `Inversion` performs a number of steps, which are handled by the `GalaxiesToInversion` class. 
 
-This class is where the data and plane's galaxies are combined to fit the data via the inversion.
+This class is where the data and galaxies are combined to fit the data via the inversion.
 """
-plane_to_inversion = ag.PlaneToInversion(
-    plane=plane,
+galaxies_to_inversion = ag.GalaxiesToInversion(
+    galaxies=galaxies,
     dataset=dataset,
     data=dataset.data,
     noise_map=dataset.noise_map,
@@ -83,7 +83,7 @@ __Mapper__
 We can extract a dictionary where every mapper in the plane is a key, paired with values that are each corresponding 
 galaxy containing that mapper. 
 """
-mapper_galaxy_dict = plane_to_inversion.mapper_galaxy_dict
+mapper_galaxy_dict = galaxies_to_inversion.mapper_galaxy_dict
 
 """
 We only need the `Mapper`, which we can extract from this dictionary.

@@ -123,7 +123,7 @@ The maximum log likelihood fit contains many 1D and 2D arrays showing the fit.
 
 These use the `slim` and `native` API discussed in the previous results tutorial.
 
-There is a `model_image`, which is the image of the plane we inspected in the previous tutorial blurred with the 
+There is a `model_image`, which is the image of the galaxies we inspected in the previous tutorial blurred with the 
 imaging data's PSF. 
 
 This is the image that is fitted to the data in order to compute the log likelihood and therefore quantify the 
@@ -187,7 +187,7 @@ __Unmasked Quantities__
 
 All of the quantities above are computed using the mask which was used to fit the data.
 
-The `FitImaging` can also compute the unmasked blurred image of each plane.
+The `FitImaging` can also compute the unmasked blurred image of the galaxies.
 """
 print(fit.unmasked_blurred_image.native)
 print(fit.unmasked_blurred_image_of_galaxies_list[0].native)
@@ -255,9 +255,9 @@ samples = result.samples
 
 instance = samples.from_sample_index(sample_index=-10)
 
-plane = ag.Plane(galaxies=instance.galaxies)
+galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 fit_plotter = aplt.FitImagingPlotter(fit=fit)
 fit_plotter.subplot_fit()

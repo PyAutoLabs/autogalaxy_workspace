@@ -28,7 +28,7 @@ grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 """
 __Plane__
 
-Create a plane which we will use to create our `DatasetQuantity`.
+Create galaxies which we will use to create our `DatasetQuantity`.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
@@ -41,7 +41,7 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
 __Dataset__
@@ -50,7 +50,7 @@ Use this `Plane`'s 2D image to create the `DatasetQuantity`.
 
 We assume a noise-map where all values are arbritrarily 0.01.
 """
-image = plane.image_2d_from(grid=grid)
+image = galaxies.image_2d_from(grid=grid)
 
 dataset = ag.DatasetQuantity(
     data=image,
@@ -91,10 +91,10 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane_fit = ag.Plane(galaxies=[galaxy])
+galaxies_fit = ag.Galaxies(galaxies=[galaxy])
 
 fit = ag.FitQuantity(
-    dataset=dataset, light_mass_obj=plane_fit, func_str="image_2d_from"
+    dataset=dataset, light_mass_obj=galaxies_fit, func_str="image_2d_from"
 )
 
 """

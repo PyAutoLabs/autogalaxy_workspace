@@ -193,11 +193,11 @@ The search returns a result object, which includes:
 """
 print(result_list[0].max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result_list[0].max_log_likelihood_plane,
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result_list[0].max_log_likelihood_galaxies,
     grid=real_space_mask.derive_grid.unmasked_sub_1,
 )
-plane_plotter.subplot_plane()
+galaxies_plotter.subplot_galaxies()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result_list[0].max_log_likelihood_fit)
 fit_plotter.subplot_fit()

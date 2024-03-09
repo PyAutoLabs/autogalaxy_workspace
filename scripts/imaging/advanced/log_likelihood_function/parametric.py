@@ -322,9 +322,9 @@ __Fit__
 This 6 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object, which
 those of you familiar will have seen before.
 """
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitImaging(dataset=masked_dataset, plane=plane)
+fit = ag.FitImaging(dataset=masked_dataset, galaxies=galaxies)
 fit_figure_of_merit = fit.figure_of_merit
 print(fit_figure_of_merit)
 

@@ -66,9 +66,9 @@ galaxy_1 = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy_0, galaxy_1])
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])
 
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
 __Figures__
@@ -87,13 +87,13 @@ fit_plotter.figures_2d(
 )
 
 """
-It can plot of the model image of an input plane.
+It can plot of the model image of an input galaxies.
 """
 fit_plotter.figures_2d_of_galaxies(galaxy_index=0, model_image=True)
 fit_plotter.figures_2d_of_galaxies(galaxy_index=1, model_image=True)
 
 """
-It can plot the image of a plane with all other model images subtracted.
+It can plot the image of galaxies with all other model images subtracted.
 """
 fit_plotter.figures_2d_of_galaxies(galaxy_index=0, subtracted_image=True)
 fit_plotter.figures_2d_of_galaxies(galaxy_index=1, subtracted_image=True)
@@ -155,9 +155,9 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
 __Include__

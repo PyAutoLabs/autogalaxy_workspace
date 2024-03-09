@@ -75,11 +75,11 @@ galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 __Fit__
 
 Now that our galaxy has a `Pixelization`, we are able to fit the data using it in the same way as before, by simply 
-passing the galaxy to a `Plane` and using this `Plane` to create a `FitImaging` object.
+passing the galaxy to a `FitImaging`object.
 """
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
 __Pixelization__

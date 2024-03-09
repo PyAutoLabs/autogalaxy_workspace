@@ -1,8 +1,8 @@
 """
-Plots: PlanePlotter
+Plots: GalaxiesPlotter
 ===================
 
-This example illustrates how to plot a `Plane` using a `PlanePlotter`.
+This example illustrates how to plot a `Plane` using a `GalaxiesPlotter`.
 
 __Start Here Notebook__
 
@@ -39,15 +39,15 @@ bulge = ag.lp.Sersic(
 
 galaxy = ag.Galaxy(redshift=1.0, bulge=bulge)
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
 __Figures__
 
-We can plot the `plane` by passing it and our `grid to a` PlanePlotter` and calling various `figure_*` methods.
+We can plot the galaxies by passing it and our `grid to a` GalaxiesPlotter` and calling various `figure_*` methods.
 """
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+galaxies_plotter.figures_2d(image=True)
 
 """
 __Include__
@@ -65,22 +65,24 @@ masked_grid = ag.Grid2D.from_mask(mask=mask)
 
 include = aplt.Include2D(origin=True, mask=True, light_profile_centres=True)
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=masked_grid, include_2d=include)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=masked_grid, include_2d=include
+)
+galaxies_plotter.figures_2d(image=True)
 
 """
 __Log10__
 
-A plane's light and mass profiles are often clearer in log10 space, which inputting `use_log10=True` into 
+A galaxy's light and mass profiles are often clearer in log10 space, which inputting `use_log10=True` into 
 the `MatPlot2D` object will do.
 
 The same image can be set up manually via the `CMap`, `Contour` and `Colorbar` objects, but given this is a common
 use-case, the `use_log10` input is provided for convenience.
 """
-plane_plotter = aplt.PlanePlotter(
-    plane=plane, grid=masked_grid, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=masked_grid, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
 )
-plane_plotter.figures_2d(image=True, convergence=True, potential=True)
+galaxies_plotter.figures_2d(image=True, convergence=True, potential=True)
 
 """
 Finish.

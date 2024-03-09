@@ -164,25 +164,25 @@ galaxy_list = [
 ]
 
 """
-Use these galaxies to setup planes at each waveband, which will generate each image for the simulated `Imaging` 
+Use these to setup galaxies at each waveband, which will generate each image for the simulated `Imaging` 
 dataset.
 """
-plane_list = [ag.Plane(galaxies=[galaxy]) for galaxy in galaxy_list]
+galaxies_list = [ag.Galaxies(galaxies=[galaxy]) for galaxy in galaxy_list]
 
 """
-Lets look at the plane`s images, which are the images we'll be simulating.
+Lets look at the images, which are the images we'll be simulating.
 """
-for plane, grid in zip(plane_list, grid_list):
-    plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-    plane_plotter.figures_2d(image=True)
+for galaxies, grid in zip(galaxies_list, grid_list):
+    galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+    galaxies_plotter.figures_2d(image=True)
 
 """
-We can now pass this simulator a plane, which creates the image plotted above and simulates it as an
+We can now pass this simulator galaxies, which creates the image plotted above and simulates it as an
 imaging dataset.
 """
 dataset_list = [
-    simulator.via_plane_from(plane=plane, grid=grid)
-    for grid, simulator, plane in zip(grid_list, simulator_list, plane_list)
+    simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
+    for grid, simulator, galaxies in zip(grid_list, simulator_list, galaxies_list)
 ]
 
 """
@@ -208,9 +208,9 @@ for color, dataset in zip(color_list, dataset_list):
 """
 __Visualize__
 
-Output a subplot of the simulated dataset, the image and the plane's quantities to the dataset path as .png files.
+Output a subplot of the simulated dataset, the image and the galaxies quantities to the dataset path as .png files.
 
-For a faster run time, the plane visualization uses the binned grid instead of the iterative grid.
+For a faster run time, the galaxies visualization uses the binned grid instead of the iterative grid.
 """
 for color, dataset in zip(color_list, dataset_list):
     mat_plot = aplt.MatPlot2D(
@@ -221,16 +221,16 @@ for color, dataset in zip(color_list, dataset_list):
     dataset_plotter.subplot_dataset()
     dataset_plotter.figures_2d(data=True)
 
-for color, grid, plane in zip(color_list, grid_list, plane_list):
+for color, grid, galaxies in zip(color_list, grid_list, galaxies_list):
     mat_plot = aplt.MatPlot2D(
         output=aplt.Output(path=dataset_path, prefix=f"{color}_", format="png")
     )
 
-    plane_plotter = aplt.PlanePlotter(
-        plane=plane, grid=grid.binned, mat_plot_2d=mat_plot
+    galaxies_plotter = aplt.GalaxiesPlotter(
+        galaxies=galaxies, grid=grid.binned, mat_plot_2d=mat_plot
     )
-    plane_plotter.subplot_plane()
-    plane_plotter.subplot_galaxy_images()
+    galaxies_plotter.subplot_galaxies()
+    galaxies_plotter.subplot_galaxy_images()
 
 """
 __Plane json__
@@ -238,13 +238,13 @@ __Plane json__
 Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles, mass profiles and galaxies
 are safely stored and available to check how the dataset was simulated in the future. 
 
-This can be loaded via the method `plane = ag.from_json()`.
+This can be loaded via the method `galaxies = ag.from_json()`.
 """
 [
     ag.output_to_json(
-        obj=plane, file_path=path.join(dataset_path, f"{color}_plane.json")
+        obj=galaxies, file_path=path.join(dataset_path, f"{color}_galaxies.json")
     )
-    for color, plane in zip(color_list, plane_list)
+    for color, galaxies in zip(color_list, galaxies_list)
 ]
 
 """

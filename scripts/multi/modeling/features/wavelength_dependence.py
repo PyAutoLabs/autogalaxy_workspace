@@ -234,13 +234,13 @@ print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)
 
 """
-Plotting each result's plane shows that the source appears different, owning to its different intensities.
+Plotting each result's galaxies shows that the source appears different, owning to its different intensities.
 """
 for result in result_list:
-    plane_plotter = aplt.PlanePlotter(
-        plane=result.max_log_likelihood_plane, grid=result.grid
+    galaxies_plotter = aplt.GalaxiesPlotter(
+        galaxies=result.max_log_likelihood_galaxies, grid=result.grid
     )
-    plane_plotter.subplot_plane()
+    galaxies_plotter.subplot_galaxies()
 
     fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
     fit_plotter.subplot_fit()

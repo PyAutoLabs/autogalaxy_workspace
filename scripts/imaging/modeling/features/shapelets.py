@@ -4,7 +4,7 @@ Modeling: Light Shapelets
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's bulge is a super position of `ShapeletCartesian`` profiles.
+ - The galaxy's bulge is a super position of `ShapeletCartesianSph`` profiles.
 
 __Basis / Shapelet Fitting__
 
@@ -88,12 +88,85 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
+__Fit__
+
+We first show how to compose a basis of multiple shapelets and use them to fit the galaxy's light in data.
+
+This is to illustrate the API for fitting shapelets using standard autogalaxy objects like the `Galaxy`
+and `FitImaging`.
+
+This does not perform a model-fit via a non-linear search, and therefore requires us to manually specify and guess
+suitable parameter values for the shapelets. However, shapelets can do a reasonable even if we just guess sensible 
+parameter values.
+
+__Basis__
+
+We first build a `Basis`, which is built from multiple linear light profiles (in this case, shapelets). 
+
+Below, we make a `Basis` out of 10 elliptical shapelet linear light profiles which: 
+
+ - All share the same centre and elliptical components.
+ - The size of the Shapelet basis is controlled by a `beta` parameter, which is the same for all shapelet basis 
+   functions.
+ 
+Note that any linear light profile can be used to compose a Basis. This includes Gaussians, which are often used to 
+represent the light of elliptical galaxies (see `modeling/features/multi_gaussian_expansion.py`).
+"""
+total_n = 10
+total_m = sum(range(2, total_n + 1)) + 1
+
+shapelets_bulge_list = []
+
+n_count = 1
+m_count = -1
+
+for i in range(total_n + total_m):
+    shapelet = ag.lp_linear.ShapeletPolarSph(
+        n=n_count, m=m_count, centre=(0.01, 0.01), beta=0.1
+    )
+
+    shapelets_bulge_list.append(shapelet)
+
+    m_count += 2
+
+    if m_count > n_count:
+        n_count += 1
+        m_count = -n_count
+
+bulge = af.Model(
+    ag.lp_basis.Basis,
+    light_profile_list=shapelets_bulge_list,
+)
+
+"""
+Once we have a `Basis`, we can treat it like any other light profile in order to create a `Galaxy` and `Tracer` and 
+use it to fit data.
+"""
+galaxy = ag.Galaxy(redshift=0.5, bulge=bulge)
+
+galaxies = ag.Galaxies(galaxies=[galaxy])
+
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
+
+"""
+By plotting the fit, we see that the `Basis` does a reasonable job at capturing the appearance of the galaxy.
+
+There are few residuals, except for perhaps some central regions where the light profile is not perfectly fitted.
+
+Given that there was no non-linear search to determine the optimal values of the Gaussians, this is a pretty good fit!
+"""
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
+
+"""
+Nevertheless, there are still residuals, which we now rectify by fitting the shapelets in a non-linear search.
+
 __Model__
 
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a model where:
 
- - The galaxy's bulge is a superposition of 10 parametric linear `ShapeletCartesian` profiles [3 parameters]. 
+ - The galaxy's bulge is a superposition of 10 parametric linear `ShapeletCartesianSph` profiles [3 parameters]. 
  - The centres of the Shapelets are all linked together.
  - The size of the Shapelet basis is controlled by a `beta` parameter, which is the same for all Shapelet basis 
    functions.
@@ -103,46 +176,12 @@ The number of free parameters and therefore the dimensionality of non-linear par
 Note how this Shapelet model can capture features more complex than a Sersic, but has fewer non-linear parameters
 (N=3 compared to N=7 for a `Sersic`).
 """
-# shapelets_bulge_list = af.Collection(
-#     af.Model(ag.lp_shapelets.ShapeletCartesian) for _ in range(20)
-# )
-
-# for i, shapelet in enumerate(shapelets_bulge_list):
-#
-#     shapelet.n_y = i
-#     shapelet.n_x = i
-#     shapelet.centre = shapelets_bulge_list[0].centre
-#     shapelet.beta = shapelets_bulge_list[0].beta
-
-# total_shapelets = 10
-#
-# shapelets_bulge_list = af.Collection(
-#     af.Model(ag.lp_shapelets.ShapeletCartesian) for _ in range(total_shapelets**2)
-# )
-#
-# y_count = 1
-#
-# for i, shapelet in enumerate(shapelets_bulge_list):
-#
-#     shapelet.n_y = y_count
-#     shapelet.n_x = (i % total_shapelets) + 1
-#
-#     if shapelet.n_x == total_shapelets:
-#         y_count += 1
-#
-#     shapelet.centre = shapelets_bulge_list[0].centre
-#     shapelet.beta = shapelets_bulge_list[0].beta
-
 total_n = 5
 total_m = sum(range(2, total_n + 1)) + 1
 
 shapelets_bulge_list = af.Collection(
-    af.Model(ag.lp_shapelets.ShapeletPolarEll) for _ in range(total_n + total_m)
+    af.Model(ag.lp_linear.ShapeletPolar) for _ in range(total_n + total_m)
 )
-
-# shapelets_bulge_list = af.Collection(
-#     af.Model(ag.lp_shapelets.ShapeletExponential) for _ in range(total_n+total_m)
-# )
 
 n_count = 1
 m_count = -1
@@ -272,17 +311,17 @@ This confirms that `intensity` parameters are not inferred by the model-fit.
 print(result.info)
 
 """
-We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
+We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
 
 The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
 the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=result.grid
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()

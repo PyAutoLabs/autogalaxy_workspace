@@ -116,38 +116,38 @@ __Intensities__
 The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
 in the `model.results` file.
 
-To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_plane`,
+To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_galaxies`,
 which has already performed the inversion and therefore the galaxy light profiles have their solved for
 `intensity`'s associated with them.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-print(plane.galaxies[0].intensity)
+print(galaxies[0].intensity)
 
 """
 The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
 """
 fit = result.max_log_likelihood_fit
 
-plane = fit.plane
+galaxies = fit.galaxies
 
-print(plane.galaxies[0].intensity)
+print(galaxies[0].intensity)
 
 """
 __Visualization__
 
-Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
+Linear light profiles and objects containing them (e.g. galaxies) cannot be plotted because they do not 
 have an `intensity` value.
 
 Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
 used for visualization:
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
+galaxies_plotter.figures_2d(image=True)
 
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=plane.galaxies[0], grid=dataset.grid)
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """
@@ -198,8 +198,8 @@ __Intensities (Internal Source Code)__
 The intensities of linear light profiles are not a part of the model parameterization and therefore cannot be
 accessed in the resulting galaxies, as seen in previous tutorials, for example:
 
-plane = result.max_log_likelihood_plane
-intensity = plane.galaxies[0].bulge.intensity
+galaxies = result.max_log_likelihood_galaxies
+intensity = galaxies[0].bulge.intensity
 
 The intensities are also only computed once a fit is performed, as they must first be solved for via linear algebra. 
 They are therefore accessible via the `Fit` and `Inversion` objects, for example as a dictionary mapping every
@@ -211,12 +211,12 @@ print(fit.linear_light_profile_intensity_dict)
 
 """
 To extract the `intensity` values of a specific component in the model, we use that component as defined in the
-`max_log_likelihood_plane`.
+`max_log_likelihood_galaxies`.
 """
-plane = fit.plane
+galaxies = fit.galaxies
 
-bulge = plane.galaxies[0].bulge
-disk = plane.galaxies[0].disk
+bulge = galaxies[0].bulge
+disk = galaxies[0].disk
 
 print(fit.linear_light_profile_intensity_dict)
 
@@ -235,10 +235,10 @@ For example, the linear light profile `Sersic` of the `bulge` component above ha
 
 The `Plane` created below instead has an ordinary light profile with an `intensity` of ~0.75.
 """
-plane = fit.model_obj_linear_light_profiles_to_light_profiles
+galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
 
 print(
-    f"Intensity via Plane With Ordinary Light Profiles = {plane.galaxies[0].bulge.intensity}"
+    f"Intensity via Plane With Ordinary Light Profiles = {galaxies[0].bulge.intensity}"
 )
 
 """

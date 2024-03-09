@@ -139,7 +139,7 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-tracer = ag.Tracer.from_galaxies(galaxies=[galaxy])
+tracer = ag.Tracer(galaxies=[galaxy])
 
 """
 __DFT + Matrices (Mapping)__

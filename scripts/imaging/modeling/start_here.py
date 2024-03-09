@@ -223,15 +223,7 @@ Depending on how long it takes for the model to be fitted to the data (see discu
 this can take up a large fraction of the run-time of the non-linear search.
 
 For this fit, the fit is very fast, thus we set a high value of `iterations_per_update=10000` to ensure these updates
-so not slow down the overall speed of the model-fit.
-
-NOTE: `Nautilus` does not currently support `iterations_per_update` and therefore on-the-fly output of results
-is disabled. However, you can output the best-fit results by cancelling the job (Ctrl + C for Python script,
-kill cell for Jupyter notebook) and restarting. 
-
-Nautilus produces a significant improvement to modeling over other libraries (e.g. Dynesty, MultiNest, Emcee) 
-therefore although on-the-fly output is not natively supported, we switched it to the default fitter given the 
-significantly improved model-fits. 
+so not slow down the overall speed of the model-fit. 
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
@@ -370,10 +362,10 @@ The `Result` object also contains:
 """
 print(result.max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=result.grid
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()

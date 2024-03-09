@@ -92,7 +92,7 @@ for dataset_list in dataset_gen:
 
 """
 We now use the database to load a generator containing the fit of the maximum log likelihood model (and therefore 
-plane) to each dataset.
+galaxies) to each dataset.
 
 Analogous to the `dataset_gen` above returning a list with one `Imaging` object, the `fit_gen` returns a list of
 `FitImaging` objects, because only one `Analysis` was used to perform the model-fit.

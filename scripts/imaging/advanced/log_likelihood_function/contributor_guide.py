@@ -159,6 +159,6 @@ __LH Step 19: Complexity Terms__
 
 __Fit__
 
- https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/lens/ray_tracing.py
+ https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/lens/tracer.py
  https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/imaging/fit.py
 """

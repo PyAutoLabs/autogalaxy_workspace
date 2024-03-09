@@ -854,11 +854,11 @@ __Fit__
 This 21 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object, which
 those of you familiar will have seen before.
 """
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 fit = ag.FitImaging(
     dataset=masked_dataset,
-    plane=plane,
+    galaxies=galaxies,
     settings_inversion=ag.SettingsInversion(
         use_w_tilde=False, relocate_pix_border=True
     ),

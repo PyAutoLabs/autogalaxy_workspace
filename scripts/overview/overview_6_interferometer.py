@@ -70,9 +70,9 @@ dataset_plotter.figures_2d(dirty_image=True, dirty_noise_map=True)
 """
 __Plane__
 
-To perform uv-plane modeling, **PyAutoGalaxy** generates an image of the galaxy system in real-space via a `Plane`. 
+To perform uv-plane modeling, **PyAutoGalaxy** generates an image of the galaxy system in real-space. 
 
-Lets quickly set up the `Plane` we'll use in this example.
+Lets quickly set up the galaxies  we'll use in this example.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
@@ -85,12 +85,12 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-plane_plotter = aplt.PlanePlotter(
-    plane=plane, grid=real_space_mask.derive_grid.unmasked_sub_1
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=real_space_mask.derive_grid.unmasked_sub_1
 )
-plane_plotter.figures_2d(image=True)
+galaxies_plotter.figures_2d(image=True)
 
 """
 __UV-Plane__
@@ -124,7 +124,7 @@ __Fitting__
 
 The interferometer can now be used with a `FitInterferometer` object to fit it to a dataset:
 """
-fit = ag.FitInterferometer(dataset=dataset, plane=plane)
+fit = ag.FitInterferometer(dataset=dataset, galaxies=galaxies)
 
 fit_plotter = aplt.FitInterferometerPlotter(fit=fit)
 
@@ -150,12 +150,12 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 
 fit = ag.FitInterferometer(
     dataset=dataset,
-    plane=plane,
+    galaxies=galaxies,
     settings_inversion=ag.SettingsInversion(use_linear_operators=True),
 )
 
@@ -250,7 +250,7 @@ real_space_grid = ag.Grid2D.uniform(
     pixel_scales=real_space_mask.pixel_scales,
 )
 
-dataset = simulator.via_plane_from(plane=plane, grid=real_space_grid)
+dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=real_space_grid)
 
 """
 __Wrap Up__

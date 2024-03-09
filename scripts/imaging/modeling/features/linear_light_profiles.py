@@ -199,17 +199,17 @@ This confirms that `intensity` parameters are not inferred by the model-fit.
 print(result.info)
 
 """
-We plot the maximum likelihood fit, plane images and posteriors inferred via Nautilus.
+We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
 
 The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
 the inversion process are accurate.
 """
 print(result.max_log_likelihood_instance)
 
-plane_plotter = aplt.PlanePlotter(
-    plane=result.max_log_likelihood_plane, grid=result.grid
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
 )
-plane_plotter.subplot()
+galaxies_plotter.subplot()
 
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
@@ -223,38 +223,38 @@ __Intensities__
 The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
 in the `model.results` file.
 
-To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_plane`,
+To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_galaxies`,
 which has already performed the inversion and therefore the galaxy light profiles have their solved for
 `intensity`'s associated with them.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-print(plane.galaxies[0].intensity)
+print(galaxies[0].intensity)
 
 """
 The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
 """
 fit = result.max_log_likelihood_fit
 
-plane = fit.plane
+galaxies = fit.galaxies
 
-print(plane.galaxies[0].intensity)
+print(galaxies[0].intensity)
 
 """
 __Visualization__
 
-Linear light profiles and objects containing them (e.g. galaxies, a plane) cannot be plotted because they do not 
+Linear light profiles and objects containing them (e.g. galaxies) cannot be plotted because they do not 
 have an `intensity` value.
 
 Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
 used for visualization:
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
+galaxies_plotter.figures_2d(image=True)
 
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=plane.galaxies[0], grid=dataset.grid)
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """

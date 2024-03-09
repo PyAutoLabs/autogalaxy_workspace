@@ -1,15 +1,13 @@
 """
 Results: Galaxies
-=================
+==================
 
-In results tutorial 2, we inspected the results of a `Plane` and computed the overall properties of the model's
-image and other quantities.
+This tutorial inspects an inferred model using galaxies inferred by the non-linear search.
+This allows us to visualize and interpret its results.
 
-However, we did not compute the individual properties of each galaxy. For example, we did not compute an image of the
-left galaxy or compute individual quantities for each light profile.
-
-This tutorial illustrates how to compute these more complicated results. This is a key reason why we have opted
-to include two galaxies in the overall model in these tutorials.
+Unlike many tutorials, we will fit a dataset and model where there are two galaxies in the dataset. This will
+help us illustrate how the analyse results for most complex models, however the API can be easily
+generalized for more simple fits.
 
 __Plot Module__
 
@@ -103,14 +101,64 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
-__Max Likelihood Plane__
+__Max Likelihood Galaxies__
 
-As seen elsewhere in the workspace, the result contains a `max_log_likelihood_plane` which we can visualize.
+As seen elsewhere in the workspace, the result contains a `max_log_likelihood_galaxies` which we can visualize.
 """
-plane = result.max_log_likelihood_plane
+galaxies = result.max_log_likelihood_galaxies
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=mask.derive_grid.all_false_sub_1)
-plane_plotter.subplot_plane()
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=mask.derive_grid.all_false_sub_1
+)
+galaxies_plotter.subplot_galaxies()
+
+"""
+This tutorial now focuses on explaining the numerical results contained in the galaxies.
+
+Visualization is explained separately in the `autogalaxy_workspace/*/plot/` package, in particular the 
+`plotters/GalaxiesPlotter.py` script.
+
+__Inferred 2D Images__
+
+The maximum log likelihood galaxies contains a lot of information about the inferred model.
+
+For example, by passing it a 2D grid of (y,x) coordinates we can return a numpy array containing its 2D image. This
+includes the bulge and disk images.
+
+Below, we use the grid of the `imaging` to computed the image on, which is the grid used to fit to the data.
+"""
+image = galaxies.image_2d_from(grid=dataset.grid)
+
+"""
+__Log10__
+
+The light distributions of galaxies are closer to a log10 distribution than a linear one. 
+
+This means that when we plot an image of a light profile, its appearance is better highlighted when we take the
+logarithm of its values and plot it in log10 space.
+
+The `MatPlot2D` object has an input `use_log10`, which will do this automatically when we call the `figures_2d` method.
+Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
+"""
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies,
+    grid=mask.derive_grid.all_false_sub_1,
+    mat_plot_2d=aplt.MatPlot2D(use_log10=True),
+)
+galaxies_plotter.figures_2d(image=True)
+
+"""
+__Data Structures Slim / Native__
+
+The image above is returned as a 1D numpy array. 
+
+**PyAutoLens** includes dedicated functionality for manipulating this array, for example mapping it to 2D or
+performing the calculation on a high resolution sub-grid which is then binned up. 
+
+This uses the data structure API, which is described in the `results/examples/data_structures.py` example. This 
+tutorial will avoid using this API, but if you need to manipulate results in more detail you should check it out.
+"""
+print(image.slim)
 
 """
 __Individual Galaxy Components__
@@ -118,24 +166,24 @@ __Individual Galaxy Components__
 We are able to create an image of each galaxy as follows, which includes the emission of only one galaxy at a
 time.
 """
-image = plane.galaxies[0].image_2d_from(grid=dataset.grid)
-image = plane.galaxies[1].image_2d_from(grid=dataset.grid)
+image = galaxies[0].image_2d_from(grid=dataset.grid)
+image = galaxies[1].image_2d_from(grid=dataset.grid)
 
 """
 In order to create images of each light profile (e.g. the `bulge`), we can extract each individual component from 
 each galaxy.
 
-The plane's list of galaxies is in order of how we specify them in the `collection` above.
+The list of galaxies is in order of how we specify them in the `collection` above.
 """
-bulge_0 = plane.galaxies[0].bulge
-bulge_1 = plane.galaxies[1].bulge
+bulge_0 = galaxies[0].bulge
+bulge_1 = galaxies[1].bulge
 
 """
 For simplicity, each galaxy did not contain more light profiles than a bulge. But you could easily
 extract a `disk` if it were present:
 
- disk_0 = plane.galaxies[0].disk
- disk_1 = plane.galaxies[1].disk
+ disk_0 = galaxies[0].disk
+ disk_1 = galaxies[1].disk
 
 Finally, we can use the extracted bulge components to make images of the bulge.
 """
@@ -151,13 +199,13 @@ print(bulge_1_image_2d.slim[0])
 """
 It is more concise to extract these quantities in one line of Python:
 """
-bulge_0_image_2d = plane.galaxies[0].bulge.image_2d_from(grid=dataset.grid)
+bulge_0_image_2d = galaxies[0].bulge.image_2d_from(grid=dataset.grid)
 
 """
 The `LightProfilePlotter` makes it straight forward to extract and plot an individual light profile component.
 """
 bulge_plotter = aplt.LightProfilePlotter(
-    light_profile=plane.galaxies[0].bulge, grid=dataset.grid
+    light_profile=galaxies[0].bulge, grid=dataset.grid
 )
 bulge_plotter.figures_2d(image=True)
 
@@ -184,12 +232,12 @@ bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=dataset.grid)
 bulge_plotter.figures_2d(image=True)
 
 """
-In fact, if we create a `Plane` from an instance (which is how `result.max_log_likelihood_plane` is created) we
+In fact, if we create a `Plane` from an instance (which is how `result.max_log_likelihood_galaxies` is created) we
 can choose whether to access its attributes using each API: 
 """
-plane = result.max_log_likelihood_plane
-print(plane.galaxies[0].bulge)
-# print(plane.galaxies.galaxy.bulge)
+galaxies = result.max_log_likelihood_galaxies
+print(galaxies[0].bulge)
+# print(galaxies.galaxy.bulge)
 
 """
 We'll use the former API from here on. 
@@ -208,7 +256,7 @@ The `MatPlot2D` object has an input `use_log10`, which will do this automaticall
 Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
 """
 bulge_plotter = aplt.LightProfilePlotter(
-    light_profile=plane.galaxies[0].bulge,
+    light_profile=galaxies[0].bulge,
     grid=dataset.grid,
     mat_plot_2d=aplt.MatPlot2D(use_log10=True),
 )
@@ -222,7 +270,7 @@ Above, we extract the `bulge` light profiles of each galaxy.
 We can just as easily extract each `Galaxy` and use it to perform the calculations above. Note that because the 
 galaxy`:
 """
-galaxy_0 = plane.galaxies[0]
+galaxy_0 = galaxies[0]
 
 galaxy_0_image_2d = galaxy_0.image_2d_from(grid=dataset.grid)
 
@@ -236,15 +284,13 @@ galaxy_plotter.subplot_of_light_profiles(image=True)
 """
 __Plane Composition__
 
-Lets quickly summarize what we've learnt by printing every object in the plane:
+Lets quickly summarize what we've learnt by printing every object:
 """
-print(plane)
-print(plane)
-print(plane)
-print(plane.galaxies[0])
-print(plane.galaxies[0])
-print(plane.galaxies[0].bulge)
-print(plane.galaxies[1].bulge)
+print(galaxies)
+print(galaxies[0])
+print(galaxies[0])
+print(galaxies[0].bulge)
+print(galaxies[1].bulge)
 print()
 
 """
@@ -253,15 +299,15 @@ __One Dimensional Quantities__
 We have made two dimensional plots of galaxy images.
 
 We can also compute all these quantities in 1D, for inspection and visualization.
- 
+
 For example, from a light profile or galaxy we can compute its `image_1d`, which provides us with its image values
 (e.g. luminosity) as a function of radius.
 """
-galaxy_0 = plane.galaxies[0]
+galaxy_0 = galaxies[0]
 image_1d = galaxy_0.image_1d_from(grid=dataset.grid)
 print(image_1d)
 
-galaxy_1 = plane.galaxies[1]
+galaxy_1 = galaxies[1]
 image_1d = galaxy_1.image_1d_from(grid=dataset.grid)
 print(image_1d)
 
@@ -269,11 +315,11 @@ print(image_1d)
 How are these 1D quantities from an input 2D grid? 
 
 From the 2D grid a 1D grid is compute where:
- 
+
  - The 1D grid of (x,) coordinates are centred on the galaxy or light profile and aligned with the major-axis. 
  - The 1D grid extends from this centre to the edge of the 2D grid.
  - The pixel-scale of the 2D grid defines the radial steps between each coordinate.
- 
+
 If we input a larger 2D grid, with a smaller pixel scale, the 1D plot adjusts accordingly.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.04)
@@ -335,8 +381,29 @@ A decomposed plot of the individual light profiles of the galaxy, with errors, c
 galaxy_pdf_plotter.figures_1d_decomposed(image=True)
 
 """
+__Refitting__
+
+Using the API introduced in the `samples.py` tutorial, we can also refit the data locally. 
+
+This allows us to inspect how the galaxies changes for models with similar log likelihoods. Below, we create and plot
+the galaxies of the 100th last accepted model by nautilus.
+"""
+samples = result.samples
+
+instance = samples.from_sample_index(sample_index=-10)
+
+galaxies = ag.Galaxies(galaxies=instance.galaxies)
+
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=mask.derive_grid.all_false_sub_1
+)
+galaxies_plotter.subplot_galaxies()
+
+"""
 __Wrap Up__
 
-We have learnt how to extract individual planes, galaxies and light rofiles from the plane that results from
+This tutorial explained how to compute the results of an inferred model from a galaxies. 
+
+We have learnt how to extract individual galaxies and light profiles from the results of 
 a model-fit and use these objects to compute specific quantities of each component.
 """

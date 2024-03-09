@@ -93,21 +93,21 @@ galaxy = ag.Galaxy(
 )
 
 """
-Use these galaxies to setup a plane, which will generate the image for the simulated interferometer dataset.
+Use these galaxies to generate the image for the simulated interferometer dataset.
 """
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
-Lets look at the plane`s images, which are the images we'll be simulating.
+Lets look at the galaxies images, which are the images we'll be simulating.
 """
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+galaxies_plotter.figures_2d(image=True)
 
 """
-We can now pass this simulator a plane, which creates the image plotted above and simulates it as an
+We can now pass this simulator galaxies, which creates the image plotted above and simulates it as an
 interferometer dataset.
 """
-dataset = simulator.via_plane_from(plane=plane, grid=grid)
+dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 
 """
 Lets plot the simulated interferometer dataset before we output it to fits.
@@ -132,7 +132,7 @@ dataset.output_to_fits(
 """
 __Visualize__
 
-Output a subplot of the simulated dataset, the image and the plane's quantities to the dataset path as .png files.
+Output a subplot of the simulated dataset, the image and the galaxies's quantities to the dataset path as .png files.
 """
 mat_plot = aplt.MatPlot2D(output=aplt.Output(path=dataset_path, format="png"))
 
@@ -141,9 +141,11 @@ dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()
 dataset_plotter.figures_2d(data=True)
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid, mat_plot_2d=mat_plot)
-plane_plotter.subplot_plane()
-plane_plotter.subplot_galaxy_images()
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=grid, mat_plot_2d=mat_plot
+)
+galaxies_plotter.subplot_galaxies()
+galaxies_plotter.subplot_galaxy_images()
 
 """
 __Plane json__
@@ -151,11 +153,11 @@ __Plane json__
 Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles, mass profiles and galaxies
 are safely stored and available to check how the dataset was simulated in the future. 
 
-This can be loaded via the method `plane = ag.from_json()`.
+This can be loaded via the method `galaxies = ag.from_json()`.
 """
 ag.output_to_json(
-    obj=plane,
-    file_path=path.join(dataset_path, "plane.json"),
+    obj=galaxies,
+    file_path=path.join(dataset_path, "galaxies.json"),
 )
 
 """

@@ -35,7 +35,7 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
 """
 We also need the `Grid2D` that we can use to make plots of the `Plane`'s properties.
@@ -46,8 +46,10 @@ grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
 The light profile centres are an internal property of the `Plane`, so we can plot them via an `Include2D` object.
 """
 include = aplt.Include2D(light_profile_centres=True)
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid, include_2d=include)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=grid, include_2d=include
+)
+galaxies_plotter.figures_2d(image=True)
 
 
 """
@@ -61,31 +63,33 @@ light_profile_centres_scatter = aplt.LightProfileCentresScatter(
     marker="o", c="r", s=150
 )
 mat_plot = aplt.MatPlot2D(light_profile_centres_scatter=light_profile_centres_scatter)
-plane_plotter = aplt.PlanePlotter(
-    plane=plane, grid=grid, include_2d=include, mat_plot_2d=mat_plot
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=grid, include_2d=include, mat_plot_2d=mat_plot
 )
-plane_plotter.figures_2d(image=True)
+galaxies_plotter.figures_2d(image=True)
 
 """
-By specifying two colors to the `LightProfileCentresScatter` object the light profile centres of each plane
+By specifying two colors to the `LightProfileCentresScatter` object the light profile centres of each galaxies
 are plotted in different colors.
 """
 light_profile_centres_scatter = aplt.LightProfileCentresScatter(c=["r", "w"], s=150)
 mat_plot = aplt.MatPlot2D(light_profile_centres_scatter=light_profile_centres_scatter)
-plane_plotter = aplt.PlanePlotter(
-    plane=plane, grid=grid, include_2d=include, mat_plot_2d=mat_plot
+galaxies_plotter = aplt.GalaxiesPlotter(
+    galaxies=galaxies, grid=grid, include_2d=include, mat_plot_2d=mat_plot
 )
-plane_plotter.figures_2d(image=True)
+galaxies_plotter.figures_2d(image=True)
 
 
 """
 To plot the light profile centres manually, we can pass them into a` Visuals2D` object. This is useful for plotting 
 the centres on figures where they are not an internal property, like an `Array2D`.
 """
-light_profile_centres = plane.extract_attribute(cls=ag.LightProfile, attr_name="centre")
+light_profile_centres = galaxies.extract_attribute(
+    cls=ag.LightProfile, attr_name="centre"
+)
 
 visuals = aplt.Visuals2D(light_profile_centres=light_profile_centres)
-image = plane.image_2d_from(grid=grid)
+image = galaxies.image_2d_from(grid=grid)
 
 array_plotter = aplt.Array2DPlotter(
     array=image, mat_plot_2d=mat_plot, visuals_2d=visuals

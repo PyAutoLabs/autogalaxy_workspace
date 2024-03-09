@@ -2,7 +2,7 @@
 Database Optional: Manual
 =========================
 
-The main tutorials use the built-in PyAutoGalaxy aggregator objects (e.g. `PlaneAgg`) to navigate the database. For the
+The main tutorials use the built-in PyAutoGalaxy aggregator objects (e.g. `GalaxiesAgg`) to navigate the database. For the
 majority of use-cases this should be sufficient, however a user may have a use case where a more customized
 generation of a `Plane` or `FitImaging` object is desired.
 
@@ -29,7 +29,7 @@ agg = af.Aggregator.from_database("database.sqlite")
 """
 __Manual Planes via Lists (Optional)__
 
-I now illustrate how one can create planes via lists. This does not offer any new functionality that the `PlaneAgg`
+I now illustrate how one can create galaxies via lists. This does not offer any new functionality that the `GalaxiesAgg`
 object above does not provide, and is here for illustrative purposes. It is therefore optionag.
 
 Lets create a list of instances of the maximum log likelihood models of each fit.
@@ -40,13 +40,13 @@ ml_instances = [samps.max_log_likelihood() for samps in agg.values("samples")]
 A model instance contains a list of `Galaxy` instances, which is what we are using to passing to functions in 
 PyAutoGalaxy. 
 
-Lets create the maximum log likelihood plane of every fit.
+Lets create the maximum log likelihood galaxies of every fit.
 """
-ml_planes = [ag.Plane(galaxies=instance.galaxies) for instance in ml_instances]
+ml_galaxies = [ag.Galaxies(galaxies=instance.galaxies) for instance in ml_instances]
 
-print("Maximum Log Likelihood Planes: \n")
-print(ml_planes, "\n")
-print("Total Planes = ", len(ml_planes))
+print("Maximum Log Likelihood Galaxies: \n")
+print(ml_galaxies, "\n")
+print("Total Planes = ", len(ml_galaxies))
 
 """
 Now lets plot their convergences, using a grid of 100 x 100 pixels (noting that this isn't` necessarily the grid used
@@ -54,45 +54,45 @@ to fit the data in the search itself).
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
-for plane in ml_planes:
-    plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-    plane_plotter.figures_2d(convergence=True)
+for galaxies in ml_galaxies:
+    galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+    galaxies_plotter.figures_2d(convergence=True)
 
 
 """
 __Manual Plane via Generators (Optional / Advanced)__
 
-I now illustrate how one can create planes via generators. There may be occasions where the functionality of 
-the `PlaneAgg` object is insufficient to perform the calculation you require. You can therefore write your own 
+I now illustrate how one can create galaxies via generators. There may be occasions where the functionality of 
+the `GalaxiesAgg` object is insufficient to perform the calculation you require. You can therefore write your own 
 generator to do this.
 
-This section is optional, and I advise you only follow it if the `PlaneAgg` object is sufficient for your use-case.
+This section is optional, and I advise you only follow it if the `GalaxiesAgg` object is sufficient for your use-case.
 """
 
 
-def make_plane_generator(fit):
+def make_galaxies_generator(fit):
     samples = fit.value(name="samples")
 
-    return ag.Plane(galaxies=samples.max_log_likelihood().galaxies)
+    return ag.Galaxies(galaxies=samples.max_log_likelihood().galaxies)
 
 
 """
-We `map` the function above using our aggregator to create a plane generator.
+We `map` the function above using our aggregator to create a galaxies generator.
 """
-plane_gen = agg.map(func=make_plane_generator)
+galaxies_gen = agg.map(func=make_galaxies_generator)
 
 """
-We can now iterate over our plane generator to make the plots we desire.
+We can now iterate over our galaxies generator to make the plots we desire.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
-for plane in plane_gen:
-    plane_plotter = aplt.PlanePlotter(plane=plane, grid=grid)
-    plane_plotter.figures_2d(convergence=True, potential=True)
+for galaxies in galaxies_gen:
+    galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
+    galaxies_plotter.figures_2d(convergence=True, potential=True)
 
 
 """
-Now lets use a generator to print the Einstein Mass of every plane.
+Now lets use a generator to print the Einstein Mass of the galaxies
 """
 
 
@@ -101,9 +101,9 @@ def print_max_log_likelihood_mass(fit):
 
     instance = samples.max_log_likelihood()
 
-    plane = ag.Plane(galaxies=instance.galaxies)
+    galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
-    einstein_mass = plane.galaxies[0].einstein_mass_angular_from(grid=grid)
+    einstein_mass = galaxies[0].einstein_mass_angular_from(grid=grid)
 
     print("Einstein Mass (angular units) = ", einstein_mass)
 
@@ -215,9 +215,9 @@ corresponding dataset, via the following generator:
 def make_fit_imaging_generator(fit):
     dataset = make_imaging_gen(fit=fit)
 
-    plane = ag.Plane(galaxies=fit.instance.galaxies)
+    galaxies = ag.Galaxies(galaxies=fit.instance.galaxies)
 
-    return ag.FitImaging(dataset=dataset, plane=plane)
+    return ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 
 fit_imaging_gen = agg.map(func=make_fit_imaging_generator)
@@ -239,11 +239,11 @@ def make_fit_imaging_generator(fit):
 
     settings_inversion = fit.value(name="settings_inversion")
 
-    plane = ag.Plane(galaxies=fit.instance.galaxies)
+    galaxies = ag.Galaxies(galaxies=fit.instance.galaxies)
 
     return ag.FitImaging(
         dataset=dataset,
-        plane=plane,
+        galaxies=galaxies,
         settings_inversion=settings_inversion,
     )
 
@@ -305,7 +305,7 @@ computing derived quantities it is good practise to always use a generator.
 #             axis_ratio_list.append(axis_ratio)
 #             weight_list.append(weight)
 #
-#     median_axis_ratio, upper_axis_ratio, lower_axis_ratio = af.marginalize(
+#     median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
 #         parameter_list=axis_ratio_list, sigma=3.0, weight_list=weight_list
 #     )
 #

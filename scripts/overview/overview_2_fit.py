@@ -2,9 +2,7 @@
 Overview: Fit
 -------------
 
-**PyAutoGalaxy** uses `Plane` objects to represent multi-galaxy systems. 
-
-We now use these objects to fit `Imaging` data of a galaxy.
+We now use galaxies to fit imaging data of a galaxy.
 
 The `autogalaxy_workspace` comes distributed with simulated images of galaxies (an example of how these simulations
 are made can be found in the `simulate.py` example, with all simulator scripts located in `autogalaxy_workspac/simulators`.
@@ -97,14 +95,12 @@ dataset_plotter.figures_2d(data=True)
 """
 __Fitting__
 
-Following the previous overview, we can make a plane from a collection of `LightProfile` and `Galaxy`
-objects.
+Following the previous overview, we can make a collection of galaxies from light profiles and individual galaxy objects..
 
-The combination of `LightProfile`'s below is the same as those used to generate the simulated 
-dataset we loaded above.
+The combination of light profiles below is the same as those used to generate the simulated dataset we loaded above.
 
-It therefore produces a plane whose image looks exactly like the dataset. As discussed in the previous overview, this
-plane can be extended to include additional `LightProfile`'s`s and `Galaxy``s, for example if you wanted to fit data
+It therefore produces galaxies whose image looks exactly like the dataset. As discussed in the previous overview, 
+galaxies can be extended to include additional light profiles and galaxy objects, for example if you wanted to fit data
 with multiple galaxies.
 """
 galaxy = ag.Galaxy(
@@ -118,23 +114,23 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-plane_plotter = aplt.PlanePlotter(plane=plane, grid=dataset.grid)
-plane_plotter.figures_2d(image=True)
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
+galaxies_plotter.figures_2d(image=True)
 
 
 """
-We now use the `FitImaging` object to fit this plane to the dataset. 
+We now use the `FitImaging` object to fit the galaxies to the dataset. 
 
-The fit performs the necessary tasks to create the `model_image` we fit the data with, such as blurring the plane`s 
-image with the `Imaging` Point Spread Function (PSF). We can see this by comparing the plane`s image (which isn't PSF 
-convolved) and the fit`s model image (which is).
+The fit performs the necessary tasks to create the `model_image` we fit the data with, such as blurring the
+image of the galaxies with the imaging data's Point Spread Function (PSF). We can see this by comparing the galaxies 
+image (which isn't PSF convolved) and the fit`s model image (which is).
 
 [For those not familiar with Astronomy data, the PSF describes how the observed emission of the galaxy is blurred by
 the telescope optics when it is observed. It mimicks this blurring effect via a 2D convolution operation].
 """
-fit = ag.FitImaging(dataset=dataset, plane=plane)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 fit_plotter = aplt.FitImagingPlotter(fit=fit)
 fit_plotter.figures_2d(model_image=True)
@@ -149,7 +145,7 @@ The fit creates the following:
 we'll plot all 3 of these, alongside a subplot containing them all, which also shows the data,
 model image and individual galaxies in the fit.
 
-For a good model where the model image and plane are representative of the galaxy system the
+For a good model where the model image and galaxies are representative of the galaxy system the
 residuals, normalized residuals and chi-squared are minimized:
 """
 fit_plotter.figures_2d(
@@ -168,7 +164,7 @@ __Bad Fit__
 
 In contrast, a bad model will show features in the residual-map and chi-squared map.
 
-We can produce such an image by creating a plane with a different galaxy. In the example below, we 
+We can produce such an image by using a different galaxy. In the example below, we 
 change the centre of the galaxy from (0.0, 0.0) to (0.05, 0.05), which leads to residuals appearing
 in the centre of the fit.
 """
@@ -183,12 +179,12 @@ galaxy = ag.Galaxy(
     ),
 )
 
-plane = ag.Plane(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit_bad = ag.FitImaging(dataset=dataset, plane=plane)
+fit_bad = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
-A new fit using this plane shows residuals, normalized residuals and chi-squared which are non-zero. 
+A new fit using these galaxies shows residuals, normalized residuals and chi-squared which are non-zero. 
 """
 fit_plotter = aplt.FitImagingPlotter(fit=fit_bad)
 
