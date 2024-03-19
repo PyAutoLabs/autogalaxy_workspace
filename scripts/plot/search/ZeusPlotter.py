@@ -1,9 +1,9 @@
 """
-Plots: ZeusPlotter
+Plots: MCMCPlotter
 ==================
 
 This example illustrates how to plot visualization summarizing the results of a zeus non-linear search using
-a `ZeusPlotter`.
+a `MCMCPlotter`.
 
 __Start Here Notebook__
 
@@ -30,8 +30,8 @@ We use a model with an initialized starting point, which is necessary for modeli
 dataset_name = "simple__sersic"
 
 search = af.Zeus(
-    path_prefix=path.join("plot", "ZeusPlotter"),
-    name="ZeusPlotter",
+    path_prefix=path.join("plot", "MCMCPlotter"),
+    name="MCMCPlotter",
     nwalkers=30,
     nsteps=500,
 )
@@ -59,7 +59,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
-We now pass the samples to a `ZeusPlotter` which will allow us to use nautilus's in-built plotting libraries to 
+We now pass the samples to a `MCMCPlotter` which will allow us to use nautilus's in-built plotting libraries to 
 make figures.
 
 The zeus readthedocs describes fully all of the methods used below 
@@ -74,10 +74,10 @@ The zeus readthedocs describes fully all of the methods used below
 In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
 described in the API docs.
 """
-zeus_plotter = aplt.ZeusPlotter(samples=result.samples)
+zeus_plotter = aplt.MCMCPlotter(samples=result.samples)
 
 """
-The `corner` method produces a triangle of 1D and 2D PDF's of every parameter in the model fit.
+The `corner` method produces a triangle of 1D and 2D PDF's of every parameter using the library `corner.py`.
 """
 zeus_plotter.corner(
     weight_list=None,
@@ -98,23 +98,6 @@ zeus_plotter.corner(
     size=(10, 10),
 )
 
-
-"""
-The `trajectories` method shows the likelihood of every parameter as a function of parameter value, colored by every
-individual walker.
-"""
-zeus_plotter.trajectories()
-
-"""
-The `likelihood_series` method shows the likelihood as a function of step number, colored by every individual walker.
-"""
-zeus_plotter.likelihood_series()
-
-"""
-The `time_series` method shows the likelihood of every parameter as a function of step number, colored by every
-individual walker.
-"""
-zeus_plotter.time_series()
 
 """
 Finish.

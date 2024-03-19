@@ -1,23 +1,23 @@
-dynesty:
-  cornerplot: true
+DynestyStatic:
+  corner: true
   cornerpoints: false
   runplot: true
   traceplot: true
-emcee:
+Emcee:
   corner: true
   likelihood_series: true
   time_series: true
   trajectories: true
-pyswarms:
+PySwarmsGlobal:
   contour: true
   cost_history: true
   time_series: true
   trajectories: true
-ultranest:
-  cornerplot: true
+UltraNest:
+  corner: true
   runplot: true
   traceplot: true
-zeus:
+Zeus:
   corner: true
   likelihood_series: true
   time_series: true

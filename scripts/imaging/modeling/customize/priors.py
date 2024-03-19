@@ -72,8 +72,7 @@ dataset_plotter.subplot_dataset()
 """
 __Model__
 
-We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
-example we fit a model where:
+We compose our model where in this example:
 
  - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
  

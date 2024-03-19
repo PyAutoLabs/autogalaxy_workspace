@@ -1,9 +1,9 @@
 """
-Plots: PySwarmsPlotter
+Plots: OptimizePlotter
 =====================
 
 This example illustrates how to plot visualization summarizing the results of a pyswarms non-linear search using
-a `ZeusPlotter`.
+a `MCMCPlotter`.
 
 __Start Here Notebook__
 
@@ -28,7 +28,7 @@ the `modeling/mass_total__source_parametric.py` example.
 dataset_name = "simple__sersic"
 
 search = af.PySwarmsGlobal(
-    path_prefix=path.join("plot", "PySwarmsPlotter"),
+    path_prefix=path.join("plot", "OptimizePlotter"),
     name="PySwarms",
     n_particles=50,
     iters=10,
@@ -57,7 +57,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
-We now pass the samples to a `PySwarmsPlotter` which will allow us to use pyswarms's in-built plotting libraries to 
+We now pass the samples to a `OptimizePlotter` which will allow us to use pyswarms's in-built plotting libraries to 
 make figures.
 
 The pyswarms readthedocs describes fully all of the methods used below 
@@ -67,12 +67,12 @@ The pyswarms readthedocs describes fully all of the methods used below
 In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
 described in the API docs.
 """
-pyswarms_plotter = aplt.PySwarmsPlotter(samples=result.samples)
+plotter = aplt.OptimizePlotter(samples=result.samples)
 
 """
 The `contour` method shows a 2D projection of the particle trajectories.
 """
-pyswarms_plotter.contour(
+plotter.contour(
     canvas=None,
     title="Trajectories",
     mark=None,
@@ -85,7 +85,7 @@ pyswarms_plotter.contour(
 """
 The `cost history` shows in 1D the evolution of each parameters estimated highest likelihood.
 """
-pyswarms_plotter.cost_history(ax=None, title="Cost History", designer=None)
+plotter.cost_history(ax=None, title="Cost History", designer=None)
 
 """
 Finish.

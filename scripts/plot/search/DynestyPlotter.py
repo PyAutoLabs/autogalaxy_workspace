@@ -1,9 +1,9 @@
 """
-Plots: DynestyPlotter
+Plots: NestPlotter
 =====================
 
 This example illustrates how to plot visualization summarizing the results of a nautilus non-linear search using
-a `ZeusPlotter`.
+a `MCMCPlotter`.
 
 __Start Here Notebook__
 
@@ -29,7 +29,7 @@ dataset_name = "simple__sersic"
 
 search = af.Nautilus(
     path_prefix=path.join("plot"),
-    name="DynestyPlotter",
+    name="NestPlotter",
     unique_tag=dataset_name,
     n_live=100,
 )
@@ -57,7 +57,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
-We now pass the samples to a `DynestyPlotter` which will allow us to use nautilus's in-built plotting libraries to 
+We now pass the samples to a `NestPlotter` which will allow us to use nautilus's in-built plotting libraries to 
 make figures.
 
 The nautilus readthedocs describes fully all of the methods used below 
@@ -77,7 +77,7 @@ we:
 There are other `_kwargs` inputs we pass as None, you should check out the Nautilus docs if you need to customize your
 figure.
 """
-search_plotter = aplt.DynestyPlotter(samples=result.samples)
+plotter = aplt.NestPlotter(samples=result.samples)
 
 """
 __Notation__
@@ -90,9 +90,9 @@ mass its name `mass` defined when making the `Model` above is used).
 
 __Plots__
 
-The `cornerplot` method produces a triangle of 1D and 2D PDF's of every parameter in the model fit.
+The `corner` method produces a triangle of 1D and 2D PDF's of every parameter using the library `corner.py`.
 """
-search_plotter.cornerplot(
+plotter.corner_cornerpy(
     dims=None,
     span=None,
     quantiles=[0.025, 0.5, 0.975],
@@ -112,133 +112,6 @@ search_plotter.cornerplot(
     top_ticks=False,
     use_math_text=False,
     verbose=False,
-)
-
-"""
-The `runplot` method shows how the estimates of the log evidence and other quantities progress as a function of
-iteration number during the nautilus model-fit.
-"""
-search_plotter.runplot(
-    span=None,
-    logplot=False,
-    kde=True,
-    nkde=1000,
-    color="blue",
-    plot_kwargs=None,
-    label_kwargs={"fontsize": 16},
-    lnz_error=True,
-    lnz_truth=None,
-    truth_color="red",
-    truth_kwargs=None,
-    max_x_ticks=8,
-    max_y_ticks=3,
-    use_math_text=True,
-    mark_final_live=True,
-    fig=None,
-)
-
-"""
-The `traceplot` method shows how the live points of each parameter converged alongside their PDF.
-"""
-search_plotter.traceplot(
-    span=None,
-    quantiles=[0.025, 0.5, 0.975],
-    smooth=0.02,
-    thin=1,
-    dims=None,
-    post_color="blue",
-    post_kwargs=None,
-    kde=True,
-    nkde=1000,
-    trace_cmap="plasma",
-    trace_color=None,
-    trace_kwargs=None,
-    connect=False,
-    connect_highlight=10,
-    connect_color="red",
-    connect_kwargs=None,
-    max_n_ticks=5,
-    use_math_text=False,
-    label_kwargs={"fontsize": 16},
-    show_titles=True,
-    title_fmt=".2f",
-    title_kwargs={"fontsize": "10"},
-    truths=None,
-    truth_color="red",
-    truth_kwargs=None,
-    verbose=False,
-    fig=None,
-)
-
-
-"""
-The `cornerpoints` method produces a triangle of 1D and 2D plots of the weight points of every parameter in the model 
-fit.
-"""
-search_plotter.cornerpoints(
-    dims=None,
-    thin=1,
-    span=None,
-    cmap="plasma",
-    color=None,
-    kde=True,
-    nkde=1000,
-    plot_kwargs=None,
-    label_kwargs={"fontsize": 16},
-    truths=None,
-    truth_color="red",
-    truth_kwargs=None,
-    max_n_ticks=5,
-    use_math_text=False,
-    fig=None,
-)
-
-"""
-The `boundplot` method produces a plot of the bounding distribution used to draw a live point at a given iteration `it`
-of the sample or of a dead point `idx`.
-"""
-search_plotter.boundplot(
-    dims=(2, 2),
-    it=100,
-    idx=None,
-    prior_transform=None,
-    periodic=None,
-    reflective=None,
-    ndraws=5000,
-    color="gray",
-    plot_kwargs=None,
-    label_kwargs={"fontsize": 16},
-    max_n_ticks=5,
-    use_math_text=False,
-    show_live=False,
-    live_color="darkviolet",
-    live_kwargs=None,
-    span=None,
-    fig=None,
-)
-
-"""
-The `cornerbound` method produces the bounding distribution used to draw points at an input iteration `it` or used to
-specify a dead point via `idx`.
-"""
-search_plotter.cornerbound(
-    it=100,
-    idx=None,
-    dims=None,
-    prior_transform=None,
-    periodic=None,
-    reflective=None,
-    ndraws=5000,
-    color="gray",
-    plot_kwargs=None,
-    label_kwargs={"fontsize": 16},
-    max_n_ticks=5,
-    use_math_text=False,
-    show_live=False,
-    live_color="darkviolet",
-    live_kwargs=None,
-    span=None,
-    fig=None,
 )
 
 """

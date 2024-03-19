@@ -10,3 +10,4 @@ The following example scripts illustrating modeling where:
 - ``shapelets.py``: Using shapelet basis functions for the galaxy light.
 - ``operated_light_profiles.py``: There are light profiles which are assumed to already be convolved with the instrumental PSF (e.g. point sources), commonly used for modeling bright AGN in the centre of a galaxy.
 - ``pixelization.py``: The galaxy is reconstructed using a rectangular pixel grid.
+- ``sky_background.py``: Including the background sky in the model.

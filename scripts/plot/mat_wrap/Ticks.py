@@ -57,7 +57,16 @@ array_plotter.figure_2d()
 """
 Ticks can be removed altogether by the following code:
 """
-tickparams = aplt.TickParams(bottom=False, top=False, left=False, right=False)
+tickparams = aplt.TickParams(
+    bottom=False,
+    top=False,
+    left=False,
+    right=False,
+    labelbottom=False,
+    labeltop=False,
+    labelleft=False,
+    labelright=False,
+)
 
 
 mat_plot = aplt.MatPlot2D(tickparams=tickparams, yticks=yticks, xticks=xticks)

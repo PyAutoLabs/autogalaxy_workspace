@@ -76,8 +76,7 @@ dataset_plotter.subplot_dataset()
 """
 __Model__
 
-We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
-example we fit a model where:
+We compose our model where in this example:
 
  - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
  - The galaxy's point source emission is a parametric operated `Gaussian` centred on the bulge [4 parameters].
@@ -144,7 +143,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
+Create the `AnalysisImaging` object defining how the model is fitted to the data. 
 """
 analysis = ag.AnalysisImaging(dataset=dataset)
 
@@ -179,8 +178,8 @@ galaxies_plotter.subplot()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
-search_plotter = aplt.NautilusPlotter(samples=result.samples)
-search_plotter.cornerplot()
+plotter = aplt.NestPlotter(samples=result.samples)
+plotter.corner_cornerpy()
 
 """
 Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.

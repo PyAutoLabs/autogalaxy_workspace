@@ -62,5 +62,13 @@ array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
 array_plotter.figure_2d()
 
 """
+The colorbar can be disabled by setting the `Colorbar` object to `False`.
+"""
+mat_plot = aplt.MatPlot2D(colorbar=False)
+
+array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
+array_plotter.figure_2d()
+
+"""
 Finish.
 """

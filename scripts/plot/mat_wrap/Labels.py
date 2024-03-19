@@ -26,7 +26,7 @@ data_path = path.join(dataset_path, "data.fits")
 data = ag.Array2D.from_fits(file_path=data_path, hdu=0, pixel_scales=0.1)
 
 """
-We can customize the ticks using the `YTicks` and `XTicks matplotlib wrapper object which wraps the following method(s):
+We can customize the ticks using the `YLabel` and `XLabel` matplotlib wrapper object which wraps the following method(s):
 
  https://matplotlib.org/3.3.2/api/_as_gen/matplotlib.pyplot.title.html
  https://matplotlib.org/3.3.2/api/_as_gen/matplotlib.pyplot.ylabel.html
@@ -59,12 +59,25 @@ array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
 array_plotter.figure_2d()
 
 """
+The labels can be disabled by inputting empty strings.
+"""
+title = aplt.Title(label="")
+ylabel = aplt.YLabel(ylabel="")
+xlabel = aplt.XLabel(xlabel="")
+
+mat_plot = aplt.MatPlot2D(title=title, ylabel=ylabel, xlabel=xlabel)
+
+array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
+array_plotter.figure_2d()
+
+"""
 The units can be manually specified.
 """
 mat_plot = aplt.MatPlot2D(units=aplt.Units(in_kpc=True, ticks_convert_factor=5.0))
 
 array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
 array_plotter.figure_2d()
+
 
 """
 Finish.

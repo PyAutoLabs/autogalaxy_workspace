@@ -212,6 +212,13 @@ Functions related to background subtraction are:
 
 - `background_sky_level_via_edges_from`
 - `background_noise_map_via_edges_from`
+
+Alternatively, it is possible to model the background sky as part of your fitting procedure. This is described in the
+`autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example script. 
+
+Modeling the sky has only a small impact on computational run times but does produce more accurate results, and 
+therefore is recommended. Even if your data is sky subtracted, you can still include the sky in the model to ensure
+any residual sky is accounted for.
 """
 
 # __Centering__

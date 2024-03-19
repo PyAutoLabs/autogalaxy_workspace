@@ -83,8 +83,7 @@ settings_dataset = ag.SettingsInterferometer(transformer_class=ag.TransformerNUF
 """
 __Model__
 
-We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
-example we fit a model where:
+We compose our model where in this example:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk, the centres of 
  which are aligned [11 parameters].
@@ -221,8 +220,8 @@ fit_plotter = aplt.FitInterferometerPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 fit_plotter.subplot_fit_dirty_images()
 
-search_plotter = aplt.NautilusPlotter(samples=result.samples)
-search_plotter.cornerplot()
+plotter = aplt.NestPlotter(samples=result.samples)
+plotter.corner_cornerpy()
 
 """
 Checkout `autogalaxy_workspace/*/interferometer/modeling/results.py` for a full description of the result object.

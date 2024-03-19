@@ -127,7 +127,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
+Create the `AnalysisImaging` object defining how the model is fitted to the data. 
 """
 analysis = ag.AnalysisImaging(dataset=dataset)
 
@@ -162,8 +162,8 @@ galaxies_plotter.subplot()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
-search_plotter = aplt.NautilusPlotter(samples=result.samples)
-search_plotter.cornerplot()
+plotter = aplt.NestPlotter(samples=result.samples)
+plotter.corner_cornerpy()
 
 """
 Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.

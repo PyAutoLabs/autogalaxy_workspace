@@ -1,9 +1,9 @@
 """
-Plots: EmceePlotter
+Plots: MCMCPlotter
 =====================
 
 This example illustrates how to plot visualization summarizing the results of a emcee non-linear search using
-a `ZeusPlotter`.
+a `MCMCPlotter`.
 
 __Start Here Notebook__
 
@@ -31,7 +31,7 @@ dataset_name = "simple__sersic"
 
 search = af.Emcee(
     path_prefix=path.join("plot"),
-    name="EmceePlotter",
+    name="MCMCPlotter",
     unique_tag=dataset_name,
     nwalkers=30,
     nsteps=500,
@@ -59,7 +59,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 
 result = search.fit(model=model, analysis=analysis)
 """
-We now pass the samples to a `EmceePlotter` which will allow us to use emcee's in-built plotting libraries to 
+We now pass the samples to a `MCMCPlotter` which will allow us to use emcee's in-built plotting libraries to 
 make figures.
 
 The emcee readthedocs describes fully all of the methods used below 
@@ -73,12 +73,12 @@ The emcee readthedocs describes fully all of the methods used below
 In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
 described in the API docs.
 """
-search_plotter = aplt.EmceePlotter(samples=result.samples)
+plotter = aplt.MCMCPlotter(samples=result.samples)
 
 """
-The `corner` method produces a triangle of 1D and 2D PDF's of every parameter in the model fit.
+The `corner` method produces a triangle of 1D and 2D PDF's of every parameter using the library `corner.py`.
 """
-search_plotter.corner(
+plotter.corner_cornerpy(
     bins=20,
     range=None,
     color="k",
@@ -110,24 +110,6 @@ search_plotter.corner(
     divergences_kwargs=None,
     labeller=None,
 )
-
-
-"""
-The `trajectories` method shows the likelihood of every parameter as a function of parameter value, colored by every
-individual walker.
-"""
-search_plotter.trajectories()
-
-"""
-The `likelihood_series` method shows the likelihood as a function of step number, colored by every individual walker.
-"""
-search_plotter.time_series()
-
-"""
-The `time_series` method shows the likelihood of every parameter as a function of step number, colored by every
-individual walker.
-"""
-search_plotter.likelihood_series()
 
 
 """
