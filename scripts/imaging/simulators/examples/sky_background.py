@@ -1,10 +1,19 @@
 """
-Simulator: AO
-=============
+Simulator: Sky Background
+=========================
 
-This script simulates `Imaging` of a galaxy where:
+This script simulates `Imaging` of a galaxy where the sky background is not subtracted from the image and therefore
+appears in the dataset.
 
- - The resolution, PSF and S/N are representative of Keck adaptics optics imaging.
+It is used to demonstrate sky background modeling in 
+the `autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example.
+
+__Model__
+
+The galaxy uses light profiles where:
+
+ - The galaxy's bulge is an `Sersic`.
+ - The galaxy's disk is an `Exponential`.
 
 __Start Here Notebook__
 
@@ -25,9 +34,10 @@ __Dataset Paths__
 
 The path where the dataset will be output.
 """
-dataset_type = "instruments"
-dataset_instrument = "ao"
-dataset_path = path.join("dataset", "imaging", dataset_type, dataset_instrument)
+dataset_type = "imaging"
+dataset_name = "sky_background"
+
+dataset_path = path.join("dataset", dataset_type, dataset_name)
 
 """
 __Simulate__
@@ -36,24 +46,35 @@ Simulate the image using the `Grid2DIterate` object, which is a grid of (y,x) co
 where the sub-size of the grid is increased until the input fractional accuracy of 99.99% is met.
 """
 grid = ag.Grid2DIterate.uniform(
-    shape_native=(800, 800), pixel_scales=0.01, fractional_accuracy=0.9999
+    shape_native=(100, 100),
+    pixel_scales=0.1,
+    fractional_accuracy=0.9999,
+    sub_steps=[2, 4, 8, 16, 24],
 )
 
 """
 Simulate a simple Gaussian PSF for the image.
 """
 psf = ag.Kernel2D.from_gaussian(
-    shape_native=(21, 21),
-    sigma=0.025,
-    pixel_scales=grid.pixel_scales,
-    normalize=True,
+    shape_native=(11, 11), sigma=0.1, pixel_scales=grid.pixel_scales
 )
 
 """
 Create the simulator for the imaging data, which defines the exposure time, background sky, noise levels and psf.
+
+The input `subtract_background_sky=False` ensures the background sky is not subtracted from the image, but is 
+included in the data and used to estimate its noise-map.
+
+The `background_sky_level` is also increased to 5.0 electrons per second, which is much higer than the value of 
+0.1 electrons per second used in previous examples. This is to better illustrate the sky background in the image
+and how it can be modeled.
 """
 simulator = ag.SimulatorImaging(
-    exposure_time=1000.0, psf=psf, background_sky_level=1.0, add_poisson_noise=True
+    exposure_time=300.0,
+    psf=psf,
+    background_sky_level=5.0,
+    subtract_background_sky=False,
+    add_poisson_noise=True,
 )
 
 """
@@ -65,10 +86,10 @@ galaxy = ag.Galaxy(
     redshift=0.5,
     bulge=ag.lp.Sersic(
         centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.5, angle=45.0),
+        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
         intensity=1.0,
-        effective_radius=3.0,
-        sersic_index=2.0,
+        effective_radius=0.8,
+        sersic_index=4.0,
     ),
 )
 
@@ -76,16 +97,11 @@ galaxy = ag.Galaxy(
 Use these galaxies to generate the image for the simulated `Imaging` dataset.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
-
-"""
-Lets look at the galaxies image, this is the image we'll be simulating.
-"""
 galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
 galaxies_plotter.figures_2d(image=True)
 
 """
-We can now pass this simulator galaxies, which creates the image plotted above and simulates it as an
-imaging dataset.
+Pass the simulator galaxies, which creates the image which is simulated as an imaging dataset.
 """
 dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 
@@ -112,10 +128,7 @@ __Visualize__
 
 Output a subplot of the simulated dataset, the image and the galaxies quantities to the dataset path as .png files.
 """
-mat_plot = aplt.MatPlot2D(
-    title=aplt.Title(label="Keck Adaptive Optics Image"),
-    output=aplt.Output(path=dataset_path, format="png"),
-)
+mat_plot = aplt.MatPlot2D(output=aplt.Output(path=dataset_path, format="png"))
 
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset, mat_plot_2d=mat_plot)
 dataset_plotter.subplot_dataset()
@@ -140,5 +153,5 @@ ag.output_to_json(
 )
 
 """
-The dataset can be viewed in the folder `autogalaxy_workspace/imaging/instruments/ao`.
+The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple__sersic`.
 """

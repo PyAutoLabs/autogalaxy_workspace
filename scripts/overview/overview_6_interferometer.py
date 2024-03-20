@@ -68,7 +68,7 @@ dataset_plotter.figures_2d(dirty_image=True, dirty_noise_map=True)
 
 
 """
-__Plane__
+__Galaxies__
 
 To perform uv-plane modeling, **PyAutoGalaxy** generates an image of the galaxy system in real-space. 
 

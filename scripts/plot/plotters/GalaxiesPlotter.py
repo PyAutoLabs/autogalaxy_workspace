@@ -25,7 +25,7 @@ First, lets create `Grid2D`.
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
 
 """
-__Plane__
+__Galaxies__
 
 We create a `Plane` representing a `Galaxy` with a `LightProfile`.
 """

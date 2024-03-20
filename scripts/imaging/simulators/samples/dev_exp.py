@@ -32,17 +32,11 @@ import autogalaxy.plot as aplt
 """
 __Dataset Paths__
 
-The `dataset_type` describes the type of data being simulated (in this case, `Imaging` data) and `dataset_sample_name`
-gives a descriptive name to the sample. 
+The path where the dataset sample will be output.
 """
 dataset_label = "samples"
 dataset_type = "imaging"
 dataset_sample_name = "dev_exp"
-
-"""
-The path where the dataset will be output, which in this case is:
-`/autogalaxy_workspace/dataset/imaging/sample/dev_exp_0`
-"""
 dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
 
 """
@@ -67,8 +61,7 @@ psf = ag.Kernel2D.from_gaussian(
 )
 
 """
-To simulate the `Imaging` dataset we first create a simulator, which defines the exposure time, background sky,
-noise levels and psf of the dataset that is simulated.
+Create the simulator for the imaging data, which defines the exposure time, background sky, noise levels and psf.
 """
 simulator = ag.SimulatorImaging(
     exposure_time=300.0, psf=psf, background_sky_level=0.1, add_poisson_noise=True
@@ -125,7 +118,7 @@ for sample_index in range(total_datasets):
     galaxy = galaxy_model.random_instance()
 
     """
-    __Plane__
+    __Galaxies__
     
     Use the sample's galaxies to generate the image for the 
     simulated `Imaging` dataset.

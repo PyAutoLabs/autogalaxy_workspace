@@ -24,32 +24,17 @@ import autogalaxy.plot as aplt
 """
 __Dataset Paths__
 
-The `dataset_type` describes the type of data being simulated (in this case, `Imaging` data) and `dataset_name`
-gives it a descriptive name. They define the folder the dataset is output to on your hard-disk:
-
- - The image will be output to `/autogalaxy_workspace/dataset/dataset_type/dataset_name/image.fits`.
- - The noise-map will be output to `/autogalaxy_workspace/dataset/dataset_type/dataset_name/noise_map.fits`.
- - The psf will be output to `/autogalaxy_workspace/dataset/dataset_type/dataset_name/psf.fits`.
+The path where the dataset will be output.
 """
 dataset_type = "instruments"
 dataset_instrument = "hst_up"
-
-"""
-The path where the dataset will be output, which in this case is:
-`/autogalaxy_workspace/dataset/imaging/instruments/hst_up`
-"""
 dataset_path = path.join("dataset", "imaging", dataset_type, dataset_instrument)
 
 """
 __Simulate__
 
-For simulating an image of a galaxy, we recommend using a Grid2DIterate object. This represents a grid of (y,x) 
-coordinates like an ordinary Grid2D, but when the light-profile`s image is evaluated below (using the Plane) the 
-sub-size of the grid is iteratively increased (in steps of 2, 4, 8, 16, 24) until the input fractional accuracy of 
-99.99% is met.
-
-This ensures that the divergent and bright central regions of the galaxy are fully resolved when determining the
-total flux emitted within a pixel.
+Simulate the image using the `Grid2DIterate` object, which is a grid of (y,x) coordinates that is iteratively
+where the sub-size of the grid is increased until the input fractional accuracy of 99.99% is met.
 """
 grid = ag.Grid2DIterate.uniform(
     shape_native=(260, 260), pixel_scales=0.03, fractional_accuracy=0.9999
@@ -63,15 +48,14 @@ psf = ag.Kernel2D.from_gaussian(
 )
 
 """
-To simulate the `Imaging` dataset we first create a simulator, which defines the exposure time, background sky,
-noise levels and psf of the dataset that is simulated.
+Create the simulator for the imaging data, which defines the exposure time, background sky, noise levels and psf.
 """
 simulator = ag.SimulatorImaging(
     exposure_time=2000.0, psf=psf, background_sky_level=1.0, add_poisson_noise=True
 )
 
 """
-__Plane__
+__Galaxies__
 
 Setup the galaxy with a bulge (elliptical Sersic) for this simulation.
 """

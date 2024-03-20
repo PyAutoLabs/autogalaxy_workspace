@@ -47,7 +47,7 @@ grid = ag.Grid2D.uniform(
 )
 
 """
-__Plane__
+__Galaxies__
 
 The `Mapper` maps pixels from the image-plane of our `Imaging` data to its source plane, via a model.
 

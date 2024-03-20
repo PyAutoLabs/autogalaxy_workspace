@@ -113,7 +113,7 @@ print(ue3_instance.galaxies.galaxy.bulge, "\n")
 print(le3_instance.galaxies.galaxy.bulge, "\n")
 
 """
-__Plane__
+__Galaxies__
 
 The result's maximum likelihood `Plane` object contains everything necessary to perform calculations with the model
 like retrieving the images of each galaxy.

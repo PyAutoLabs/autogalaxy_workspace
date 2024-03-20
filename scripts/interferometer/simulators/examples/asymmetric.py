@@ -74,7 +74,7 @@ simulator = ag.SimulatorInterferometer(
 )
 
 """
-__Plane__
+__Galaxies__
 
 Setup the galaxy with 14 elliptical Gaussians, which represent a complex galaxy morphology with irregular and
 asymmetric features such as an isophotal twist which symmetric profiles like a Sersic cannot capture.

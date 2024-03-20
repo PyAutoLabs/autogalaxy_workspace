@@ -26,7 +26,7 @@ Define the 2D grid the quantity (in this example, the image) is evaluated using.
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
 """
-__Plane__
+__Galaxies__
 
 Create galaxies which we will use to create our `DatasetQuantity`.
 """

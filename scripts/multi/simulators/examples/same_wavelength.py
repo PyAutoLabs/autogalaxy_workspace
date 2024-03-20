@@ -90,7 +90,7 @@ simulator_list = [
 
 
 """
-__Plane__
+__Galaxies__
 
 Setup the galaxy with a bulge (elliptical Sersic) and disk (elliptical exponential) for this simulation.
 

@@ -45,7 +45,7 @@ mask = ag.Mask2D.circular_annular(
 dataset = dataset.apply_mask(mask=mask)
 
 """
-__Plane__
+__Galaxies__
 
 The `Inversion` maps pixels from the image-plane of our `Imaging` data to its source plane, via a model.
 

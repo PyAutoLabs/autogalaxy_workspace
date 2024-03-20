@@ -70,7 +70,7 @@ simulator = ag.SimulatorInterferometer(
 )
 
 """
-__Plane__
+__Galaxies__
 
 Setup the two galaxy's both with a bulge (elliptical Sersic).
 

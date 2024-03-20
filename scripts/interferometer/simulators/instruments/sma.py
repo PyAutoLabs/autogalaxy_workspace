@@ -71,7 +71,7 @@ simulator = ag.SimulatorInterferometer(
 )
 
 """
-__Plane__
+__Galaxies__
 
 Setup the galaxy's mass (SIE+Shear)  galaxy light (elliptical Sersic) for this simulation.
 """
