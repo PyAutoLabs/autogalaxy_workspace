@@ -195,8 +195,7 @@ We first compose the model, in the same way described in the `modeling.py` overv
 """
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
 
-galaxies = af.Collection(galaxy=galaxy)
-model = af.Collection(galaxies=galaxies)
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
 __Non-linear Search__
