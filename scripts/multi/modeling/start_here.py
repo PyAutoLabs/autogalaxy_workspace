@@ -169,6 +169,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     number_of_cores=2,
+    n_like_max=2000,
 )
 
 """

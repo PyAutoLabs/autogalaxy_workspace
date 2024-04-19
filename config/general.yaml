@@ -11,7 +11,7 @@ inversion:
   use_positive_only_solver: true      # If True, inversion's use a positive-only linear algebra solver by default, which is slower but prevents unphysical negative values in the reconstructed solutuion.
   no_regularization_add_to_curvature_diag_value : 1.0e-3 # The default value added to the curvature matrix's diagonal when regularization is not applied to a linear object, which prevents inversion's failing due to the matrix being singular.
   positive_only_uses_p_initial: true  # If True, the positive-only solver of an inversion's uses an initial guess of the reconstructed data's values as which values should be positive, speeding up the solver.
-  relocate_pix_border: true          # If True, by default a pixelization's border is used to relocate all pixels outside its border to the border.
+  use_border_relocator: true          # If True, by default a pixelization's border is used to relocate all pixels outside its border to the border.
   reconstruction_vmax_factor: 0.5   # Plots of an Inversion's reconstruction use the reconstructed data's bright value multiplied by this factor.
 hpc:
   hpc_mode: false                   # If True, use HPC mode, which disables GUI visualization, logging to screen and other settings which are not suited to running on a super computer.
@@ -49,7 +49,7 @@ profiling:
 structures:
   native_binned_only: false           # If True, data structures are only stored in their native and binned format. This is used to reduce memory usage in autocti.
 test:
-  check_figure_of_merit_sanity: false # If True, a sanity check is performed when a model-fit is resumed, to ensure the figure of merit of the new fit computed via the likelihood function is consistent with the previous fit.
+  check_likelihood_function: true   # if True, when a search is resumed the likelihood of a previous sample is recalculated to ensure it is consistent with the previous run.
   check_preloads: True
   lh_timeout_seconds:               # If a float is input, the log_likelihood_function call is timed out after this many seconds, to diagnose infinite loops. Default is None, meaning no timeout.
   preloads_check_threshold: 1.0     # If the figure of merit of a fit with and without preloads is greater than this threshold, the check preload test fails and an exception raised for a model-fit. 

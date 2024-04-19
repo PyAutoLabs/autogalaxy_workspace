@@ -195,7 +195,7 @@ print(result.max_log_likelihood_instance)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
     galaxies=result.max_log_likelihood_galaxies,
-    grid=real_space_mask.derive_grid.unmasked_sub_1,
+    grid=real_space_mask.derive_grid.unmasked,
 )
 galaxies_plotter.subplot()
 

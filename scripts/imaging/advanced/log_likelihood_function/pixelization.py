@@ -860,7 +860,7 @@ fit = ag.FitImaging(
     dataset=masked_dataset,
     galaxies=galaxies,
     settings_inversion=ag.SettingsInversion(
-        use_w_tilde=False, relocate_pix_border=True
+        use_w_tilde=False, use_border_relocator=True
     ),
 )
 fit_log_evidence = fit.log_evidence

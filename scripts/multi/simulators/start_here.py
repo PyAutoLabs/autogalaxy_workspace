@@ -47,11 +47,12 @@ The pixel-scale of each color image is different meaning we make a list of grids
 pixel_scales_list = [0.08, 0.12]
 
 grid_list = [
-    ag.Grid2DIterate.uniform(
+    ag.Grid2D.uniform(
         shape_native=(250, 250),
         pixel_scales=pixel_scales,
-        fractional_accuracy=0.9999,
-        sub_steps=[2, 4, 8, 16, 24],
+        over_sampling=ag.OverSamplingIterate(
+            fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
+        ),
     )
     for pixel_scales in pixel_scales_list
 ]

@@ -41,13 +41,14 @@ dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_
 """
 __Simulate__
 
-For simulating an image of a galaxy, we use the Grid2DIterate object.
+Simulate the image using a `Grid2D` with the `OverSamplingIterate` object.
 """
-grid = ag.Grid2DIterate.uniform(
+grid = ag.Grid2D.uniform(
     shape_native=(150, 150),
     pixel_scales=0.1,
-    fractional_accuracy=0.9999,
-    sub_steps=[2, 4, 8, 16, 24],
+    over_sampling=ag.OverSamplingIterate(
+        fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
+    ),
 )
 
 grid = ag.Grid2D.uniform(shape_native=(150, 150), pixel_scales=0.1)

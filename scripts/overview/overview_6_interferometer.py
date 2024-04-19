@@ -88,7 +88,7 @@ galaxy = ag.Galaxy(
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=galaxies, grid=real_space_mask.derive_grid.unmasked_sub_1
+    galaxies=galaxies, grid=real_space_mask.derive_grid.unmasked
 )
 galaxies_plotter.figures_2d(image=True)
 

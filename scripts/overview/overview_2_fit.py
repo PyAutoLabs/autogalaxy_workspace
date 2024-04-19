@@ -48,18 +48,21 @@ dataset_plotter.subplot_dataset()
 """
 __Grid__
 
-The Grid2DIterate object. represents a grid of (y,x) coordinates like an ordinary Grid2D, but when the light-profile's 
-image is evaluated for the fit the light profile intensity is oteratively increased (in steps of 2, 4, 8, 16, 24) 
-until a fractional accuracy of 99.99% is met.
+When calculating the amount of emission in each image pixel from galaxies, a two dimensional line integral of all of 
+the emission within the area of that pixel should be performed. However, for complex models this can be difficult 
+to analytically compute and can lead to slow run times.
 
-This ensures that the divergent and bright central regions of the galaxy are fully resolved when determining the
-total flux emitted within a pixel.
+Instead, an iterative algorithm is used to approximate the line integral. Grids of increasing resolution are used to 
+evaluate the flux in each pixel from the lens and source galaxies. Grids of higher resolution are used until the 
+fractional accuracy of the flux in each pixel meets a certain threshold, which we set below to 99.99%
+
+This uses the `OverSamplingIterate` object, which is input into to the `Grid2D` object you may have seen in other 
+example scripts, however it make sit perform the iterative ray-tracing described above.
 """
-dataset = dataset.apply_settings(
-    ag.SettingsImaging(
-        grid_class=ag.Grid2DIterate,
+dataset = dataset.apply_over_sampling(
+    ag.OverSamplingIterate(
         fractional_accuracy=0.9999,
-        sub_steps=[2, 4, 8, 16, 24],
+        sub_steps=[2, 4, 8, 16],
     )
 )
 

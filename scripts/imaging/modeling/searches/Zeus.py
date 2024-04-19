@@ -122,8 +122,8 @@ __Result__
 We can use an `MCMCPlotter` to create a corner plot, which shows the probability density function (PDF) of every
 parameter in 1D and 2D.
 """
-zeus_plotter = aplt.MCMCPlotter(samples=result.samples)
-zeus_plotter.corner()
+plotter = aplt.MCMCPlotter(samples=result.samples)
+plotter.corner_cornerpy()
 
 """
 Finish.

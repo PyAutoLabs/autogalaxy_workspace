@@ -15,6 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+from matplotlib import pyplot as plt
 from os import path
 
 import autofit as af
@@ -57,6 +58,18 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 result = search.fit(model=model, analysis=analysis)
 
 """
+__Notation__
+
+Plot are labeled with short hand parameter names (e.g. the `centre` parameters are plotted using an `x`). 
+
+The mappings of every parameter to its shorthand symbol for plots is specified in the `config/notation.yaml` file 
+and can be customized.
+
+Each label also has a superscript corresponding to the model component the parameter originates from. For example,
+Gaussians are given the superscript `g`. This can also be customized in the `config/notation.yaml` file.
+
+__Plotting__
+
 We now pass the samples to a `OptimizePlotter` which will allow us to use pyswarms's in-built plotting libraries to 
 make figures.
 
@@ -70,9 +83,30 @@ described in the API docs.
 plotter = aplt.OptimizePlotter(samples=result.samples)
 
 """
+__Search Specific Visualization__
+
+The internal sampler can be used to plot the results of the non-linear search. 
+
+We do this using the `search_internal` attribute which contains the sampler in its native form.
+
+The first time you run a search, the `search_internal` attribute will be available because it is passed ot the
+result via memory. 
+
+If you rerun the fit on a completed result, it will not be available in memory, and therefore
+will be loaded from the `files/search_internal` folder. The `search_internal` entry of the `output.yaml` must be true 
+for this to be possible.
+"""
+search_internal = result.search_internal
+
+"""
+__Plots__
+
 The `contour` method shows a 2D projection of the particle trajectories.
 """
-plotter.contour(
+from pyswarms.utils import plotters
+
+plotters.plot_contour(
+    pos_history=search_internal,
     canvas=None,
     title="Trajectories",
     mark=None,
@@ -80,12 +114,15 @@ plotter.contour(
     mesher=None,
     animator=None,
 )
+plt.show()
 
-
-"""
-The `cost history` shows in 1D the evolution of each parameters estimated highest likelihood.
-"""
-plotter.cost_history(ax=None, title="Cost History", designer=None)
+plotters.plot_cost_history(
+    cost_history=search_internal.cost_history,
+    ax=None,
+    title="Cost History",
+    designer=None,
+)
+plt.show()
 
 """
 Finish.

@@ -39,7 +39,7 @@ The code below performs a model-fit using nautilus.
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 """
 real_space_mask = ag.Mask2D.circular(
-    shape_native=(800, 800), pixel_scales=0.05, radius=4.0, sub_size=1
+    shape_native=(800, 800), pixel_scales=0.05, radius=4.0
 )
 
 dataset_name = "simple"

@@ -48,7 +48,7 @@ __Mask__
 We define the ‘real_space_mask’ which defines the grid the image the galaxy is evaluated using.
 """
 real_space_mask = ag.Mask2D.circular(
-    shape_native=(800, 800), pixel_scales=0.05, radius=4.0, sub_size=1
+    shape_native=(800, 800), pixel_scales=0.05, radius=4.0
 )
 
 """
@@ -213,7 +213,7 @@ print(result.max_log_likelihood_instance)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
     galaxies=result.max_log_likelihood_galaxies,
-    grid=real_space_mask.derive_grid.unmasked_sub_1,
+    grid=real_space_mask.derive_grid.unmasked,
 )
 galaxies_plotter.subplot()
 fit_plotter = aplt.FitInterferometerPlotter(fit=result.max_log_likelihood_fit)
