@@ -36,7 +36,7 @@ This tutorial will only use the `slim` properties which show results in 1D numpy
 shape [total_unmasked_pixels]. This is a slimmed-down representation of the data in 1D that contains only the
 unmasked data points
 
-These are documented fully in the `autogalaxy_workspace/*/imaging/results/examples/data_structure.ipynb` example.
+These are documented fully in the `autogalaxy_workspace/*/guides/data_structure.ipynb` guide.
 
 __Start Here Notebook__
 
@@ -108,7 +108,7 @@ As seen elsewhere in the workspace, the result contains a `max_log_likelihood_ga
 galaxies = result.max_log_likelihood_galaxies
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=galaxies, grid=mask.derive_grid.all_false_sub_1
+    galaxies=galaxies, grid=mask.derive_grid.all_false
 )
 galaxies_plotter.subplot_galaxies()
 
@@ -142,7 +142,7 @@ Below, we can see that the image plotted now appears more clearly, with the outs
 """
 galaxies_plotter = aplt.GalaxiesPlotter(
     galaxies=galaxies,
-    grid=mask.derive_grid.all_false_sub_1,
+    grid=mask.derive_grid.all_false,
     mat_plot_2d=aplt.MatPlot2D(use_log10=True),
 )
 galaxies_plotter.figures_2d(image=True)
@@ -395,7 +395,7 @@ instance = samples.from_sample_index(sample_index=-10)
 galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=galaxies, grid=mask.derive_grid.all_false_sub_1
+    galaxies=galaxies, grid=mask.derive_grid.all_false
 )
 galaxies_plotter.subplot_galaxies()
 

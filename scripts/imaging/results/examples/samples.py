@@ -99,7 +99,7 @@ As a reminder, in the `modeling` scripts we use the `max_log_likelihood_galaxies
 the results of the fit.
 """
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false_sub_1
+    galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false
 )
 galaxies_plotter.subplot_galaxies()
 fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
@@ -200,10 +200,10 @@ Using galaxies will expanded upon in the `galaxies.py` results tutorial.
 max_lh_galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
 print(max_lh_galaxies)
-print(mask.derive_grid.all_false_sub_1)
+print(mask.derive_grid.all_false)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=max_lh_galaxies, grid=mask.derive_grid.all_false_sub_1
+    galaxies=max_lh_galaxies, grid=mask.derive_grid.all_false
 )
 galaxies_plotter.subplot_galaxies()
 
