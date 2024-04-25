@@ -2,7 +2,7 @@
 __Log Likelihood Function: Inversion (Parametric)__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with parametric light profiles (specifically an `Sersic` bulge and Exponential disk).
+`Imaging` data with parametric light profiles (specifically a Sersic bulge and Exponential disk).
 
 This script has the following aims:
 
@@ -45,7 +45,7 @@ dataset = ag.Imaging.from_fits(
 )
 
 """
-Throughout this guide, I will use **PyAutoGalaxy**'s in-built visualization tools for plotting. 
+This guide uses **PyAutoGalaxy**'s in-built visualization tools for plotting. 
 
 For example, using the `ImagingPlotter` I can plot the imaging dataset we performed a likelihood evaluation on.
 """
@@ -73,22 +73,24 @@ dataset_plotter = aplt.ImagingPlotter(dataset=masked_dataset)
 dataset_plotter.subplot_dataset()
 
 """
-__Sub Gridding__
+__Over Sampling__
 
-By inputting a `sub_size` above 1, the image-plane grid is subgridded into sub-pixels and multiple 
-image-pixel coordinates are then used to evaluate the galaxy light profile.
+When a 2D grid of (y,x) coordinates is input into a function, the result is evaluated at every coordinate
+on the grid. When the grid is paired to a 2D image (e.g. an `Array2D`) the solution needs to approximate
+the 2D integral of that function in each pixel. Over sample objects define how this over-sampling is performed.
 
-To illustrate the likelihood function it is easier to assume no subgridding and therefore input `sub_size=1`. We 
-provide links to notebooks describing how changing the `sub_size` changes the inversion at the end of this tutorial.
+By inputting a `sub_size` 1, over sampling is disable and only the centre of each imagr pixel is used to evaluate the 
+galaxy light profile. This is not how a scientific analysis should be performed, but we use it in this tutorial to
+for simplicity.
 """
-masked_dataset = masked_dataset.apply_settings(
-    settings=ag.SettingsImaging(sub_size=1, sub_size_pixelization=1)
+masked_dataset = masked_dataset.apply_over_sampling(
+    over_sampling=ag.OverSamplingUniform(sub_size=1)
 )
 
 """
 __Masked Image Grid__
 
-To perform galaxy calculations we first must define the 2D image-plane (y,x) coordinates used in the calculation.
+To perform galaxy calculations we define the 2D image-plane (y,x) coordinates used in the calculation.
 
 These are given by `masked_dataset.grid`, which we can plot and see is a uniform grid of (y,x) Cartesian coordinates
 which have had the 3.0" circular mask applied.
@@ -118,7 +120,7 @@ Where:
 $\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
 $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 
-Note that `Ell` is used as shorthand for elliptical and `Sph` for sphericag.
+Spherical profiles are append with `Sph`.
 """
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
@@ -213,7 +215,7 @@ galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk)
 """
 __Likelihood Step 1: Galaxy Image__
 
-Compute a 2D image of the galaxy's light as the sum of its individual light profiles (the `EllpiticalSersic` 
+Compute a 2D image of the galaxy's light as the sum of its individual light profiles (the `Sersic` 
 bulge and `Exponential` disk). 
 
 This computes the `galaxy_image_2d` of each `LightProfile` and adds them together. 

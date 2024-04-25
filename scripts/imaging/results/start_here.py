@@ -78,6 +78,68 @@ As seen throughout the workspace, the `info` attribute shows the result in a rea
 print(result.info)
 
 """
+__Loading From Hard-disk__
+
+When performing fits which output results to hard-disk, a `files` folder is created containing .json / .csv files of 
+the model, samples, search, etc. You should check it out now for a completed fit on your hard-disk if you have
+not already!
+
+These files can be loaded from hard-disk to Python variables via the aggregator, making them accessible in a 
+Python script or Jupyter notebook. They are loaded as the internal **PyAutoFit** objects we are familiar with,
+for example the `model` is loaded as the `Model` object we passed to the search above.
+
+Below, we will access these results using the aggregator's `values` method. A full list of what can be loaded is
+as follows:
+
+ - `model`: The `model` defined above and used in the model-fit (`model.json`).
+ - `search`: The non-linear search settings (`search.json`).
+ - `samples`: The non-linear search samples (`samples.csv`).
+ - `samples_info`: Additional information about the samples (`samples_info.json`).
+ - `samples_summary`: A summary of key results of the samples (`samples_summary.json`).
+ - `info`: The info dictionary passed to the search (`info.json`).
+ - `covariance`: The inferred covariance matrix (`covariance.csv`).
+ - `data`: The 1D noisy data used that is fitted (`data.json`).
+ - `noise_map`: The 1D noise-map fitted (`noise_map.json`).
+
+The `samples` and `samples_summary` results contain a lot of repeated information. The `samples` result contains
+the full non-linear search samples, for example every parameter sample and its log likelihood. The `samples_summary`
+contains a summary of the results, for example the maximum log likelihood model and error estimates on parameters
+at 1 and 3 sigma confidence.
+
+Accessing results via the `samples_summary` is much faster, because as it does not reperform calculations using the full 
+list of samples. Therefore, if the result you want is accessible via the `samples_summary` you should use it
+but if not you can revert to the `samples.
+"""
+from autofit.aggregator.aggregator import Aggregator
+
+agg = Aggregator.from_directory(
+    directory=path.join("output", "cookbook_result"),
+)
+
+"""
+__Generators__
+
+Before using the aggregator to inspect results, lets discuss Python generators. 
+
+A generator is an object that iterates over a function when it is called. The aggregator creates all of the objects 
+that it loads from the database as generators (as opposed to a list, or dictionary, or another Python type).
+
+This is because generators are memory efficient, as they do not store the entries of the database in memory 
+simultaneously. This contrasts objects like lists and dictionaries, which store all entries in memory all at once. 
+If you fit a large number of datasets, lists and dictionaries will use a lot of memory and could crash your computer!
+
+Once we use a generator in the Python code, it cannot be used again. To perform the same task twice, the 
+generator must be remade it. This cookbook therefore rarely stores generators as variables and instead uses the 
+aggregator to create each generator at the point of use.
+
+To create a generator of a specific set of results, we use the `values` method. This takes the `name` of the
+object we want to create a generator of, for example inputting `name=samples` will return the results `Samples`
+object (which is illustrated in detail below).
+"""
+for samples in agg.values("samples"):
+    print(samples.parameter_lists[0])
+
+"""
 __Samples__
 
 The result's `Samples` object contains the complete set of non-linear search nautilus samples, where each sample 

@@ -126,7 +126,7 @@ Where:
 $\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
 $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 
-Note that `Ell` is used as shorthand for elliptical and `Sph` for sphericag.
+Spherical profiles are append with `Sph`.
 """
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
