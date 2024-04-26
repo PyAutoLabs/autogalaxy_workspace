@@ -1,8 +1,8 @@
 """
-__Log Likelihood Function: Inversion (Parametric)__
+__Log Likelihood Function: Parametric__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with parametric light profiles (specifically a Sersic bulge and Exponential disk).
+`Imaging` data with parametric light profiles (a Sersic bulge and Exponential disk).
 
 This script has the following aims:
 
@@ -30,10 +30,9 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-In order to perform a likelihood evaluation, we first load the dataset we fit. 
+In order to perform a likelihood evaluation, we first load a dataset.
 
-This example fits a simulated strong galaxy which is simulated using a 0.1 arcsecond-per-pixel resolution (this is lower
-resolution than the best quality Hubble Space Telescope imaging and close to that of the Euclid space satellite).
+This example fits a simulated galaxy where the imaging resolution is 0.1 arcsecond-per-pixel resolution.
 """
 dataset_path = path.join("dataset", "imaging", "simple")
 
@@ -47,7 +46,7 @@ dataset = ag.Imaging.from_fits(
 """
 This guide uses **PyAutoGalaxy**'s in-built visualization tools for plotting. 
 
-For example, using the `ImagingPlotter` I can plot the imaging dataset we performed a likelihood evaluation on.
+For example, using the `ImagingPlotter` the imaging dataset we perform a likelihood evaluation on is plotted.
 """
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
@@ -56,9 +55,9 @@ dataset_plotter.subplot_dataset()
 __Mask__
 
 The likelihood is only evaluated using image pixels contained within a 2D mask, which we choose before performing
-galaxy modeling.
+a likelihood evaluation.
 
-Below, we define a 2D circular mask with a 3.0" radius.
+We define a 2D circular mask with a 3.0" radius.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -75,13 +74,11 @@ dataset_plotter.subplot_dataset()
 """
 __Over Sampling__
 
-When a 2D grid of (y,x) coordinates is input into a function, the result is evaluated at every coordinate
-on the grid. When the grid is paired to a 2D image (e.g. an `Array2D`) the solution needs to approximate
-the 2D integral of that function in each pixel. Over sample objects define how this over-sampling is performed.
+Over sampling evaluates a light profile using multiple samples of its intensity per image-pixel.
 
-By inputting a `sub_size` 1, over sampling is disable and only the centre of each imagr pixel is used to evaluate the 
-galaxy light profile. This is not how a scientific analysis should be performed, but we use it in this tutorial to
-for simplicity.
+For simplicity, we disable over sampling in this guide by setting `sub_size=1`. 
+
+a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
 """
 masked_dataset = masked_dataset.apply_over_sampling(
     over_sampling=ag.OverSamplingUniform(sub_size=1)
@@ -90,10 +87,14 @@ masked_dataset = masked_dataset.apply_over_sampling(
 """
 __Masked Image Grid__
 
-To perform galaxy calculations we define the 2D image-plane (y,x) coordinates used in the calculation.
+To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
 
 These are given by `masked_dataset.grid`, which we can plot and see is a uniform grid of (y,x) Cartesian coordinates
 which have had the 3.0" circular mask applied.
+
+Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
+used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
+it straight forward to compute the light profile's image to the image data.
 """
 grid_plotter = aplt.Grid2DPlotter(grid=masked_dataset.grid)
 grid_plotter.figure_2d()
@@ -103,29 +104,28 @@ print(
 )
 
 """
-To perform galaxy calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
+To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
 
  $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
 
 Where:
 
  - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `masked_dataset.grid`.
- - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile used to perform galaxying calculations.
+ - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
  - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
- - The elliptical coordinates is rotated by position angle $\phi$, defined counter-clockwise from the positive 
+ - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
  x-axis.
 
-**PyAutoGalaxy** does not use $q$ and $\phi$ to parameterize the galaxy model but expresses these as `elliptical_components`:
+**PyAutoGalaxy** does not use $q$ and $\phi$ to parameterize a light profile but expresses these 
+as "elliptical components", or `ell_comps` for short:
 
 $\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
 $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
-
-Spherical profiles are append with `Sph`.
 """
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
 """
-First we transform `masked_dataset.grid ` to the centre of profile and rotate it using its angle `phi`.
+First we transform `masked_dataset.grid ` to the centre of profile and rotate it using its angle.
 """
 transformed_grid = profile.transformed_to_reference_frame_grid_from(
     grid=masked_dataset.grid
@@ -147,7 +147,7 @@ print(
 )
 
 """
-__Likelihood Setup: Galaxy Light Profiles (Setup)__
+__Likelihood Setup: Light Profiles (Setup)__
 
 To perform a likelihood evaluation we now compose our galaxy model.
 
@@ -160,7 +160,7 @@ $I_{\rm  Ser} (\eta_{\rm l}) = I \exp \bigg\{ -k \bigg[ \bigg( \frac{\eta}{R} \b
 
 Where:
 
- - $\eta$ are the elliptical coordinates (see above) or the masked image-grid.
+ - $\eta$ are the elliptical coordinates (see above).
  - $I$ is the `intensity`, which controls the overall brightness of the Sersic profile.
  - $n$ is the ``sersic_index``, which via $k$ controls the steepness of the inner profile.
  - $R$ is the `effective_radius`, which defines the arc-second radius of a circle containing half the light.
@@ -202,7 +202,7 @@ disk_plotter.figures_2d(image=True)
 """
 __Likelihood Setup: Galaxy__
 
-We now combine the light profiles into a single `Galaxy` object for the galaxy.
+We now combine the light profiles into a single `Galaxy` object.
 
 When computing quantities for the light profiles from this object, it computes each individual quantity and 
 adds them together. 
@@ -218,7 +218,7 @@ __Likelihood Step 1: Galaxy Image__
 Compute a 2D image of the galaxy's light as the sum of its individual light profiles (the `Sersic` 
 bulge and `Exponential` disk). 
 
-This computes the `galaxy_image_2d` of each `LightProfile` and adds them together. 
+This computes the `image` of each light profile and adds them together. 
 """
 galaxy_image_2d = galaxy.image_2d_from(grid=masked_dataset.grid)
 
@@ -226,8 +226,10 @@ galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """
-To convolve the galaxy's 2D image with the imaging data's PSF, we need its `blurring_image`. This represents all flux 
-values not within the mask, which are close enough to it that their flux blurs into the mask after PSF convolution.
+To convolve the galaxy's 2D image with the imaging data's PSF, we need its `blurring_image`. 
+
+This represents all flux values not within the mask, which are close enough to it that their flux blurs into the mask 
+after PSF convolution.
 
 To compute this, a `blurring_mask` and `blurring_grid` are used, corresponding to these pixels near the edge of the 
 actual mask whose light blurs into the image:
@@ -300,7 +302,7 @@ __Likelihood Step 5: Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
-The final term ins the likelihood function is therefore a `noise_normalization` term, which consists of the sum
+The final term in the likelihood function is therefore a `noise_normalization` term, which consists of the sum
 of the log of every noise-map value squared. 
 
 Given the `noise_map` is fixed, this term does not change during the galaxy modeling process and has no impact on the 
@@ -346,8 +348,8 @@ We have presented a visual step-by-step guide to the **PyAutoGalaxy** parametric
 analytic light profiles to fit the galaxy light.
 
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
-are described in additional notebooks found in this package. In brief, these describe:
+are described in additional notebooks found in the `guides` package:
 
- - **Sub-gridding**: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
+ - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
  ray-traced to the source-plane and used to evaluate the light profile more accurately.
 """
