@@ -7,26 +7,24 @@ light from the sky, zodiacal light, and light from other galaxies in the field o
 
 The background sky is often subtracted from image data during the data reduction procedure. If this subtraction is
 perfect, there is then no need to include the sky in the model-fitting. However, it is difficult to achieve a perfect
-subtraction.
+subtraction and there is some uncertainty in the procedure.
 
 The residuals of an imperfect back sky subtraction can leave a signal in the image which is degenerate with the
-light profile of the lens galaxy. This is especially true for low surface brightness features, such as the faint
+light profile of the galaxy. This is especially true for low surface brightness features, such as the faint
 outskirts of the galaxy.
 
 Fitting the sky can therefore ensure errors on light profile parameters which fit the low surface brightness features
 further out, like the effective radius and Sersic index, fully account for the uncertainties in the sky background.
 
-This example script illustrate how to include the sky background in the model-fitting of an `Imaging` dataset.
-
-The code shows how to fit the sky background as a non-linear free parameter (e.g. an extra dimension in the non-linear
-parameter space),
+This example script illustrates how to include the sky background in the model-fitting of an `Imaging` dataset as
+a non-linear free parameter (e.g. an extra dimension in the non-linear parameter space).
 
 __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
- - The sky background is included as a `Sky` light profile.
+ - The sky background is included as part of a `DatasetModel`.
 
 __Start Here Notebook__
 
@@ -85,7 +83,7 @@ dataset_plotter.subplot_dataset()
 """
 __Fit__
 
-We first show how to use a `Sky` object to fit the sky background in the data.
+We first show how to use a `DatasetModel` object to fit the sky background in the data.
 
 This illustrates the API for performing a sky background fit using standard objects like a `Galaxy` and `FitImaging` .
 
@@ -113,13 +111,12 @@ galaxy = ag.Galaxy(
 
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
-sky = ag.lp.Sky(intensity=5.0)
+dataset_model = ag.DatasetModel(background_sky_level=5.0)
 
-fit = ag.FitImaging(dataset=dataset, galaxies=galaxies, sky=sky)
+fit = ag.FitImaging(dataset=dataset, galaxies=galaxies, dataset_model=dataset_model)
 
 """
-By plotting the fit, we see that the sky is included in the model-data and makes the outskirts of the image
-have values of 5.0 electrons per second.
+By plotting the fit, we see that the sky is subtracted from the data such that the outskirts are zero.
 
 There are few residuals, except for perhaps some central regions where the light profile is not perfectly fitted.
 """
@@ -133,15 +130,17 @@ We compose our model where in this example:
 
  - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
  - The galaxy's disk is a parametric `Exponential` disk, whose centre is aligned with the bulge [4 parameters].
- - The sky background is included as a `Sky` light profile [1 parameter].
+ - The sky background is included as a `DatasetModel` [1 parameter].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=12.
 
 The sky is not included in the `galaxies` collection, but is its own separate component in the overall model.
 
-We update the prior on the `intensity` of the sky manually, such that it surrounds the true value of 5.0 electrons
-per second. It is recommend you always update the prior on the sky's intensity manually, because the appropriate
-prior depends on the dataset being fitted. However, when we use linear light profiles below, this is not necessary.
+We update the prior on the `background_sky_level` manually, such that it surrounds the true value of 5.0 electrons
+per second. 
+
+You must always update the prior on the sky's intensity manually (unlike light profile priors), because the appropriate
+prior depends on the dataset being fitted.
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -149,10 +148,12 @@ bulge.centre = disk.centre
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
-sky = af.Model(ag.lp.Sky)
-sky.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=5.0)
+dataset_model = af.Model(ag.DatasetModel)
+dataset_model.background_sky_level = af.UniformPrior(lower_limit=0.0, upper_limit=5.0)
 
-model = af.Collection(galaxies=af.Collection(galaxy=galaxy), sky=sky)
+model = af.Collection(
+    galaxies=af.Collection(galaxy=galaxy), dataset_model=dataset_model
+)
 
 """
 The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
@@ -182,7 +183,7 @@ __Analysis__
 Create the `AnalysisImaging` object defining how the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
-    dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
+    dataset=dataset,
 )
 
 """
@@ -218,220 +219,15 @@ __Result__
 The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
 `start_here.ipynb` for a description of how to fix this).
 
-This confirms that a sky `intensity` value of approximately 5.0 electrons per second was inferred, as expected.
+This confirms that a `background_sky_level` of approximately 5.0 electrons per second was inferred, as expected.
 """
 print(result.info)
 
 """
 To print the exact value, the `sky` attribute of the result contains the `intensity` of the sky.
 """
-print(result.instance.sky.intensity)
-
-"""
-__Linear (DO NOT USE!)__
-
-The code below tries to use a `Sky` object as a linear light profile, which would mean the `intensity` of the sky
-is not a free parameter in the model-fit. but instead solved for via linear algebra.
-
-However, after implementing this feature, it does not produce satisfactory results. Whilst the linear algebra works
-correctly, the implementation leads to an unstable likelihood funciton which means the non-linear search cannot
-find the global maximum likelihood solution. 
-
-Further testing is required to determine if this feature can be made to work correctly, and for now it is not recommended
-you only ever use the `Sky` object as a normal light profile, as shown above. However, the code below is left here for
-future reference.
-
-__Fit__
-
-The sky can be fitted using a linear light profile. 
-
-This does not require an input `intensity` value, as it is solved for internally in the fit via linear algebra,
-whereby it always find the value that best fits the data.
-
-When we fit this model using a non-linear search, this means the sky is not a free parameter in the model-fit, 
-simpefying the parameter space and making the model-fit faster and more reliable.
-"""
-galaxy = ag.Galaxy(
-    redshift=0.5,
-    bulge=ag.lp.Sersic(
-        centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-        intensity=1.0,
-        effective_radius=0.6,
-        sersic_index=3.0,
-    ),
-    disk=ag.lp.Exponential(
-        centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
-        intensity=0.5,
-        effective_radius=1.6,
-    ),
-)
-
-galaxies = ag.Galaxies(galaxies=[galaxy])
-
-sky = ag.lp_linear.Sky()
-
-fit = ag.FitImaging(dataset=dataset, galaxies=galaxies, sky=sky)
-
-fit_plotter = aplt.FitImagingPlotter(fit=fit)
-fit_plotter.subplot_fit()
-
-"""
-__Model__
-
-We now repeat the model-fit using a `Sky` as a linear light profile, which is recommended for all model-fits. 
-Linear light profiles are described in more detail in the `linear_light_profiles.py` example feature script.
-
-In short, they use linear algebra to solve for the `intensity` of a light profile, meaning that it is not a free
-parameter fitted for by the non-linear search. This makes the model-fit faster and more reliable, and for a background
-sky means we do not need to manually update the prior on the sky's intensity.
-
-We compose our model where in this example:
-
- - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
- - The galaxy's disk is a linear parametric `Exponential` disk, whose centre is aligned with the bulge [3 parameters].
- - The sky background is included as a linear light profile [0 parameter].
- 
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=9.
-
-Note how both light profiles use linear light profiles, meaning that the `intensity` parameter of both is also no 
-longer a free parameter in the fit, like the sky.
-"""
-bulge = af.Model(ag.lp_linear.Sersic)
-disk = af.Model(ag.lp_linear.Exponential)
-bulge.centre = disk.centre
-
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
-
-model = af.Collection(
-    galaxies=af.Collection(galaxy=galaxy), sky=af.Model(ag.lp_linear.Sky)
-)
-
-"""
-The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
-`start_here.ipynb` for a description of how to fix this).
-
-This confirms that the sky does not include an `intensity` parameter.
-"""
-print(model.info)
-
-"""
-__Search__
-
-The model is fitted to the data using the nested sampling algorithm Nautilus (see `start.here.py` for a 
-full description).
-"""
-search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
-    name="sky_background_linear",
-    unique_tag=dataset_name,
-    n_live=75,
-    number_of_cores=4,
-)
-
-"""
-__Analysis__
-
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
-"""
-analysis = ag.AnalysisImaging(
-    dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
-)
-
-"""
-__Run Time__
-
-For standard light profiles, the log likelihood evaluation time is of order ~0.01 seconds for this dataset.
-
-For linear light profiles, the log likelihood evaluation increases to around ~0.05 seconds per likelihood evaluation.
-This is still fast, but it does mean that the fit may take around five times longer to run. The run time is
-~0.05 seconds when any linear light profiles are used, irrespective of whether its just the sky or also the
-other light profiles.
-
-Because three free parameters have been removed from the model (the `intensity` of the bulge, disk and sky), the 
-total number of likelihood evaluations will reduce. Furthermore, the simpler parameter space likely means that the 
-fit will take less than 10000 per free parameter to converge. 
-
-Fits using standard light profiles and linear light profiles therefore take roughly the same time to run. However,
-the simpler parameter space of linear light profiles means that the model-fit is more reliable, less susceptible to
-converging to an incorrect solution and scales better if even more light profiles are included in the model.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
-
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
-
-
-"""
-__Model-Fit__
-
-We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
-for on-the-fly visualization and results).
-"""
-result = search.fit(model=model, analysis=analysis)
-
-"""
-__Result__
-
-The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
-`start_here.ipynb` for a description of how to fix this).
-
-This confirms that `intensity` parameters are not inferred by the model-fit.
-"""
-print(result.info)
-
-"""
-We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
-
-The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
-the inversion process are accurate.
-"""
-print(result.max_log_likelihood_instance)
-
-galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
-)
-galaxies_plotter.subplot()
-
-fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
-fit_plotter.subplot_fit()
-
-plotter = aplt.NestPlotter(samples=result.samples)
-plotter.corner_cornerpy()
-
-
-"""
-__Intensities__
-
-The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
-in the `model.results` file.
-
-To extract the `intensity` values of the sky, we use the `max_log_likelihood_fit`, which has already performed the 
-inversion and therefore the sky has the solved for `intensity`'s associated with it.
-
-The implementation of a linear light profile sky is a bit strange, it actually has two `intensity`'s, one for the
-positive component and one for the negative component. This is because the linear solver has a positivity constraint,
-meaning that two separate sky's, positive and negative, are used to represent the sky background. One of these
-values will be zero, the other the true sky background intensity.
-"""
-fit = result.max_log_likelihood_fit
-
-sky = fit.sky_linear_light_profiles_to_light_profiles
-
-print(sky.light_profile_list[0].intensity)
-print(sky.light_profile_list[1].intensity)
-
+print(result.instance.dataset_model.background_sky_level)
 
 """
 Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.
-
-In particular, checkout the results example `linear.py` which details how to extract all information about linear
-light profiles from a fit.
 """

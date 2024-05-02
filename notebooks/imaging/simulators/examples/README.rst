@@ -14,3 +14,4 @@ Files (Beginner)
 - ``asymmetric.py``: Simulate a galaxy which has asymmetric emission using a basis of 14 elliptical Gaussians.
 - ``manual_signal_to_noise_ratio``: Simulate galaxies using light profiles where the signal-to-noise of their lensed images are input.
 - ``operated.py``: Simulate a galaxy which is an elliptical Sersic bulge, elliptical exponential disk and point source of emission at its centre which appears as the PSF.
+- ``sky_background.py``: Simulate a galaxy with a sky background which is not subtracted from the image.

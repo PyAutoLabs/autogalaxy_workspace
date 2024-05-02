@@ -171,7 +171,7 @@ for sample_index in range(total_datasets):
     """
     __Plane Output__
 
-    Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
+    Save the `Galaxies` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
     are safely stored and available to check how the dataset was simulated in the future. 
 
     This can be loaded via the method `galaxies = ag.from_json()`.

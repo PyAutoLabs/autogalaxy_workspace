@@ -257,8 +257,150 @@ galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """
-Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.
+__Max Likelihood Inversion__
 
-In particular, checkout the results example `linear.py` which details how to extract all information about linear
-light profiles from a fit.
+As seen elsewhere in the workspace, the result contains a `max_log_likelihood_fit`, which contains the
+`Inversion` object we need.
+"""
+inversion = result.max_log_likelihood_fit.inversion
+
+"""
+This `Inversion` can be used to plot the reconstructed image of specifically all linear light profiles.
+"""
+inversion_plotter = aplt.InversionPlotter(inversion=inversion)
+# inversion_plotter.figures_2d(reconstructed_image=True)
+
+"""
+__Intensities__
+
+The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
+in the `model.results` file.
+
+To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_galaxies`,
+which has already performed the inversion and therefore the galaxy light profiles have their solved for
+`intensity`'s associated with them.
+"""
+galaxies = result.max_log_likelihood_galaxies
+
+print(galaxies[0].intensity)
+
+"""
+The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
+"""
+fit = result.max_log_likelihood_fit
+
+galaxies = fit.galaxies
+
+print(galaxies[0].intensity)
+
+"""
+__Visualization__
+
+Linear light profiles and objects containing them (e.g. galaxies) cannot be plotted because they do not 
+have an `intensity` value.
+
+Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
+used for visualization:
+"""
+galaxies = result.max_log_likelihood_galaxies
+
+galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
+galaxies_plotter.figures_2d(image=True)
+
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
+galaxy_plotter.figures_2d(image=True)
+
+"""
+__Linear Objects (Internal Source Code)__
+
+An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`. 
+
+This list may include the following objects:
+
+ - `LightProfileLinearObjFuncList`: This object contains lists of linear light profiles and the functionality used
+ by them to reconstruct data in an inversion. For example it may only contain a list with a single light profile
+ (e.g. `lp_linear.Sersic`) or many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
+
+- `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper` 
+is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `Rectangular` mesh).
+
+In this example, two linear objects were used to fit the data:
+ 
+ - An `Sersic` linear light profile.
+ ` A `Basis` containing 5 Gaussians. 
+"""
+print(inversion.linear_obj_list)
+
+"""
+To extract results from an inversion many quantities will come in lists or require that we specific the linear object
+we with to use. 
+
+Thus, knowing what linear objects are contained in the `linear_obj_list` and what indexes they correspond to
+is important.
+"""
+print(f"LightProfileLinearObjFuncList (Sersic) = {inversion.linear_obj_list[0]}")
+print(f"LightProfileLinearObjFuncList (Basis) = {inversion.linear_obj_list[1]}")
+
+"""
+Each of these `LightProfileLinearObjFuncList` objects contains its list of light profiles, which for the
+`Sersic` is a single entry whereas for the `Basis` is 5 Gaussians.
+"""
+print(
+    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].light_profile_list}"
+)
+print(
+    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].light_profile_list}"
+)
+
+"""
+__Intensities (Internal Source Code)__
+
+The intensities of linear light profiles are not a part of the model parameterization and therefore cannot be
+accessed in the resulting galaxies, as seen in previous tutorials, for example:
+
+galaxies = result.max_log_likelihood_galaxies
+intensity = galaxies[0].bulge.intensity
+
+The intensities are also only computed once a fit is performed, as they must first be solved for via linear algebra. 
+They are therefore accessible via the `Fit` and `Inversion` objects, for example as a dictionary mapping every
+linear light profile (defined above) to the intensity values:
+"""
+fit = result.max_log_likelihood_fit
+
+print(fit.linear_light_profile_intensity_dict)
+
+"""
+To extract the `intensity` values of a specific component in the model, we use that component as defined in the
+`max_log_likelihood_galaxies`.
+"""
+galaxies = fit.galaxies
+
+bulge = galaxies[0].bulge
+disk = galaxies[0].disk
+
+print(fit.linear_light_profile_intensity_dict)
+
+print(
+    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge.light_profile_list[0]]}"
+)
+print(
+    f"\n Intensity of first Gaussian in disk = {fit.linear_light_profile_intensity_dict[disk]}"
+)
+
+"""
+A `Plane` where all linear light profile objects are replaced with ordinary light profiles using the solved 
+for `intensity` values is also accessible.
+
+For example, the linear light profile `Sersic` of the `bulge` component above has a solved for `intensity` of ~0.75. 
+
+The `Plane` created below instead has an ordinary light profile with an `intensity` of ~0.75.
+"""
+galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
+
+print(
+    f"Intensity via Plane With Ordinary Light Profiles = {galaxies[0].bulge.intensity}"
+)
+
+"""
+Finish.
 """

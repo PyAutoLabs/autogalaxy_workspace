@@ -190,7 +190,7 @@ print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)
 
 """
-Plotting each result's galaxies shows that the source appears different, owning to its different intensities.
+Plotting each result's galaxies shows that the galaxy appears different, owning to its different intensities.
 """
 for result in result_list:
     galaxies_plotter = aplt.GalaxiesPlotter(

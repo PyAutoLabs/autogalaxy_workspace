@@ -148,9 +148,9 @@ galaxies_plotter.subplot_galaxies()
 galaxies_plotter.subplot_galaxy_images()
 
 """
-__Plane json__
+__Galaxies json__
 
-Save the `Plane` in the dataset folder as a .json file, ensuring the true light profiles, mass profiles and galaxies
+Save the `Galaxies` in the dataset folder as a .json file, ensuring the true light profiles, mass profiles and galaxies
 are safely stored and available to check how the dataset was simulated in the future. 
 
 This can be loaded via the method `galaxies = ag.from_json()`.

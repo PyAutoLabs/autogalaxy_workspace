@@ -4,9 +4,4 @@ Files (Beginner)
 ----------------
 
 - ``samples.py``: Non-linear search model results (parameter estimates, errors, etc.).
-- ``data_structures.py``: How the NumPy arrays containing results are structured and the API for using them.
-- ``galaxies.py``:  Inspecting individual galaxies, light profiles and mass profile in a model.
-- ``fits.py``:  Fitting results of a model (model-images, chi-squareds, likelihoods, etc.).
-- ``units_and_cosmology.py``: Unit conversions and Cosmological quantities (converting to kiloparsecs, Einstein masses, etc.).
-- ``linear.py``:  Analysing the results of fits using linear light profiles via an inversion.
-- ``pixelization.py``:  Analysing the results of a pixelized source reconstruction via an inversion.
+- ``galaxies_fit.py``:  Inspecting individual galaxies (e.g. their light profiles) and fits (e.g. model-images, chi-squareds, likelihoods).

@@ -140,6 +140,10 @@ for samples in agg.values("samples"):
     print(samples.parameter_lists[0])
 
 """
+From here on we will use attributes contained in the `result` passed from the `search.fit` method above, as opposed
+to using the aggregator. This is because things will run faster, but all of the results we use can be loaded using
+the aggregator as shown above.
+
 __Samples__
 
 The result's `Samples` object contains the complete set of non-linear search nautilus samples, where each sample 
@@ -173,17 +177,22 @@ print(le3_instance.galaxies.galaxy.bulge, "\n")
 """
 __Galaxies__
 
-The result's maximum likelihood `Plane` object contains everything necessary to perform calculations with the model
+The result's maximum likelihood `Galaxies` object contains everything necessary to perform calculations with the model
 like retrieving the images of each galaxy.
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/galaxies.py` provides a detailed 
-description of this object, including:
+The guide `autogalaxy_workspace/*/guides/galaxies.py` provides a detailed description of this object, including:
 
  - Producing individual images of the galaxies.
  - Inspecting mass model components like the convergence, potential and deflection angles.
  - Other lensing quantities like the critical curve and caustics.
 
-Below, is an example of how to use the `Plane` object to calculate the image of the galaxies.
+The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+model-fitting results specific functionality of galaxies, including:
+
+ - Drawing galaxies from the samples and plotting their images.
+ - Producing 1D plots of the galaxy's light and mass profiles with error bars.
+
+Below, is an example of how to use the result's `Galaxies` object to calculate the image of the galaxies.
 """
 galaxies = result.max_log_likelihood_galaxies
 
@@ -195,16 +204,19 @@ __Fits__
 The result's maximum likelihood `FitImaging` object contains everything necessary to inspect the model fit to the 
 data.
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/fits.py` provides a detailed description of this 
-object, including:
+The guide `autogalaxy_workspace/*/guides/fits.py` provides a detailed description of this object, including:
 
- - How to inspect the residuals, chi-squared, likelihood and other quantities.
- - Outputting resulting images (e.g. the galaxy reconstruction) to hard-disk.
- - Refitting the data with other models from the `Samples` object, to investigate how sensitive the fit is to
-   different models.
+ - Performing a fit to data with galaxies.
+ - Inspecting the model data, residual-map, chi-squared, noise-map of the fit.
+ - Other properties of the fit that inspect how good it is.
 
-Below, is an example of how to use the `FitImaging` object to output the galaxy reconstruction to print the 
-chi-squared and log likelihood values.
+The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+model-fitting results specific functionality of galaxies, including:
+
+ - Repeating fits using the results contained in the samples.
+
+Below, is an example of how to use the `FitImaging` object to print the maximum likelihood chi-squared and 
+log likelihood values.
 """
 fit = result.max_log_likelihood_fit
 
@@ -212,37 +224,19 @@ print(fit.chi_squared)
 print(fit.log_likelihood)
 
 """
-__Galaxies__
-
-The result's maximum likelihood `Galaxy` objects contain everything necessary to inspect the individual properties of
-the galaxies.
-
-The examples script `autogalaxy_workspace/*/imaging/results/examples/galaxies.py` provides a detailed description 
-of this object, including:
-
- - How to plot individual galaxy images, such as the galaxy's images.
- - Plotting the individual light profiles and mass profiles of the galaxies.
- - Making one dimensional profiles of the galaxies, such as their light and mass profiles as a function of radius.
- 
-Below, is an example of how to use the `Galaxy` objects to plot the galaxy's image.
-"""
-galaxies = result.max_log_likelihood_galaxies
-
-galaxy = galaxies[0]
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=dataset.grid)
-galaxy_plotter.figures_2d(image=True)
-
-"""
-__Cosmological Quantities__
+__Units and Cosmological Quantities__
 
 The maximum likelihood model includes cosmological quantities, which can be computed via the result.
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/cosmological_quantities.py` provides a detailed 
-description of this object, including:
+The guide `autogalaxy_workspace/*/guides/units_and_cosmology.py` provides a detailed description of this object, 
+including:
 
  - Calculating the Einstein radius of the galaxy.
  - Converting quantities like the Einstein radius or effective radius from arcseconds to kiloparsecs.
  - Computing the Einstein mass of the galaxy in solar masses.
+ 
+This guide is not in the `results` package but the `guides` package, as it is a general guide to the
+**PyAutoGalaxy** API. However, it may be useful when inspecting results.
  
 Below, is an example of how to convert the effective radius of the galaxy from arcseconds to kiloparsecs.
 """
@@ -265,26 +259,22 @@ This includes Basis objects such as a Multi-Gaussian expansion of Shapelets.
 These objects mostly behave identically to ordinary light profiles, but due to the linear algebra have their own
 specific functionality.
 
-The example script `autogalaxy_workspace/*/imaging/results/examples/linear.py` provides a detailed description of 
-this functionality, including:
+The example script `autogalaxy_workspace/*/imaging/modeling/linear_light_profiles.py` provides a detailed description of 
+using linear light profile results including:
 
  - Extracting individual quantities from the linear light profile, such as the coefficients of the basis functions.
  - Extracting the intensity of the linear light profiles after they have been computed via linear algebra.
  - Plotting the linear light profiles.
- 
-The fit above did not use a pixelization, so we omit a example of the API below.
 
 __Pixelization__
 
 The model can reconstruct the galaxy using a pixelization, for example on a Voronoi mesh.
 
-The example script `autogalaxy_workspace/*/imaging/results/examples/pixelizations.py` provides a detailed description 
-of inspecting the results of a fit using a pixelization, including:
+The example script `autogalaxy_workspace/*/imaging/results/examples/pixelizations.py` describes using pixelization 
+results including:
 
  - Producing galaxy reconstructions using the Voronoi mesh, Delaunay triangulation or whichever mesh is used.
  - Inspecting the evidence terms of the fit, which quantify how well the pixelization reconstructs fits the data whilst
    accounting for the complexity of the pixelization.
  - Estimating the magnification of the galaxy's image using the pixelization.
-
-The fit above did not use a pixelization, so we omit a example of the API below.
 """
