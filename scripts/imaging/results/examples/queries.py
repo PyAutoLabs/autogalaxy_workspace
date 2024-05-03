@@ -2,12 +2,22 @@
 Database: Queries
 =================
 
-Suppose we have the results of many fits in the database and we only wanted to load and inspect a specific set
-of model-fits (e.g. the results of `tutorial_1_introduction`). We can use the database's querying tools to only load
-the results we are interested in.
+Suppose we have the results of many fits and we only wanted to load and inspect a specific set
+of model-fits (e.g. the results of `start_here.py`). We can use querying tools to only load the results we are
+interested in.
 
-The database also supports advanced querying, so that specific model-fits (e.g., which fit a certain model or dataset)
+This includes support for advanced querying, so that specific model-fits (e.g., which fit a certain model or dataset)
 can be loaded.
+
+__Database File__
+
+The aggregator can also load results from a `.sqlite` database file.
+
+This is benefitial when loading results for large numbers of model-fits (e.g. more than hundreds)
+because it is optimized for fast querying of results.
+
+See the package `results/database` for a full description of how to set up the database and the benefits it provides,
+especially if loading results from hard-disk is slow.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -19,37 +29,46 @@ from os import path
 import autofit as af
 import autogalaxy as ag
 
+"""
+__Loading From Hard-disk__
+
+Results can be loaded from hard disk using the `Aggregator` object (see the `start_here.py` script for a description of
+what the `Aggregator` does if you have not seen it!).
+"""
+from autofit.aggregator.aggregator import Aggregator
+
+agg = Aggregator.from_directory(
+    directory=path.join("output", "results_folder"),
+)
 
 """
 __Database File__
 
-First, we set up the aggregator like we did in the previous tutorial. However, we can also filter results to only 
-include completed results. By including the `completed_only` input below, any results which are in the middle of a 
-non-linear will be omitted and not loaded in the `Aggregator`.
+The aggregator can also load results from a `.sqlite` database file.
 
-For these tutorials, we only performed 3 model-fits which ran to completion, so this does not remove any results. For
-general database use when you may have many model-fits running simultaneously, this filter can prove useful.
-"""
-agg = af.Aggregator.from_database("database.sqlite", completed_only=True)
+This is benefitial when loading results for large numbers of model-fits (e.g. more than hundreds)
+because it is optimized for fast querying of results. 
 
-"""
+See the package `results/database` for a full description of how to set up the database and the benefits it provides,
+especially if loading results from hard-disk is slow.
+
 __Unique Tag__
 
-We can use the `Aggregator` to query the database and return only specific fits that we are interested in. We first 
+We can use the `Aggregator` to query the results and return only specific fits that we are interested in. We first 
 do this using the `unique_tag` which we can query to load the results of a specific `dataset_name` string we 
 input into the model-fit's search. 
 
 By querying using the string `simple__1` the model-fit to only the second dataset is returned:
 """
 unique_tag = agg.search.unique_tag
-agg_query = agg.query(unique_tag == "simple__1")
+agg_query = agg.query(unique_tag == "simple")
 samples_gen = agg_query.values("samples")
 
 """
 As expected, this list now has only 1 `SamplesNest` corresponding to the second dataset.
 """
 print("Directory Filtered DynestySampler Samples: \n")
-print("Total Samples Objects via unique tag = ", len(samples_gen), "\n\n")
+print("Total Samples Objects via unique tag = ", len(list(samples_gen)), "\n\n")
 
 """
 If we query using an incorrect dataset name we get no results:
@@ -63,7 +82,7 @@ __Search Name__
 
 We can also use the `name` of the search used to fit to the model as a query. 
 
-In this example, all three fits used the same search, which had the `name` `database_example`. Thus, using it as a 
+In this example, all three fits used the same search, which had the `name` `results`. Thus, using it as a 
 query in this example is somewhat pointless. However, querying based on the search name is very useful for model-fits
 which use search chaining (see chapter 3 **HowToGalaxy**), where the results of a particular fit in the chain can be
 instantly loaded.
@@ -71,7 +90,7 @@ instantly loaded.
 As expected, this query contains all 3 results.
 """
 name = agg.search.name
-agg_query = agg.query(name == "database_example")
+agg_query = agg.query(name == "results")
 print("Total Queried Results via search name = ", len(agg_query), "\n\n")
 
 """
@@ -87,7 +106,7 @@ of galaxies efficiently load and inspect the results.
 
 [Note: the code `agg.model.galaxies.galaxy.bulge` corresponds to the fact that in the `Model` we named the model 
 components `galaxies`, `galaxy` and  `bulge`. If the `Model` had used a different name the code below would change 
-correspondingly. Models with multiple galaxies are therefore easily accessed via the database.]
+correspondingly. Models with multiple galaxies are therefore easily accessed.]
 """
 galaxy = agg.model.galaxies.galaxy
 agg_query = agg.query(galaxy.bulge == ag.lp.Sersic)
@@ -105,7 +124,7 @@ agg_query = agg.query(galaxy.disk == None)
 print("Total Samples Objects via `Sersic` model query = ", len(agg_query), "\n")
 
 """
-Queries using the results of model-fitting are also supported. Below, we query the database to find all fits where the 
+Queries using the results of model-fitting are also supported. Below, we query to find all fits where the 
 inferred value of `sersic_index` for the `Sersic` of the source's bulge is less than 3.0 (which returns only 
 the first of the three model-fits).
 """

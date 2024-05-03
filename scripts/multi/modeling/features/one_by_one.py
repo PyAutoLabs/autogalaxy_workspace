@@ -204,7 +204,7 @@ model = af.Collection(
             ag.Galaxy,
             redshift=result.instance.galaxies.galaxy.redshift,
             bulge=result.instance.galaxies.galaxy.bulge,
-            disk=result.instance.galaxies.galaxy.disk,
+            disk=result.model.galaxies.galaxy.disk,
         )
     ),
 )

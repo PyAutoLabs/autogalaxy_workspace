@@ -9,4 +9,5 @@ Files (Beginner)
 Folders (Beginner)
 ------------------
 
+- ``simulators``: Simulated data for use in the examples.
 - ``examples``: Examples of how to use database functionality like loading results and querying.

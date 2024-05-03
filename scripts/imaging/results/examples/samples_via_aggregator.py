@@ -2,11 +2,17 @@
 Database: Samples
 =================
 
-In the script `autogalaxy_workspace/*/advanced/database/start_here.py` we performed a fit which fitted 3
-datasets and stored the results in a sqlite database. 
+In the script `autogalaxy_workspace/*/imaging/results/examples/samples.py` we show how to inspect the non-linear
+search samples from a result.
 
-In this example, we'll load results from this database and show how to manipulate the non-linear search's samples,
-for example to inspect the maximum log likelihood models or get errors on parameters.
+We have also shown how to use the `Aggregator` to load the samples of a non-linear search from hard-disk or a
+.sqllite database file.
+
+In this example, we'll load results via the aggregator and inspect the samples of the non-linear search. The
+attributes we inspect are the same as those shown in the `samples.py` script.
+
+This script is simply an API cheat sheet for accessing the results of a non-linear search via the `Aggregator`, so you
+can copy and paste the code to use in your own scripts!
 
 __Samples via Result__
 
@@ -33,10 +39,19 @@ In the `start_here.py` script, we discussed the `files` that are output by the n
 following files correspond to the information loaded when loading the non-linear search samples from the database:
 
  - `model`: The `model` defined above and used in the model-fit (`model.json`).
+ - `search`: The non-linear search settings (`search.json`).
  - `samples`: The non-linear search samples (`samples.csv`).
  - `samples_info`: Additional information about the samples (`samples_info.json`).
  - `samples_summary`: A summary of key results of the samples (`samples_summary.json`).
+ - `info`: The info dictionary passed to the search (`info.json`).
  - `covariance`: The inferred covariance matrix (`covariance.csv`).
+ - `cosmology`: The cosmology used by the fit (`cosmology.json`).
+ - `settings_inversion`: The settings associated with a inversion if used (`settings_inversion.json`).
+ - `dataset/data`: The data that is fitted (`data.fits`).
+ - `dataset/noise_map`: The noise-map (`noise_map.fits`).
+ - `dataset/psf`: The Point Spread Function (`psf.fits`).
+ - `dataset/mask`: The mask applied to the data (`mask.fits`).
+ - `dataset/settings`: The settings associated with the dataset (`settings.json`).
 
 The `samples` and `samples_summary` results contain a lot of repeated information. The `samples` result contains
 the full non-linear search samples, for example every parameter sample and its log likelihood. The `samples_summary`
@@ -46,14 +61,12 @@ at 1 and 3 sigma confidence.
 Accessing results via the `samples_summary` is much faster, because as it does reperform calculations using the full 
 list of samples. Therefore, if the result you want is accessible via the `samples_summary` you should use it
 but if not you can revert to the `samples.
-
-__Database File__
-
-The results are not contained in the `output` folder after each search completes. Instead, they are
-contained in the `database.sqlite` file, which we can load using the `Aggregator`.
 """
-database_file = "database.sqlite"
-agg = af.Aggregator.from_database(filename=database_file)
+from autofit.aggregator.aggregator import Aggregator
+
+agg = Aggregator.from_directory(
+    directory=path.join("output", "results_folder"),
+)
 
 """
 __Generators__
@@ -177,21 +190,21 @@ The attributes of the `instance` (e.g. `galaxies`, `galaxy`) have these names du
 its light and mass profiles via the `Collection` and `Model` above. 
 """
 print(instance_list[0].galaxies)
-print(instance_list[1].galaxies)
-print(instance_list[2].galaxies)
+# print(instance_list[1].galaxies)
+# print(instance_list[2].galaxies)
 
 """
 These galaxies will be named according to the model composed and fitted by the search (in this case, only `galaxy`).
 """
 print(instance_list[0].galaxies.galaxy)
 print()
-print(instance_list[1].galaxies.galaxy)
+# print(instance_list[1].galaxies.galaxy)
 
 """
 Their light profiles are also named according to model composition allowing individual parameters to be printed.
 """
 print(instance_list[0].galaxies.galaxy.bulge.effective_radius)
-print(instance_list[1].galaxies.galaxy.bulge.effective_radius)
+# print(instance_list[1].galaxies.galaxy.bulge.effective_radius)
 
 """
 __Posterior / PDF__

@@ -8,4 +8,5 @@ Files (Beginner)
 Folders (Beginner)
 ------------------
 
-- ``examples``: Result inspection and analysis for different aspects of the fit and model .
+- ``examples``: Result inspection and analysis for different aspects of the fit and model.
+- ``database``: Loading results from a .sqlite3 database file.

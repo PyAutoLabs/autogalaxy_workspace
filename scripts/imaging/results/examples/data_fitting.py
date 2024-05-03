@@ -1,6 +1,6 @@
 """
-Database: Data Fitting
-======================
+Results: Data Fitting
+=====================
 
 In this tutorial, we use the aggregator to load models and data from a non-linear search and use them to perform
 fits to the data.
@@ -22,6 +22,16 @@ The only entries that needs changing are:
 
 Quantities specific to an interfometer, for example its uv-wavelengths real space mask, are accessed using the same API
 (e.g. `values("dataset.uv_wavelengths")` and `.values{"dataset.real_space_mask")).
+
+__Database File__
+
+The aggregator can also load results from a `.sqlite` database file.
+
+This is benefitial when loading results for large numbers of model-fits (e.g. more than hundreds)
+because it is optimized for fast querying of results.
+
+See the package `results/database` for a full description of how to set up the database and the benefits it provides,
+especially if loading results from hard-disk is slow.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -29,17 +39,34 @@ Quantities specific to an interfometer, for example its uv-wavelengths real spac
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+import os
 from os import path
+
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__Database File__
+__Aggregator__
 
-First, set up the aggregator as we did in the previous tutorial.
+The functionality illustrated in this example only supports results loaded via the .sqlite database.
+
+We therefore do not load results from hard-disk like other scritps, but build a .sqlite database in order
+to create the `Aggregator` object.
+
+If you have not used the .sqlite database before, the `database` package describes how to set it up and the API
+for the aggregator is identical from here on.
 """
-agg = af.Aggregator.from_database("database.sqlite")
+database_name = "results_folder"
+
+if path.exists(path.join("output", f"{database_name}.sqlite")):
+    os.remove(path.join("output", f"{database_name}.sqlite"))
+
+agg = af.Aggregator.from_database(
+    filename=f"{database_name}.sqlite", completed_only=False
+)
+
+agg.add_directory(directory=path.join("output", database_name))
 
 """
 The masks we used to fit the galaxies is accessible via the aggregator.
@@ -55,7 +82,7 @@ info_gen = agg.values("info")
 print([info for info in info_gen])
 
 """
-__Fits via Database__
+__Fits via Aggregator__
 
 Having performed a model-fit, we now want to interpret and visualize the results. In this example, we inspect 
 the `Imaging` object objects that gave good fits to the data. 
@@ -90,7 +117,7 @@ for dataset_list in dataset_gen:
     dataset_plotter.subplot_dataset()
 
 """
-We now use the database to load a generator containing the fit of the maximum log likelihood model (and therefore 
+We now use the aggregator to load a generator containing the fit of the maximum log likelihood model (and therefore 
 galaxies) to each dataset.
 
 Analogous to the `dataset_gen` above returning a list with one `Imaging` object, the `fit_gen` returns a list of
@@ -182,7 +209,7 @@ for fit_list in fit_gen:
 """
 __Errors (Random draws from PDF)__
 
-In the `database/models.py` example we showed how `Tracer objects could be randomly drawn form the Probability 
+In the `examples/models.py` example we showed how `Galaxies` objects could be randomly drawn form the Probability 
 Distribution Function, in order to quantity things such as errors.
 
 The same approach can be used with `FitImaging` objects, to investigate how the properties of the fit vary within

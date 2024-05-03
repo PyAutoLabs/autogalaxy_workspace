@@ -1,33 +1,62 @@
 """
-Database: Models
-================
+Results: Models
+===============
 
-In this tutorial, we use the database to load models and `Plane`'s from a non-linear search. This allows us to
-visualize and interpret its results.
+Suppose we have the results of many fits and we only wanted to load and inspect a specific set
+of model-fits (e.g. the results of `start_here.py`). We can use querying tools to only load the results we are
+interested in.
 
-We then show how the database also allows us to load many `Plane`'s correspond to many samples of the non-linear
-search. This allows us to compute the errors on quantities that the `Plane` contains, but were not sampled directly
-by the non-linear search.
+This includes support for advanced querying, so that specific model-fits (e.g., which fit a certain model or dataset)
+can be loaded.
+
+__Database File__
+
+The aggregator can also load results from a `.sqlite` database file.
+
+This is benefitial when loading results for large numbers of model-fits (e.g. more than hundreds)
+because it is optimized for fast querying of results.
+
+See the package `results/database` for a full description of how to set up the database and the benefits it provides,
+especially if loading results from hard-disk is slow.
 """
+import os
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+from os import path
+
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__Database File__
+__Aggregator__
 
-First, set up the aggregator as we did in the previous tutorial.
-"""
-agg = af.Aggregator.from_database("database.sqlite")
+The functionality illustrated in this example only supports results loaded via the .sqlite database.
 
+We therefore do not load results from hard-disk like other scritps, but build a .sqlite database in order
+to create the `Aggregator` object.
+
+If you have not used the .sqlite database before, the `database` package describes how to set it up and the API
+for the aggregator is identical from here on.
 """
-__Plane via Database__
+database_name = "results_folder"
+
+if path.exists(path.join("output", f"{database_name}.sqlite")):
+    os.remove(path.join("output", f"{database_name}.sqlite"))
+
+agg = af.Aggregator.from_database(
+    filename=f"{database_name}.sqlite", completed_only=False
+)
+
+agg.add_directory(directory=path.join("output", database_name))
+
+"""   
+__Galaxies via Aggregator__
 
 Having performed a model-fit, we now want to interpret and visualize the results. In this example, we want to inspect
 the `Plane` object objects that gave good fits to the data. 

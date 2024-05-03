@@ -48,7 +48,7 @@ __Simulate__
 For simulating interferometer data of a galaxy, we recommend using a Grid2D object with a `sub_size` of 1. This
 simplifies the generation of the galaxy image in real space before it is transformed to Fourier space.
 """
-grid = ag.Grid2D.uniform(shape_native=(800, 800), pixel_scales=0.05, sub_size=1)
+grid = ag.Grid2D.uniform(shape_native=(800, 800), pixel_scales=0.05)
 
 """
 To perform the Fourier transform we need the wavelengths of the baselines, which we'll load from the fits file below.
