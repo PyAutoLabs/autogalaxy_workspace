@@ -294,6 +294,7 @@ Below, we plot the rectangular mesh without the image-grid pixels (for clarity) 
 to show how each set of image-pixels fall within a rectangular pixel.
 """
 mapper_grids = ag.MapperGrids(
+    mask=mask,
     source_plane_data_grid=masked_dataset.grid_pixelization,
     source_plane_mesh_grid=grid_rectangular,
 )
@@ -321,6 +322,7 @@ every rectangular pixelization pixel.
 There are two steps in this calculation, which we show individually below.
 """
 mapper_grids = ag.MapperGrids(
+    mask=mask,
     source_plane_data_grid=masked_dataset.grid_pixelization,
     source_plane_mesh_grid=grid_rectangular,
 )
@@ -399,7 +401,7 @@ mapping_matrix = ag.util.mapper.mapping_matrix_from(
     pixels=mapper.pixels,
     total_mask_pixels=mapper.source_plane_data_grid.mask.pixels_in_mask,
     slim_index_for_sub_slim_index=mapper.slim_index_for_sub_slim_index,
-    sub_fraction=mapper.source_plane_data_grid.mask.sub_fraction,
+    sub_fraction=np.array(mapper.over_sampler.sub_fraction),
 )
 
 """
@@ -511,8 +513,8 @@ NOTE: WD03 assume the data is already galaxy subtracted thus $b_{j}$ is omitted 
 """
 data_vector = ag.util.inversion_imaging.data_vector_via_blurred_mapping_matrix_from(
     blurred_mapping_matrix=blurred_mapping_matrix,
-    image=light_subtracted_image_2d,
-    noise_map=masked_dataset.noise_map,
+    image=np.array(light_subtracted_image_2d),
+    noise_map=np.array(masked_dataset.noise_map),
 )
 
 """

@@ -103,6 +103,8 @@ The script `autogalaxy_workspace/*/interferometer/profiling.py` allows you to co
 for your interferometer dataset. It does this for all possible combinations of settings and therefore can tell you
 which settings give the fastest run times for your dataset.
 """
+settings_inversion = ag.SettingsInversion(use_linear_operators=False)
+
 dataset_plotter = aplt.InterferometerPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()

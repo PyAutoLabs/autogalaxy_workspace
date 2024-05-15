@@ -28,13 +28,6 @@ the `modeling/mass_total__source_parametric.py` example.
 """
 dataset_name = "simple__sersic"
 
-search = af.Nautilus(
-    path_prefix=path.join("plot"),
-    name="NestPlotter",
-    unique_tag=dataset_name,
-    n_live=100,
-)
-
 dataset_path = path.join("dataset", "imaging", dataset_name)
 
 dataset = ag.Imaging.from_fits(
@@ -54,6 +47,9 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 analysis = ag.AnalysisImaging(dataset=dataset)
+
+
+search = af.DynestyStatic(path_prefix="plot", name="DynestyPlotter")
 
 result = search.fit(model=model, analysis=analysis)
 
@@ -157,7 +153,7 @@ dyplot.boundplot(
     results=search_internal.results,
     labels=model.parameter_labels_with_superscripts_latex,
     dims=(2, 2),
-    it=100,
+    it=-1,  # -1 is the final iteration of the dynesty samples, change this to plot a different iteration
     idx=None,
     prior_transform=None,
     periodic=None,
@@ -185,7 +181,7 @@ specific dead point during the course of a run, projected onto all pairs of dime
 dyplot.cornerbound(
     results=search_internal.results,
     labels=model.parameter_labels_with_superscripts_latex,
-    it=100,
+    it=-1,  # -1 is the final iteration of the dynesty samples, change this to plot a different iteration
     idx=None,
     dims=None,
     prior_transform=None,
@@ -210,33 +206,36 @@ plt.close()
 """
 The cornerplot plots a corner plot of the 1-D and 2-D marginalized posteriors.
 """
+try:
+    dyplot.cornerplot(
+        results=search_internal.results,
+        labels=model.parameter_labels_with_superscripts_latex,
+        dims=None,
+        span=None,
+        quantiles=[0.025, 0.5, 0.975],
+        color="black",
+        smooth=0.02,
+        quantiles_2d=None,
+        hist_kwargs=None,
+        hist2d_kwargs=None,
+        label_kwargs={"fontsize": 16},
+        show_titles=True,
+        title_fmt=".2f",
+        title_kwargs={"fontsize": "10"},
+        truths=None,
+        truth_color="red",
+        truth_kwargs=None,
+        max_n_ticks=5,
+        top_ticks=False,
+        use_math_text=False,
+        verbose=False,
+    )
 
-dyplot.cornerplot(
-    results=search_internal.results,
-    labels=model.parameter_labels_with_superscripts_latex,
-    dims=None,
-    span=None,
-    quantiles=[0.025, 0.5, 0.975],
-    color="black",
-    smooth=0.02,
-    quantiles_2d=None,
-    hist_kwargs=None,
-    hist2d_kwargs=None,
-    label_kwargs={"fontsize": 16},
-    show_titles=True,
-    title_fmt=".2f",
-    title_kwargs={"fontsize": "10"},
-    truths=None,
-    truth_color="red",
-    truth_kwargs=None,
-    max_n_ticks=5,
-    top_ticks=False,
-    use_math_text=False,
-    verbose=False,
-)
+    plt.show()
+    plt.close()
 
-plt.show()
-plt.close()
+except ValueError:
+    pass
 
 
 """
