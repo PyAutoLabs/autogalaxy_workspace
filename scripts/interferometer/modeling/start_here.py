@@ -33,9 +33,9 @@ __Dataset__
 Load and plot the galaxy `Interferometer` dataset `simple__sersic` from .fits files, which we will fit 
 with the model.
 
-This includes a `SettingsInterferometer`, which includes the method used to Fourier transform the real-space 
-image of the galaxy to the uv-plane and compare directly to the visiblities. We use a non-uniform fast Fourier 
-transform, which is the most efficient method for interferometer datasets containing ~1-10 million visibilities.
+This includes the method used to Fourier transform the real-space image of the galaxy to the uv-plane and compare 
+directly to the visiblities. We use a non-uniform fast Fourier transform, which is the most efficient method for 
+interferometer datasets containing ~1-10 million visibilities.
 """
 dataset_name = "simple"
 dataset_path = path.join("dataset", "interferometer", dataset_name)

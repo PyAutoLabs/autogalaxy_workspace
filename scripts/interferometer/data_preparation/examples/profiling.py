@@ -56,8 +56,6 @@ This function is used throughout this script to time how long a fit takes for ea
 def print_fit_time_from(
     interferometer, transformer_class, use_w_tilde, use_linear_operators, repeats=1
 ):
-    settings_dataset = ag.SettingsInterferometer(transformer_class=transformer_class)
-    dataset = dataset.apply_settings(settings=settings_dataset)
 
     """
     __Numba Caching__
@@ -141,7 +139,7 @@ pixelization = ag.Pixelization(
 
 galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 
-tracer = ag.Tracer(galaxies=[galaxy])
+tracer = ag.Galaxies(galaxies=[galaxy])
 
 """
 __DFT + Matrices (Mapping)__
@@ -156,8 +154,16 @@ These settings are fastest for interferometer datasets with < 1000 visibilities.
 They scale poorly to datasets with > 10000 visibilities which will use large quantities of memory, thus the
 code below is commented out by default.
 """
+dataset = ag.Interferometer.from_fits(
+    data_path=path.join(dataset_path, "data.fits"),
+    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerDFT,
+)
+
 print_fit_time_from(
-    dataset=interferometer,
+    dataset=dataset,
     transformer_class=ag.TransformerDFT,
     use_w_tilde=False,
     use_linear_operators=False,
@@ -176,8 +182,16 @@ These settingsare fastest for interferometer datasets with ~ 10000 visibilities.
 They scale poorly to datasets with < 1000 and > 10000 visibilities which will use large quantities of memory, thus the
 code below is commented out by default.
 """
+dataset = ag.Interferometer.from_fits(
+    data_path=path.join(dataset_path, "data.fits"),
+    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerNUFFT,
+)
+
 print_fit_time_from(
-    dataset=interferometer,
+    dataset=dataset,
     transformer_class=ag.TransformerNUFFT,
     use_w_tilde=False,
     use_linear_operators=False,

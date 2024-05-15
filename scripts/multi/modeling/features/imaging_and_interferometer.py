@@ -50,18 +50,13 @@ interferometer = ag.Interferometer.from_fits(
     noise_map_path=path.join(dataset_path, "noise_map.fits"),
     uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerNUFFT
 )
 
 interferometer_plotter = aplt.InterferometerPlotter(dataset=interferometer)
 interferometer_plotter.subplot_dataset()
 interferometer_plotter.subplot_dirty_images()
 
-"""
-We now create the `Interferometer` object which is used to fit the galaxy model.
-"""
-settings_interferometer = ag.SettingsInterferometer(
-    transformer_class=ag.TransformerNUFFT
-)
 
 """
 __Imaging Dataset__

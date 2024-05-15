@@ -56,7 +56,7 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 
 from os import path
 import autofit as af
-import autogalaxy as al
+import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """

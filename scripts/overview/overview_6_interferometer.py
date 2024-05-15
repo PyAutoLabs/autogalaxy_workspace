@@ -45,6 +45,7 @@ dataset = ag.Interferometer.from_fits(
     noise_map_path=path.join(dataset_path, "noise_map.fits"),
     uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
+    transformer_class = ag.TransformerNUFFT
 )
 
 """
@@ -109,15 +110,10 @@ to perform a single transform. This approach is therefore unfeasible for high qu
 For this reason, **PyAutoGalaxy** supports the non-uniform fast fourier transform algorithm
 **PyNUFFT** (https://github.com/jyhmiinlin/pynufft), which is significantly faster, being able too perform a Fourier
 transform of ~10 million in less than a second!
+
+This object was used above when loading the dataset.
 """
 transformer_class = ag.TransformerNUFFT
-
-"""
-The use this transformer in a fit, we use the `apply_settings` method.
-"""
-dataset = dataset.apply_settings(
-    settings=ag.SettingsInterferometer(transformer_class=transformer_class)
-)
 
 """
 __Fitting__
