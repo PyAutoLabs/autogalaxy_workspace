@@ -298,7 +298,11 @@ mapper_grids = ag.MapperGrids(
     source_plane_mesh_grid=grid_rectangular,
 )
 
-mapper = ag.Mapper(mapper_grids=mapper_grids, regularization=None)
+mapper = ag.Mapper(
+    mapper_grids=mapper_grids,
+    over_sampler=masked_dataset.over_sampler_pixelization,
+    regularization=None,
+)
 
 include = aplt.Include2D(mapper_source_plane_data_grid=False)
 mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
@@ -321,7 +325,11 @@ mapper_grids = ag.MapperGrids(
     source_plane_mesh_grid=grid_rectangular,
 )
 
-mapper = ag.Mapper(mapper_grids=mapper_grids, regularization=None)
+mapper = ag.Mapper(
+    mapper_grids=mapper_grids,
+    over_sampler=masked_dataset.over_sampler_pixelization,
+    regularization=None,
+)
 
 """
 The `Mapper` contains:
