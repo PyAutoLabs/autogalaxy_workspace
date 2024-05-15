@@ -56,7 +56,6 @@ This function is used throughout this script to time how long a fit takes for ea
 def print_fit_time_from(
     interferometer, transformer_class, use_w_tilde, use_linear_operators, repeats=1
 ):
-
     """
     __Numba Caching__
 
