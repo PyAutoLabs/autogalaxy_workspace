@@ -71,10 +71,6 @@ This class is where the data and galaxies are combined to fit the data via the i
 galaxies_to_inversion = ag.GalaxiesToInversion(
     galaxies=galaxies,
     dataset=dataset,
-    data=dataset.data,
-    noise_map=dataset.noise_map,
-    w_tilde=dataset.w_tilde,
-    grid=grid,
 )
 
 """
