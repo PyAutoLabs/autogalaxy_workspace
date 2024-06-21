@@ -149,6 +149,17 @@ galaxies_plotter.figures_2d(image=True)
 galaxies_plotter.subplot_galaxy_images()
 
 """
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+For a new user, the details of over-sampling are not important, therefore just be aware that all calculations use an
+adaptive over sampling scheme which high accuracy across all use cases.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+
 __Log10__
 
 The light distributions of galaxies are closer to a log10 distribution than a linear one. 

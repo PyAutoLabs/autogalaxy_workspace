@@ -34,10 +34,24 @@ The path where the dataset will be output, which in this case is
 dataset_path = path.join("dataset", dataset_type, dataset_name)
 
 """
-__Simulate__
+__Grid__
 
-For simulating interferometer data of a galaxy, we recommend using a Grid2D object with a `sub_size` of 1. This
-simplifies the generation of the galaxy image in real space before it is transformed to Fourier space.
+Define the 2d grid of (y,x) coordinates that the galaxy images are evaluated and therefore simulated on, via
+the inputs:
+
+ - `shape_native`: The (y_pixels, x_pixels) 2D shape of the grid defining the shape of the data that is simulated.
+ - `pixel_scales`: The arc-second to pixel conversion factor of the grid and data.
+
+For interferomet data, this image is evaluate in real-space and then transformed to Fourier space.
+
+__Over Sampling__
+
+If you are familiar with using imaging data, you may have seen that a numerical technique called
+over sampling is used, which evaluates light profiles on a higher resolution grid than the image data to ensure the
+calculation is accurate.
+
+Interferometer does not observe galaxies in a way where over sampling is necessary, therefore all interferometer
+calculations are performed without over sampling.
 """
 grid = ag.Grid2D.uniform(shape_native=(800, 800), pixel_scales=0.05)
 

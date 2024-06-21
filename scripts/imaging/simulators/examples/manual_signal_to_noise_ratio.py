@@ -55,7 +55,7 @@ dataset_name = "manual_signal_to_noise_ratio"
 dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
 
 """
-__Simulate__
+__Grid__
 
 Simulate the image using a `Grid2D` with the `OverSamplingIterate` object.
 """

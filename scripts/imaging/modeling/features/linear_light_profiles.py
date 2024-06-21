@@ -138,8 +138,8 @@ search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="linear_light_profiles",
     unique_tag=dataset_name,
-    n_live=75,
-    number_of_cores=1,
+    n_live=300,
+    number_of_cores=4,
 )
 
 """
@@ -346,10 +346,10 @@ Each of these `LightProfileLinearObjFuncList` objects contains its list of light
 `Sersic` is a single entry whereas for the `Basis` is 5 Gaussians.
 """
 print(
-    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].light_profile_list}"
+    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].profile_list}"
 )
 print(
-    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].light_profile_list}"
+    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].profile_list}"
 )
 
 """
@@ -381,7 +381,7 @@ disk = galaxies[0].disk
 print(fit.linear_light_profile_intensity_dict)
 
 print(
-    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge.light_profile_list[0]]}"
+    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge.profile_list[0]]}"
 )
 print(
     f"\n Intensity of first Gaussian in disk = {fit.linear_light_profile_intensity_dict[disk]}"

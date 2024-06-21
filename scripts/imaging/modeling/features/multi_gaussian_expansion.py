@@ -155,7 +155,7 @@ for i in range(total_gaussians):
 
 # The Basis object groups many light profiles together into a single model component and is used to fit the data.
 
-bulge = ag.lp_basis.Basis(light_profile_list=bulge_gaussian_list)
+bulge = ag.lp_basis.Basis(profile_list=bulge_gaussian_list)
 
 """
 Once we have a `Basis`, we can treat it like any other light profile in order to create a `Galaxy` and use it to fit 

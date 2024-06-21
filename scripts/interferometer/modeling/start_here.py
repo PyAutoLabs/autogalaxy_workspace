@@ -53,6 +53,14 @@ dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()
 
 """
+__Over Sampling__
+
+If you are familiar with using imaging data, you may have seen that a numerical technique called over sampling is used, 
+which evaluates light profiles on a higher resolution grid than the image data to ensure the calculation is accurate.
+
+Interferometer does not observe galaxies in a way where over sampling is necessary, therefore all interferometer
+calculations are performed without over sampling.
+
 __Model__
 
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 

@@ -98,6 +98,17 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+For a new user, the details of over-sampling are not important, therefore just be aware that all calculations use an
+adaptive over sampling scheme which high accuracy across all use cases.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+
 __Model__
 
 In this example we compose a model where:
@@ -227,10 +238,10 @@ so not slow down the overall speed of the model-fit.
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
-    name="light[bulge_disk]",
+    name="start_here",
     unique_tag=dataset_name,
-    n_live=100,
-    number_of_cores=1,
+    n_live=1200,
+    number_of_cores=4,
     iterations_per_update=10000,
 )
 

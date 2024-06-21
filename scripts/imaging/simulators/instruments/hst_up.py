@@ -31,7 +31,7 @@ dataset_instrument = "hst_up"
 dataset_path = path.join("dataset", "imaging", dataset_type, dataset_instrument)
 
 """
-__Simulate__
+__Grid__
 
 Simulate the image using a `Grid2D` with the `OverSamplingIterate` object.
 """

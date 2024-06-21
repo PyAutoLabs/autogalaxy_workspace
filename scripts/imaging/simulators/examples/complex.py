@@ -37,7 +37,7 @@ dataset_name = "complex"
 dataset_path = path.join("dataset", dataset_type, dataset_name)
 
 """
-__Simulate__
+__Grid__
 
 Simulate the image using a `Grid2D` with the `OverSamplingIterate` object.
 """

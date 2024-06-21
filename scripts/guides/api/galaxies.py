@@ -11,7 +11,7 @@ The guide then extends the overview with more advanced uses of galaxies, includi
 
 __Plot Module__
 
-This example uses the **PyAutoGalaxy** plot module to plot the results, including `Plotter` objects that make
+This example uses the plot module to plot the results, including `Plotter` objects that make
 the figures and `MatPlot` objects that wrap matplotlib to customize the figures.
 
 The visualization API is straightforward but is explained in the `autogalaxy_workspace/*/plot` package in full.

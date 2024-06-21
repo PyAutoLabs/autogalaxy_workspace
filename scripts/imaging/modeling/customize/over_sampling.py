@@ -1,13 +1,19 @@
 """
-Settings: Sub Gridding
-======================
+Settings: Over Sampling
+=======================
 
-This example demonstrates how to change the sub-grid used by a parametric `LightProfile` to compute the surface
-brightness of every image-pixel, whereby a higher sub-grid resolution better oversamples the image of the light profile
-so as to provide a more accurate model of its image.
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
 
-**Benefit**: Higher level of sub-gridding provide a more accurate estimate of the surface brightness in every image-pixel.
-**Downside**: Higher levels of sub-gridding require longer calculations and higher memory usage.
+This example demonstrates how to change the over sampling used to compute the surface brightness of every image-pixel,
+whereby a higher sub-grid resolution better oversamples the image of the light profile so as to provide a more accurate 
+model of its image.
+
+**Benefit**: Higher level of over sampling provide a more accurate estimate of the surface brightness in every image-pixel.
+**Downside**: Higher levels of over sampling require longer calculations and higher memory usage.
+
+You should read up on over-sampling in more detail via  the `autogalaxy_workspace/*/guides/over_sampling.ipynb`
+notebook before using this example to customize the over sampling of your model-fits.
 
 __Start Here Notebook__
 
@@ -104,7 +110,7 @@ __Model-Fit__
 We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
 search to find which models fit the data with the highest likelihood.
 
-Because the `AnalysisImaging` was passed a `Imaging` with a `sub_size=4` it uses a higher level of sub-gridding
+Because the `AnalysisImaging` was passed a `Imaging` with a `sub_size=4` it uses a higher level of over sampling
 to fit each model `LightProfile` to the data.
 """
 result = search.fit(model=model, analysis=analysis)

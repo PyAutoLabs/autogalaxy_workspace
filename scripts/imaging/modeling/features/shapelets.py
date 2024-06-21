@@ -1,42 +1,52 @@
 """
-Modeling: Light Shapelets
-=========================
+Modeling Features: Shapelets
+============================
+
+A shapelet is a basis function that is appropriate for capturing the exponential / disk-like features of a galaxy. It
+has been employed in galaxy structure studies to model the light of the galaxy, because it can represent
+features of disky star forming galaxies that a single Sersic function cannot.
+
+- https://ui.adsabs.harvard.edu/abs/2016MNRAS.457.3066T
+- https://iopscience.iop.org/article/10.1088/0004-637X/813/2/102 t
+
+Shapelets are described in full in the following paper:
+
+ https://arxiv.org/abs/astro-ph/0105178
+
+This script performs a model-fit using shapelet, where it decomposes the galaxy light into ~20
+Shapelets. The `intensity` of every Shapelet is solved for via linear algebra (see the `light_parametric_linear.py`
+feature).
+
+__Advantages__
+
+Symmetric light profiles (e.g. elliptical Sersics) may leave significant residuals, because they fail to capture
+irregular and asymmetric morphological of galaxies (e.g. isophotal twists, an ellipticity which varies radially).
+Shapelets can capture some of these features and can therefore better represent the emission of complex galaxies.
+
+The shapelet model can be composed in a way that has fewer non-linear parameters than an elliptical Sersic. In this
+example, the ~20 shapelets which represent the `bulge` of that are composed in a model corresponding to just
+N=3 non-linear parameters (a `bulge` comprising a linear Sersic would give N=6).
+
+Therefore, shapelet fit more complex galaxy morphologies using fewer non-linear parameters than the standard
+light profile models!
+
+__Disadvantages__
+
+- There are many types of galaxy structure which shapelets may struggle to represent, such as a bar or assymetric
+knots of star formation. They also rely on the galaxy have a distinct central over which the shapelets can be
+centered, which is not the case of the galaxy is multiple merging systems or has bright companion galaxies.
+
+- The linear algebra used to solve for the `intensity` of each shapelet has to allow for negative values of intensity
+in order for shapelets to work. Negative surface brightnesses are unphysical, and are often inferred in a shapelet
+decomposition, for example if the true galaxy has structure that cannot be captured by the shapelet basis.
+
+- Computationally slower than standard light profiles like the Sersic.
+
+__Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's bulge is a super position of `ShapeletCartesianSph`` profiles.
-
-__Basis / Shapelet Fitting__
-
-Fits using symmetric light profiles such as elliptical Sersics often leave significant residuals, because they do not
-capture irregular and asymmetric features within a galaxy, for example isophotal twists, varying radial ellipticity or
-disruption due to mergers.
-
-Basis fitting uses a super position of light profiles to represent the different structural components within a
-galaxy. The `intensity` value of every basis function is solved for via linear
-algebra (see `light_parametric_linear.py`), meaning that the super position can adapt so as to capture these
-irregular and asymmetric features.
-
-This example fits a galaxy with asymmetric features using shapelet basis functions. Shapelets are basis functions
-with analytic properties that are appropriate for capturing exponential / disk-like features in a galaxy. They
-do so over a wide range of scales, and can often represent features in these galaxies that a single Sersic function
-cannot.
-
-Shapelets are described in full in the following papers:
-
- https://arxiv.org/abs/astro-ph/0105178
-
-__Positive Only Solver__
-
-Many codes which use linear algebra typically rely on a linear algabra solver which allows for positive and negative
-values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
-
-This is problematic, as it means that negative surface brightnesses values can be computed to represent a galaxy's
-light, which is clearly unphysical. For shapelets, this produces a positive-negative "ringing", where the
-Gaussians alternate between large positive and negative values. This is clearly undesirable and unphysical.
-
-**PyAutoLens** uses a positive only linear algebra solver which has been extensively optimized to ensure it is as fast
-as positive-negative solvers. This ensures that all light profile intensities are positive and therefore physical.
 
 __Start Here Notebook__
 

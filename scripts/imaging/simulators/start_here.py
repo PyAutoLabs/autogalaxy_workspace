@@ -37,23 +37,29 @@ The path where the dataset will be output, which in this case is:
 dataset_path = path.join("dataset", dataset_type, dataset_name)
 
 """
-__Simulate__
+__Grid__
 
-When simulating the amount of emission in each image pixel from galaxies, a two dimensional line integral of all of 
-the emission within the area of that pixel should be performed. However, for complex models this can be difficult 
-to analytically compute and can lead to slow run times.
-
-Instead, an iterative algorithm is used to approximate the line integral. Grids of increasing resolution are used to 
-evaluate the flux in each pixel from the lens and source galaxies. Grids of higher resolution are used until the 
-fractional accuracy of the flux in each pixel meets a certain threshold, which we set below to 99.99%
-
-This uses the `OverSamplingIterate` object, which is input into to the `Grid2D` object you may have seen in other 
-example scripts, however it make sit perform the iterative ray-tracing described above.
-
-The grid is also created from:
+Define the 2d grid of (y,x) coordinates that the galaxy images are evaluated and therefore simulated on, via
+the inputs:
 
  - `shape_native`: The (y_pixels, x_pixels) 2D shape of the grid defining the shape of the data that is simulated.
  - `pixel_scales`: The arc-second to pixel conversion factor of the grid and data.
+
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+An iterative algorithm is used to perform this efficiently by inputting the `OverSamplingIterate` object. Grids of 
+increasing resolution are used to evaluate the flux in each pixel from the galaxies, until the fractional accuracy of 
+the flux in each pixel meets a certain threshold, which we set below to 99.99%
+
+Iterative over sampling is relatively slow, but it provides a more accurate result. Slow run times are ok for 
+simulating data, but for tasks which require more rapid run times (e.g. model-fitting) an adaptive over sampling 
+algorithm is used, which provides high levels of over sampling only where it is necessary making the process much faster.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
 """
 grid = ag.Grid2D.uniform(
     shape_native=(100, 100),
