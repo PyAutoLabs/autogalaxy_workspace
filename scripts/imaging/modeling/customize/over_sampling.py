@@ -68,7 +68,7 @@ dataset = ag.Imaging.from_fits(
 )
 
 dataset = dataset.apply_over_sampling(
-    over_sampling=over_sampling
+    over_sampling=ag.OverSamplingDataset(uniform=over_sampling)
 )  # <----- The over sampling above is used here!
 
 """

@@ -103,9 +103,11 @@ This uses the `OverSamplingIterate` object, which is input into to the `Grid2D` 
 example scripts, however it make sit perform the iterative ray-tracing described above.
 """
 dataset = dataset.apply_over_sampling(
-    ag.OverSamplingIterate(
-        fractional_accuracy=0.9999,
-        sub_steps=[2, 4, 8, 16],
+    over_sampling=ag.OverSamplingDataset(
+        uniform=ag.OverSamplingIterate(
+            fractional_accuracy=0.9999,
+            sub_steps=[2, 4, 8, 16],
+        )
     )
 )
 

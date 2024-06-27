@@ -86,8 +86,10 @@ For simplicity, we disable over sampling in this guide by setting `sub_size_pixe
 a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
 """
 masked_dataset = masked_dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingUniform(sub_size=1),
-    over_sampling_pixelization=ag.OverSamplingUniform(sub_size=1),
+    over_sampling=ag.OverSamplingDataset(
+        uniform=ag.OverSamplingUniform(sub_size=1),
+        pixelization=ag.OverSamplingUniform(sub_size=1),
+    )
 )
 
 """
