@@ -55,7 +55,7 @@ Lets create a `Plane` which we will use to create the `Mapper`.
 """
 pixelization = ag.Pixelization(
     image_mesh=ag.image_mesh.Overlay(shape=(25, 25)),
-    mesh=ag.mesh.Voronoi(),
+    mesh=ag.mesh.Delaunay(),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 

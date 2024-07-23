@@ -1,17 +1,17 @@
 """
 __Log Likelihood Function: Parametric__
 
-This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with parametric light profiles (a Sersic bulge and Exponential disk).
+This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data 
+with parametric light profiles (e.g. a Sersic bulge and Exponential disk).
 
 This script has the following aims:
 
- - To provide a resource that authors can include in papers using **PyAutoGalaxy**, so that readers can understand the
- likelihood function (including references to the previous literature from which it is defined) without having to
+ - To provide a resource that authors can include in papers, so that readers can understand the likelihood
+ function (including references to the previous literature from which it is defined) without having to
  write large quantities of text and equations.
 
 Accompanying this script is the `contributor_guide.py` which provides URL's to every part of the source-code that
-is illustrated in this guide. This gives contributors a linear run through of what source-code functions, modules and
+is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
 """
 # %matplotlib inline
@@ -28,80 +28,76 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__Dataset__
-
-In order to perform a likelihood evaluation, we first load a dataset.
-
-This example fits a simulated galaxy where the imaging resolution is 0.1 arcsecond-per-pixel resolution.
-"""
-dataset_path = path.join("dataset", "imaging", "simple")
-
-dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    pixel_scales=0.1,
-)
-
-"""
-This guide uses **PyAutoGalaxy**'s in-built visualization tools for plotting. 
-
-For example, using the `ImagingPlotter` the imaging dataset we perform a likelihood evaluation on is plotted.
-"""
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
-
-"""
 __Mask__
 
-The likelihood is only evaluated using image pixels contained within a 2D mask, which we choose before performing
-a likelihood evaluation.
-
-We define a 2D circular mask with a 3.0" radius.
+We define the ‘real_space_mask’ which defines the grid the image the galaxy is evaluated using.
 """
-mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
+real_space_mask = ag.Mask2D.circular(
+    shape_native=(800, 800), pixel_scales=0.05, radius=4.0
 )
 
-masked_dataset = dataset.apply_mask(mask=mask)
+"""
+__Dataset__
+
+Load and plot the galaxy `Interferometer` dataset `simple__sersic` from .fits files, which we will fit 
+with the model.
+
+This includes the method used to Fourier transform the real-space image of the galaxy to the uv-plane and compare 
+directly to the visibilities. We use a non-uniform fast Fourier transform, which is the most efficient method for 
+interferometer datasets containing ~1-10 million visibilities. We will discuss how the calculation of the likelihood
+function changes for different methods of Fourier transforming in this guide.
+"""
+dataset_name = "simple"
+dataset_path = path.join("dataset", "interferometer", dataset_name)
+
+dataset = ag.Interferometer.from_fits(
+    data_path=path.join(dataset_path, "data.fits"),
+    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerDFT,
+)
 
 """
-When we plot the masked imaging, only the circular masked region is shown.
+This guide uses in-built visualization tools for plotting. 
+
+For example, using the `InterferometerPlotter` the dataset we perform a likelihood evaluation on is plotted.
 """
-dataset_plotter = aplt.ImagingPlotter(dataset=masked_dataset)
+
+dataset_plotter = aplt.InterferometerPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
+dataset_plotter.subplot_dirty_images()
 
 """
 __Over Sampling__
 
-Over sampling evaluates a light profile using multiple samples of its intensity per image-pixel.
+If you are familiar with using imaging data, you may have seen that a numerical technique called over sampling is used, 
+which evaluates light profiles on a higher resolution grid than the image data to ensure the calculation is accurate.
 
-For simplicity, we disable over sampling in this guide by setting `sub_size=1`. 
+Interferometer does not observe galaxies in a way where over sampling is necessary, therefore all interferometer
+calculations are performed without over sampling.
 
-a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
-"""
-masked_dataset = masked_dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingDataset(uniform=ag.OverSamplingUniform(sub_size=1))
-)
-
-"""
 __Masked Image Grid__
 
 To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
 
-These are given by `masked_dataset.grid`, which we can plot and see is a uniform grid of (y,x) Cartesian coordinates
-which have had the 3.0" circular mask applied.
+The dataset is defined in real-space, and is Fourier transformed to the uv-plane for the model-fit. The grid is
+therefore paired to the `real_space_mask`.
+
+The coordinates are given by `dataset.grids.uniform`, which we can plot and see is a uniform grid of (y,x) Cartesian 
+coordinates which have had the 3.0" circular mask applied.
 
 Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
 used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
 it straight forward to compute the light profile's image to the image data.
 """
-grid_plotter = aplt.Grid2DPlotter(grid=masked_dataset.grid)
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.uniform)
 grid_plotter.figure_2d()
 
 print(
-    f"(y,x) coordinates of first ten unmasked image-pixels {masked_dataset.grid[0:9]}"
+    f"(y,x) coordinates of first ten unmasked image-pixels {dataset.grid[0:9]}"
 )
+
 
 """
 To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
@@ -110,14 +106,14 @@ To perform light profile calculations we convert this 2D (y,x) grid of coordinat
 
 Where:
 
- - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `masked_dataset.grid`.
+ - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `dataset.grids.uniform`.
  - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
  - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
  - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
  x-axis.
 
-**PyAutoGalaxy** does not use $q$ and $\phi$ to parameterize a light profile but expresses these 
-as "elliptical components", or `ell_comps` for short:
+$q$ and $\phi$ are not used to parameterize a light profile but expresses these  as "elliptical components", 
+or `ell_comps` for short:
 
 $\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
 $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
@@ -125,10 +121,10 @@ $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
 """
-First we transform `masked_dataset.grid ` to the centre of profile and rotate it using its angle.
+First we transform `dataset.grids.uniform` to the centre of profile and rotate it using its angle.
 """
 transformed_grid = profile.transformed_to_reference_frame_grid_from(
-    grid=masked_dataset.grid
+    grid=dataset.grids.uniform
 )
 
 grid_plotter = aplt.Grid2DPlotter(grid=transformed_grid)
@@ -184,19 +180,19 @@ disk = ag.lp.Exponential(
 )
 
 """
-Using the masked 2D grid defined above, we can calculate and plot images of each light profile component.
+Using the masked 2D grid defined above, we can calculate and plot images of each light profile component in real space.
 
 (The transformation to elliptical coordinates above are built into the `image_2d_from` function and performed 
 implicitly).
 """
-image_2d_bulge = bulge.image_2d_from(grid=masked_dataset.grid)
+image_2d_bulge = bulge.image_2d_from(grid=dataset.grid)
 
-bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=masked_dataset.grid)
+bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=dataset.grid)
 bulge_plotter.figures_2d(image=True)
 
-image_2d_disk = disk.image_2d_from(grid=masked_dataset.grid)
+image_2d_disk = disk.image_2d_from(grid=dataset.grid)
 
-disk_plotter = aplt.LightProfilePlotter(light_profile=disk, grid=masked_dataset.grid)
+disk_plotter = aplt.LightProfilePlotter(light_profile=disk, grid=dataset.grid)
 disk_plotter.figures_2d(image=True)
 
 """
@@ -220,36 +216,29 @@ bulge and `Exponential` disk).
 
 This computes the `image` of each light profile and adds them together. 
 """
-galaxy_image_2d = galaxy.image_2d_from(grid=masked_dataset.grid)
+galaxy_image_2d = galaxy.image_2d_from(grid=dataset.grid)
 
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grid)
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """
-To convolve the galaxy's 2D image with the imaging data's PSF, we need its `blurring_image`. 
+If you are familiar with imaging data, you may have seen that a `blurring_image` of pixels surrounding the mask,
+whose light is convolved into the masked, is also computed at this point.
 
-This represents all flux values not within the mask, which are close enough to it that their flux blurs into the mask 
-after PSF convolution.
+For interferometer data, this is not necessary as the Fourier transform of the real-space image to the uv-plane 
+does not require that the emission from outside the mask is accounted for.
 
-To compute this, a `blurring_mask` and `blurring_grid` are used, corresponding to these pixels near the edge of the 
-actual mask whose light blurs into the image:
+__Likelihood Step 2: Fourier Transform__
+
+Fourier Transform the 2D image of the galaxy above using the Non Uniform Fast Fourier Transform (NUFFT).
 """
-galaxy_blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.blurring_grid)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.blurring_grid)
-galaxy_plotter.figures_2d(image=True)
-
-"""
-__Likelihood Step 2: Convolution__
-
-Convolve the 2D image of the galaxy above with the PSF in real-space (as opposed to via an FFT) using a `Convolver`.
-"""
-convolved_image_2d = masked_dataset.convolver.convolve_image(
-    image=galaxy_image_2d, blurring_image=galaxy_blurring_image_2d
+visibilities = dataset.transformer.visibilities_from(
+    image=galaxy_image_2d,
 )
 
-array_2d_plotter = aplt.Array2DPlotter(array=convolved_image_2d)
-array_2d_plotter.figure_2d()
+grid_2d_plotter = aplt.Grid2DPlotter(grid=visibilities.in_grid)
+grid_2d_plotter.figure_2d()
+
 
 """
 __Likelihood Step 3: Likelihood Function__
@@ -268,7 +257,7 @@ __Likelihood Step 4: Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
- - `model_data` = `convolved_image_2d`
+ - `model_data` = `visibilities`
  - `residual_map` = (`data` - `model_data`)
  - `normalized_residual_map` = (`data` - `model_data`) / `noise_map`
  - `chi_squared_map` = (`normalized_residuals`) ** 2.0 = ((`data` - `model_data`)**2.0)/(`variances`)
@@ -279,10 +268,10 @@ The chi-squared therefore quantifies if our fit to the data is accurate or not.
 High values of chi-squared indicate that there are many image pixels our model did not produce a good fit to the image 
 for, corresponding to a fit with a lower likelihood.
 """
-model_image = convolved_image_2d
+model_data = visibilities
 
-residual_map = masked_dataset.data - model_image
-normalized_residual_map = residual_map / masked_dataset.noise_map
+residual_map = dataset.data - model_data
+normalized_residual_map = residual_map / dataset.noise_map
 chi_squared_map = normalized_residual_map**2.0
 
 chi_squared = np.sum(chi_squared_map)
@@ -292,10 +281,10 @@ print(chi_squared)
 """
 The `chi_squared_map` indicates which regions of the image we did and did not fit accurately.
 """
-chi_squared_map = ag.Array2D(values=chi_squared_map, mask=mask)
+chi_squared_map = ag.Visibilities(visibilities=chi_squared_map)
 
-array_2d_plotter = aplt.Array2DPlotter(array=chi_squared_map)
-array_2d_plotter.figure_2d()
+grid_2d_plotter = aplt.Grid2DPlotter(grid=chi_squared_map.in_grid)
+grid_2d_plotter.figure_2d()
 
 """
 __Likelihood Step 5: Noise Normalization Term__
@@ -308,7 +297,7 @@ of the log of every noise-map value squared.
 Given the `noise_map` is fixed, this term does not change during the galaxy modeling process and has no impact on the 
 model we infer.
 """
-noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
+noise_normalization = float(np.sum(np.log(2 * np.pi * dataset.noise_map**2.0)))
 
 """
 __Likelihood Step 6: Calculate The Log Likelihood!__
@@ -323,12 +312,12 @@ print(figure_of_merit)
 """
 __Fit__
 
-This 6 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object, which
-those of you familiar will have seen before.
+This 6 step process to perform a likelihood function evaluation is what is performed in the `FitInterferometer` object, 
+which those of you familiar will have seen before.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
-fit = ag.FitImaging(dataset=masked_dataset, galaxies=galaxies)
+fit = ag.FitInterferometer(dataset=dataset, galaxies=galaxies)
 fit_figure_of_merit = fit.figure_of_merit
 print(fit_figure_of_merit)
 

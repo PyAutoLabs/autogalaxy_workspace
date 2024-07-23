@@ -1,13 +1,13 @@
 """
-__Log Likelihood Function: Parametric__
+__Log Likelihood Function: Light Profile__
 
-The `parametric` script accompanying this one provides a step-by-step guide of
-the **PyAutoGalaxy** `log_likelihood_function used to fit `Imaging` data with a parametric light profile.
+The `light_profile` script accompanying this one provides a step-by-step guide of the log_likelihood_function used to
+fit `Imaging` data with a parametric light profile.
 
 This script provides a contributor guide, that gives links to every part of the source-code that performs each step
 of the likelihood evaluation.
 
-This gives contributors a linear run through of what functions, modules and packages in the source code are called
+This gives contributors a sequential run through of what functions, modules and packages in the source code are called
 when the likelihood is evaluated, and should help them navigate the source code.
 
 

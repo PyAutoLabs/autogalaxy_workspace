@@ -16,7 +16,7 @@ This script has the following aims:
  - To make inversions in **PyAutoGalaxy** less of a "black-box" to users.
 
 Accompanying this script is the `contributor_guide.py` which provides URL's to every part of the source-code that
-is illustrated in this guide. This gives contributors a linear run through of what source-code functions, modules and
+is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
 """
 # %matplotlib inline
@@ -248,9 +248,9 @@ after PSF convolution.
 To compute this, a `blurring_mask` and `blurring_grid` are used, corresponding to these pixels near the edge of the 
 actual mask whose light blurs into the image:
 """
-blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.blurring_grid)
+blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.grids.blurring)
 
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.blurring_grid)
+galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grids.blurring)
 galaxy_plotter.figures_2d(image=True)
 
 """
@@ -283,7 +283,7 @@ The function below does this by overlaying the rectangular mesh over the masked 
 the rectangular mesh touch the ask grid's edges.
 """
 grid_rectangular = ag.Mesh2DRectangular.overlay_grid(
-    shape_native=galaxy.pixelization.mesh.shape, grid=masked_dataset.grid_pixelization
+    shape_native=galaxy.pixelization.mesh.shape, grid=masked_dataset.grids.pixelization
 )
 
 """
@@ -297,13 +297,13 @@ to show how each set of image-pixels fall within a rectangular pixel.
 """
 mapper_grids = ag.MapperGrids(
     mask=mask,
-    source_plane_data_grid=masked_dataset.grid_pixelization,
+    source_plane_data_grid=masked_dataset.grids.pixelization,
     source_plane_mesh_grid=grid_rectangular,
 )
 
 mapper = ag.Mapper(
     mapper_grids=mapper_grids,
-    over_sampler=masked_dataset.over_sampler_pixelization,
+    over_sampler=masked_dataset.grids.over_sampler_pixelization,
     regularization=None,
 )
 
@@ -325,20 +325,20 @@ There are two steps in this calculation, which we show individually below.
 """
 mapper_grids = ag.MapperGrids(
     mask=mask,
-    source_plane_data_grid=masked_dataset.grid_pixelization,
+    source_plane_data_grid=masked_dataset.grids.pixelization,
     source_plane_mesh_grid=grid_rectangular,
 )
 
 mapper = ag.Mapper(
     mapper_grids=mapper_grids,
-    over_sampler=masked_dataset.over_sampler_pixelization,
+    over_sampler=masked_dataset.grids.over_sampler_pixelization,
     regularization=None,
 )
 
 """
 The `Mapper` contains:
 
- 1) `source_plane_data_grid`: the grid of masked (y,x) image-pixel coordinate centres (`masked_dataset.grid_pixelization`).
+ 1) `source_plane_data_grid`: the grid of masked (y,x) image-pixel coordinate centres (`masked_dataset.grids.pixelization`).
  2) `source_plane_mesh_grid`: The rectangular mesh of (y,x) pixelization pixel coordinates (`grid_rectangular`).
 
 We have therefore discretized the source-plane into a rectangular mesh, and can pair every image-pixel coordinate
