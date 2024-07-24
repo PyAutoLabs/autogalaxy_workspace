@@ -39,7 +39,7 @@ real_space_mask = ag.Mask2D.circular(
 """
 __Dataset__
 
-Load and plot the galaxy `Interferometer` dataset `simple__sersic` from .fits files, which we will fit 
+Load and plot the galaxy `Interferometer` dataset `simple` from .fits files, which we will fit 
 with the model.
 
 This includes the method used to Fourier transform the real-space image of the galaxy to the uv-plane and compare 
@@ -236,6 +236,16 @@ visibilities = dataset.transformer.visibilities_from(
     image=galaxy_image_2d,
 )
 
+"""
+The Fourier Transform converts the galaxy image from real-space, which is the observed 2D image of the galaxy we 
+see with our eyes, to the uv-plane, where the visibilities are measured.
+
+The visibilities are a grid of 2D values representing the real and imaginary components of the visibilities at each
+uv-plane coordinate.
+
+If you are not familiar with interferometer data and the uv-plane, you will need to read up on interferometry to
+fully understand how this likelihood function works.
+"""
 grid_2d_plotter = aplt.Grid2DPlotter(grid=visibilities.in_grid)
 grid_2d_plotter.figure_2d()
 
