@@ -53,10 +53,9 @@ ellipse fitting.
 
 This uses the `Imaging` object used in other examples.
 
-Unlike other examples, ellipse fitting does not use the Point Spread Function (PSF) of the dataset, so we do not need
-to load it.
+Ellipse fitting does not use the Point Spread Function (PSF) of the dataset, so we do not need to load it.
 """
-dataset_name = "simple"
+dataset_name = "ellipse"
 dataset_path = path.join("dataset", "imaging", dataset_name)
 
 dataset = ag.Imaging.from_fits(
@@ -262,90 +261,117 @@ print("Log Likelihood:")
 print(fit.log_likelihood)
 
 """
-The `FitEllipse` object can be input into a `FitEllipsePlotter` to plot the results of the fit in 1D on the 
+The `FitEllipse` object can be input into a `FitEllipsePlotter` to plot the results of the fit in 2D on the 
 interpolated ellipse coordinates.
+
+The plot below shows in white the ellipse fitted to the data and in black the contour of values in the data that
+match the mean of the data over the ellipse. 
+
+A good fit indicates that the white ellipse traces round the black contour well, which is close for the example
+below but not perfect.
 """
-
-mat_plot_2d = aplt.MatPlot2D(
-    output=aplt.Output(path=".", filename="ellipe_test", format="png"),
-)
-
-fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit])
+fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit], mat_plot_2d=aplt.MatPlot2D(use_log10=True))
 fit_plotter.figures_2d(data=True)
-bbb
+
+"""
+__Multiple Ellipses__
+
+It is rare to use only one ellipse to fit a galaxy, as the goal of ellipse fitting is to find the collection
+of ellipses that best trace round the data.
+
+For example, one model might consist ellipses, which all have the same `centre` and `ell_comps` but have different
+`major_axis` values, meaning they grow in size.
+
+We can therefore create multiple ellipses and fit them to the data, for example by creating a list of `FitEllipse`
+objects.
+"""
+major_axis_list = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
+
+ellipse_list = [ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.3, 0.5), major_axis=major_axis) for major_axis in major_axis_list]
+
+fit_list = [ag.FitEllipse(dataset=dataset, ellipse=ellipse) for ellipse in ellipse_list]
+
+print("Log Likelihoods of Multiple Ellipses:")
+print([fit.log_likelihood for fit in fit_list])
+
+print("Overall Log Likelihood:")
+print(sum([fit.log_likelihood for fit in fit_list]))
+
+fit_plotter = aplt.FitEllipsePlotter(fit_list=fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter.figures_2d(data=True)
 
 """
 A subplot can be plotted which contains all of the above quantities.
 """
 # fit_plotter.subplot_fit()
-
-"""
-__Bad Fit__
-
-A bad ellipse fit will occur when the ellipse model does not trace the data well, for example because the input
-angle does not align with the galaxy's elliptical shape.
-
-We can produce such a fit by inputting an ellipse with an angle that is not aligned with the galaxy's elliptical shape.
-"""
-ellipse = ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.0, 0.0), major_axis=1.0)
-
-"""
-A new fit using this plane shows residuals, normalized residuals and chi-squared which are non-zero. 
-"""
-fit = ag.FitEllipse(dataset=dataset, ellipse=ellipse)
-
-# fit_plotter = aplt.FitEllipsePlotter(fit=fit)
-# fit_plotter.subplot_fit()
-
-"""
-We also note that its likelihood decreases.
-"""
-print(fit.log_likelihood)
-
-"""
-__Fit Quantities__
-
-The maximum log likelihood fit contains many 1D and 2D arrays showing the fit.
-
-There is a `model_image`, which is the image-plane image of the tracer we inspected in the previous tutorial
-blurred with the imaging data's PSF. 
-
-This is the image that is fitted to the data in order to compute the log likelihood and therefore quantify the 
-goodness-of-fit.
-
-If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
-"""
-print(fit.model_data.slim)
-
-# The native property provides quantities in 2D NumPy Arrays.
-# print(fit.model_data.native)
-
-"""
-There are numerous ndarrays showing the goodness of fit: 
-
- - `residual_map`: Residuals = (Data - Model_Data).
- - `normalized_residual_map`: Normalized_Residual = (Data - Model_Data) / Noise
- - `chi_squared_map`: Chi_Squared = ((Residuals) / (Noise)) ** 2.0 = ((Data - Model)**2.0)/(Variances)
-"""
-print(fit.residual_map.slim)
-print(fit.normalized_residual_map.slim)
-print(fit.chi_squared_map.slim)
-
-"""
-__Figures of Merit__
-
-There are single valued floats which quantify the goodness of fit:
-
- - `chi_squared`: The sum of the `chi_squared_map`.
-
- - `noise_normalization`: The normalizing noise term in the likelihood function 
-    where [Noise_Term] = sum(log(2*pi*[Noise]**2.0)).
-
- - `log_likelihood`: The log likelihood value of the fit where [LogLikelihood] = -0.5*[Chi_Squared_Term + Noise_Term].
-"""
-print(fit.chi_squared)
-print(fit.noise_normalization)
-print(fit.log_likelihood)
+#
+# """
+# __Bad Fit__
+#
+# A bad ellipse fit will occur when the ellipse model does not trace the data well, for example because the input
+# angle does not align with the galaxy's elliptical shape.
+#
+# We can produce such a fit by inputting an ellipse with an angle that is not aligned with the galaxy's elliptical shape.
+# """
+# ellipse = ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.0, 0.0), major_axis=1.0)
+#
+# """
+# A new fit using this plane shows residuals, normalized residuals and chi-squared which are non-zero.
+# """
+# fit = ag.FitEllipse(dataset=dataset, ellipse=ellipse)
+#
+# # fit_plotter = aplt.FitEllipsePlotter(fit=fit)
+# # fit_plotter.subplot_fit()
+#
+# """
+# We also note that its likelihood decreases.
+# """
+# print(fit.log_likelihood)
+#
+# """
+# __Fit Quantities__
+#
+# The maximum log likelihood fit contains many 1D and 2D arrays showing the fit.
+#
+# There is a `model_image`, which is the image-plane image of the tracer we inspected in the previous tutorial
+# blurred with the imaging data's PSF.
+#
+# This is the image that is fitted to the data in order to compute the log likelihood and therefore quantify the
+# goodness-of-fit.
+#
+# If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
+# """
+# print(fit.model_data.slim)
+#
+# # The native property provides quantities in 2D NumPy Arrays.
+# # print(fit.model_data.native)
+#
+# """
+# There are numerous ndarrays showing the goodness of fit:
+#
+#  - `residual_map`: Residuals = (Data - Model_Data).
+#  - `normalized_residual_map`: Normalized_Residual = (Data - Model_Data) / Noise
+#  - `chi_squared_map`: Chi_Squared = ((Residuals) / (Noise)) ** 2.0 = ((Data - Model)**2.0)/(Variances)
+# """
+# print(fit.residual_map.slim)
+# print(fit.normalized_residual_map.slim)
+# print(fit.chi_squared_map.slim)
+#
+# """
+# __Figures of Merit__
+#
+# There are single valued floats which quantify the goodness of fit:
+#
+#  - `chi_squared`: The sum of the `chi_squared_map`.
+#
+#  - `noise_normalization`: The normalizing noise term in the likelihood function
+#     where [Noise_Term] = sum(log(2*pi*[Noise]**2.0)).
+#
+#  - `log_likelihood`: The log likelihood value of the fit where [LogLikelihood] = -0.5*[Chi_Squared_Term + Noise_Term].
+# """
+# print(fit.chi_squared)
+# print(fit.noise_normalization)
+# print(fit.log_likelihood)
 
 """
 Fin.

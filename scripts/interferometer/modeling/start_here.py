@@ -73,7 +73,7 @@ The number of free parameters and therefore the dimensionality of non-linear par
 
 __Coordinates__
 
-**PyAutoGalaxy** assumes that the galaxy centre is near the coordinates (0.0", 0.0"). 
+The model fitting default settings assume that the galaxy centre is near the coordinates (0.0", 0.0"). 
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
@@ -269,7 +269,7 @@ print(result.info)
 The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.
+ - The corresponding maximum log likelihood `Galaxies` and `FitImaging` objects.
 """
 print(result.max_log_likelihood_instance)
 

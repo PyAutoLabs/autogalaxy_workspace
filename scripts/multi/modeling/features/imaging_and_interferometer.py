@@ -183,7 +183,7 @@ __Result__
 The search returns a result object, which includes: 
 
  - The galaxy model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitInterferometer` objects.
+ - The corresponding maximum log likelihood `Galaxies` and `FitInterferometer` objects.
  - Information on the posterior as estimated by the `Nautilus` non-linear search.
 """
 print(result_list[0].max_log_likelihood_instance)

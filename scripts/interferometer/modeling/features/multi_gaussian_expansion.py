@@ -96,7 +96,7 @@ parameters!
 
 __Coordinates__
 
-**PyAutoGalaxy** assumes that the galaxy centre is near the coordinates (0.0", 0.0"). 
+The model fitting default settings assume that the galaxy centre is near the coordinates (0.0", 0.0"). 
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
@@ -223,7 +223,7 @@ print(result.info)
 The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Plane` and `FitImaging` objects.Information on the posterior as estimated by the `Nautilus` non-linear search. 
+ - The corresponding maximum log likelihood `Galaxies` and `FitImaging` objects.Information on the posterior as estimated by the `Nautilus` non-linear search. 
 """
 print(result.max_log_likelihood_instance)
 

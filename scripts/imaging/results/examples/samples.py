@@ -190,7 +190,7 @@ Their light profiles are also named according to model composition allowing indi
 print(instance.galaxies.galaxy.bulge.effective_radius)
 
 """
-We can use this list of galaxies to manually create the maximum log likelihood `Plane`, which is the property of the 
+We can use this list of galaxies to manually create the maximum log likelihood `Galaxies`, which is the property of the 
 result we've used up to now!
 
 Using galaxies will expanded upon in the `galaxies.py` results tutorial.
