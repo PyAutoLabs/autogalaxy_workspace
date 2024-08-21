@@ -149,7 +149,9 @@ ensure that the ellipse uses more of the data's pixels.
 To determine the number of pixels the ellipse's circular radius in units of pixels is required. This is
 why `pixel_scale` is an input parameter of this function and other functions in this class.
 """
-points_from_major_axis = ellipse.points_from_major_axis_from(pixel_scale=dataset.pixel_scales[0])
+points_from_major_axis = ellipse.points_from_major_axis_from(
+    pixel_scale=dataset.pixel_scales[0]
+)
 
 print("Points on Major Axis of Ellipse:")
 print(points_from_major_axis)
@@ -270,7 +272,9 @@ match the mean of the data over the ellipse.
 A good fit indicates that the white ellipse traces round the black contour well, which is close for the example
 below but not perfect.
 """
-fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit], mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=[fit], mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """
@@ -287,7 +291,10 @@ objects.
 """
 major_axis_list = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
 
-ellipse_list = [ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.3, 0.5), major_axis=major_axis) for major_axis in major_axis_list]
+ellipse_list = [
+    ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.3, 0.5), major_axis=major_axis)
+    for major_axis in major_axis_list
+]
 
 fit_list = [ag.FitEllipse(dataset=dataset, ellipse=ellipse) for ellipse in ellipse_list]
 
@@ -297,7 +304,9 @@ print([fit.log_likelihood for fit in fit_list])
 print("Overall Log Likelihood:")
 print(sum([fit.log_likelihood for fit in fit_list]))
 
-fit_plotter = aplt.FitEllipsePlotter(fit_list=fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """

@@ -1,5 +1,5 @@
 """
-__Log Likelihood Function: Parametric__
+__Log Likelihood Function: Light Profile__
 
 This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with
 parametric light profiles (e.g. a Sersic bulge and Exponential disk).
@@ -256,7 +256,7 @@ __Likelihood Step 3: Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
 
-We compute the `log_likelihood` of the fit, which is the value returned by the **PyAutoGalaxy** `log_likelihood_function`.
+We compute the `log_likelihood` of the fit, which is the value returned by the `log_likelihood_function`.
 
 The likelihood function for parametric galaxy modeling consists of two terms:
 
@@ -323,8 +323,7 @@ print(figure_of_merit)
 """
 __Fit__
 
-This 6 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object, which
-those of you familiar will have seen before.
+This 6 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
@@ -336,7 +335,7 @@ print(fit_figure_of_merit)
 """
 __Galaxy Modeling__
 
-To fit a galaxy model to data, **PyAutoGalaxy** samples the likelihood function illustrated in this tutorial using a
+To fit a galaxy model to data, the likelihood function illustrated in this tutorial is sampled using a
 non-linear search algorithm.
 
 The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)
@@ -344,7 +343,7 @@ but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms.
 
 __Wrap Up__
 
-We have presented a visual step-by-step guide to the **PyAutoGalaxy** parametric likelihood function, which uses 
+We have presented a visual step-by-step guide to the parametric likelihood function, which uses 
 analytic light profiles to fit the galaxy light.
 
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which

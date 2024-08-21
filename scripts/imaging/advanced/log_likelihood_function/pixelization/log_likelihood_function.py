@@ -1,5 +1,5 @@
 """
-__Log Likelihood Function: Inversion (pix.Rectangular + reg.Constant)__
+__Log Likelihood Function: Pixelization__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
 `Imaging` data with an inversion (specifically a `Rectangular` meshand `Constant` regularization scheme`).
@@ -18,6 +18,20 @@ This script has the following aims:
 Accompanying this script is the `contributor_guide.py` which provides URL's to every part of the source-code that
 is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
+
+__Simpler Likelihoods__
+
+The likelihood function of pixelizations is the most complicated likelihood function.
+
+It is advised you read through the following two simpler likelihood functions first, which break down a number of the
+concepts used in this script:
+
+ - `light_profile/log_likelihood_function.py` the likelihood function for a parametric light profile.
+ - `linear_light_profile/log_likelihood_function.py` the likelihood function for a linear light profile, which
+ introduces the linear algebra used for a pixelization but with a simpler use case.
+
+This script repeats all text and code examples in the above likelihood function examples. It therefore can be used to
+learn about the linear light profile likelihood function without reading other likelihood scripts.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -483,7 +497,7 @@ For example:
  - $f_{0, 2} = 0.3$ indicates that image-pixel $2$ maps to pixelization pixel $0$ with a weight of $0.3$ after PSF convolution.
  - $f_{4, 8} = 0$ indicates that image-pixel $8$ does not map to pixelization pixel $4$, even after PSF convolution.
 
-In **PyAutoGalaxy** the indexing of the `mapping_matrix` is reversed compared to the notation of WD03 (e.g. image pixels
+The indexing of the `mapping_matrix` is reversed compared to the notation of WD03 (e.g. image pixels
 are the first entry of `mapping_matrix` whereas for $f$ they are the second index).
 """
 print(f"Mapping between image pixel 0 and rectangular pixel 2 = {mapping_matrix[0, 2]}")
@@ -491,9 +505,9 @@ print(f"Mapping between image pixel 0 and rectangular pixel 2 = {mapping_matrix[
 """
 __Likelihood Step 10: Data Vector (D)__
 
-To solve for the rectangular pixel fluxes we now pose the problem as a linear inversion using NumPy linear algebra.
+To solve for the rectangular pixel fluxes we now pose the problem as a linear inversion.
 
-This requires us to convert the `blurred_mapping_matrix` and our data / noise map into matrices of certain dimensions. 
+This requires us to convert the `blurred_mapping_matrix` and our `data` and `noise map` into matrices of certain dimensions. 
 
 The `data_vector`, $D$, is the first matrix and it has dimensions `(total_rectangular_pixels,)`.
 
@@ -531,6 +545,13 @@ plt.imshow(
 plt.colorbar()
 plt.show()
 plt.close()
+
+"""
+The dimensions of $D$ are the number of source pixels.
+"""
+print("Data Vector:")
+print(data_vector)
+print(data_vector.shape)
 
 """
 __Likelihood Step 11: Curvature Matrix (F)__
@@ -704,7 +725,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
 
 """
-__Likelihood Step 15 Image Reconstruction__
+__Likelihood Step 15: Image Reconstruction__
 
 Using the reconstructed pixel fluxes we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
@@ -727,7 +748,7 @@ __Likelihood Step 16: Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy bulge and disk light profile model and galaxy reconstruction. 
 
-We compute the `log_likelihood` of the fit, which is the value returned by the **PyAutoGalaxy** `log_likelihood_function`.
+We compute the `log_likelihood` of the fit, which is the value returned by the `log_likelihood_function`.
 
 The likelihood function for galaxy modeling consists of five terms:
 
@@ -864,8 +885,7 @@ print(log_evidence)
 """
 __Fit__
 
-This 21 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object, which
-those of you familiar will have seen before.
+This 21 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
@@ -883,7 +903,7 @@ print(fit_log_evidence)
 """
 __Galaxy Modeling__
 
-To fit a galaxy model to data, **PyAutoGalaxy** samples the likelihood function illustrated in this tutorial using a
+To fit a galaxy model to data, the likelihood function illustrated in this tutorial is sampled using a
 non-linear search algorithm.
 
 The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)

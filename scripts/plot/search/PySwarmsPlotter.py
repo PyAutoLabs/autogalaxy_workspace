@@ -1,5 +1,5 @@
 """
-Plots: OptimizePlotter
+Plots: MLEPlotter
 =====================
 
 This example illustrates how to plot visualization summarizing the results of a pyswarms non-linear search using
@@ -29,7 +29,7 @@ the `modeling/mass_total__source_parametric.py` example.
 dataset_name = "simple__sersic"
 
 search = af.PySwarmsGlobal(
-    path_prefix=path.join("plot", "OptimizePlotter"),
+    path_prefix=path.join("plot", "MLEPlotter"),
     name="PySwarms",
     n_particles=50,
     iters=10,
@@ -70,7 +70,7 @@ Gaussians are given the superscript `g`. This can also be customized in the `con
 
 __Plotting__
 
-We now pass the samples to a `OptimizePlotter` which will allow us to use pyswarms's in-built plotting libraries to 
+We now pass the samples to a `MLEPlotter` which will allow us to use pyswarms's in-built plotting libraries to 
 make figures.
 
 The pyswarms readthedocs describes fully all of the methods used below 
@@ -80,7 +80,7 @@ The pyswarms readthedocs describes fully all of the methods used below
 In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
 described in the API docs.
 """
-plotter = aplt.OptimizePlotter(samples=result.samples)
+plotter = aplt.MLEPlotter(samples=result.samples)
 
 """
 __Search Specific Visualization__

@@ -55,7 +55,9 @@ Mask the data and retain its radius to set up the ellipses in the model fitting.
 mask_radius = 4.0
 
 mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=mask_radius
+    shape_native=dataset.shape_native,
+    pixel_scales=dataset.pixel_scales,
+    radius=mask_radius,
 )
 
 dataset = dataset.apply_mask(mask=mask)
@@ -73,7 +75,9 @@ ellipse = ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.0, 0.0), major_axis=1.0)
 
 fit = ag.FitEllipse(dataset=dataset, ellipse=ellipse)
 
-fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit], mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=[fit], mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """
@@ -83,12 +87,11 @@ the `FitEllipse` object along with the dataset and ellipse.
 We create a fourth order multipole, which quadrupole perturbations to the ellipse. This makes the ellipse
 appear more boxy and is a common feature of real galaxies.
 """
-multipole_order_4 = ag.EllipseMultipole(
-    m=4,
-    multipole_comps=(0.05, 0.05)
-)
+multipole_order_4 = ag.EllipseMultipole(m=4, multipole_comps=(0.05, 0.05))
 
-fit_multipole = ag.FitEllipse(dataset=dataset, ellipse=ellipse, multipole_list=[multipole_order_4])
+fit_multipole = ag.FitEllipse(
+    dataset=dataset, ellipse=ellipse, multipole_list=[multipole_order_4]
+)
 
 """
 Up to now, the ellipses plotted over the data in white have always been ellipses.
@@ -99,7 +102,9 @@ from an ellipse.
 This is shown by the white lines in the figure below, which because the multipole is a quadrupole, show a
 boxy shape.
 """
-fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit_multipole], mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=[fit_multipole], mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """
@@ -113,23 +118,19 @@ Multipoles of different order can be combined to create even more complex shapes
 We include both these multipoles below, in addition to the `m=4` quadrupole, create a complex perturbation to the
 ellipse.
 """
-multipole_order_1 = ag.EllipseMultipole(
-    m=1,
-    multipole_comps=(0.05, 0.05)
-)
+multipole_order_1 = ag.EllipseMultipole(m=1, multipole_comps=(0.05, 0.05))
 
-multipole_order_3 = ag.EllipseMultipole(
-    m=3,
-    multipole_comps=(0.05, 0.05)
-)
+multipole_order_3 = ag.EllipseMultipole(m=3, multipole_comps=(0.05, 0.05))
 
 fit_multipole = ag.FitEllipse(
     dataset=dataset,
     ellipse=ellipse,
-    multipole_list=[multipole_order_1, multipole_order_3, multipole_order_4]
+    multipole_list=[multipole_order_1, multipole_order_3, multipole_order_4],
 )
 
-fit_plotter = aplt.FitEllipsePlotter(fit_list=[fit_multipole], mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=[fit_multipole], mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """
@@ -143,18 +144,21 @@ major_axis_list = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
 fit_list = []
 
 for i in range(len(major_axis_list)):
-
-    ellipse = ag.Ellipse(centre=(0.0, 0.0), ell_comps=(0.3, 0.5), major_axis=major_axis_list[i])
+    ellipse = ag.Ellipse(
+        centre=(0.0, 0.0), ell_comps=(0.3, 0.5), major_axis=major_axis_list[i]
+    )
 
     fit = ag.FitEllipse(
         dataset=dataset,
         ellipse=ellipse,
-        multipole_list=[multipole_order_1, multipole_order_3, multipole_order_4]
+        multipole_list=[multipole_order_1, multipole_order_3, multipole_order_4],
     )
 
     fit_list.append(fit)
 
-fit_plotter = aplt.FitEllipsePlotter(fit_list=fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+)
 fit_plotter.figures_2d(data=True)
 
 """
@@ -170,9 +174,7 @@ major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
 
 total_ellipses = len(major_axis_list)
 
-ellipse_list = af.Collection(
-    af.Model(ag.Ellipse) for _ in range(total_ellipses)
-)
+ellipse_list = af.Collection(af.Model(ag.Ellipse) for _ in range(total_ellipses))
 
 centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
@@ -181,12 +183,15 @@ ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 
 for i, ellipse in enumerate(ellipse_list):
-
     ellipse.centre.centre_0 = centre_0  # All Gaussians have same y centre.
     ellipse.centre.centre_1 = centre_1  # All Gaussians have same x centre.
 
-    ellipse.ell_comps.ell_comps_0 = ell_comps_0 # All Gaussians have same elliptical components.
-    ellipse.ell_comps.ell_comps_1 = ell_comps_1  # All Gaussians have same elliptical components.
+    ellipse.ell_comps.ell_comps_0 = (
+        ell_comps_0  # All Gaussians have same elliptical components.
+    )
+    ellipse.ell_comps.ell_comps_1 = (
+        ell_comps_1  # All Gaussians have same elliptical components.
+    )
 
     ellipse.major_axis = major_axis_list[i]
 
@@ -205,7 +210,6 @@ multipole_order_1_b = af.GaussianPrior(mean=0.0, sigma=0.1)
 multipole_list = []
 
 for i in range(len(ellipse_list)):
-
     multipole_0 = af.Model(ag.EllipseMultipole)
     multipole_0.m = 1
     multipole_0.multipole_comps.multipole_comps_0 = multipole_order_1_a
@@ -304,12 +308,17 @@ instance = result.max_log_likelihood_instance
 print("Max Log Likelihood Model:")
 print(instance)
 
-print(f"First Ellipse Multipole Components: {instance.multipoles[0][0].multipole_comps}")
+print(
+    f"First Ellipse Multipole Components: {instance.multipoles[0][0].multipole_comps}"
+)
 
 """
 The maximum log likelihood fit is also available via the result, which can visualize the fit.
 """
-fit_plotter = aplt.FitEllipsePlotter(fit_list=result.max_log_likelihood_fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=result.max_log_likelihood_fit_list,
+    mat_plot_2d=aplt.MatPlot2D(use_log10=True),
+)
 fit_plotter.figures_2d(data=True)
 
 """

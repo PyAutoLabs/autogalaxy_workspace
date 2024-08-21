@@ -98,7 +98,9 @@ define the `mask_radius` as a variable which is used below to define the sizes o
 mask_radius = 4.0
 
 mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=mask_radius
+    shape_native=dataset.shape_native,
+    pixel_scales=dataset.pixel_scales,
+    radius=mask_radius,
 )
 
 """
@@ -162,9 +164,7 @@ major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
 
 total_ellipses = len(major_axis_list)
 
-ellipse_list = af.Collection(
-    af.Model(ag.Ellipse) for _ in range(total_ellipses)
-)
+ellipse_list = af.Collection(af.Model(ag.Ellipse) for _ in range(total_ellipses))
 
 
 centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
@@ -174,12 +174,15 @@ ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 
 for i, ellipse in enumerate(ellipse_list):
-
     ellipse.centre.centre_0 = centre_0  # All Gaussians have same y centre.
     ellipse.centre.centre_1 = centre_1  # All Gaussians have same x centre.
 
-    ellipse.ell_comps.ell_comps_0 = ell_comps_0 # All Gaussians have same elliptical components.
-    ellipse.ell_comps.ell_comps_1 = ell_comps_1  # All Gaussians have same elliptical components.
+    ellipse.ell_comps.ell_comps_0 = (
+        ell_comps_0  # All Gaussians have same elliptical components.
+    )
+    ellipse.ell_comps.ell_comps_1 = (
+        ell_comps_1  # All Gaussians have same elliptical components.
+    )
 
     ellipse.major_axis = major_axis_list[i]
 
@@ -411,13 +414,15 @@ print(f"First Ellipse Axis Ratio: {instance.ellipses[0].axis_ratio}")
 print(f"First Ellipse Angle: {instance.ellipses[0].angle}")
 
 for i, ellipse in enumerate(result.max_log_likelihood_instance.ellipses):
-
     print(f"Ellipse {i} Minor Axis: {ellipse.minor_axis}")
 
 """
 The maximum log likelihood fit is also available via the result, which can visualize the fit.
 """
-fit_plotter = aplt.FitEllipsePlotter(fit_list=result.max_log_likelihood_fit_list, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
+fit_plotter = aplt.FitEllipsePlotter(
+    fit_list=result.max_log_likelihood_fit_list,
+    mat_plot_2d=aplt.MatPlot2D(use_log10=True),
+)
 fit_plotter.figures_2d(data=True)
 
 """
