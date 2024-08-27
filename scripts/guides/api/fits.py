@@ -89,28 +89,6 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
-__Mask__
-
-We next mask the data, so that regions where there is no signal (e.g. the edges) are omitted from the fit.
-
-To do this we can use a ``Mask2D`` object, which for this example we'll create as a 3.0" circle.
-"""
-mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
-)
-
-"""
-We now combine the imaging dataset with the mask.
-
-Here, the mask is also used to compute the `Grid2D` we used in the previous overview to compute the light profile 
-emission, where this grid has the mask applied to it.
-"""
-dataset = dataset.apply_mask(mask=mask)
-
-grid_plotter = aplt.Grid2DPlotter(grid=dataset.grid)
-grid_plotter.figure_2d()
-
-"""
 __Grid__
 
 When calculating the amount of emission in each image pixel from galaxies, a two dimensional line integral of all of 
@@ -132,6 +110,29 @@ dataset = dataset.apply_over_sampling(
         )
     )
 )
+
+
+"""
+__Mask__
+
+We next mask the data, so that regions where there is no signal (e.g. the edges) are omitted from the fit.
+
+To do this we can use a ``Mask2D`` object, which for this example we'll create as a 3.0" circle.
+"""
+mask = ag.Mask2D.circular(
+    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
+)
+
+"""
+We now combine the imaging dataset with the mask.
+
+Here, the mask is also used to compute the `Grid2D` we used in the previous overview to compute the light profile 
+emission, where this grid has the mask applied to it.
+"""
+dataset = dataset.apply_mask(mask=mask)
+
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grid)
+grid_plotter.figure_2d()
 
 """
 Here is what our image looks like with the mask applied, where PyAutoGalaxy has automatically zoomed around the mask
