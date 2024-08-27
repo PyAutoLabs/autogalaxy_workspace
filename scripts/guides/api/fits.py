@@ -66,7 +66,7 @@ __Loading Data__
 We we begin by loading the galaxy dataset `simple__sersic` from .fits files, which is the dataset we will use to 
 demonstrate fitting.
 """
-dataset_name = "simple__sersic"
+dataset_name = "sersic_x2"
 dataset_path = path.join("dataset", "imaging", dataset_name)
 
 dataset = ag.Imaging.from_fits(
@@ -87,6 +87,28 @@ The `ImagingPlotter` also contains a subplot which plots all these properties si
 """
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
+
+"""
+__Mask__
+
+We next mask the data, so that regions where there is no signal (e.g. the edges) are omitted from the fit.
+
+To do this we can use a ``Mask2D`` object, which for this example we'll create as a 3.0" circle.
+"""
+mask = ag.Mask2D.circular(
+    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
+)
+
+"""
+We now combine the imaging dataset with the mask.
+
+Here, the mask is also used to compute the `Grid2D` we used in the previous overview to compute the light profile 
+emission, where this grid has the mask applied to it.
+"""
+dataset = dataset.apply_mask(mask=mask)
+
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grid)
+grid_plotter.figure_2d()
 
 """
 __Grid__
@@ -112,28 +134,6 @@ dataset = dataset.apply_over_sampling(
 )
 
 """
-__Mask__
-
-We next mask the data, so that regions where there is no signal (e.g. the edges) are omitted from the fit.
-
-To do this we can use a ``Mask2D`` object, which for this example we'll create as a 3.0" circle.
-"""
-mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
-)
-
-"""
-We now combine the imaging dataset with the mask.
-
-Here, the mask is also used to compute the `Grid2D` we used in the previous overview to compute the light profile 
-emission, where this grid has the mask applied to it.
-"""
-dataset = dataset.apply_mask(mask=mask)
-
-grid_plotter = aplt.Grid2DPlotter(grid=dataset.grid)
-grid_plotter.figure_2d()
-
-"""
 Here is what our image looks like with the mask applied, where PyAutoGalaxy has automatically zoomed around the mask
 to make the galaxyed source appear bigger.
 """
@@ -151,18 +151,29 @@ It therefore produces galaxies whose image looks exactly like the dataset. As di
 galaxies can be extended to include additional light profiles and galaxy objects, for example if you wanted to fit data
 with multiple galaxies.
 """
-galaxy = ag.Galaxy(
+galaxy_0 = ag.Galaxy(
     redshift=0.5,
     bulge=ag.lp.Sersic(
-        centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-        intensity=1.0,
+        centre=(0.0, -1.0),
+        ell_comps=(0.25, 0.1),
+        intensity=0.1,
         effective_radius=0.8,
-        sersic_index=4.0,
+        sersic_index=2.5,
     ),
 )
 
-galaxies = ag.Galaxies(galaxies=[galaxy])
+galaxy_1 = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lp.Sersic(
+        centre=(0.0, 1.0),
+        ell_comps=(0.0, 0.1),
+        intensity=0.1,
+        effective_radius=0.6,
+        sersic_index=3.0,
+    ),
+)
+
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])
 
 galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
 galaxies_plotter.figures_2d(image=True)
@@ -211,22 +222,33 @@ __Bad Fit__
 
 In contrast, a bad model will show features in the residual-map and chi-squared map.
 
-We can produce such an image by using a different galaxy. In the example below, we 
-change the centre of the galaxy from (0.0, 0.0) to (0.05, 0.05), which leads to residuals appearing
-in the centre of the fit.
+We can produce such an image by using different galaxies. In the example below, we 
+change the centre of the galaxies from (0.0, -1.0) to (0.0, -1.05), and from (0.0, 1.0) to (0.0, 1.05) which leads to 
+residuals appearing in the centre of the fit.
 """
-galaxy = ag.Galaxy(
+galaxy_0 = ag.Galaxy(
     redshift=0.5,
     bulge=ag.lp.Sersic(
-        centre=(0.05, 0.05),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-        intensity=1.0,
+        centre=(0.0, -1.05),
+        ell_comps=(0.25, 0.1),
+        intensity=0.1,
         effective_radius=0.8,
-        sersic_index=4.0,
+        sersic_index=2.5,
     ),
 )
 
-galaxies = ag.Galaxies(galaxies=[galaxy])
+galaxy_1 = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lp.Sersic(
+        centre=(0.0, 1.05),
+        ell_comps=(0.0, 0.1),
+        intensity=0.1,
+        effective_radius=0.6,
+        sersic_index=3.0,
+    ),
+)
+
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])
 
 fit_bad = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
@@ -252,7 +274,7 @@ The maximum log likelihood fit contains many 1D and 2D arrays showing the fit.
 
 These use the `slim` and `native` API discussed in the previous results tutorial.
 
-There is a `model_image`, which is the image of the galaxies we inspected in the previous tutorial blurred with the 
+There is a `model_data`, which is the image of the galaxies we inspected in the previous tutorial blurred with the 
 imaging data's PSF. 
 
 This is the image that is fitted to the data in order to compute the log likelihood and therefore quantify the 
@@ -260,8 +282,8 @@ goodness-of-fit.
 
 If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
 """
-print(fit.model_image.slim)
-print(fit.model_image.native)
+print(fit.model_data.slim)
+print(fit.model_data.native)
 
 """
 There are numerous ndarrays showing the goodness of fit: 
