@@ -89,7 +89,7 @@ However, for simulating a galaxy you may find it more intuitive to define the el
 axis-ratio of the profile (axis_ratio = semi-major axis / semi-minor axis = b/a) and position angle, where angle is
 in degrees and defined counter clockwise from the positive x-axis.
 
-We can use the **PyAutoGalaxy** `convert` module to determine the elliptical components from the axis-ratio and angle.
+We can use the `convert` module to determine the elliptical components from the axis-ratio and angle.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,

@@ -1,4 +1,11 @@
 input(
+    "############################################\n"
+    "### WELCOME TO THE AUTOGALAXY WORKSPACE ###\n"
+    "############################################\n\n"
+    "This script runs a few checks to ensure PyAutoGalaxy is set up correctly.\n"
+    ""
+    "Once they pass, you should read through the autogalaxy_workspace/start_here.ipynb notebook "
+    "(or autogalaxy_workspace/start_here.py script if you prefer Python scripts) to get a full overview of PyAutoGalaxy.\n\n"
     "\n"
     "############################################\n"
     "### AUTOGALAXY WORKSPACE WORKING DIRECTORY ###\n"
@@ -123,8 +130,8 @@ input(
     "##### WORKSPACE TOUR ######\n"
     "###########################\n\n"
     """
-    PyAutoGalaxy is now set up and you can begin exploring the workspace. We recommend new users begin by following the
-    'introduction.ipynb' notebook, which gives an overview of **PyAutoGalaxy** and the workspace.
+    PyAutoGalaxy is now set up and you can begin exploring the workspace. New users should follow the
+    'start_here.ipynb' notebook, which gives an overview of **PyAutoGalaxy** and the workspace.
     
     Examples are provided as both Jupyter notebooks in the 'notebooks' folder and Python scripts in the 'scripts'
     folder. It is up to you how you would prefer to use PyAutoGalaxy. With these folders, you can find the following

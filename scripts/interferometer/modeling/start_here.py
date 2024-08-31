@@ -146,7 +146,7 @@ reduced back to 1 to fix it.
 """
 search = af.Nautilus(
     path_prefix=path.join("interferometer", "modeling"),
-    name="light[bulge_disk]",
+    name="start_here",
     unique_tag=dataset_name,
     n_live=100,
     number_of_cores=1,

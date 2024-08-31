@@ -105,11 +105,11 @@ mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
-print(imaging.noise_covariance_matrix.shape)
+print(dataset.noise_covariance_matrix.shape)
 
 dataset = dataset.apply_mask(mask=mask)
 
-print(imaging.noise_covariance_matrix.shape)
+print(dataset.noise_covariance_matrix.shape)
 
 """
 __Model + Search + Analysis__ 

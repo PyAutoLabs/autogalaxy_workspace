@@ -115,7 +115,7 @@ for i, gaussian in enumerate(gaussians_bulge):
 
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=gaussians_bulge,
+    profile_list=gaussians_bulge,
     regularization=ag.reg.Constant,
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
@@ -258,7 +258,7 @@ parameter to the fit, the `coefficient`, which controls the degree of smoothing 
 """
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=gaussians_bulge,
+    profile_list=gaussians_bulge,
     regularization=ag.reg.Constant,
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

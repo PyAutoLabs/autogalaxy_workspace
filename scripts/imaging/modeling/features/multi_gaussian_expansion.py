@@ -235,7 +235,7 @@ for j in range(gaussian_per_basis):
 
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=bulge_gaussian_list,
+    profile_list=bulge_gaussian_list,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
@@ -334,7 +334,7 @@ light profiles from a fit.
 print(result.max_log_likelihood_instance)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
 )
 galaxies_plotter.subplot()
 
@@ -384,7 +384,7 @@ parameter to the fit, the `coefficient`, which controls the degree of smoothing 
 """
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=bulge_gaussian_list,
+    profile_list=bulge_gaussian_list,
     regularization=ag.reg.Constant,
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

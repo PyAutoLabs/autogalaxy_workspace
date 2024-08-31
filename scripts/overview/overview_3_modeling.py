@@ -330,7 +330,7 @@ for i, gaussian in enumerate(gaussians_bulge):
 
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=gaussians_bulge,
+    profile_list=gaussians_bulge,
 )
 
 print(bulge.info)
@@ -341,7 +341,7 @@ print(bulge.info)
 """
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=gaussians_bulge,
+    profile_list=gaussians_bulge,
     regularization=ag.reg.Constant,
 )
 

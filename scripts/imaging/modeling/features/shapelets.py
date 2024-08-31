@@ -145,7 +145,7 @@ for i in range(total_n + total_m):
 
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=shapelets_bulge_list,
+    profile_list=shapelets_bulge_list,
 )
 
 """
@@ -210,7 +210,7 @@ for i, shapelet in enumerate(shapelets_bulge_list):
 
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=shapelets_bulge_list,
+    profile_list=shapelets_bulge_list,
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
@@ -328,7 +328,7 @@ the inversion process are accurate.
 print(result.max_log_likelihood_instance)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
 )
 galaxies_plotter.subplot()
 
@@ -357,7 +357,7 @@ parameter to the fit, the `coefficient`, which controls the degree of smoothing 
 """
 bulge = af.Model(
     ag.lp_basis.Basis,
-    light_profile_list=shapelets_bulge_list,
+    profile_list=shapelets_bulge_list,
     regularization=ag.reg.Constant,
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

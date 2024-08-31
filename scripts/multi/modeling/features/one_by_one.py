@@ -178,7 +178,7 @@ print(result.max_log_likelihood_instance)
 Plotting the result's galaxy shows it at this wavelength.
 """
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=result.grid
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
 )
 galaxies_plotter.subplot_galaxies()
 
