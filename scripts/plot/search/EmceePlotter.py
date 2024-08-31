@@ -53,7 +53,7 @@ mask = ag.Mask2D.circular(
 
 dataset = dataset.apply_mask(mask=mask)
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp_linear.Sersic)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 analysis = ag.AnalysisImaging(dataset=dataset)
@@ -87,7 +87,9 @@ The emcee readthedocs describes fully all of the methods used below
 In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
 described in the API docs.
 """
-plotter = aplt.MCMCPlotter(samples=result.samples)
+samples = result.samples
+
+plotter = aplt.MCMCPlotter(samples=samples)
 
 """
 The `corner` method produces a triangle of 1D and 2D PDF's of every parameter using the library `corner.py`.
