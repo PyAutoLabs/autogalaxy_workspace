@@ -4,11 +4,6 @@ Galaxies
 
 This tutorial shows how to use galaxies, including visualizing and extracting their individual light profiles.
 
-The first half of this tutorial repeats the over example `overview/overview_1_galaxies.py` and contains the
-following:
-
-The guide then extends the overview with more advanced uses of galaxies, including:
-
 __Plot Module__
 
 This example uses the plot module to plot the results, including `Plotter` objects that make

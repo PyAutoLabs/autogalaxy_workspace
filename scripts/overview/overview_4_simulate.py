@@ -45,9 +45,11 @@ galaxies_plotter.figures_2d(image=True)
 __Simulator__
 
 Simulating galaxy images uses a `SimulatorImaging` object, which models the process that an instrument like the
-Hubble Space Telescope goes through to observe a galaxy. This includes accounting for the exposure time to 
-determine the signal-to-noise of the data, blurring the observed light of the galaxy with the telescope optics 
-and accounting for the background sky in the exposure which adds Poisson noise.
+Hubble Space Telescope goes through to observe a galaxy. 
+
+This includes accounting for the exposure time to determine the signal-to-noise of the data, blurring the observed 
+light of the galaxy with the telescope optics and accounting for the background sky in the exposure which adds 
+Poisson noise.
 """
 psf = ag.Kernel2D.from_gaussian(shape_native=(11, 11), sigma=0.1, pixel_scales=0.05)
 

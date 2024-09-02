@@ -38,7 +38,7 @@ __Aggregator__
 
 The functionality illustrated in this example only supports results loaded via the .sqlite database.
 
-We therefore do not load results from hard-disk like other scritps, but build a .sqlite database in order
+We therefore do not load results from hard-disk like other scripts, but build a .sqlite database in order
 to create the `Aggregator` object.
 
 If you have not used the .sqlite database before, the `start_here.ipynb` example describes how to set it up and the API
@@ -59,17 +59,17 @@ agg.add_directory(directory=path.join("output", database_name))
 __Galaxies via Aggregator__
 
 Having performed a model-fit, we now want to interpret and visualize the results. In this example, we want to inspect
-the `Plane` object objects that gave good fits to the data. 
+the `Galaxies` objects that gave good fits to the data. 
 
 Using the API shown in the `start_here.py` example this would require us to create a `Samples` object and manually 
-compose our own `Plane` object. For large datasets, this would require us to use generators to ensure it is memory-light,
+compose our own `Galaxies` object. For large datasets, this would require us to use generators to ensure it is memory-light,
 which are cumbersome to write.
 
-This example therefore uses the `GalaxiesAgg` object, which conveniently loads the `Plane` objects of every fit via 
+This example therefore uses the `GalaxiesAgg` object, which conveniently loads the `Galaxies` objects of every fit via 
 generators for us. Explicit examples of how to do this via generators is given in the `advanced/manual_generator.py` 
 tutorial.
 
-We get a galaxies generator via the `ac.agg.GalaxiesAgg` object, where this `galaxies_gen` contains the maximum log
+We get a galaxies generator via the `ag.agg.GalaxiesAgg` object, where this `galaxies_gen` contains the maximum log
 likelihood `Plane `object of every model-fit.
 """
 galaxies_agg = ag.agg.GalaxiesAgg(aggregator=agg)
@@ -78,15 +78,15 @@ galaxies_gen = galaxies_agg.max_log_likelihood_gen_from()
 """
 We can now iterate over our galaxies generator to make the plots we desire.
 
-The `galaxies_gen` returns a list of `Plane` objects, as opposed to just a single `Plane`object. This is because
-only a single `Analysis` class was used in the model-fit, meaning there was only one `Plane` dataset that was
+The `galaxies_gen` returns a list of `Galaxies` objects, as opposed to just a single `Galaxies` object. This is because
+only a single `Analysis` class was used in the model-fit, meaning there was only one imaging dataset that was
 fit. 
 
 The `multi` package of the workspace illustrates model-fits which fit multiple datasets 
 simultaneously, (e.g. multi-wavelength imaging)  by summing `Analysis` objects together, where the `galaxies_list` 
-would contain multiple `Plane` objects.
+would contain multiple `Galaxies` objects.
 
-The parameters of galaxies in the `Plane` may vary across the datasets (e.g. different light profile intensities 
+The parameters of galaxies in the `Galaxies` may vary across the datasets (e.g. different light profile intensities 
 for different wavelengths), which would be reflected in the galaxies list.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)

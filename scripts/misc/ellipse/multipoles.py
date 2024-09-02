@@ -196,26 +196,34 @@ for i, ellipse in enumerate(ellipse_list):
     ellipse.major_axis = major_axis_list[i]
 
 """
-We now set up a fourth order multipole component and add it as a model component to all 10 ellipses.
+We now set up a third and fourth order multipole component and add it as a model component to all 10 ellipses.
 
-The model is composed such that only N=2 free parameters are fitted for the multipole, as the same multipole amplitudes
+The model is composed such that only N=2 free parameters are fitted for each multipole, as the same multipole amplitudes
 are used for every ellipse. 
 
 This is a common assumption when fitting multipoles, although there are also studies showing that multipoles can
 vary radially over galaxies, which would require a more complex model.
 """
-multipole_order_1_a = af.GaussianPrior(mean=0.0, sigma=0.1)
-multipole_order_1_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+multipole_3_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+multipole_3_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+
+multipole_4_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+multipole_4_b = af.GaussianPrior(mean=0.0, sigma=0.1)
 
 multipole_list = []
 
 for i in range(len(ellipse_list)):
-    multipole_0 = af.Model(ag.EllipseMultipole)
-    multipole_0.m = 1
-    multipole_0.multipole_comps.multipole_comps_0 = multipole_order_1_a
-    multipole_0.multipole_comps.multipole_comps_1 = multipole_order_1_b
+    multipole_3 = af.Model(ag.EllipseMultipole)
+    multipole_3.m = 3
+    multipole_3.multipole_comps.multipole_comps_0 = multipole_3_a
+    multipole_3.multipole_comps.multipole_comps_1 = multipole_3_b
 
-    multipole_list.append([multipole_0])
+    multipole_4 = af.Model(ag.EllipseMultipole)
+    multipole_4.m = 4
+    multipole_4.multipole_comps.multipole_comps_0 = multipole_4_a
+    multipole_4.multipole_comps.multipole_comps_1 = multipole_4_b
+
+    multipole_list.append([multipole_3, multipole_4])
 
 """
 Create the model, which is a `Collection` of `Ellipses` and `Multipole` components.

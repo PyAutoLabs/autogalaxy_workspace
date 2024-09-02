@@ -4,13 +4,6 @@ Fits
 
 This guide shows how to fit data using the `FitImaging` object, including visualizing and interpreting its results.
 
-This tutorial shows how to use galaxies, including visualizing and interpreting their properties.
-
-The first half of this tutorial repeats the over example `overview/overview_2_fit.py` and contains the
-following:
-
-The guide then extends the overview with more advanced uses of galaxies, including:
-
 __Plot Module__
 
 This example uses the plot module to plot the results, including `Plotter` objects that make
