@@ -172,11 +172,12 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 # (Assertions can only be added at the end of model composition, after all components
 # have been bright together in a `Collection`.
 model.add_assertion(
-    model.galaxies.bulge.effective_radius > model.galaxies.disk.effective_radius
+    model.galaxies.galaxy.bulge.effective_radius
+    > model.galaxies.galaxy.disk.effective_radius
 )
 
 # Assert that the bulge effetive radius is below 3.0":
-model.add_assertion(model.galaxies.bulge.effective_radius < 3.0)
+model.add_assertion(model.galaxies.galaxy.bulge.effective_radius < 3.0)
 
 print(model.info)
 

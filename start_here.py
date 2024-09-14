@@ -2,6 +2,8 @@
 PyAutoGalaxy
 ============
 
+This notebook is the starting point for all new **PyAutoGalaxy** users!
+
 **PyAutoGalaxy** is software for analysing the morphologies and structures of galaxies:
 
 ![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/master/paper/hstcombined.png)
@@ -10,9 +12,9 @@ PyAutoGalaxy
 
 - **Model Complexity**: Fitting complex galaxy morphology models (e.g. Multi Gaussian Expansion, Shapelets, Ellipse Fitting, Irregular Meshes) that go beyond just simple Sersic fitting (which is supported too!).
 
-- **Data Variety**: To support many data types (e.g. CCD imaging, interferometry, multi-band imaging) and make performing combined fits to them simple.
+- **Data Variety**: Support for many data types (e.g. CCD imaging, interferometry, multi-band imaging) which can be fitted independently or simultaneously.
 
-- **Big Data**: Enable scaling to extremely large datasets, using first class database tools that allow you to build a scalable scientific workflow
+- **Big Data**: Scaling to extremely large datasets, using tools like an SQL database to build a scalable scientific workflow.
 
 This notebook gives an overview of **PyAutoGalaxy**'s API, core features and details of the autogalaxy_workspace.
 
@@ -41,8 +43,8 @@ Cartesian grids of (y,x) coordinates where the light profile of the galaxy is ev
 We make and plot a uniform Cartesian grid:
 """
 grid = ag.Grid2D.uniform(
-    shape_native=(150, 150),
-    pixel_scales=0.05,  # <- The pixel-scale describes the conversion from pixel units to arc-seconds.
+    shape_native=(150, 150),  # The [pixels x pixels] shape of the grid in 2D.
+    pixel_scales=0.05,  # The pixel-scale describes the conversion from pixel units to arc-seconds.
 )
 
 grid_plotter = aplt.Grid2DPlotter(grid=grid)
