@@ -176,7 +176,7 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `coefficient` of the galaxy's pixelization identicag.
+except the `coefficient` of the galaxy's pixelization identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)

@@ -74,7 +74,7 @@ __Model__
 
 We compose our model where in this example:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
  
 __Prior Customization__
  
@@ -104,7 +104,6 @@ bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
 bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
     mean=0.05, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
 )
-bulge.intensity = af.LogUniformPrior(lower_limit=0.5, upper_limit=1.5)
 bulge.effective_radius = af.UniformPrior(lower_limit=0.5, upper_limit=1.5)
 bulge.sersic_index = af.GaussianPrior(mean=4.0, sigma=0.5)
 
@@ -132,7 +131,6 @@ galaxy.bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
 galaxy.bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
     mean=0.05, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
 )
-galaxy.bulge.intensity = af.LogUniformPrior(lower_limit=0.5, upper_limit=1.5)
 galaxy.bulge.effective_radius = af.UniformPrior(lower_limit=0.5, upper_limit=1.5)
 galaxy.bulge.sersic_index = af.GaussianPrior(mean=4.0, sigma=0.5)
 
@@ -164,9 +162,6 @@ model.galaxies.galaxy.bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
 )
 model.galaxies.galaxy.bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
     mean=0.05, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
-)
-model.galaxies.galaxy.bulge.intensity = af.LogUniformPrior(
-    lower_limit=0.5, upper_limit=1.5
 )
 model.galaxies.galaxy.bulge.effective_radius = af.UniformPrior(
     lower_limit=0.5, upper_limit=1.5

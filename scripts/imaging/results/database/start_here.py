@@ -20,7 +20,7 @@ __Model__
 
 The search fits each galaxy with:
  
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
 # %matplotlib inline
 # from pyprojroot import here

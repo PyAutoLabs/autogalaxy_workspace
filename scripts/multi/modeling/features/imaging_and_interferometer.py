@@ -4,7 +4,7 @@ Modeling: Imaging & Interferometer
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
 __Benefits__
 
@@ -104,8 +104,8 @@ example our galaxy model is:
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=28.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
@@ -141,11 +141,8 @@ different CPU.
 analysis.n_cores = 1
 
 """
-In other scripts in the `multi` package, we made the `intensity` a free parameter for each dataset, motivated by
-the notion that a galaxy will not change its appearance significantly across wavelength.
-
 Imaging and interferometer datasets observe completely different properties of the, such that the galaxy appears 
-completely different in the imaging data (e.g. optical emission) and sub-millimeter  wavelengths, meaning a completely 
+completely different in the imaging data (e.g. optical emission) and sub-millimeter wavelengths, meaning a completely 
 different model should be used for each dataset.
 """
 analysis = analysis.with_free_parameters(model.galaxies.galaxy)

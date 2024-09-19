@@ -2,7 +2,7 @@
 __Log Likelihood Function: Light Profile__
 
 The `light_profile` script accompanying this one provides a step-by-step guide of the log_likelihood_function used to
-fit `Imaging` data with a parametric light profile.
+fit `Imaging` data with a linear parametric light profile.
 
 This script provides a contributor guide, that gives links to every part of the source-code that performs each step
 of the likelihood evaluation.

@@ -121,8 +121,8 @@ We compose our model using `Model` objects, which represent the galaxies we fit 
 This graphical model creates a non-linear parameter space that has parameters for every galaxy in our sample. In this
 example, there are 3 galaxies each with their own galaxy model, therefore:
 
- - Each galaxy's bulge is a parametric `Sersic` bulge with its centre fixed to the input 
- value of (0.0, 0.0) [4 parameters]. 
+ - Each galaxy's bulge is a linear parametric `Sersic` bulge with its centre fixed to the input 
+ value of (0.0, 0.0) [3 parameters]. 
 
  - There are three galaxies in our graphical model [3 x 4 parameters]. 
 

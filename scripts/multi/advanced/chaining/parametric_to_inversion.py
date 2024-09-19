@@ -10,7 +10,7 @@
 #
 # The two searches break down as follows:
 #
-#  1) Model the source galaxy using a parametric `Sersic` and galaxy galaxy mass as an `Isothermal`.
+#  1) Model the source galaxy using a linear parametric `Sersic` and galaxy galaxy mass as an `Isothermal`.
 #  2) Models the source galaxy using an `Inversion` and galaxy galaxy mass as an `Isothermal`.
 #
 # This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for search chaining. Thus,
@@ -112,7 +112,7 @@
 # Search 1 we fit a galaxy model where:
 #
 #  - The galaxy galaxy's total mass distribution is an `Isothermal` and `ExternalShear` [7 parameters].
-#  - The source galaxy's light is a parametric `Sersic`, where the `intensity` parameter of the source galaxy
+#  - The source galaxy's light is a linear parametric `Sersic`, where the `intensity` parameter of the source galaxy
 #  for each individual waveband of imaging is a different free parameter [8 parameters].
 #
 # The number of free parameters and therefore the dimensionality of non-linear parameter space is N=13.
@@ -202,7 +202,7 @@
 # __Wrap Up__
 #
 # In this example, we passed used prior passing to initialize an `Isothermal` + `ExternalShear` galaxy mass model
-# using a parametric source and pass this model to a second search which modeled the source using an `Inversion`.
+# using a linear parametric source and pass this model to a second search which modeled the source using an `Inversion`.
 #
 # This was more computationally efficient than just fitting the `Inversion` by itself and helped to ensure that the
 # `Inversion` did not go to an unphysical mass model solution which reconstructs the source as a demagnified version
@@ -214,7 +214,7 @@
 # in a robust and efficient way.
 #
 # The following example pipelines fits an inversion, using the same approach demonstrated in this script of first fitting
-# a parametric source:
+# a linear parametric source:
 #
 #  `autogalaxy_workspace/imaging/chaining/pipelines/no_galaxy_light/mass_total__source_pixelization.py`
 #
@@ -224,6 +224,6 @@
 # processing into a series of fits that first perfect the source model, then the galaxy light model and finally the galaxy
 # mass model.
 #
-# The SLaM pipelines begin with a parametric Source pipeline, which then switches to an inversion Source pipeline,
+# The SLaM pipelines begin with a linear parametric Source pipeline, which then switches to an inversion Source pipeline,
 # exploiting the chaining technique demonstrated in this example.
 # """

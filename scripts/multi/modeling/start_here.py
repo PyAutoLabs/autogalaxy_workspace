@@ -4,7 +4,7 @@ Modeling: Light Parametric
 
 This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
 Two images are fitted, corresponding to a greener ('g' band) and redder image (`r` band).
 
@@ -17,7 +17,7 @@ The example `multi/light_parametric_linear.py` shows an example scripts which us
 where the `intensity` parameters of each light profile components is solved via linear algebra.
 
 These can straight forwardly be used for multi-wavelength datasets, by simply changing the light profiles
-in the model below from `ag.lp.Sersic` to `ag.lp_linear.Sersic`.
+in the model below from `ag.lp_linear.Sersic` to `ag.lp_linear.Sersic`.
 
 In this script, we make the `intensity` parameter of each component a free parameter in every waveband of imaging,
 increasing the number of free parameters and dimensionality of non-linear parameter space for every waveband of
@@ -138,26 +138,35 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a parametric `Sersic` bulge, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [8 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
  
- - The galaxy's disk is a parametric `Exponential` disk, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [7 parameters].
+ - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-We now make the intensity of the bulge and disk a free parameter across every analysis object.
+Galaxies change appearance across wavelength, with the most significant change in their brightness.
+
+Models applied to summed analyses can be extended to include free parameters specific to each dataset. In this example,
+we want the galaxy's effective radii to vary across the g and r-band datasets.
+
+The API for doing this is shown below, where by inputting the `effective_radius` model parameters to the `with_free_parameter` 
+method the effective_radius of the lens's bulge and source's bulge become free parameters across every analysis object.
+
+NOTE: Other aspects of galaxies may vary across wavelength, none of which are included in this example. The API below 
+can easily be extended to include these additional parameters, and the `features` package explains other tools for 
+extending the model across datasets.
 """
 analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.intensity, model.galaxies.galaxy.disk.intensity
+    model.galaxies.galaxy.bulge.effective_radius,
+    model.galaxies.galaxy.disk.effective_radius,
 )
 
 """
@@ -184,7 +193,7 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `intensity` of the source galaxy's `bulge`, are identicag.
+except the `effective_radius` of the source galaxy's `bulge`, are identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)

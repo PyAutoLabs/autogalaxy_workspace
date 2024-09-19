@@ -23,7 +23,7 @@ __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
  - The sky background is included as part of a `DatasetModel`.
 
 __Start Here Notebook__
@@ -128,8 +128,8 @@ __Model__
 
 We compose our model where in this example:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
- - The galaxy's disk is a parametric `Exponential` disk, whose centre is aligned with the bulge [4 parameters].
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
+ - The galaxy's disk is a linear parametric `Exponential` disk, whose centre is aligned with the bulge [3 parameters].
  - The sky background is included as a `DatasetModel` [1 parameter].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=12.

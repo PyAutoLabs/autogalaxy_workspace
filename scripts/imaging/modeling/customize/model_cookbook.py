@@ -121,7 +121,6 @@ We can customize the priors of the model component individual parameters as foll
 bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-bulge.intensity = af.LogUniformPrior(lower_limit=1e-4, upper_limit=1e4)
 bulge.sersic_index = af.GaussianPrior(
     mean=4.0, sigma=1.0, lower_limit=1.0, upper_limit=8.0
 )
@@ -154,10 +153,10 @@ bulge.centre = disk.centre
 
 bulge.sersic_index = 4.0
 
-# Parameter Offsets: Make the bulge intensity parameters the same value as
+# Parameter Offsets: Make the bulge effective_radius parameters the same value as
 # the disk but with an offset.
 
-bulge.intensity = disk.intensity + 0.1
+bulge.effective_radius = disk.effective_radius + 0.1
 
 galaxy = af.Model(
     ag.Galaxy,
@@ -248,7 +247,7 @@ https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/multi/m
 __Relations (Advanced)__
 
 We can compose models where the free parameter(s) vary according to a user-specified function 
-(e.g. y = mx +c -> intensity = (m * wavelength) + c across the datasets.
+(e.g. y = mx +c -> effective_radius = (m * wavelength) + c across the datasets.
 
 The following example notebooks show how to compose and fit these models:
 

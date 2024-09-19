@@ -66,7 +66,6 @@ bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
 bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
     mean=0.05, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
 )
-bulge.intensity = af.LogUniformPrior(lower_limit=0.5, upper_limit=1.5)
 bulge.effective_radius = af.UniformPrior(lower_limit=0.5, upper_limit=1.5)
 bulge.sersic_index = af.GaussianPrior(mean=4.0, sigma=0.5)
 

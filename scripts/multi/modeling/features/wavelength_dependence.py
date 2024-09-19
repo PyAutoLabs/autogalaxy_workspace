@@ -4,24 +4,23 @@ Modeling: Light Parametric
 
 This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
 Three images are fitted, corresponding to a green ('g' band), red (`r` band) and near infrared ('I' band) images.
 
 This script assumes previous knowledge of the `multi` modeling API found in other scripts in the `multi/modeling`
 package. If anything is unclear check those scripts out.
 
-__Intensity vs Wavelength__
+__Effective Radius vs Wavelength__
 
-Unlike other `multi` modeling scripts, the intensity of the galaxy's bulge and disk are modeled as a user defined 
-function of wavelength, for example following a relation `y = (m * x) + c` -> `intensity = (m * wavelength) + c`.
+Unlike other `multi` modeling scripts, the effective radius of the galaxy's bulge and disk are modeled as a user defined
+function of wavelength, for example following a relation `y = (m * x) + c` -> `effective_radius = (m * wavelength) + c`.
 
 By using a linear relation `y = mx + c` the free parameters are `m` and `c`, which does not scale with the number
 of datasets. For datasets with multi-wavelength images (e.g. 5 or more) this allows us to parameterize the variation
 of parameters across the datasets in a way that does not lead to a very complex parameter space.
 
-For example, in other scripts, a free `intensity` is created for every datasets, which would add 5+ free parameters
-to the model for 5+ datasets.
+If a free `effective radius` is created for every dataset, this would add 5+ free parameters to the model for 5+ datasets.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -48,7 +47,7 @@ color_list = ["g", "r", "I"]
 """
 __Wavelengths__
 
-The intensity of each source galaxy is parameterized as a function of wavelength.
+The effective radius of each source galaxy is parameterized as a function of wavelength.
 
 Therefore we define a list of wavelengths of each color above.
 """
@@ -116,16 +115,14 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a parametric `Sersic` bulge, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [8 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
  
- - The galaxy's disk is a parametric `Exponential` disk, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [7 parameters].
+ - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
@@ -134,25 +131,24 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 """
 __Model + Analysis__
 
-We now make the galaxy bulge and disk `intensity` a free parameter across every analysis object.
+We now make the galaxy bulge and disk `effective)radius` a free parameter across every analysis object.
 
-Unlike other scripts, where the `intensity` for every dataset is created as a free parameter, we will assume that 
-the `intensity` of the galaxy linearly varies as a function of wavelength, and therefore compute  the `intensity` 
-value for each color image using a linear relation `y = mx + c`.
+We will assume that the `effective_radius` of the galaxy linearly varies as a function of wavelength, and therefore 
+compute  the `effective_radius` value for each color image using a linear relation `y = mx + c`.
 
-The function below is not used to compose the model, but illustrates how the `intensity` values were computed
+The function below is not used to compose the model, but illustrates how the `effective_radius` values were computed
 in the corresponding `wavelength_dependence` simulator script.
 """
 
 
-def bulge_intensity_from(wavelength):
+def bulge_effective_radius_from(wavelength):
     m = 1.0 / 100.0  # bulge appears brighter with increasing wavelength
     c = 3
 
     return m * wavelength + c
 
 
-def disk_intensity_from(wavelength):
+def disk_effective_radius_from(wavelength):
     m = -(1.2 / 100.0)  # disk appears fainter with increasing wavelength
     c = 10
 
@@ -170,7 +166,7 @@ disk_m = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 disk_c = af.UniformPrior(lower_limit=-10.0, upper_limit=10.0)
 
 """
-The free parameters of our model there are no longer `intensity` values, but the parameters `m` and `c` in the relation
+The free parameters of our model there are no longer `effective_radius` values, but the parameters `m` and `c` in the relation
 above. 
 
 The model complexity therefore does not increase as we add more parameters to the model.
@@ -183,15 +179,15 @@ We create an `Analysis` object for every dataset and sum it to combine the analy
 analysis_list = []
 
 for wavelength, dataset in zip(wavelength_list, dataset_list):
-    bulge_intensity = (wavelength * bulge_m) + bulge_c
-    disk_intensity = (wavelength * disk_m) + disk_c
+    bulge_effective_radius = (wavelength * bulge_m) + bulge_c
+    disk_effective_radius = (wavelength * disk_m) + disk_c
 
     analysis_list.append(
         ag.AnalysisImaging(dataset=dataset).with_model(
             model.replacing(
                 {
-                    model.galaxies.galaxy.bulge.intensity: bulge_intensity,
-                    model.galaxies.galaxy.disk.intensity: disk_intensity,
+                    model.galaxies.galaxy.bulge.effective_radius: bulge_effective_radius,
+                    model.galaxies.galaxy.disk.effective_radius: disk_effective_radius,
                 }
             )
         )
@@ -228,7 +224,7 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `intensity` of the source galaxy's `bulge`, are identicag.
+except the `effective_radius` of the source galaxy's `bulge`, are identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)

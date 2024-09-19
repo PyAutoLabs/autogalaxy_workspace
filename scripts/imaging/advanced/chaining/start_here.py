@@ -87,8 +87,8 @@ __Model (Search 1)__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In the first
 search our model is:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
- - The galaxy's disk is a parametric `Exponential` disk [6 parameters].
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
+ - The galaxy's disk is a linear parametric `Exponential` disk [5 parameters].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=14.
 """

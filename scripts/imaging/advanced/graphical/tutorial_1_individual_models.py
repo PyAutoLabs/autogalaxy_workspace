@@ -120,8 +120,8 @@ __Model__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a model where:
 
- - The galaxy's bulge is a parametric `Sersic` bulge with its centre fixed to the input 
- value of (0.0, 0.0) [5 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge with its centre fixed to the input 
+ value of (0.0, 0.0) [4 parameters]. 
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=5.
 """

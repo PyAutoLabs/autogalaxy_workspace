@@ -4,8 +4,8 @@ Modeling: Light Parametric Operated
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge.
- - The galaxy includes a parametric `Gaussian` psf.
+ - The galaxy's light is a linear parametric `Sersic` bulge.
+ - The galaxy includes a linear parametric `Gaussian` psf.
 
  __Operated Fitting__
 
@@ -78,8 +78,8 @@ __Model__
 
 We compose our model where in this example:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
- - The galaxy's point source emission is a parametric operated `Gaussian` centred on the bulge [4 parameters].
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
+ - The galaxy's point source emission is a linear parametric operated `Gaussian` centred on the bulge [3 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
 

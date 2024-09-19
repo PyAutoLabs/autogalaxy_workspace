@@ -103,7 +103,7 @@ The first four pixels of this sub-grid correspond to the first four sub-pixels i
 
 The top-left pixel image above shows how the sub-pixels are spaced within the pixel. 
 
-The `grid_sub_2` object has the same shape as the `grid_sub_1` object, and its coordinates are identicag. The 
+The `grid_sub_2` object has the same shape as the `grid_sub_1` object, and its coordinates are identical. The 
 `grid_sub_2` object therefore does not naturally store the sub-pixel coordinates:
 """
 print("(y,x) pixel 0 of grid_sub_1:")

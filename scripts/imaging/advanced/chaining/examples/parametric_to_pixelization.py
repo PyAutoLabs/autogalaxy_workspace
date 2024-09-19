@@ -10,14 +10,14 @@ This script chains two searches to fit `Imaging` data of a galaxy with a model w
 
 The three searches break down as follows:
 
- 1) Model the galaxy's bulge and disk components using a parametric `Sersic` and `Exponential` profiles that
+ 1) Model the galaxy's bulge and disk components using a linear parametric `Sersic` and `Exponential` profiles that
  are fixed to the centre of the image.
  2) Fix these components to the maximum likelihood solution and add an `Inversion` which fits the clumps.
  3) Fit the bulge and disk light profiles simultaneously with the inversion that fits the clumps.
 
 __Why Chain?__
 
-There are a number of benefits of chaining a parametric galaxy model and `Inversion`, as opposed to fitting the
+There are a number of benefits of chaining a linear parametric galaxy model and `Inversion`, as opposed to fitting the
 `Inversion` in one search:
 
  - The bulge and disk can be estimate somewhat accurately before we attempt to model the clumps. Thus, we can get
@@ -265,7 +265,7 @@ print(result_3.info)
 """
 __Wrap Up__
 
-In this example, we passed used prior passing to initialize a parametric light profile fit passed this model to a 
+In this example, we passed used prior passing to initialize a linear parametric light profile fit passed this model to a 
 second search which modeled the galaxy's star forming clumps using an `Inversion`. We finished with a third 
 search which fitted everything simultaneously, ensuring an accurate estimate of the galaxy's bulge and disk.
 

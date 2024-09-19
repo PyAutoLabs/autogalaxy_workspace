@@ -104,7 +104,7 @@ __Model (Search 1)__
 
 Search 1 we fit a model where:
 
- - The left galaxy's light is a parametric `DevVaucouleurs` bulge with fixed centre [4 parameters].
+ - The left galaxy's light is a linear parametric `DevVaucouleurs` bulge with fixed centre [3 parameters].
 
  - the right galaxy's light is omitted.
 
@@ -151,9 +151,9 @@ __Model (Search 2)__
 
 Search 2 we fit a model where:
 
- - The left galaxy's light is a parametric `DevVaucouleurs` bulge [0 parameters: fixed from search 1].
+ - The left galaxy's light is a linear parametric `DevVaucouleurs` bulge [0 parameters: fixed from search 1].
 
- - The right galaxy's light is a parametric `DevVaucouleurs` bulge with a fixed centre [4 parameters].
+ - The right galaxy's light is a linear parametric `DevVaucouleurs` bulge with a fixed centre [3 parameters].
 
  - The galaxy's mass  galaxy are omitted.
 
@@ -203,10 +203,10 @@ __Model (Search 3)__
 
 Search 3 we fit a model where:
 
- - The left galaxy's light is a parametric `Sersic` bulge with centre fixed [5 parameters: priors initialized 
+ - The left galaxy's light is a linear parametric `Sersic` bulge with centre fixed [4 parameters: priors initialized 
  from search 1].
 
- - The right galaxy's light is a parametric `Sersic` bulge with centre fixed [5 parameters: priors initialized 
+ - The right galaxy's light is a linear parametric `Sersic` bulge with centre fixed [4 parameters: priors initialized 
  from search 2].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=14.

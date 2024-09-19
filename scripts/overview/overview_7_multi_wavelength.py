@@ -157,14 +157,15 @@ parameters in the fit to each image.
 We do this using the combined analysis object as follows:
 """
 analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.intensity, model.galaxies.galaxy.disk.intensity
+    model.galaxies.galaxy.bulge.effective_radius,
+    model.galaxies.galaxy.disk.effective_radius,
 )
 
 """
 In this simple overview, this has added two additional free parameters to the model whereby:
 
- - The galaxy bulge's intensity is different in both multi-wavelength images.
- - The galaxy disk's intensity is different in both multi-wavelength images.
+ - The galaxy bulge's effective_radius is different in both multi-wavelength images.
+ - The galaxy disk's effective_radius is different in both multi-wavelength images.
  
 It is entirely plausible that more parameters should be free to vary across wavelength (e.g. the bulge and disk 
 `effective_radius` or `sersic_index` parameters). 
@@ -198,17 +199,17 @@ for result in result_list:
 """
 __Wavelength Dependence__
 
-In the example above, a free `intensity` parameter is created for every multi-wavelength dataset. This would add 5+ 
+In the example above, a free `effective_radius` parameter is created for every multi-wavelength dataset. This would add 5+ 
 free parameters to the model if we had 5+ datasets, quickly making a complex model parameterization.
 
-We can instead parameterize the intensity of the galaxy light profiles as a user defined function of 
-wavelength, for example following a relation `y = (m * x) + c` -> `intensity = (m * wavelength) + c`.
+We can instead parameterize the effective_radius of the galaxy light profiles as a user defined function of 
+wavelength, for example following a relation `y = (m * x) + c` -> `effective_radius = (m * wavelength) + c`.
 
 By using a linear relation `y = mx + c` the free parameters are `m` and `c`, which does not scale with the number
 of datasets. For datasets with multi-wavelength images (e.g. 5 or more) this allows us to parameterize the variation 
 of parameters across the datasets in a way that does not lead to a very complex parameter space.
 
-Below, we show how one would do this for the `intensity` of a galaxy's bulge, give three wavelengths corresponding
+Below, we show how one would do this for the `effective_radius` of a galaxy's bulge, give three wavelengths corresponding
 to a dataset observed in the g, r and I bands.
 """
 wavelength_list = [464, 658, 806]
@@ -219,11 +220,13 @@ bulge_m = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge_c = af.UniformPrior(lower_limit=-10.0, upper_limit=10.0)
 
 for wavelength, imaging in zip(wavelength_list, dataset_list):
-    bulge_intensity = (wavelength * bulge_m) + bulge_c
+    bulge_effective_radius = (wavelength * bulge_m) + bulge_c
 
     analysis_list.append(
         ag.AnalysisImaging(dataset=dataset).with_model(
-            model.replacing({model.galaxies.galaxy.bulge.intensity: bulge_intensity})
+            model.replacing(
+                {model.galaxies.galaxy.bulge.effective_radius: bulge_effective_radius}
+            )
         )
     )
 

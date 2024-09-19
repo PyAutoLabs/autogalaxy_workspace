@@ -152,7 +152,7 @@ example we fit a galaxy model where:
  - The galaxy's bulge is a linear parametric `Sersic` bulge, where the `intensity` parameter for each individual 
  waveband of imaging is solved for indepedently via linear algebra [6 parameters]. 
  
- - The galaxy's disk is a parametric `Exponential` disk, where the `intensity` parameter for each individual 
+ - The galaxy's disk is a linear parametric `Exponential` disk, where the `intensity` parameter for each individual 
  waveband of imaging is solved for indepedently via linear algebra [5 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
@@ -196,7 +196,7 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `intensity` of the source galaxy's `bulge`, are identicag.
+except the `intensity` of the source galaxy's `bulge`, are identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)

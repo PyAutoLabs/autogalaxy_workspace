@@ -10,14 +10,14 @@ This script chains two searches to fit `Interferometer` data of a galaxy with a 
 
 The three searches break down as follows:
 
- 1) Model the galaxy's bulge and disk components using a parametric `Sersic` and `Exponential` profiles that
+ 1) Model the galaxy's bulge and disk components using a linear parametric `Sersic` and `Exponential` profiles that
  are fixed to the centre of the image.
  2) Fix these components to the maximum likelihood solution and add an `Inversion` which fits the clumps.
  3) Fit the bulge and disk light profiles simultaneously with the inversion that fits the clumps.
 
 __Why Chain?__
 
-There are a number of benefits of chaining a parametric galaxy model and `Inversion`, as opposed to fitting the
+There are a number of benefits of chaining a linear parametric galaxy model and `Inversion`, as opposed to fitting the
 `Inversion` in one search:
 
  - The bulge and disk can be estimate somewhat accurately before we attempt to model the clumps. Thus, we can get
@@ -239,13 +239,11 @@ This search allows us to refit the bulge and disk components with an inversion t
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 bulge.ell_comps = result_1.model.galaxies.galaxy.bulge.ell_comps
-bulge.intensity = result_1.model.galaxies.galaxy.bulge.intensity
 bulge.effective_radius = result_1.model.galaxies.galaxy.bulge.effective_radius
 bulge.sersic_index = result_1.model.galaxies.galaxy.bulge.sersic_index
 
 disk = af.Model(ag.lp_linear.Sersic)
 disk.ell_comps = result_1.model.galaxies.galaxy.disk.ell_comps
-disk.intensity = result_1.model.galaxies.galaxy.disk.intensity
 disk.effective_radius = result_1.model.galaxies.galaxy.disk.effective_radius
 
 galaxy = af.Model(
@@ -283,7 +281,7 @@ print(result_3.info)
 """
 __Wrap Up__
 
-In this example, we passed used prior passing to initialize a parametric light profile fit passed this model to a 
+In this example, we passed used prior passing to initialize a linear parametric light profile fit passed this model to a 
 second search which modeled the galaxy's star forming clumps using an `Inversion`. We finished with a third 
 search which fitted everything simultaneously, ensuring an accurate estimate of the galaxy's bulge and disk.
 

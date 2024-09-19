@@ -9,4 +9,4 @@ of how to perform search chaining.
 Files (Advanced)
 ----------------
 
-- ``parametric_to_inversion.py``: Fit a parametric source model followed by a pixelized source reconstruction.
+- ``parametric_to_inversion.py``: Fit a linear parametric source model followed by a pixelized source reconstruction.

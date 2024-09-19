@@ -93,7 +93,7 @@ __Model__
 
 We compose our model where in this example:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 

@@ -46,7 +46,7 @@ __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
 __Start Here Notebook__
 

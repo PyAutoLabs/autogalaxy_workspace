@@ -4,7 +4,7 @@ Modeling: Light Parametric
 
 This script fits `Interferometer` dataset of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
 # %matplotlib inline
 # from pyprojroot import here

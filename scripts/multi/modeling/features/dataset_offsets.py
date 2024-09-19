@@ -40,7 +40,7 @@ __Model__
 
 This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
 Two images are fitted, corresponding to a greener ('g' band) and redder image (`r` band).
 
@@ -160,16 +160,14 @@ example we fit a galaxy model where:
  - Parameters which shift the second dataset's image (y_offset_0, x_offset_0) relative to the first dataset's image
  are included via the `DatasetModel` object [2 parameters].
 
- - The galaxy's bulge is a parametric `Sersic` bulge, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [8 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
  
- - The galaxy's disk is a parametric `Exponential` disk, where the `intensity` parameter for each individual waveband 
- of imaging is a different free parameter [7 parameters].
+ - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=17.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
@@ -214,9 +212,6 @@ __Result__
 
 The result object returned by this model-fit is a list of `Result` objects, because we used a combined analysis.
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
-
-For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `intensity` of the source galaxy's `bulge`, are identicag.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)

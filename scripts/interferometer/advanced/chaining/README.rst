@@ -7,4 +7,4 @@ into scripts which model interferometer data via chaining.
 Files (Advanced)
 ----------------
 
-- ``parametric_to_pixelization.py``: Fit a parametric source model followed by a pixelized source reconstruction.
+- ``parametric_to_pixelization.py``: Fit a linear parametric source model followed by a pixelized source reconstruction.
