@@ -114,7 +114,7 @@ The `DevVaucouleurs` is an `Sersic` profile with `sersic_index=4`.
 
 We fix the centre of its light to (0.0, -1.0), the pixel we know the left galaxy's light centre peaks.
 """
-left_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.DevVaucouleurs)
+left_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp_linear.DevVaucouleurs)
 left_galaxy.bulge.centre_0 = 0.0
 left_galaxy.bulge.centre_1 = -1.0
 
@@ -164,7 +164,7 @@ We fix the centre of the right lens's light to (0.0, 1.0), the pixel we know the
 We also pass the result of the `left_galaxy` from search ` as an `instance`, which should improve the fitting of the
 right lens.
 """
-right_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.DevVaucouleurs)
+right_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp_linear.DevVaucouleurs)
 right_galaxy.bulge.centre_0 = 0.0
 right_galaxy.bulge.centre_1 = 1.0
 
@@ -221,10 +221,10 @@ The `take_attributes` method is used in many examples of prior passing, when we 
 model to a more complex model. Another good example would be passing the result of a `IsothermalSph` to an
 `Isothermal`.
 """
-left_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
+left_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp_linear.Sersic)
 left_galaxy.bulge.take_attributes(result_1.model.galaxies.left_galaxy.bulge)
 
-right_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
+right_galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp_linear.Sersic)
 right_galaxy.bulge.take_attributes(result_2.model.galaxies.right_galaxy.bulge)
 
 model_3 = af.Collection(

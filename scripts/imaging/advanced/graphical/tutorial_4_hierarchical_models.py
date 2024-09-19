@@ -116,7 +116,7 @@ each bulge `Sersic` is given its own prior for the `sersic_index`.
 model_list = []
 
 for dataset_index in range(total_datasets):
-    bulge = af.Model(ag.lp.Sersic)
+    bulge = af.Model(ag.lp_linear.Sersic)
 
     galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 

@@ -92,8 +92,8 @@ search our model is:
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=14.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 

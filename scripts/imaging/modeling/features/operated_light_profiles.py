@@ -89,7 +89,7 @@ very small value (e.g. ~0.1).
 By default, **PyAutoGalaxy** assumes a `UniformPrior` from 0.0 to 5.0, but the scale of this value depends on 
 resolution of the data. I therefore recommend you set it manually below, using your knowledge of the PSF size.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 psf = af.Model(ag.lp_operated.Gaussian)
 
 psf.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=5.0)

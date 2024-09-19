@@ -123,8 +123,8 @@ Search 1 we fit a model where:
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=9.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 bulge.centre_0 = 0.0
 bulge.centre_1 = 0.0
@@ -237,13 +237,13 @@ The number of free parameters and therefore the dimensionality of non-linear par
 
 This search allows us to refit the bulge and disk components with an inversion that takes care of the clumps.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 bulge.ell_comps = result_1.model.galaxies.galaxy.bulge.ell_comps
 bulge.intensity = result_1.model.galaxies.galaxy.bulge.intensity
 bulge.effective_radius = result_1.model.galaxies.galaxy.bulge.effective_radius
 bulge.sersic_index = result_1.model.galaxies.galaxy.bulge.sersic_index
 
-disk = af.Model(ag.lp.Sersic)
+disk = af.Model(ag.lp_linear.Sersic)
 disk.ell_comps = result_1.model.galaxies.galaxy.disk.ell_comps
 disk.intensity = result_1.model.galaxies.galaxy.disk.intensity
 disk.effective_radius = result_1.model.galaxies.galaxy.disk.effective_radius

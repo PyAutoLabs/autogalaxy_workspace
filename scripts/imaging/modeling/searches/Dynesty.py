@@ -58,8 +58,8 @@ therefore be useful when performing modeling search chaining (see HowToGalaxy ch
 circumstances, we have found that is often outperformed by other searches such as Nautilus and Zeus for both speed
 and accuracy.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)

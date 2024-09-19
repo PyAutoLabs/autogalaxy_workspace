@@ -119,7 +119,7 @@ familiar with it and it is not specific to this example!
 
 This model-fit implicitly uses the noise covariance matrix when computing the chi-squared and log likelihood!
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 

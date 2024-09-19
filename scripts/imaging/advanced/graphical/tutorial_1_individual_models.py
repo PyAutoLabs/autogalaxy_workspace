@@ -125,7 +125,7 @@ example we fit a model where:
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=5.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre = (0.0, 0.0)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

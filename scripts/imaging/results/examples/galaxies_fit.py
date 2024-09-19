@@ -82,12 +82,12 @@ mask = ag.Mask2D.circular(
 
 dataset = dataset.apply_mask(mask=mask)
 
-bulge_0 = af.Model(ag.lp.Sersic)
+bulge_0 = af.Model(ag.lp_linear.Sersic)
 bulge_0.centre = (0.0, -1.0)
 
 galaxy_0 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_0)
 
-bulge_1 = af.Model(ag.lp.Sersic)
+bulge_1 = af.Model(ag.lp_linear.Sersic)
 bulge_1.centre = (0.0, 1.0)
 
 galaxy_1 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_1)

@@ -109,7 +109,7 @@ components `galaxies`, `galaxy` and  `bulge`. If the `Model` had used a differen
 correspondingly. Models with multiple galaxies are therefore easily accessed.]
 """
 galaxy = agg.model.galaxies.galaxy
-agg_query = agg.query(galaxy.bulge == ag.lp.Sersic)
+agg_query = agg.query(galaxy.bulge == ag.lp_linear.Sersic)
 print("Total Samples Objects via `Sersic` model query = ", len(agg_query), "\n")
 
 """
@@ -146,7 +146,7 @@ greater than 3.0 for the bulge.
 The OR logical clause is also supported via the symbol |.
 """
 bulge = agg.model.galaxies.galaxy.bulge
-agg_query = agg.query((bulge == ag.lp.Sersic) & (bulge.effective_radius > 3.0))
+agg_query = agg.query((bulge == ag.lp_linear.Sersic) & (bulge.effective_radius > 3.0))
 print(
     "Total Samples Objects In Query `Sersic and effective_radius > 3.0` = ",
     len(agg_query),

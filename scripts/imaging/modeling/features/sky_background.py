@@ -94,14 +94,14 @@ For the galaxy, we will use the true parameters used to simulate the data, for i
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
-    bulge=ag.lp.Sersic(
+    bulge=ag.lp_linear.Sersic(
         centre=(0.0, 0.0),
         ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
         intensity=1.0,
         effective_radius=0.6,
         sersic_index=3.0,
     ),
-    disk=ag.lp.Exponential(
+    disk=ag.lp_linear.Exponential(
         centre=(0.0, 0.0),
         ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
         intensity=0.5,

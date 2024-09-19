@@ -28,7 +28,7 @@ __Simple Model__
 A simple model we can compose has a galaxy with a Sersic light profile:
 """
 
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
@@ -52,9 +52,9 @@ __More Complex Models__
 
 The API above can be easily extended to compose models where each galaxy has multiple light or mass profiles:
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
-bar = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
+bar = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk, bar=bar)
 
@@ -68,7 +68,7 @@ like, e.g. `bulge_0`, `bulge_1`, `star_clump`, and the model will still behave i
 
 The API can also be extended to compose models where there are multiple galaxies:
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy_0 = af.Model(
     ag.Galaxy,
@@ -76,7 +76,7 @@ galaxy_0 = af.Model(
     bulge=bulge,
 )
 
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy_1 = af.Model(
     ag.Galaxy,
@@ -104,9 +104,9 @@ This means we can write the model above comprising multiple light profiles more 
 galaxy = af.Model(
     ag.Galaxy,
     redshift=0.5,
-    bulge=ag.lp.Sersic,
-    disk=ag.lp.Exponential,
-    bar=ag.lp.Sersic,
+    bulge=ag.lp_linear.Sersic,
+    disk=ag.lp_linear.Exponential,
+    bar=ag.lp_linear.Sersic,
 )
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
@@ -118,7 +118,7 @@ __Prior Customization__
 
 We can customize the priors of the model component individual parameters as follows:
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.intensity = af.LogUniformPrior(lower_limit=1e-4, upper_limit=1e4)
@@ -141,8 +141,8 @@ __Model Customization__
 
 We can customize the model parameters in a number of different ways, as shown below:
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 
 # Parameter Pairing: Pair the centre of the bulge and disk together, reducing
 # the complexity of non-linear parameter space by N = 2

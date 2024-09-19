@@ -131,8 +131,8 @@ for dataset_name in dataset_names:
             galaxy=af.Model(
                 ag.Galaxy,
                 redshift=0.5,
-                bulge=ag.lp.Sersic,
-                disk=ag.lp.Exponential,
+                bulge=ag.lp_linear.Sersic,
+                disk=ag.lp_linear.Exponential,
             )
         )
     )

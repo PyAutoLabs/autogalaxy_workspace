@@ -66,10 +66,22 @@ __Model__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a model where:
 
- - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk, the centres of 
- which are aligned [11 parameters].
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk, the centres of 
+ which are aligned [10 parameters].
  
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=10.
+
+__Linear Light Profiles__
+
+The model below uses a `linear light profile` for the bulge and disk, via the API `lp_linear`. This is a specific type 
+of light profile that solves for the `intensity` of each profile that best fits the data via a linear inversion. 
+This means it is not a free parameter, reducing the dimensionality of non-linear parameter space. 
+
+Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
+by default in every modeling example. A full description of linear light profiles is provided in the
+`autogalaxy_workspace/*/imaging/modeling/features/linear_light_profiles.py` example.
+
+A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
 __Coordinates__
 
@@ -80,8 +92,8 @@ If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
  - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)

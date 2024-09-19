@@ -113,11 +113,23 @@ __Model__
 
 In this example we compose a model where:
 
- - The galaxy's bulge is a parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
 
- - The galaxy's disk is a parametric `Exponential` disk, whose centre is aligned with the bulge [4 parameters].
+ - The galaxy's disk is a linear parametric `Exponential` disk, whose centre is aligned with the bulge [3 parameters].
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
+
+__Linear Light Profiles__
+
+The model below uses a `linear light profile` for the bulge and disk, via the API `lp_linear`. This is a specific type 
+of light profile that solves for the `intensity` of each profile that best fits the data via a linear inversion. 
+This means it is not a free parameter, reducing the dimensionality of non-linear parameter space. 
+
+Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
+by default in every modeling example. A full description of linear light profiles is provided in the
+`autogalaxy_workspace/*/imaging/modeling/features/linear_light_profiles.py` example.
+
+A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
 __Model Composition__
 
@@ -142,8 +154,8 @@ If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
  - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
@@ -284,7 +296,7 @@ run_time_dict, info_dict = analysis.profile_log_likelihood_function(
 """
 The overall log likelihood evaluation time is given by the `fit_time` key.
 
-For this example, it is ~0.01 seconds, which is extremely fast for modeling. More advanced
+For this example, it is ~0.03 seconds, which is extremely fast for modeling. More advanced
 modeling features (e.g. shapelets, multi Gaussian expansions, pixelizations) have slower log likelihood evaluation
 times (1-3 seconds), and you should be wary of this when using these features.PointDataset
 """

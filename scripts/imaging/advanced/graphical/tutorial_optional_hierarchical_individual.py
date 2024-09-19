@@ -95,7 +95,7 @@ __Model__
 
 The model we fit to each dataset, which is a `Sersic` bulge with its centre fixed to the truth.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre = (0.0, 0.0)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

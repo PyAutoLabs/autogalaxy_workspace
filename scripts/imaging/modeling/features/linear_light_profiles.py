@@ -228,7 +228,7 @@ which has already performed the inversion and therefore the galaxy light profile
 """
 galaxies = result.max_log_likelihood_galaxies
 
-print(galaxies[0].intensity)
+print(galaxies[0].bulge.intensity)
 
 """
 The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
@@ -237,7 +237,7 @@ fit = result.max_log_likelihood_fit
 
 galaxies = fit.galaxies
 
-print(galaxies[0].intensity)
+print(galaxies[0].bulge.intensity)
 
 """
 __Visualization__
@@ -282,7 +282,7 @@ which has already performed the inversion and therefore the galaxy light profile
 """
 galaxies = result.max_log_likelihood_galaxies
 
-print(galaxies[0].intensity)
+print(galaxies[0].bulge.intensity)
 
 """
 The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
@@ -291,7 +291,7 @@ fit = result.max_log_likelihood_fit
 
 galaxies = fit.galaxies
 
-print(galaxies[0].intensity)
+print(galaxies[0].bulge.intensity)
 
 """
 __Visualization__
@@ -346,10 +346,10 @@ Each of these `LightProfileLinearObjFuncList` objects contains its list of light
 `Sersic` is a single entry whereas for the `Basis` is 5 Gaussians.
 """
 print(
-    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].profile_list}"
+    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].light_profile_list}"
 )
 print(
-    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].profile_list}"
+    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].light_profile_list}"
 )
 
 """
@@ -381,7 +381,7 @@ disk = galaxies[0].disk
 print(fit.linear_light_profile_intensity_dict)
 
 print(
-    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge.profile_list[0]]}"
+    f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge]}"
 )
 print(
     f"\n Intensity of first Gaussian in disk = {fit.linear_light_profile_intensity_dict[disk]}"

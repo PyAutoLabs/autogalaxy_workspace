@@ -94,7 +94,7 @@ luminosity of galaxies follows a log10 distribution.
 The API below can easily be adapted to customize the priors on a `disk` component, for example by simply making it
 a `Model`. 
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 bulge.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
@@ -120,7 +120,7 @@ __Alternative API__
 
 The priors can also be customized after the `galaxy` model object is created instead.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
@@ -147,7 +147,7 @@ We could also customize the priors after the creation of the whole model.
 Note that you can mix and match any of the API's above, and different styles will lead to concise and readable
 code in different circumstances.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 

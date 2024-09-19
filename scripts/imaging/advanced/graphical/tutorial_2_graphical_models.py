@@ -133,7 +133,7 @@ The overall dimensionality of parameter space is therefore N=13.
 model_list = []
 
 for model_index in range(total_datasets):
-    bulge = af.Model(ag.lp.Sersic)
+    bulge = af.Model(ag.lp_linear.Sersic)
     bulge.centre = (0.0, 0.0)
 
     # This makes every Galaxy share the same `sersic_index`.

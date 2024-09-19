@@ -80,7 +80,7 @@ __Model + Search + Analysis__
 The code below performs the normal steps to set up a model-fit. We omit comments of this code as you should be 
 familiar with it and it is not specific to this example!
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 

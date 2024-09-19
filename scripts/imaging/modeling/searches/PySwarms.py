@@ -66,7 +66,7 @@ Given this need for a robust starting point, PySwarms is only suited to model-fi
 therefore be useful when performing modeling search chaining (see HowToGalaxy chapter 3). However, even in such
 circumstances, we have found that is often unrealible and often infers a local maxima.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 
 bulge.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)

@@ -64,8 +64,8 @@ The code below composes the model fitted to the data (the API is described in th
 The way the model is composed below (e.g. that the model has a `Collection` called `galaxies` and includes a `galaxy`) 
 should be noted, as it will be important when inspecting certain results later in this example.
 """
-bulge = af.Model(ag.lp.Sersic)
-disk = af.Model(ag.lp.Exponential)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
@@ -400,7 +400,7 @@ compute its error, we also pass the weight list of the samples.
 axis_ratio_list = []
 
 for sample in samples.sample_list:
-    instance = sample.instance_for_model(model=samples.model)
+    instance = sample.instance_for_model(model=samples.model, ignore_assertions=True)
 
     ell_comps = instance.galaxies.galaxy.bulge.ell_comps
 

@@ -112,11 +112,11 @@ The number of free parameters and therefore the dimensionality of non-linear par
 We require that the bulge Sersic index is between 3.0 and 6.0 and disk Sersic index 0.5 to 3.0 -- this ensures that
 the model does not swap the two components and fit the bulge with the lower Sersic index component and visa versa.
 """
-bulge = af.Model(ag.lp.Sersic)
+bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre = (0.0, 0.0)
 bulge.sersic_index = af.UniformPrior(lower_limit=3.0, upper_limit=6.0)
 
-disk = af.Model(ag.lp.Sersic)
+disk = af.Model(ag.lp_linear.Sersic)
 disk.centre = (0.0, 0.0)
 disk.sersic_index = af.UniformPrior(lower_limit=0.5, upper_limit=3.0)
 
@@ -308,13 +308,13 @@ dimnensionality N=20 (8 parameters per pair of `Sersic` and 2 shared Sersic inde
 model_list = []
 
 for model_index in range(total_datasets):
-    bulge = af.Model(ag.lp.Sersic)
+    bulge = af.Model(ag.lp_linear.Sersic)
     bulge.centre = (0.0, 0.0)
 
     # This makes every Galaxy bulge share the same `sersic_index`.
     bulge.sersic_index = bulge_sersic_index_shared_prior
 
-    disk = af.Model(ag.lp.Sersic)
+    disk = af.Model(ag.lp_linear.Sersic)
     disk.centre = (0.0, 0.0)
 
     # This makes every Galaxy disk share the same `sersic_index`.
