@@ -14,7 +14,7 @@ This notebook is the starting point for all new **PyAutoGalaxy** users!
 
 - **Data Variety**: Support for many data types (e.g. CCD imaging, interferometry, multi-band imaging) which can be fitted independently or simultaneously.
 
-- **Big Data**: Scaling to extremely large datasets, using tools like an SQL database to build a scalable scientific workflow.
+- **Big Data**: Scaling automated analysis to extremely large datasets, using tools like an SQL database to build a scalable scientific workflow.
 
 This notebook gives an overview of **PyAutoGalaxy**'s API, core features and details of the autogalaxy_workspace.
 
@@ -257,10 +257,10 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.figures_2d(data=True)
 
 """
-If you have come to **PyAutoGalaxy** to perform interferometry, note that the API above can be easily adaopted to use
+If you have come to **PyAutoGalaxy** to perform interferometry, the API above is easily adapted to use 
 a `SimulatorInterferometer` object to simulate an `Interferometer` dataset instead.
 
-However, I recommend you finish reading this notebook before moving on to the interferometry examples, to get a full
+However, you should finish reading this notebook before moving on to the interferometry examples, to get a full
 overview of the core **PyAutoGalaxy** API.
 
 __Masking__
@@ -269,7 +269,7 @@ We are about to fit the data with a model, but first must define a mask, which d
 are used to fit the data and which regions are not.
 
 We create a `Mask2D` object which is a 3.0" circle, whereby all pixels within this 3.0" circle are used in the 
-model-fi and all pixels outside are omitted. 
+model-fit and all pixels outside are omitted. 
 
 Inspection of the dataset above shows that no signal from the galaxy is observed outside of this radius, so this is a 
 sensible mask.
@@ -302,7 +302,7 @@ We therefore must now fit a model to the data. This model is a representation of
 to determine whether a given model provides a good fit to the data.
 
 A fit is performing using a `FitImaging` object, which takes a dataset and galaxies object as input and determine if 
-the galaixes are a good fit to the data.
+the galaxies are a good fit to the data.
 """
 fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
@@ -311,7 +311,7 @@ The fit creates `model_data`, which is the image of the galaxy including effects
 during data acquisition.
 
 For example, by plotting the fit's `model_data` and comparing it to the image of the galaxies obtained via
-the `GalaixesPlotter`, we can see the model data has been blurred by the dataset's PSF.
+the `GalaxiesPlotter`, we can see the model data has been blurred by the dataset's PSF.
 """
 galaxies_plotter = aplt.GalaxiesPlotter(galaxies=fit.galaxies, grid=grid)
 galaxies_plotter.figures_2d(image=True)
@@ -328,7 +328,7 @@ The fit also creates the following:
  
 We can plot all 3 of these on a subplot that also includes the data, signal-to-noise map and model data.
 
-In this example, the galaxies used to simulate are used to fit it, thus the fit is good and residuals are minimized.
+In this example, the galaxies used to simulate the data are used to fit it, thus the fit is good and residuals are minimized.
 """
 fit_plotter.subplot_fit()
 
@@ -341,11 +341,11 @@ print(fit.log_likelihood)
 If you are familiar with statistical analysis, this quick run-through of the fitting tools will make sense and you
 will be familiar with concepts like model data, residuals and a likelihood. 
 
-The take home point is that **PyAutoGalaxy**'s API has extensive tools for fitting models to data and visualizing the
-results, which is what makes it a powerful tool for studying the morphologies of galaxies.
-
 If you are less familiar with these concepts, I recommend you finish this notebook and then go to the fitting API
 guide, which explains the concepts in more detail and provides a more thorough overview of the fitting tools.
+
+The take home point is that **PyAutoGalaxy**'s API has extensive tools for fitting models to data and visualizing the
+results, which is what makes it a powerful tool for studying the morphologies of galaxies.
 
 __Modeling__
 
@@ -353,13 +353,15 @@ The fitting tools above are used to fit a model to the data given an input set o
 galaxies used to simulate the data to fit the data, but we do not know what this "truth" is in the real world and 
 is therefore not something a real scientist can do.
 
-Modeling is the processing of taking a dataset and inferring the model that best represents the data, for example
-the galaxy light profile(s) that best represent the light observed in the data or equivalently the combination
+Modeling is the processing of taking a dataset and inferring the model that best fits the data, for example
+the galaxy light profile(s) that best fits the light observed in the data or equivalently the combination
 of Sersic profile parameters that maximize the likelihood of the fit.
 
 Galaxy modeling uses the probabilistic programming language **PyAutoFit**, an open-source project that allows complex 
 model fitting techniques to be straightforwardly integrated into scientific modeling software. Check it out if you 
-are interested in developing your own software to perform advanced model-fitting!
+are interested in developing your own software to perform advanced model-fitting:
+
+https://github.com/rhayes777/PyAutoFit
 
 We import **PyAutoFit** separately to **PyAutoGalaxy**:
 """
@@ -376,12 +378,17 @@ We will fit our galaxy data with a model which has one galaxy where:
  - The galaxy's bulge is a `Sersic` light profile. 
  - The galaxy's disk is a `Exponential` light profile.
  - The redshift of the galaxy is fixed to 0.5.
+ 
+The light profiles below are linear light profiles, input via the `lp_linear` module. These solve for the intensity of
+the light profiles via linear algebra, making the modeling more efficient and accurate. They are explained in more
+detail in other workspace examples, but are a key reason why modeling with **PyAutoGalaxy** performs well and
+can scale to complex models.
 """
 galaxy_model = af.Model(
     ag.Galaxy,
     redshift=0.5,
     bulge=ag.lp_linear.Sersic,  # Note the use of `lp_linear` instead of `lp`.
-    disk=ag.lp_linear.Exponential,  # This is explained modeling `start_here` example.
+    disk=ag.lp_linear.Exponential,  # This uses linear light profiles explained in the modeling `start_here` example.
 )
 
 """
@@ -424,7 +431,7 @@ analysis = ag.AnalysisImaging(dataset=dataset)
 To perform the model-fit we pass the model and analysis to the search's fit method. This will output results (e.g.,
 Nautilus samples, model parameters, visualization) to your computer's storage device.
 
-However, the galaxy modeling of this system take a minute or so. Therefore, to save time, we have commented out 
+However, the galaxy modeling of this system takes a minute or so. Therefore, to save time, we have commented out 
 the `fit` function below so you can skip through to the next section of the notebook. Feel free to uncomment the code 
 and run the galaxy modeling yourself!
 
@@ -439,7 +446,7 @@ The animation below shows a slide-show of the galaxy modeling procedure. Many ga
 and over, gradually improving the quality of the fit to the data and looking more and more like the observed image.
 
 NOTE, the animation of a non-linear search shown below is for a strong gravitational lens using **PyAutoGalaxy**'s 
-child project **PyAutoGalaxy**. Updating the animation to show a galaxy model-fit is on the **PyAutoGalaxy** to-do list!
+child project **PyAutoLens**. Updating the animation to show a galaxy model-fit is on the **PyAutoGalaxy** to-do list!
 
 We can see that initial models give a poor fit to the data but gradually improve (increasing the likelihood) as more
 iterations are performed.
@@ -601,4 +608,9 @@ captured using a rectangular mesh:
 
 Checkout `autogalaxy_workspace/notebooks/features/pixelizations.ipynb` to learn how to use a pixelization, however
 this is a more advanced feature and it is recommended you first get to grips with the core API.
+
+__Features where description will be added (but fully implemented in **PyAutoGalaxy**):__
+
+- Automated pipelines / database tools.
+- Graphical models.
 """

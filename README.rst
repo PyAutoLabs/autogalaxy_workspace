@@ -11,7 +11,7 @@ PyAutoGalaxy Workspace
 
 `Installation Guide <https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html>`_ |
 `readthedocs <https://pyautogalaxy.readthedocs.io/en/latest/index.html>`_ |
-`Introduction on Binder <https://mybinder.org/v2/gh/Jammy2211/autogalaxy_workspace/release?filepath=introduction.ipynb>`_ |
+`Introduction on Binder <https://mybinder.org/v2/gh/Jammy2211/autogalaxy_workspace/release?filepath=start_here.ipynb>`_ |
 `HowToGalaxy <https://pyautogalaxy.readthedocs.io/en/latest/howtogalaxy/howtogalaxy.html>`_
 
 Welcome to the **PyAutoGalaxy** Workspace. You can get started right away by going to the `autogalaxy workspace
