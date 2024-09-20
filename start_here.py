@@ -6,7 +6,7 @@ This notebook is the starting point for all new **PyAutoGalaxy** users!
 
 **PyAutoGalaxy** is software for analysing the morphologies and structures of galaxies:
 
-![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/master/paper/hstcombined.png)
+![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/hstcombined.png)
 
 **PyAutoGalaxy** has three core aims:
 
@@ -498,9 +498,10 @@ recommended you go here before anywhere else!
 
 __Features__
 
-To wrap up, here is a brief overview of the advanced features of **PyAutoGalaxy**, which is first listed with
-brief one sentence descriptions and then described in more detail below with a link to the relevant workspace
-package.
+Here is a brief overview of the advanced features of **PyAutoGalaxy**. 
+
+Firstly, brief one sentence descriptions of each feature are given, with more detailed descriptions below including 
+links to the relevant workspace examples.
 
 **Interferometry**: Modeling of interferometer data (e.g. ALMA, LOFAR) directly in the uv-plane.
 **Multi-Wavelength**: Simultaneous analysis of imaging and / or interferometer datasets observed at different wavelengths.
@@ -511,11 +512,12 @@ package.
 **Operated Light Profiles**: Assuming a light profile has already been convolved with the PSF, for when the PSF is a significant effect.
 **Pixelizations**: Reconstructing a galaxy's on a mesh of pixels, to capture extremely irregular structures like spiral arms.
 
+
 __Interferometry__
 
-Modeling of interferometer data from submillimeter (e.g. ALMA) and radio (e.g. LOFAR) observatories:
+Modeling interferometer data from submillimeter (e.g. ALMA) and radio (e.g. LOFAR) observatories:
 
-![ALMA Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/master/paper/almacombined.png)
+![ALMA Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/almacombined.png)
 
 Visibilities data is fitted directly in the uv-plane, circumventing issues that arise when fitting a dirty image
 such as correlated noise. This uses the non-uniform fast fourier transform algorithm
@@ -523,14 +525,15 @@ such as correlated noise. This uses the non-uniform fast fourier transform algor
 
 Checkout the`autogalaxy_workspace/*/interferometer` package to get started.
 
+
 __Multi-Wavelength__
 
 Modeling imaging datasets observed at different wavelengths (e.g. HST F814W and F150W) simultaneously or simultaneously
 analysing imaging and interferometer data:
 
-![g-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/multiwavelength/g_image.png)
+![g-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/g_image.png)
 
-![r-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/multiwavelength/r_image.png)
+![r-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/r_image.png)
 
 The appearance of the galaxy changes as a function of wavelength, therefore multi-wavelength analysis means we can learn
 more about the different components in a galaxy (e.g a redder bulge and bluer disk) or when imaging and interferometer
@@ -539,10 +542,13 @@ data are combined, we can compare the emission from stars and dust.
 Checkout the `autogalaxy_workspace/*/multi` package to get started, however combining datasets is a more advanced
 feature and it is recommended you first get to grips with the core API.
 
+
 __Ellipse Fitting__
 
 Ellipse fitting is a technique which fits many ellipses to a galaxy's emission to determine its ellipticity, position
-angle and centre, without assuming a parametric form for its light (e.g. like a Seisc profile):
+angle and centre, without assuming a parametric form for its light (e.g. a Sersic profile):
+
+![ellipse](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/ellipse.png)
 
 This provides complementary information to parametric light profile fitting, for example giving insights on whether
 the ellipticity and position angle are constant with radius or if the galaxy's emission is lopsided. 
@@ -550,17 +556,26 @@ the ellipticity and position angle are constant with radius or if the galaxy's e
 There are also multipole moment extensions to ellipse fitting, which determine higher order deviations from elliptical 
 symmetry providing even more information on the galaxy's structure.
 
+The following paper describes the technique in detail: https://arxiv.org/html/2407.12983v1
+
 Checkout `autogalaxy_workspace/notebooks/features/ellipse_fitting.ipynb` to learn how to use ellipse fitting.
+
 
 __Multi Gaussian Expansion (MGE)__
 
 An MGE decomposes the light of a galaxy into tens or hundreds of two dimensional Gaussians:
+
+![MGE](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/mge.png)
+
+In the image above, 30 Gaussians are shown, where their sizes go from below the pixel scale (in order to resolve
+point emission) to beyond the size of the galaxy (to capture its extended emission).
 
 Scientific Applications include capturing departures from elliptical symmetry in the light of galaxies, providing a 
 flexible model to deblend the emission of point sources (e.g. quasars) from the emission of their host galaxy and 
 deprojecting the light of a galaxy from 2D to 3D.
 
 Checkout `autogalaxy_workspace/notebooks/features/multi_gaussian_expansion.ipynb` to learn how to use an MGE.
+
 
 __Shapelets__
 
@@ -572,6 +587,7 @@ of point sources (e.g. quasars) from the emission of their host galaxy.
 
 Checkout `autogalaxy_workspace/notebooks/features/shapelets.ipynb` to learn how to use shapelets.
 
+
 __Sky Background__
 
 When an image of a galaxy is observed, the background sky contributes light to the image and adds noise:
@@ -582,6 +598,7 @@ accounted for in the model to ensure robust and accurate fits.
 Checkout `autogalaxy_workspace/notebooks/features/sky_background.ipynb` to learn how to use include the sky
 background in your model.
 
+
 __Operated Light Profiles__
 
 An operated light profile is one where it is assumed to already be convolved with the PSF of the data, with the 
@@ -591,6 +608,7 @@ They are used for certain scientific applications where the PSF convolution is k
 the knowledge of the PSF allows for detailed modeling abd deblending of the galaxy's light.
 
 Checkout `autogalaxy_workspace/notebooks/features/operated_light_profiles.ipynb` to learn how to use operated profiles.
+
 
 __Pixelizations__
 
@@ -604,12 +622,13 @@ The image below shows a non parametric of a galaxy observed in the Hubble Ultra 
 fitted accurately using light profiles, whereas its asymmetric and irregular spiral arm features are accurately
 captured using a rectangular mesh:
 
-![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/master/paper/hstcombined.png)
+![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/hstcombined.png)
 
 Checkout `autogalaxy_workspace/notebooks/features/pixelizations.ipynb` to learn how to use a pixelization, however
 this is a more advanced feature and it is recommended you first get to grips with the core API.
 
-__Features where description will be added (but fully implemented in **PyAutoGalaxy**):__
+
+__Other:__
 
 - Automated pipelines / database tools.
 - Graphical models.
