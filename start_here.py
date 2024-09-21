@@ -477,9 +477,11 @@ the commented out code below shows how easy it is to plot the fit and posterior 
 We have now completed the API overview of **PyAutoGalaxy**. This notebook has given a brief introduction to the core
 API for creating galaxies, simulating data, fitting data and performing galaxy modeling.
 
-__Workspace Tour__
+__New User Guide__
 
-This requires a lot of thought!
+Now you have a basic understanding of the PyAutoGalaxy API, you should read the new user guide on the readthedocs
+to begin navigating the different examples in the workspace and learning how to use PyAutoLens:
+
 
 __HowToGalaxy Lectures__
 
