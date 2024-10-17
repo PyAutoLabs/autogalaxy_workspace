@@ -274,6 +274,8 @@ for fit_lists_list in fit_gen:
     # Only one `Analysis` so take first and only dataset.
     fit_list = fit_lists_list[0]
 
+    print(fit_list)
+
     print(fit_list[0].multipole_list)
 
     fit_plotter = aplt.FitEllipsePlotter(fit_list=fit_list)

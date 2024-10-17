@@ -28,7 +28,7 @@ to enforce positive reconstructions is difficult to make efficient. A lot of dev
 possible, where a bespoke fast non-negative linear solver was developed to achieve this.
 
 Other methods in the literature often do not use a positive only solver, and therefore suffer from these
-unphysical solutions, which can degrade the results of lens model in general.
+unphysical solutions, which can degrade the results of lens model in generag.
 
 __Start Here Notebook__
 
@@ -215,54 +215,85 @@ is important.
 print(f"Rectangular Mapper = {inversion.linear_obj_list[0]}")
 
 """
-__Interpolated Galaxy__
+__Pixelization / Mapper Calculations__
 
-The pixelized reconstruction used by an `Inversion` may be a different resolution to the data, making it difficult to 
-manipulate and inspect after the modeling has completed.
+The pixelized galaxy reconstruction output by an `Inversion` is often on an irregular grid (e.g. a 
+Voronoi triangulation or Voronoi mesh), making it difficult to manipulate and inspect after the lens modeling has 
+completed.
 
-A simpler way to inspect the reconstruction is to interpolate the reconstruction values from rectangular grid
-resolution to a uniform 2D grid of pixels.
+Internally, the inversion stores a `Mapper` object to perform these calculations, which effectively maps pixels
+between the image-plane and source-plane. 
 
-(if you do not know what the `slim` and `native` properties below refer too, check back to tutorial 2 of the results
-for a description).
+After an inversion is complete, it has computed values which can be paired with the `Mapper` to perform calculations,
+most notably the `reconstruction`, which is the reconstructed source pixel values.
 
-Inversions can have multiple reconstructions (e.g. if separate pixelizations are used for each galaxy) thus the 
-majority of quantities are returned as a list. It is likely you are only using one `Inversion` to one galaxy,
-so these lists will likely contain only one entry
+By inputting the inversions's mapper and a set of values (e.g. the `reconstruction`) into a `MapperValued` object, we
+are provided with all the functionality we need to perform calculations on the reconstruction.
 
-We interpolate the pixelization this galaxy is reconstructed on to a 2D grid of 401 x 401 square pixels. 
+We set up the `MapperValued` object below, and illustrate how we can use it to interpolate the source reconstruction
+to a uniform grid of values, perform magnification calculations and other tasks.
 """
-interpolated_reconstruction_list = inversion.interpolated_reconstruction_list_from(
+inversion = result.max_log_likelihood_fit.inversion
+mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[
+    0
+]  # Only one source-plane so only one mapper, would be a list if multiple source planes
+
+mapper_valued = ag.MapperValued(
+    mapper=mapper, values=inversion.reconstruction_dict[mapper]
+)
+
+"""
+__Interpolated Source__
+
+A simple way to inspect the reconstruction is to interpolate its values from the irregular
+pixelization o a uniform 2D grid of pixels.
+
+(if you do not know what the `slim` and `native` properties below refer too, it 
+is described in the `results/examples/data_structures.py` example.)
+
+We interpolate the Voronoi triangulation this source is reconstructed on to a 2D grid of 401 x 401 square pixels. 
+"""
+interpolated_reconstruction = mapper_valued.interpolated_array_from(
     shape_native=(401, 401)
 )
 
 """
 If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
 """
-print(interpolated_reconstruction_list[0].slim)
+print(interpolated_reconstruction.slim)
+
+plotter = aplt.Array2DPlotter(
+    array=interpolated_reconstruction,
+)
+plotter.figure_2d()
 
 """
-We can alternatively input the arc-second `extent` of the reconstruction we want, which will not use square 
-pixels unless symmetric y and x arc-second extents are input.
+By inputting the arc-second `extent` of the reconstruction, the interpolated array will zoom in on only these regions 
+of the reconstruction. The extent is input via the notation (xmin, xmax, ymin, ymax), therefore  unlike the standard 
+API it does not follow the (y,x) convention. 
 
-The extent is input via the notation (xmin, xmax, ymin, ymax), therefore unlike most of the **PyAutoGalaxy** API it
-does not follow the (y,x) convention. This will be updated in a future version.
+Note that the output interpolated array will likely therefore be rectangular, with rectangular pixels, unless 
+symmetric y and x arc-second extents are input.
 """
-interpolated_reconstruction_list = inversion.interpolated_reconstruction_list_from(
+interpolated_reconstruction = mapper_valued.interpolated_array_from(
     shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
 )
 
-print(interpolated_reconstruction_list[0].slim)
+print(interpolated_reconstruction.slim)
 
 """
 The interpolated errors on the reconstruction can also be computed, in case you are planning to perform 
-model-fitting of the source reconstruction.
+model-fitting of the reconstruction.
 """
-interpolated_errors_list = inversion.interpolated_errors_list_from(
+mapper_valued_errors = ag.MapperValued(
+    mapper=mapper, values=inversion.errors_dict[mapper]
+)
+
+interpolated_errors = mapper_valued_errors.interpolated_array_from(
     shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
 )
 
-print(interpolated_errors_list[0].slim)
+print(interpolated_errors.slim)
 
 """
 __Reconstruction__

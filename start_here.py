@@ -479,9 +479,10 @@ API for creating galaxies, simulating data, fitting data and performing galaxy m
 
 __New User Guide__
 
-Now you have a basic understanding of the PyAutoGalaxy API, you should read the new user guide on the readthedocs
-to begin navigating the different examples in the workspace and learning how to use PyAutoLens:
+Now you have a basic understanding of the **PyAutoGalaxy** API, you should read the new user guide on the readthedocs
+to begin navigating the different examples in the workspace and learning how to use **PyAutoGalaxy**:
 
+https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html
 
 __HowToGalaxy Lectures__
 

@@ -178,10 +178,10 @@ __Search__
 """
 search = af.Nautilus(
     path_prefix=path.join("multi", "modeling"),
-    name="light[bulge_disk_linear]",
+    name="linear_light_profiles",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=2,
+    number_of_cores=1,
 )
 
 """

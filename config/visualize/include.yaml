@@ -11,7 +11,7 @@ include_1d:
 include_2d:
   mask: true                        # Include a mask ?
   origin: false                     # Include the (y,x) origin of the data's coordinate system ?
-  border: true                      # Include the border of the mask (all pixels on the outside of the mask) ?
+  border: false                      # Include the border of the mask (all pixels on the outside of the mask) ?
   grid: false                       # Include the data's 2D grid of (y,x) coordinates ?
   positions: true                   # Include (y,x) coordinates specified via `Visuals2d.positions` ?
   tangential_critical_curves: true
