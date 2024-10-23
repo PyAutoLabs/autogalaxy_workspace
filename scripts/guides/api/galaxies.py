@@ -225,9 +225,11 @@ galaxy_1 = ag.Galaxy(
         intensity=1.2,
         effective_radius=0.1,
     ),
-    clump_0=ag.lp.Sersic(centre=(1.0, 1.0), intensity=0.5, effective_radius=0.2),
-    clump_1=ag.lp.Sersic(centre=(0.5, 0.8), intensity=0.5, effective_radius=0.2),
-    clump_2=ag.lp.Sersic(centre=(-1.0, -0.7), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_0=ag.lp.Sersic(centre=(1.0, 1.0), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_1=ag.lp.Sersic(centre=(0.5, 0.8), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_2=ag.lp.Sersic(
+        centre=(-1.0, -0.7), intensity=0.5, effective_radius=0.2
+    ),
 )
 
 galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])

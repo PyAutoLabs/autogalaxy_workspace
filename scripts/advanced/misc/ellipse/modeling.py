@@ -145,7 +145,7 @@ the entire galaxy.
 
 __Model Cookbook__
 
-A full description of model composition, including model customization, is provided by the model cookbook: 
+A full description of model composition is provided by the model cookbook: 
 
 https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
 
@@ -447,7 +447,7 @@ So, what next?
 __Data Preparation__
 
 If you are looking to fit your own CCD imaging data of a galaxy, checkout  
-the `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb` script for an overview of how data should be 
+the `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb` script for an overview of how data should be 
 prepared before being modeled.
 
 __HowToGalaxy__

@@ -133,7 +133,7 @@ The following scripts are used to prepare components of an interferometer datase
 identical fashion for dataset datasets.
 
 Therefore, they are not located in the `interferometer/data_preparation` package, but instead in the
-`imaging/data_preparation` package, so refer there for a description of their usage.
+`data_preparation/imaging` package, so refer there for a description of their usage.
 
 Note that in order to perform some tasks (e.g. mark on the image where the source is), you will need to use an image
 of the interferometer data even though visibilities are used for the analysis.
@@ -159,19 +159,20 @@ Position-based model resampling is particularly important for fitting pixelized 
 reasons disucssed in the following readthedocs 
 webapge  https://pyautogalaxy.readthedocs.io/en/latest/general/demagnified_solutions.html
 
-The script `data_prepration/gui/positions.ipynb` shows how to use a Graphical User Interface (GUI) to mask the 
+The script `data_preparation/gui/positions.ipynb` shows how to use a Graphical User Interface (GUI) to mask the 
 positions on the lensed source.
 
 See `autogalaxy_workspace/*/interferometer/modeling/customize/positions.py` for an example.of how to use positions in a 
 `modeling` script.
 
-__Lens Light Centre (Optional)__
 
-This script allows you to mark the (y,x) arcsecond locations of the galaxy light centre(s) of the galaxy
-you are analysing. These can be used as fixed values for the lens light and mass models in a model-fit.
+__Light Centre (Optional)__
+
+This script allows you to mark the (y,x) arcsecond locations of the light centre(s) of the galaxy
+you are analysing. These can be used as fixed values for the galaxy light and mass models in a model-fit.
 
 This  reduces the number of free parameters fitted for in a model and removes inaccurate solutions where
-the lens mass model centre is unrealistically far from its true centre.
+the galaxy mass model centre is unrealistically far from its true centre.
 
 Advanced `chaining` scripts often use these input centres in the early fits to infer an accurate initial model,
 amd then make the centres free parameters in later searches to ensure a general and accurate model is inferred.
@@ -181,45 +182,73 @@ If you create a `light_centre` for your dataset, you must also update your model
 If your **PyAutoGalaxy** analysis is struggling to converge to a good model, you should consider using a fixed
 lens light and / or mass centre to help the non-linear search find a good model.
 
-Links / Resources:
+**Links / Resources:**
 
-The script `data_prepration/gui/light_centre.ipynb` shows how to use a Graphical User Interface (GUI) to mask the
-galaxy light centres.
+- `data_preparation/examples/optional/lens_light_centre.py`: input the galaxy light centre manually into a Python script.
+- `data_preparation/gui/lens_light_centre.ipynb` use a Graphical User Interface (GUI) to mask the galaxy light centre.
 
-__Clumps (Optional)__
 
-There may be galaxies nearby the lens  galaxies, whose emission blends with that of the lens 
-and whose mass may contribute to the ray-tracing and model.
+__Extra Galaxies (Optional)__
 
-We can include these galaxies in the model, either as light profiles, mass profiles, or both, using the
-**PyAutoGalaxy** clump API, where these nearby objects are given the term `clumps`.
+There may be extra galaxies nearby the main galaxy, whose emission blends with the galaxy.
 
-This script marks the (y,x) arcsecond locations of these clumps, so that when they are included in the model the
-centre of these clumps light and / or mass profiles are fixed to these values (or their priors are initialized
+We can include these extra galaxies in the model as light profiles using the modeling API, where these nearby
+objects are denoted `extra_galaxies`.
+
+This script marks the (y,x) arcsecond locations of these extra galaxies, so that when they are included in the model
+the centre of these extra galaxies light profiles are fixed to these values (or their priors are initialized
 surrounding these centres).
 
-The example `scaled_dataset.py` (see below) marks the regions of an image where clumps are present, but  but instead 
-remove their signal and increase their noise to make them not impact the fit. Which approach you use to account for 
-clumps depends on how significant the blending of their emission is and whether they are expected to impact the 
-ray-tracing.
-
 This tutorial closely mirrors tutorial 7, `light_centre`, where the main purpose of this script is to mark the
-centres of every object we'll model as a clump. A GUI is also available to do this.
+centres of every object we'll model as an extra galaxy. A GUI is also available to do this.
 
-Links / Resources:
+The example `mask_extra_galaxies.py` masks the regions of an image where extra galaxies are present. This mask is used
+to remove their signal from the data and increase their noise to make them not impact the fit. This means their
+luminous emission does not need to be included in the model, reducing the number of free parameters and speeding up the
+analysis. It is still a choice whether their mass is included in the model.
 
-The script `data_prepration/gui/clump_centres.ipynb` shows how to use a Graphical User Interface (GUI) to mark the
-clump centres in this way.
+**Links / Resources:**
 
-The script `modeling/features/clumps.py` shows how to use clumps in a model-fit, including loading the clump centres
-created by this script.
+- `data_preparation/examples/optional/extra_galaxies_centres.py`: input the extra galaxy centres manually into a 
+  Python script.
+- `data_preparation/gui/extra_galaxies_centres.ipynb`: use a Graphical User Interface (GUI) to mark the extra galaxy centres.
+- `features/extra_galaxies.py` how to use extra galaxies in a model-fit, including loading the extra galaxy centres.
+
+
+__Mask Extra Galaxies (Optional)__
+
+There may be regions of an image that have signal near the galaxy that is from other galaxies not associated with the
+main galaxy we are studying. The emission from these images will impact our model fitting and needs to be removed from
+the analysis.
+
+This script creates a mask of these regions of the image, called the `mask_extra_galaxies`, which can be used to
+prevent them from impacting a fit. This mask may also include emission from objects which are not technically galaxies,
+but blend with the galaxy we are studying in a similar way. Common examples of such objects are foreground stars
+or emission due to the data reduction process.
+
+The mask can be applied in different ways. For example, it could be applied such that the image pixels are discarded
+from the fit entirely, Alternatively the mask could be used to set the image values to (near) zero and increase their
+corresponding noise-map to large values.
+
+The exact method used depends on the nature of the model being fitted. For simple fits like a light profile a mask
+is appropriate, as removing image pixels does not change how the model is fitted. However, for more complex models
+fits, like those using a pixelization, masking regions of the image in a way that removes their image pixels entirely
+from the fit can produce discontinuities in the pixelixation. In this case, scaling the data and noise-map values
+may be a better approach.
+
+**Links / Resources:**
+
+- `data_preparation/examples/optional/mask_extra_galaxies.py`: create the extra galaxies mask manually via a Python script.
+- `data_preparation/gui/extra_galaxies_mask.ipynb` use a Graphical User Interface (GUI) to create the extra galaxies mask.
+- `features/extra_galaxies.py` how to use the extra galaxies mask in a model-fit.
+
 
 __Info (Optional)__
 
 Auxiliary information about a galaxy dataset may used during an analysis or afterwards when interpreting the 
 modeling results. For example, the redshifts of the source and galaxy. 
 
-By storing these as an `info.json` file in the lens's dataset folder, it is straight forward to load the redshifts 
+By storing these as an `info.json` file in the galaxy's dataset folder, it is straight forward to load the redshifts 
 in a modeling script and pass them to a fit, such that **PyAutoGalaxy** can then output results in physical 
 units (e.g. kpc instead of arc-seconds).
 
@@ -232,5 +261,9 @@ data might be:
 
 - The velocity dispersion of the galaxy.
 - The stellar mass of the galaxy.
-- The results of previous galaxy models to the lens performed in previous papers.
+- The results of previous galaxy models to the galaxy performed in previous papers.
+
+**Links / Resources:**
+
+- `data_preparation/examples/optional/info.py`: create the info file manually via a Python script.
 """

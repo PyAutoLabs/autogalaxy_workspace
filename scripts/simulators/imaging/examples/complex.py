@@ -83,10 +83,14 @@ galaxy = ag.Galaxy(
         intensity=0.1,
         effective_radius=1.6,
     ),
-    clump_0=ag.lp.Sersic(centre=(1.0, 1.0), intensity=0.5, effective_radius=0.2),
-    clump_1=ag.lp.Sersic(centre=(0.5, 0.8), intensity=0.5, effective_radius=0.2),
-    clump_2=ag.lp.Sersic(centre=(-1.0, -0.7), intensity=0.5, effective_radius=0.2),
-    clump_3=ag.lp.Sersic(centre=(-1.0, 0.4), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_0=ag.lp.Sersic(centre=(1.0, 1.0), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_1=ag.lp.Sersic(centre=(0.5, 0.8), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_2=ag.lp.Sersic(
+        centre=(-1.0, -0.7), intensity=0.5, effective_radius=0.2
+    ),
+    extra_galaxy_3=ag.lp.Sersic(
+        centre=(-1.0, 0.4), intensity=0.5, effective_radius=0.2
+    ),
 )
 
 """

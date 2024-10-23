@@ -41,7 +41,7 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-Setup the path the datasets we'll use to illustrate preprocessing, which is the folder `dataset/imaging/data_preparation`.
+Setup the path the datasets we'll use to illustrate preprocessing, which is the folder `dataset/data_preparation/imaging`.
 """
 dataset_path = path.join("dataset", "imaging", "simple")
 

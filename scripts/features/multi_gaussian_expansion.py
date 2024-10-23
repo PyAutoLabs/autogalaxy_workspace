@@ -192,7 +192,7 @@ The number of free parameters and therefore the dimensionality of non-linear par
 
 __Model Cookbook__
 
-A full description of model composition, including lens model customization, is provided by the model cookbook: 
+A full description of model composition is provided by the model cookbook: 
 
 https://pyautolens.readthedocs.io/en/latest/general/model_cookbook.html
 """
