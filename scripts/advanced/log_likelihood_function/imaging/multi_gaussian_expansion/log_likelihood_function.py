@@ -1,13 +1,11 @@
 """
-__Log Likelihood Function: Linear Light Profile__
+__Log Likelihood Function: Multi Gaussian Expansion__
 
 This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with
-parametric linear light profiles (e.g. a Sersic bulge and Exponential disk).
+a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.
 
-A "linear light profile" is a variant of a standard light profile where the `intensity` parameter is solved for
-via linear algebra every time the model is fitted to the data. This uses a process called an "inversion" and it
-always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood)
-given the light profile's other parameters.
+You should be famaliar with the `log_likelihood_function` of a parametric linear light profile before reading this script,
+which is described in the `log_likelihood_function/imaging/linear_light_profile/log_likelihood_function.py` script.
 
 This script has the following aims:
 
@@ -21,8 +19,11 @@ packages are called when the likelihood is evaluated.
 
 __Simpler Likelihoods__
 
-The likelihood function of linear light profiles builds on that used forstandard parametric light profiles, therefore
-you should read the `light_profile/log_likelihood_function.py` script before this script.
+The likelihood function of a multi Gaussian expansion builds on that used for standard parametric light profiles and
+linear light profiles, therefore you should read the following before this script:
+
+- `light_profile/log_likelihood_function.py`.
+- `linear_light_profile/log_likelihood_function.py`.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -44,8 +45,12 @@ __Dataset__
 In order to perform a likelihood evaluation, we first load a dataset.
 
 This example fits a simulated galaxy where the imaging resolution is 0.1 arcsecond-per-pixel resolution.
+
+The galaxy has an asymmetric light distribution, which cannot be accurately fitted with `Sersic` profile and
+therefore requires a multi-Gaussian expansion to fit accurately.
 """
-dataset_path = path.join("dataset", "imaging", "simple")
+dataset_name = "asymmetric"
+dataset_path = path.join("dataset", "imaging", dataset_name)
 
 dataset = ag.Imaging.from_fits(
     data_path=path.join(dataset_path, "data.fits"),
@@ -162,60 +167,118 @@ __Likelihood Setup: Light Profiles (Setup)__
 
 To perform a likelihood evaluation we now compose our galaxy model.
 
-We first define the light profiles which represents the galaxy's light, in this case its bulge and disk, which will be 
-used to fit the galaxy light.
+We first define the light profiles which represents the galaxy's light, in this case a superposition of 30
+2D Gaussian light profiles.
 
-A light profile is defined by its intensity $I (\eta_{\rm l}) $, for example the Sersic profile:
+A Gaussian light profile is defined by its intensity $I (\eta_{\rm l}) $, for example the Sersic profile:
 
-$I_{\rm  Ser} (\eta_{\rm l}) = I \exp \bigg\{ -k \bigg[ \bigg( \frac{\eta}{R} \bigg)^{\frac{1}{n}} - 1 \bigg] \bigg\}$
+$I_{\rm  Gaussian} (\eta_{\rm l}) = I \exp \left( -\frac{\eta_{\rm l}^2}{2 \sigma^2} \right)$ 
 
 Where:
 
  - $\eta$ are the elliptical coordinates (see above).
- - $I$ is the `intensity`, which controls the overall brightness of the Sersic profile.
- - $n$ is the ``sersic_index``, which via $k$ controls the steepness of the inner profile.
- - $R$ is the `effective_radius`, which defines the arc-second radius of a circle containing half the light.
+ - $I$ is the `intensity`, which controls the overall brightness of the Gaussian profile.
+ - $\sigma$ is the `sigma` value of the Gaussian, which sets the size of the Gaussian.
 
-In this example, we assume our galaxy is composed of two light profiles, an elliptical Sersic and Exponential (a Sersic
-where `sersic_index=4`) which represent the bulge and disk of the galaxy. 
+In this example, we assume our galaxy is composed of 30 Gaussian light profiles, each with different elliptical 
+components, intensity and sigma values, such that it can capture complex light distributions with asymmetry.
 
-__ Likelihood Setup: Linear Light Profiles__
+__Likelihood Setup: Multiple Gaussians & Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
 module instead of the `lp` module used throughout other example scripts. 
 
 The `intensity` parameter of the light profile is no longer passed into the light profiles created via the
 `lp_linear` module, as it is inferred via linear algebra.
-"""
-bulge = ag.lp_linear.Sersic(
-    centre=(0.0, 0.0),
-    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-    effective_radius=0.6,
-    sersic_index=3.0,
-)
 
-disk = ag.lp_linear.Exponential(
-    centre=(0.0, 0.0),
-    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
-    effective_radius=1.6,
-)
+For a multi-Gaussian expansion, we use 30 linear light profile `Gaussian`'s, which is easily achieved by creating a
+list of `Gaussian` objects via a for loop.
+"""
+total_gaussians = 30
+
+# The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius, 3.0".
+
+mask_radius = 3.0
+log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
+
+# A list of linear light profile Gaussians will be input here, which will then be used to fit the data.
+
+basis_gaussian_list = []
+
+# Iterate over every Gaussian and create it, with it centered at (0.0", 0.0") and assuming spherical symmetry.
+
+for i in range(total_gaussians):
+    gaussian = ag.lp_linear.Gaussian(
+        centre=(0.0, 0.0),
+        ell_comps=(0.0, 0.0),
+        sigma=10 ** log10_sigma_list[i],
+    )
+
+    basis_gaussian_list.append(gaussian)
+
+
+"""
+__Basis__
+
+For a multi-Gaussian expansion (and other mdoels where the light profile is a superposition of multiple light profiles),
+the list of linear light profiles is passed to the `Basis` class.
+
+The `Basis` basically stores all these light profiles into a single object such that they can collectively be used to
+perform the fit.
+"""
+basis = ag.lp_basis.Basis(profile_list=basis_gaussian_list)
+
+"""
+The `Basis` is composed of many Gaussians, each with different sizes (the `sigma` value) and therefore capturing
+emission on different scales.
+
+These Gaussians are visualized below using a `BasisPlotter`, which shows that the Gaussians expand in size as the
+sigma value increases, in log10 increments.
+
+This figure is is a brilliant way to visualize the multi-Gaussian expansion, showing the 30 different Gaussian light
+profiles that will be used perform the expansion on the data.
+
+Below, we will discuss how linear light profiles cannot be visualized (an exception is raised if you try). Therefore
+below we make a separate `Basis` object of `Gaussians` using standard light profiles with input `intensity` values,
+which we can visualize.
+"""
+basis_plot_gaussian_list = []
+
+for i in range(total_gaussians):
+    gaussian = ag.lp.Gaussian(
+        centre=(0.0, 0.0),
+        ell_comps=(0.0, 0.0),
+        intensity=1.0,
+        sigma=10 ** log10_sigma_list[i],
+    )
+
+    basis_plot_gaussian_list.append(gaussian)
+
+basis_plot = ag.lp_basis.Basis(profile_list=basis_plot_gaussian_list)
+
+grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
+
+basis_plotter = aplt.BasisPlotter(basis=basis_plot, grid=grid)
+basis_plotter.subplot_image()
 
 """
 Internally in the source code, linear light profiles have an `intensity` parameter, but its value is always set to 
-1.0. It will be clear why this is later in the script.
-"""
-print("Bulge Internal Intensity:")
-print(bulge.intensity)
+1.0. 
 
-print("Disk Internal Intensity:")
-print(disk.intensity)
+This can be seen by printing the intensity of the first two Gaussians in the basis.
+"""
+print("Basis Internal Intensity Of First Gaussian:")
+print(basis.light_profile_list[0].intensity)
+
+print("Basis Internal Intensity Of Second Gaussian:")
+print(basis.light_profile_list[1].intensity)
 
 """
-Like standard light profiles, we can compute images of each linear light profile, but their overall
+Like standard light profiles, we can compute images of each linear light profile in the basis, but their overall
 normalization is arbitrary given that the internal `intensity` value of 1.0 is used.
 """
-image_2d_bulge = bulge.image_2d_from(grid=masked_dataset.grid)
-image_2d_disk = disk.image_2d_from(grid=masked_dataset.grid)
+image_2d_basis_0 = basis.light_profile_list[0].image_2d_from(grid=masked_dataset.grid)
+image_2d_basis_1 = basis.light_profile_list[1].image_2d_from(grid=masked_dataset.grid)
 
 """
 If we try and plot a linear light profile using a plotter, an exception is raised.
@@ -225,10 +288,13 @@ physical quantity. Plotting only works after a linear light profile has had its 
 algebra.
 
 Uncomment and run the code below to see the exception.
+
+Note that the `BasisPlotter` used above did not raise an exception, because its intended purpose is to visualize
+the basis light profiles and not the intensity of the light profiles.
 """
 print("This will raise an exception")
 
-# bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=masked_dataset.grid)
+# basis_plotter = aplt.LightProfilePlotter(light_profile=basis, grid=masked_dataset.grid)
 
 """
 __Likelihood Step 1: LightProfileLinearObjFuncList__
@@ -236,7 +302,7 @@ __Likelihood Step 1: LightProfileLinearObjFuncList__
 For standard light profiles, we combined our linear light profiles into a single `Galaxy` object. The 
 galaxy object computed each individual light profile's image and added them together.
 
-This no longer occurs for linear light profiles, instead each linear light profile is passed into the 
+This no longer occurs for linear light profiles or basis objects. Instead, each linear light profile is passed into the 
 `LightProfileLinearObjFuncList` object, which acts as an interface between the linear light profiles and the
 linear algebra used to compute their intensity via the inversion.
 
@@ -248,13 +314,13 @@ lp_linear_func = ag.LightProfileLinearObjFuncList(
     grid=masked_dataset.grids.uniform,
     blurring_grid=masked_dataset.grids.blurring,
     convolver=masked_dataset.convolver,
-    light_profile_list=[bulge, disk],
+    light_profile_list=basis.light_profile_list,
     regularization=None,
 )
 
 """
 This has a property `params` which is the number of intensity values that are computed via the inversion,
-which because we have 2 light profiles is equal to 2.
+which because we have 30 Gaussian linear light profiles is equal to 30.
 
 The `params` defines the dimensions of many of the matrices used in the linear algebra we discuss below.
 """
@@ -264,7 +330,7 @@ print(lp_linear_func.params)
 """
 __Likelihood Step 2: Mapping Matrix__
 
-The `mapping_matrix` is a matrix where each column is an image of each linear light profiles (assuming its 
+The `mapping_matrix` is a matrix where each column is an image of each Gaussian linear light profiles (assuming its 
 intensity is 1.0), not accounting for the PSF convolution.
 
 It has dimensions `(total_image_pixels, total_linear_light_profiles)`.
@@ -272,11 +338,11 @@ It has dimensions `(total_image_pixels, total_linear_light_profiles)`.
 mapping_matrix = lp_linear_func.mapping_matrix
 
 """
-Printing the first column of the mapping matrix shows the image of the bulge light profile.
+Printing the first column of the mapping matrix shows the image of the basis light profile.
 """
-bulge_image = mapping_matrix[:, 0]
-print(bulge_image)
-print(image_2d_bulge.slim)
+basis_image = mapping_matrix[:, 0]
+print(basis_image)
+print(image_2d_basis_0.slim)
 
 """
 A 2D plot of the `mapping_matrix` shows each light profile image in 1D, which is a bit odd to look at but
@@ -312,12 +378,11 @@ The property is actually called `operated_mapping_matrix_override` for two reaso
 """
 blurred_mapping_matrix = lp_linear_func.operated_mapping_matrix_override
 
-
 """
-Printing the first column of the mapping matrix shows the blurred image of the bulge light profile.
+Printing the first column of the mapping matrix shows the blurred image of the basis light profile.
 """
-bulge_image = blurred_mapping_matrix[:, 0]
-print(bulge_image)
+basis_image = blurred_mapping_matrix[:, 0]
+print(basis_image)
 
 """
 A 2D plot of the `mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
@@ -332,7 +397,7 @@ used to compute the intensity values of the linear light profiles. In WD03, the 
 gravitational lensing and the galaxy is reconstructed on a rectangular grid of pixels, as opposed to linear light 
 profiles.
 
-However, the mathematics of the WD03 linear inversion formalism is the same as tyhat used here, therefore this guide 
+However, the mathematics of the WD03 linear inversion formalism is the same as that used here, therefore this guide 
 describes which quantities in the linear inversion formalism map to the equations given in WD03. The pixelized 
 reconstruction methods, available in the code but described in the `pixelization` likelihood function guide, 
 also follow the WD03 formalism.
@@ -349,7 +414,7 @@ The indexing of the `mapping_matrix` is reversed compared to the notation of WD0
 are the first entry of `mapping_matrix` whereas for $f$ they are the second index).
 """
 print(
-    f"Mapping between image pixel 0 and linear light profile pixel 1 = {mapping_matrix[0, 1]}"
+    f"Mapping between image pixel 0 and Gaussian linear light profile pixel 1 = {mapping_matrix[0, 1]}"
 )
 
 """
@@ -453,20 +518,25 @@ The solution for $s$ is therefore given by (equation 5 WD03):
 
 We can compute this using NumPy linear algebra and the `solve` function.
 
-However, this function allows for the solved `intensity` values to be negative. For linear light profiles which
-are a good fit to the data, this is unlikely to happen and the `intensity` values will be positive. However, 
-for more complex models this may not be the case. Below, we describes how we can ensure the `intensity` values
-are positive.
+However, this function allows for the solved `intensity` values to be negative, which are unphysical values for
+describing the light profile of a galaxy. 
+
+For a multi-Gaussian expansion, it is common for the inferred solution to contain negative `intensity` values. A common
+solution is one where the Gaussians alternate between large positive and large negative values, creating an almost
+"ringing" effect in the reconstruction. This is a very unphysical solution and one we want to avoid.
+
+We are able to illustrate this now, first by solving the linear algebra and then printing the `intensity` values.
 """
 reconstruction = np.linalg.solve(curvature_matrix, data_vector)
 
 """
-The `reconstruction` is a 1D vector of length equal to the number of linear light profiles, which in this case is 2.
+The `reconstruction` is a 1D vector of length equal to the number of Gaussian linear light profiles, which in this case 
+is 30.
 
-Each value represents the intensity of the linear light profile.
+Each value represents the solved for `intensity` of the Gaussian linear light profile.
 
-In this example, both values are positive, but remember that this is not guaranteed for all linear inversions
-that are solve using this method.
+In this example, the values alternate between positive and negative, indicating a solution that is not physical
+and one we must avoid.
 """
 print("Reconstruction (S) of Linear Light Profiles Intensity:")
 print(reconstruction)
@@ -484,7 +554,7 @@ iterative manner meaning that it is slower. It does not use `data_vector` $D$ an
 works directly with the `blurred_mapping_matrix` $f$ and the data and noise-map.
 
 The `nnls` function is therefore computationally slow, especially for cases where there are many linear light profiles 
-or even  more complex linear inversions like a pixelized reconstruction.
+or even more complex linear inversions like a pixelized reconstruction.
 
 The source code therefore uses a "fast nnls" algorithm, which is an adaptation of the algorithm found at
 this URL: https://github.com/jvendrow/fnnls
@@ -495,6 +565,42 @@ why it is faster.
 
 The function `reconstruction_positive_only_from` uses the `fnnls` algorithm to compute the `intensity` values
 of the linear light profiles, ensuring they are positive.
+
+However, the code below by itself actually auses a `LinAlgError` because the `curvature_matrix` is singular. Uncomment
+the code below to see this error.
+"""
+# reconstruction = ag.util.inversion.reconstruction_positive_only_from(
+#     data_vector=data_vector,
+#     curvature_reg_matrix=curvature_matrix,  # ignore _reg_ tag in this guide
+# )
+#
+# print(reconstruction)
+
+"""
+To make the `curvature_matrix` non-singular, we simply add small numerical values to its diagonal elements. 
+
+This is effectively add a small degree of "zeroth order" regularization to the inversion, which is sufficient to make
+the matrix non-singular and ensure the inversion can be performed.
+
+There are a variety of ways to regularize the inversion, and these can be manually input into the `Basis` object.
+However, for a multi-Gaussian expansion, testing has shown that adding a small degree of zeroth order regularization
+in conjunction with a positive-only solution is sufficient to ensure the inversion is robust for all reasonable
+science cases.
+
+In practise, the code only adds these small numerical values to the diagonal of the curvature matrix for elements
+which have no other regularization applied to them. Therefore, in the function call below we input 
+`no_regularization_index_list=range(30)`, which tells the function to add small numerical values to all 30
+diagonal values corresponding to the 30 Gaussian linear light profiles.
+"""
+curvature_matrix = ag.util.inversion.curvature_matrix_via_mapping_matrix_from(
+    mapping_matrix=blurred_mapping_matrix,
+    noise_map=masked_dataset.noise_map,
+    add_to_curvature_diag=True,
+    no_regularization_index_list=list(range(30)),
+)
+
+"""
+The `reconstruction` can now be computed successfully without a linear algebra error.
 """
 reconstruction = ag.util.inversion.reconstruction_positive_only_from(
     data_vector=data_vector,
@@ -601,8 +707,7 @@ This 9 step process to perform a likelihood function evaluation is what is perfo
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
-    bulge=bulge,
-    disk=disk,
+    basis=basis,
 )
 
 galaxies = ag.Galaxies(galaxies=[galaxy])
@@ -654,8 +759,8 @@ but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms.
 
 __Wrap Up__
 
-We have presented a visual step-by-step guide to the parametric linear light profile likelihood function, which uses 
-analytic light profiles to fit the galaxy light and solve for the `intensity` values via linear algebra.
+We have presented a visual step-by-step guide to the multi Gaussian expansion likelihood function, which uses 
+many 2D Gaussians to fit the galaxy light and solve for the `intensity` values via linear algebra.
 
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
 are described in additional notebooks found in the `guides` package:
