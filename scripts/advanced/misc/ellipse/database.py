@@ -76,7 +76,7 @@ generators for us. Explicit examples of how to do this via generators is given i
 tutorial.
 
 We get a ellipses generator via the `ag.agg.EllipsesAgg` object, where this `ellipses_gen` contains the maximum log
-likelihood `Plane `object of every model-fit.
+likelihood `Galaxies `object of every model-fit.
 """
 ellipses_agg = ag.agg.EllipsesAgg(aggregator=agg)
 ellipses_gen = ellipses_agg.max_log_likelihood_gen_from()

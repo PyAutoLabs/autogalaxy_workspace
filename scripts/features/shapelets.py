@@ -244,7 +244,7 @@ creates, which requires more thorough sampling by the non-linear search.
 The folders: 
 
  - `autogalaxy_workspace/*/imaging/modeling/searches`.
- - `autogalaxy_workspace/*/imaging/modeling/customize`
+ - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
 model-fit, including the priors on the model. 

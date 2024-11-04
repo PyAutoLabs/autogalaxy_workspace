@@ -12,7 +12,7 @@ __Disadvantages__
 The priors on your model determine the errors you infer. Overly tight priors may lead to over
 confidence in the inferred parameters.
 
-The `autogalaxy_workspace/*/imaging/modeling/customize/start_point.ipynb` shows an alternative API, which
+The `autogalaxy_workspace/*/modeling/imaging/customize/start_point.ipynb` shows an alternative API, which
 customizes where the non-linear search starts its search of parameter space.
 
 This cannot be used for a nested sampling method like `nautilus` (whose parameter space search is dictated by priors)

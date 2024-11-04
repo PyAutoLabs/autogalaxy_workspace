@@ -104,8 +104,9 @@ array_2d_plotter.figure_2d()
 """
 Output the galaxy light centres to a .json file in the dataset folder, so we can load them in modeling scripts.
 """
-light_centres.output_to_json(
-    file_path=path.join(dataset_path, "light_centres.json"), overwrite=True
+ag.output_to_json(
+    obj=light_centres,
+    file_path=path.join(dataset_path, "light_centre.json"),
 )
 
 """

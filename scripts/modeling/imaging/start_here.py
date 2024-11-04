@@ -92,7 +92,7 @@ If we plot the masked data, the mask removes the exterior regions of the image w
 galaxy.
 
 The mask used to fit the data can be customized, as described in 
-the script `autogalaxy_workspace/*/imaging/modeling/customize/custom_mask.py`
+the script `autogalaxy_workspace/*/modeling/imaging/customize/custom_mask.py`
 """
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
@@ -152,7 +152,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -231,7 +231,7 @@ correctly, requiring a Python script to be run, often from a command line termin
 
 To fix these issues, the Python script needs to be adapted to use an `if __name__ == "__main__":` API, as this allows
 the Python `multiprocessing` module to allocate threads and jobs correctly. An adaptation of this example script 
-is provided at `autolens_workspace/scripts/imaging/modeling/customize/parallel.py`, which will hopefully run 
+is provided at `autolens_workspace/scripts/modeling/imaging/customize/parallel.py`, which will hopefully run 
 successfully in parallel on your computer!
 
 Therefore if paralellization for this script doesn't work, check out the `parallel.py` example. You will need to update
@@ -247,12 +247,16 @@ this can take up a large fraction of the run-time of the non-linear search.
 
 For this fit, the fit is very fast, thus we set a high value of `iterations_per_update=10000` to ensure these updates
 so not slow down the overall speed of the model-fit. 
+
+**If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
+output results and visualization frequently to hard-disk. If your fit is consistent displaying a log saying that it
+is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
     name="start_here",
     unique_tag=dataset_name,
-    n_live=1200,
+    n_live=200,
     number_of_cores=4,
     iterations_per_update=10000,
 )
@@ -423,7 +427,7 @@ We recommend you now checkout the following feature:
 All other features may be useful to specific users with specific datasets and scientific goals, but are not useful
 for general modeling.
 
-The folders `autogalaxy_workspace/*/imaging/modeling/searches` and `autogalaxy_workspace/*/imaging/modeling/customize`
+The folders `autogalaxy_workspace/*/imaging/modeling/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`
 provide guides on how to customize many other aspects of the model-fit. Check them out to see if anything
 sounds useful, but for most users you can get by without using these forms of customization!
   

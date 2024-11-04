@@ -90,7 +90,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -122,7 +122,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 The folders: 
 
  - `autogalaxy_workspace/*/imaging/modeling/searches`.
- - `autogalaxy_workspace/*/imaging/modeling/customize`
+ - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
 model-fit, including the priors on the model. 

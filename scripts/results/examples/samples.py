@@ -51,19 +51,11 @@ dataset = ag.Imaging.from_fits(
 )
 
 mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=6.0
+    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
 dataset = dataset.apply_mask(mask=mask)
 
-"""
-__Model Composition__
-
-The code below composes the model fitted to the data (the API is described in the `modeling/start_here.py` example).
-
-The way the model is composed below (e.g. that the model has a `Collection` called `galaxies` and includes a `galaxy`) 
-should be noted, as it will be important when inspecting certain results later in this example.
-"""
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
@@ -73,10 +65,11 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
-    name="light[bulge_disk]",
+    path_prefix=path.join("results_folder"),
+    name="results",
     unique_tag=dataset_name,
     n_live=100,
+    number_of_cores=1,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)
@@ -97,6 +90,9 @@ We now have the `Result` object we will cover in this script.
 
 As a reminder, in the `modeling` scripts we use the `max_log_likelihood_galaxies` and `max_log_likelihood_fit` to plot 
 the results of the fit.
+
+The `Result` object has already perform the linear algebra calculation which sets the `intensity` values of
+the line profiles.
 """
 galaxies_plotter = aplt.GalaxiesPlotter(
     galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false
@@ -201,6 +197,10 @@ max_lh_galaxies = ag.Galaxies(galaxies=instance.galaxies)
 
 print(max_lh_galaxies)
 print(mask.derive_grid.all_false)
+
+# Input to FitImaging to solve for linear light profile intensities, see `start_here.py` for details.
+fit = ag.FitImaging(dataset=dataset, galaxies=max_lh_galaxies)
+max_lh_galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
 
 galaxies_plotter = aplt.GalaxiesPlotter(
     galaxies=max_lh_galaxies, grid=mask.derive_grid.all_false
@@ -431,14 +431,15 @@ axis_ratio_list = []
 for i in range(random_draws):
     instance = samples.draw_randomly_via_pdf()
 
-    ell_comps = instance.galaxies.lens.mass.ell_comps
+    ell_comps = instance.galaxies.galaxy.bulge.ell_comps
 
     axis_ratio = ag.convert.axis_ratio_from(ell_comps=ell_comps)
 
     axis_ratio_list.append(axis_ratio)
 
 median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
-    parameter_list=axis_ratio_list, sigma=3.0, weight_list=samples.weight_list
+    parameter_list=axis_ratio_list,
+    sigma=3.0,
 )
 
 print(f"axis_ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")

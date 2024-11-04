@@ -231,7 +231,7 @@ galaxies = result.max_log_likelihood_galaxies
 print(galaxies[0].bulge.intensity)
 
 """
-The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
+The `Galaxies` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
 """
 fit = result.max_log_likelihood_fit
 
@@ -285,7 +285,7 @@ galaxies = result.max_log_likelihood_galaxies
 print(galaxies[0].bulge.intensity)
 
 """
-The `Plane` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
+The `Galaxies` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
 """
 fit = result.max_log_likelihood_fit
 

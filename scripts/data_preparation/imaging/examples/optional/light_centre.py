@@ -75,8 +75,9 @@ array_plotter.figure_2d()
 Now we`re happy with the galaxy light centre(s), lets output them to the dataset folder of the galaxy, so that we can 
 load them from a .json file in our pipelines!
 """
-light_centre.output_to_json(
-    file_path=path.join(dataset_path, "light_centre.json"), overwrite=True
+ag.output_to_json(
+    obj=light_centre,
+    file_path=path.join(dataset_path, "light_centre.json"),
 )
 
 """

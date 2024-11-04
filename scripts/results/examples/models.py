@@ -33,6 +33,7 @@ import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
+
 """
 __Aggregator__
 
@@ -70,7 +71,7 @@ generators for us. Explicit examples of how to do this via generators is given i
 tutorial.
 
 We get a galaxies generator via the `ag.agg.GalaxiesAgg` object, where this `galaxies_gen` contains the maximum log
-likelihood `Plane `object of every model-fit.
+likelihood `Galaxies `object of every model-fit.
 """
 galaxies_agg = ag.agg.GalaxiesAgg(aggregator=agg)
 galaxies_gen = galaxies_agg.max_log_likelihood_gen_from()
@@ -91,9 +92,19 @@ for different wavelengths), which would be reflected in the galaxies list.
 """
 grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.1)
 
-for galaxies_list in galaxies_gen:
+dataset_agg = ag.agg.ImagingAgg(aggregator=agg)
+dataset_gen = dataset_agg.dataset_gen_from()
+
+for dataset_list, galaxies_list in zip(dataset_gen, galaxies_gen):
+    # Only one `Analysis` so take first and only dataset.
+    dataset = dataset_list[0]
+
     # Only one `Analysis` so take first and only galaxies.
     galaxies = galaxies_list[0]
+
+    # Input to FitImaging to solve for linear light profile intensities, see `start_here.py` for details.
+    fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
+    galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
 
     galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
     galaxies_plotter.figures_2d(convergence=True, potential=True)
@@ -106,14 +117,24 @@ the luminosity of each of our most-likely galaxies.
 
 The model instance uses the model defined by a pipeline. In this pipeline, we called the galaxy `galaxy`.
 """
+dataset_agg = ag.agg.ImagingAgg(aggregator=agg)
+dataset_gen = dataset_agg.dataset_gen_from()
+
 galaxies_agg = ag.agg.GalaxiesAgg(aggregator=agg)
 galaxies_gen = galaxies_agg.max_log_likelihood_gen_from()
 
 print("Maximum Log Likelihood Luminosities:")
 
-for galaxies_list in galaxies_gen:
+for dataset_list, galaxies_list in zip(dataset_gen, galaxies_gen):
+    # Only one `Analysis` so take first and only dataset.
+    dataset = dataset_list[0]
+
     # Only one `Analysis` so take first and only tracer.
     galaxies = galaxies_list[0]
+
+    # Input to FitImaging to solve for linear light profile intensities, see `start_here.py` for details.
+    fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
+    galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
 
     luminosity = galaxies[0].luminosity_within_circle_from(radius=10.0)
 

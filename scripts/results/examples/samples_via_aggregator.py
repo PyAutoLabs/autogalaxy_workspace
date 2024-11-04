@@ -141,14 +141,12 @@ Using the samples method above can be slow, as the quantities have to be compute
 (e.g. computing errors requires that all samples are marginalized over). This information is stored directly in the
 samples summary and can therefore be accessed instantly.
 """
-# for samples_summary in agg.values("samples_summary"):
-#
-#     instance = samples_summary.max_log_likelihood()
-#
-#     print("Max Log Likelihood `Gaussian` Instance:")
-#     print("Centre = ", instance.centre)
-#     print("Normalization = ", instance.normalization)
-#     print("Sigma = ", instance.sigma, "\n")
+for samples_summary in agg.values("samples_summary"):
+    instance = samples_summary.max_log_likelihood()
+
+    print("Max Log Likelihood Instance:")
+    print("Centre = ", instance.galaxies.galaxy.bulge.centre)
+
 
 """
 __Figures of Merit__
@@ -398,15 +396,13 @@ The default ordering of the results can be a bit random, as it depends on how th
 The `order_by` method can be used to order by a property of the database that is a string, for example by ordering 
 using the `unique_tag` (which we set up in the search as the `dataset_name`) the database orders results alphabetically
 according to dataset name.
-"""
-agg = agg.order_by(agg.search.unique_tag)
 
-"""
+# agg = agg.order_by(agg.search.unique_tag)
+
 We can also order by a bool, for example making it so all completed results are at the front of the aggregator.
-"""
-agg = agg.order_by(agg.search.is_complete)
 
-"""
+# agg = agg.order_by(agg.search.is_complete)
+
 __Samples Filtering__
 
 The samples object has the results for all model parameter. It can be filtered to contain the results of specific 
@@ -488,11 +484,6 @@ removing all parameters of the source's bulge.
 samples = list(agg.values("samples"))[0]
 samples = samples.with_paths(["galaxies.galaxy"])
 print("Parameters of the first sample of the galaxy")
-print(samples.parameter_lists[0])
-
-samples = list(agg.values("samples"))[0]
-samples = samples.with_paths(["galaxies.galaxy.bulge"])
-print("Parameters of the first sample without the source's bulge")
 print(samples.parameter_lists[0])
 
 """

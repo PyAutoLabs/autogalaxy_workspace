@@ -62,7 +62,7 @@ search = af.Nautilus(
     path_prefix=path.join("results_folder"),
     name="results",
     unique_tag=dataset_name,
-    n_live=150,
+    n_live=100,
     number_of_cores=1,
 )
 
@@ -194,10 +194,61 @@ print(ue3_instance.galaxies.galaxy.bulge, "\n")
 print(le3_instance.galaxies.galaxy.bulge, "\n")
 
 """
+__Linear Light Profiles__
+
+In the model fit, linear light profiles are used, solving for the `intensity` of each profile through linear algebra.
+
+The `intensity` value is not a free parameter of the linear light profiles in the model, meaning that in the `Samples`
+object the `intensity` are always defaulted to values of 1.0 in the `Samples` object. 
+
+You can observe this by comparing the `intensity` values in the `Samples` object to those in 
+the `result.max_log_likelihood_galaxies` instance and `result.max_log_likelihood_fit` instance.
+"""
+samples = result.samples
+ml_instance = samples.max_log_likelihood()
+
+print(
+    "Intensity of first galaxy's bulge in the Samples object (before solving linear algebra):"
+)
+print(ml_instance.galaxies.galaxy.bulge.intensity)
+
+print(
+    "Intensity of first galaxy's bulge in the max log likelihood galaxy (after solving linear algebra):"
+)
+print(result.max_log_likelihood_galaxies[0].bulge.intensity)
+print(
+    result.max_log_likelihood_fit.galaxies_linear_light_profiles_to_light_profiles[
+        0
+    ].bulge.intensity
+)
+
+"""
+To interpret results associated with the linear light profiles, you must input the `Samples` object into a `FitImaging`,
+which converts the linear light profiles to standard light profiles with `intensity` values solved for using the linear 
+algebra.
+"""
+ml_instance = samples.max_log_likelihood()
+
+fit = ag.FitImaging(dataset=dataset, galaxies=ml_instance.galaxies)
+galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
+
+print("Intensity of first galaxy's bulge after conversion using FitImaging:")
+print(galaxies[0].bulge.intensity)
+
+"""
+Whenever possible, the result already containing the solved `intensity` values is used, for example
+the `Result` object returned by a search.
+
+However, when manually loading results from the `Samples` object, you must use the `FitImaging` object to convert
+the linear light profiles to their correct `intensity` values.
+
 __Galaxies__
 
 The result's maximum likelihood `Galaxies` object contains everything necessary to perform calculations with the model
 like retrieving the images of each galaxy.
+
+Following the discussion above, this object contains the correct `intensity` values for the light profiles which
+are already solved via linear algebra.
 
 The guide `autogalaxy_workspace/*/guides/galaxies.py` provides a detailed description of this object, including:
 
@@ -222,6 +273,9 @@ __Fits__
 
 The result's maximum likelihood `FitImaging` object contains everything necessary to inspect the model fit to the 
 data.
+
+Following the discussion above, this object contains the correct `intensity` values for the light profiles which
+are already solved via linear algebra.
 
 The guide `autogalaxy_workspace/*/guides/fits.py` provides a detailed description of this object, including:
 

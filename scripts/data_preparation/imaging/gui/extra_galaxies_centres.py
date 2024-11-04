@@ -112,6 +112,7 @@ array_2d_plotter.figure_2d()
 Output the extra galaxy centres to the dataset folder of the galaxy, so that we can load them from a .json file 
 when we model them.
 """
-extra_galaxies_centres.output_to_json(
-    file_path=path.join(dataset_path, "extra_galaxies_centres.json"), overwrite=True
+ag.output_to_json(
+    obj=extra_galaxies_centres,
+    file_path=path.join(dataset_path, "extra_galaxies_centres.json"),
 )

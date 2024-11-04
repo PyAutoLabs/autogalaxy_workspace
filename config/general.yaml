@@ -4,7 +4,7 @@ analysis:
 fits:
   flip_for_ds9: true
 grid:
-  remove_projected_centre: false
+  remove_projected_centre: false   # Whether 1D plots of a light profile should remove the central point to avoid the large numerical central value skewing the y axis.
   max_evaluation_grid_size: 1000   # An evaluation grid whose shape is adaptive chosen is used to compute quantities like critical curves, this integer is the max size of the grid ensuring faster run times.
 inversion:
   check_reconstruction: true        # If True, the inversion's reconstruction is checked to ensure the solution of a meshs's mapper is not an invalid solution where the values are all the same.

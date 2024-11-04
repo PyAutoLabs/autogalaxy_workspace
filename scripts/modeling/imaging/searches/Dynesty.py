@@ -51,7 +51,7 @@ __Model__
 
 In our experience, zeus is okay at initializing a model but not as good at `nautilus. It therefore benefits 
 from a 'starting point' which is near the highest likelihood models. We set this starting point up below using
-the start point API (see `autogalaxy_workspace/*/imaging/modeling/customize/start_point.ipynb`).
+the start point API (see `autogalaxy_workspace/*/modeling/imaging/customize/start_point.ipynb`).
 
 Given this need for a robust starting point, Emcee is only suited to model-fits where we have this information. It may
 therefore be useful when performing modeling search chaining (see HowToGalaxy chapter 3). However, even in such

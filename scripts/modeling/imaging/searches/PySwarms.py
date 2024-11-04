@@ -28,6 +28,7 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+import matplotlib.pyplot as plt
 from os import path
 import numpy as np
 import autofit as af
@@ -60,7 +61,7 @@ __Model__
 
 In our experience, zeus is okay at initializing a model but not as good at `nautilus. It therefore benefits 
 from a 'starting point' which is near the highest likelihood models. We set this starting point up below using
-the start point API (see `autogalaxy_workspace/*/imaging/modeling/customize/start_point.ipynb`).
+the start point API (see `autogalaxy_workspace/*/modeling/imaging/customize/start_point.ipynb`).
 
 Given this need for a robust starting point, PySwarms is only suited to model-fits where we have this information. It may
 therefore be useful when performing modeling search chaining (see HowToGalaxy chapter 3). However, even in such
@@ -113,13 +114,67 @@ search = af.PySwarmsGlobal(
 result = search.fit(model=model, analysis=analysis)
 
 """
-__Result__
+__Notation__
 
-We can use an `MLEPlotter` to create a corner plot, which shows the probability density function (PDF) of every
-parameter in 1D and 2D.
+Plot are labeled with short hand parameter names (e.g. the `centre` parameters are plotted using an `x`). 
+
+The mappings of every parameter to its shorthand symbol for plots is specified in the `config/notation.yaml` file 
+and can be customized.
+
+Each label also has a superscript corresponding to the model component the parameter originates from. For example,
+Gaussians are given the superscript `g`. This can also be customized in the `config/notation.yaml` file.
+
+__Plotting__
+
+We now pass the samples to a `MLEPlotter` which will allow us to use pyswarms's in-built plotting libraries to 
+make figures.
+
+The pyswarms readthedocs describes fully all of the methods used below 
+
+ - https://pyswarms.readthedocs.io/en/latest/api/pyswarms.utils.plotters.html
+ 
+In all the examples below, we use the `kwargs` of this function to pass in any of the input parameters that are 
+described in the API docs.
 """
 plotter = aplt.MLEPlotter(samples=result.samples)
-plotter.cost_history()
+
+"""
+__Search Specific Visualization__
+
+PySwarms has bespoke in-built visualization tools that can be used to plot its results.
+
+The first time you run a search, the `search_internal` attribute will be available because it is passed ot the
+result via memory. 
+
+If you rerun the fit on a completed result, it will not be available in memory, and therefore
+will be loaded from the `files/search_internal` folder. The `search_internal` entry of the `output.yaml` must be true 
+for this to be possible.
+"""
+search_internal = result.search_internal
+
+"""
+The `contour` method shows a 2D projection of the particle trajectories.
+"""
+from pyswarms.utils import plotters
+
+plotters.plot_contour(
+    pos_history=search_internal.pos_history,
+    canvas=None,
+    title="Trajectories",
+    mark=None,
+    designer=None,
+    mesher=None,
+    animator=None,
+)
+plt.show()
+
+plotters.plot_cost_history(
+    cost_history=search_internal.cost_history,
+    ax=None,
+    title="Cost History",
+    designer=None,
+)
+plt.show()
 
 """
 __Search__
@@ -142,8 +197,24 @@ search = af.PySwarmsLocal(
 
 result = search.fit(model=model, analysis=analysis)
 
-plotter = aplt.MLEPlotter(samples=result.samples)
-plotter.cost_history()
+plotters.plot_contour(
+    pos_history=search_internal.pos_history,
+    canvas=None,
+    title="Trajectories",
+    mark=None,
+    designer=None,
+    mesher=None,
+    animator=None,
+)
+plt.show()
+
+plotters.plot_cost_history(
+    cost_history=search_internal.cost_history,
+    ax=None,
+    title="Cost History",
+    designer=None,
+)
+plt.show()
 
 """
 Finish.

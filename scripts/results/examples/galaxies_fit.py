@@ -60,13 +60,13 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
+To illustrate results, we need to perform a model-fit in order to create a `Result` object.
+
 The code below performs a model-fit using nautilus. 
 
-You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
-
-Note that the model that is fitted has two galaxies, as opposed to just one like usual!
+You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one.
 """
-dataset_name = "sersic_x2"
+dataset_name = "simple"
 dataset_path = path.join("dataset", "imaging", dataset_name)
 
 dataset = ag.Imaging.from_fits(
@@ -77,27 +77,25 @@ dataset = ag.Imaging.from_fits(
 )
 
 mask = ag.Mask2D.circular(
-    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=6.0
+    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
 dataset = dataset.apply_mask(mask=mask)
 
-bulge_0 = af.Model(ag.lp_linear.Sersic)
-bulge_0.centre = (0.0, -1.0)
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
+bulge.centre = disk.centre
 
-galaxy_0 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_0)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
-bulge_1 = af.Model(ag.lp_linear.Sersic)
-bulge_1.centre = (0.0, 1.0)
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-galaxy_1 = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge_1)
-
-model = af.Collection(galaxies=af.Collection(galaxy_0=galaxy_0, galaxy_1=galaxy_1))
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
-    name="light[bulge]__x2",
+    path_prefix=path.join("results_folder"),
+    name="results",
     unique_tag=dataset_name,
     n_live=100,
+    number_of_cores=1,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)
@@ -117,6 +115,8 @@ galaxies_plotter = aplt.GalaxiesPlotter(
 galaxies_plotter.subplot_galaxies()
 
 """
+This ensures that when interpreting results, the intensities are adjusted to reflect the true non-linear values.
+
 __Samples__
 
 In the first results tutorial, we used `Samples` objects to inspect the results of a model.
@@ -130,12 +130,16 @@ samples = result.samples
 
 ml_instance = samples.max_log_likelihood()
 
-bulge = ml_instance.galaxies.galaxy_0.bulge
+# Input to FitImaging to solve for linear light profile intensities, see `start_here.py` for details.
+fit = ag.FitImaging(dataset=dataset, galaxies=ml_instance.galaxies)
+galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
+
+bulge = galaxies[0].bulge
 
 bulge_image_2d = bulge.image_2d_from(grid=dataset.grid)
 print(bulge_image_2d.slim[0])
 
-bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=grid)
+bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=dataset.grid)
 bulge_plotter.figures_2d(image=True)
 
 """
@@ -153,7 +157,16 @@ These are used to estimate the errors at an input `sigma` value of:
 Below, we manually input one hundred realisations of the galaxy with light profiles that clearly show 
 these errors on the figure.
 """
-galaxy_pdf_list = [samples.draw_randomly_via_pdf().galaxies.galaxy_0 for i in range(10)]
+galaxy_pdf_list = []
+
+for i in range(10):
+    sample = samples.draw_randomly_via_pdf()
+
+    # Input to FitImaging to solve for linear light profile intensities, see `start_here.py` for details.
+    fit = ag.FitImaging(dataset=dataset, galaxies=ml_instance.galaxies)
+    galaxies = fit.galaxies_linear_light_profiles_to_light_profiles
+
+    galaxy_pdf_list = [galaxies[0]]
 
 galaxy_pdf_plotter = aplt.GalaxyPDFPlotter(
     galaxy_pdf_list=galaxy_pdf_list, grid=dataset.grid, sigma=3.0
@@ -169,23 +182,6 @@ galaxy_pdf_plotter.figures_1d_decomposed(image=True)
 __Refitting__
 
 Using the API introduced in the `samples.py` tutorial, we can also refit the data locally. 
-
-This allows us to inspect how the galaxies changes for models with similar log likelihoods. Below, we create and plot
-the galaxies of the 100th last accepted model by nautilus.
-"""
-samples = result.samples
-
-instance = samples.from_sample_index(sample_index=-10)
-
-galaxies = ag.Galaxies(galaxies=instance.galaxies)
-
-galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
-galaxies_plotter.subplot_galaxies()
-
-"""
-__Refitting__
-
-Using the API introduced in the first tutorial, we can also refit the data locally. 
 
 This allows us to inspect how the fit changes for models with similar log likelihoods. Below, we refit and plot
 the fit of the 100th last accepted model by nautilus.

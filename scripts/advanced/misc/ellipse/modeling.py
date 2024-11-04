@@ -156,7 +156,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/imaging/modeling/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
 """
 number_of_ellipses = 10
 
@@ -255,7 +255,7 @@ correctly, requiring a Python script to be run, often from a command line termin
 
 To fix these issues, the Python script needs to be adapted to use an `if __name__ == "__main__":` API, as this allows
 the Python `multiprocessing` module to allocate threads and jobs correctly. An adaptation of this example script 
-is provided at `autolens_workspace/scripts/imaging/modeling/customize/parallel.py`, which will hopefully run 
+is provided at `autolens_workspace/scripts/modeling/imaging/customize/parallel.py`, which will hopefully run 
 successfully in parallel on your computer!
 
 Therefore if paralellization for this script doesn't work, check out the `parallel.py` example. You will need to update
@@ -271,6 +271,10 @@ this can take up a large fraction of the run-time of the non-linear search.
 
 For this fit, the fit is very fast, thus we set a high value of `iterations_per_update=10000` to ensure these updates
 so not slow down the overall speed of the model-fit. 
+
+**If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
+output results and visualization frequently to hard-disk. If your fit is consistent displaying a log saying that it
+is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
 """
 search = af.DynestyStatic(
     path_prefix=path.join("imaging", "modeling"),
