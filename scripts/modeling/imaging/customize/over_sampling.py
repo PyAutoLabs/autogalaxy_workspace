@@ -12,6 +12,8 @@ model of its image.
 **Benefit**: Higher level of over sampling provide a more accurate estimate of the surface brightness in every image-pixel.
 **Downside**: Higher levels of over sampling require longer calculations and higher memory usage.
 
+__Prequisites__
+
 You should read up on over-sampling in more detail via  the `autogalaxy_workspace/*/guides/over_sampling.ipynb`
 notebook before using this example to customize the over sampling of your model-fits.
 
@@ -31,27 +33,6 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__Over Sampling API__
-
-To customize the sub-grid used by the model-fit, we create a `OverSamplingUniform` object and specify that the 
-`sub_size=4`. 
-
-This increases the sub grid size of the `Grid2D` used to evaluate the galaxy  galaxy `LightProfiles` 
-from the default value of 2 to 4.
-"""
-over_sampling = ag.OverSamplingUniform(sub_size=4)
-
-"""
-We can alternatively use `OverSamplingIterate` object, where the sub-size of the grid is iteratively increased (in steps 
-of 2, 4, 8, 16, 24) until the input fractional accuracy of 99.99% is met.
-
-We will use these settings for the model-fit performed in this script.
-"""
-over_sampling = ag.OverSamplingIterate(
-    fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
-)
-
-"""
 __Dataset + Masking__ 
 
 For this sub-grid to be used in the model-fit, we must pass the `settings_dataset` to the `Imaging` object,
@@ -67,10 +48,6 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
-dataset = dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingDataset(uniform=over_sampling)
-)  # <----- The over sampling above is used here!
-
 """
 __Mask__
 
@@ -81,6 +58,29 @@ mask = ag.Mask2D.circular(
 )
 
 dataset = dataset.apply_mask(mask=mask)
+
+"""
+__Over Sampling Lens Galaxy (Uniform)__
+
+The over sampling of the galaxy is controlled using the `OverSamplingUniform` object, where an adaptive
+over sampling grid is used to compute the surface brightness of the lens galaxy such that high levels of over sampling
+are used in the central regions of the lens galaxy at (0.0", 0.0").
+"""
+over_sampling = ag.OverSamplingUniform.from_radial_bins(
+    grid=dataset.grid,
+    sub_size_list=[8, 4, 1],
+    radial_list=[0.1, 0.3],
+    centre_list=[(0.0, 0.0)],
+)
+
+"""
+__Over Sampling__
+
+We now apply the over sampling to the `Imaging` dataset.
+"""
+dataset = dataset.apply_over_sampling(
+    over_sampling=ag.OverSamplingDataset(uniform=over_sampling)
+)  # <----- The over sampling above is used here!
 
 """
 __Model + Search + Analysis__ 
@@ -98,7 +98,7 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 search = af.Nautilus(
     path_prefix=path.join("imaging", "settings"),
-    name="sub_grid_size",
+    name="over_sampling",
     unique_tag=dataset_name,
 )
 
