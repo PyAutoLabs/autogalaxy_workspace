@@ -95,7 +95,7 @@ We use a `Mask2D` object, which for this example is 4.0" circular mask.
 For ellipse fitting, the mask radius defines the region of the image that the ellipses are fitted over. We therefore
 define the `mask_radius` as a variable which is used below to define the sizes of the ellipses in the model fitting.
 """
-mask_radius = 4.0
+mask_radius = 5.0
 
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native,
@@ -136,12 +136,21 @@ parent project **PyAutoFit**
 The API is fairly self explanatory and is straight forward to extend, for example adding more ellipses
 to the galaxy.
 
-The model is composed of 10 ellipses as follows:
+Ellipse fitting fits ellispes of increasing size to the data, one after another, with the properties of each ellipse
+as a function of size being the main results of the model-fit.
 
-1) The ellipses have fixed sizes that are input manually, which incrementally grow in size in order to cover
-the entire galaxy.
+We therefore compose a model consistent of a single ellise to demonstrate this fitting process, and then towards
+the end of the script we will extend the model to fit multiple ellipses.
 
-2) All 10 ellipses have the same centre and elliptical components, meaning that the model have N=4 free parameters.
+The model is composed of 1 ellipses as follows:
+
+1) The ellipse has a fixed sizes that is input manually. When multiple ellipses are fitted, this size will 
+   incrementally grow in size in order to cover the entire galaxy.
+
+2) The centre and elliptical components of the ellipse are free, meaning that the model has N=4 free parameters.
+
+The model composition below uses a list even though there is one ellipse, as this format allows us to fit
+multiple ellipses in the model-fit at once, albeit its rare we would want to do this.
 
 __Model Cookbook__
 
@@ -158,35 +167,17 @@ If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
  - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
 """
-number_of_ellipses = 10
+ellipse = af.Model(ag.Ellipse)
 
-major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+ellipse.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+ellipse.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
-total_ellipses = len(major_axis_list)
+ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 
-ellipse_list = af.Collection(af.Model(ag.Ellipse) for _ in range(total_ellipses))
+ellipse.major_axis = 0.3
 
-
-centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-
-ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
-ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
-
-for i, ellipse in enumerate(ellipse_list):
-    ellipse.centre.centre_0 = centre_0  # All Gaussians have same y centre.
-    ellipse.centre.centre_1 = centre_1  # All Gaussians have same x centre.
-
-    ellipse.ell_comps.ell_comps_0 = (
-        ell_comps_0  # All Gaussians have same elliptical components.
-    )
-    ellipse.ell_comps.ell_comps_1 = (
-        ell_comps_1  # All Gaussians have same elliptical components.
-    )
-
-    ellipse.major_axis = major_axis_list[i]
-
-model = af.Collection(ellipses=ellipse_list)
+model = af.Collection(ellipses=[ellipse])
 
 """
 The `info` attribute shows the model in a readable format.
@@ -277,11 +268,11 @@ output results and visualization frequently to hard-disk. If your fit is consist
 is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
 """
 search = af.DynestyStatic(
-    path_prefix=path.join("imaging", "modeling"),
-    name="ellipse_fitting",
+    path_prefix=path.join("ellipse"),
+    name=f"fit_start",
     unique_tag=dataset_name,
     sample="rwalk",
-    n_live=200,
+    n_live=50,
     number_of_cores=4,
     iterations_per_update=10000,
 )
@@ -443,6 +434,131 @@ mass its name `mass` defined when making the `Model` above is used).
 """
 plotter = aplt.NestPlotter(samples=result.samples)
 plotter.corner_cornerpy()
+
+"""
+__Multiple Ellipses__
+"""
+number_of_ellipses = 10
+
+major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+
+total_ellipses = len(major_axis_list)
+
+result_list = []
+
+for i in range(len(major_axis_list)):
+    ellipse = af.Model(ag.Ellipse)
+
+    ellipse.centre.centre_0 = result.instance.ellipses[0].centre[0]
+    ellipse.centre.centre_1 = result.instance.ellipses[0].centre[1]
+
+    ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+    ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+
+    ellipse.major_axis = major_axis_list[i]
+
+    model = af.Collection(ellipses=[ellipse])
+
+    search = af.DynestyStatic(
+        path_prefix=path.join("ellipse"),
+        name=f"fit_{i}",
+        unique_tag=dataset_name,
+        sample="rwalk",
+        n_live=50,
+        number_of_cores=4,
+        iterations_per_update=10000,
+    )
+
+    analysis = ag.AnalysisEllipse(dataset=dataset)
+
+    result = search.fit(model=model, analysis=analysis)
+
+    result_list.append(result)
+
+
+"""
+__Final Fit__
+
+A final fit is performed combining all ellipses.
+"""
+ellipses = [result.instance.ellipses[0] for result in result_list]
+
+model = af.Collection(ellipses=ellipses)
+
+model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+
+search = af.Drawer(
+    path_prefix=path.join("ellipse"),
+    name=f"fit_all",
+    unique_tag=dataset_name,
+    total_draws=1,
+)
+
+result = search.fit(model=model, analysis=analysis)
+
+"""
+__Masking__
+"""
+mask_extra_galaxies = ag.Mask2D.from_fits(
+    file_path=path.join(dataset_path, "mask_extra_galaxies.fits"),
+    pixel_scales=dataset.pixel_scales,
+    invert=True,
+)
+
+dataset = dataset.apply_noise_scaling(mask=mask_extra_galaxies)
+
+
+number_of_ellipses = 10
+
+major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+
+total_ellipses = len(major_axis_list)
+
+result_list = []
+
+for i in range(len(major_axis_list)):
+    ellipse = af.Model(ag.Ellipse)
+
+    ellipse.centre.centre_0 = result.instance.ellipses[0].centre[0]
+    ellipse.centre.centre_1 = result.instance.ellipses[0].centre[1]
+
+    ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+    ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+
+    ellipse.major_axis = major_axis_list[i]
+
+    model = af.Collection(ellipses=[ellipse])
+
+    search = af.DynestyStatic(
+        path_prefix=path.join("ellipse_mask_0"),
+        name=f"fit_{i}",
+        unique_tag=dataset_name,
+        sample="rwalk",
+        n_live=50,
+        number_of_cores=4,
+        iterations_per_update=10000,
+    )
+
+    analysis = ag.AnalysisEllipse(dataset=dataset)
+
+    result = search.fit(model=model, analysis=analysis)
+
+    result_list.append(result)
+
+ellipses = [result.instance.ellipses[0] for result in result_list]
+
+model = af.Collection(ellipses=ellipses)
+
+model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+
+search = af.Drawer(
+    path_prefix=path.join("ellipse_mask_0"),
+    name=f"fit_all",
+    unique_tag=dataset_name,
+    total_draws=1,
+)
+
+result = search.fit(model=model, analysis=analysis)
 
 """
 This script gives a concise overview of the ellipse fitting modeling API, fitting one the simplest models possible.

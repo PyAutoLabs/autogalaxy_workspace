@@ -119,7 +119,6 @@ We include both these multipoles below, in addition to the `m=4` quadrupole, cre
 ellipse.
 """
 multipole_order_1 = ag.EllipseMultipole(m=1, multipole_comps=(0.05, 0.05))
-
 multipole_order_3 = ag.EllipseMultipole(m=3, multipole_comps=(0.05, 0.05))
 
 fit_multipole = ag.FitEllipse(
@@ -167,33 +166,21 @@ __Modeling__
 We now perform model-fitting via a non-linear search to perform ellipse fitting with multipoles.
 
 First, we set up the `ellipses` using identical code to the `modeling.py` example.
+
+This begins by performing a model fit with one ellipse to the centrral regions of the data, in order to determine
+the centre of all ellipses.
 """
-number_of_ellipses = 10
+ellipse = af.Model(ag.Ellipse)
 
-major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+ellipse.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+ellipse.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
-total_ellipses = len(major_axis_list)
+ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
 
-ellipse_list = af.Collection(af.Model(ag.Ellipse) for _ in range(total_ellipses))
+ellipse.major_axis = 0.3
 
-centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-
-ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
-ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
-
-for i, ellipse in enumerate(ellipse_list):
-    ellipse.centre.centre_0 = centre_0  # All Gaussians have same y centre.
-    ellipse.centre.centre_1 = centre_1  # All Gaussians have same x centre.
-
-    ellipse.ell_comps.ell_comps_0 = (
-        ell_comps_0  # All Gaussians have same elliptical components.
-    )
-    ellipse.ell_comps.ell_comps_1 = (
-        ell_comps_1  # All Gaussians have same elliptical components.
-    )
-
-    ellipse.major_axis = major_axis_list[i]
+model = af.Collection(ellipses=[ellipse])
 
 """
 We now set up a third and fourth order multipole component and add it as a model component to all 10 ellipses.
@@ -204,31 +191,30 @@ are used for every ellipse.
 This is a common assumption when fitting multipoles, although there are also studies showing that multipoles can
 vary radially over galaxies, which would require a more complex model.
 """
+multipole_list = []
+
 multipole_3_a = af.GaussianPrior(mean=0.0, sigma=0.1)
 multipole_3_b = af.GaussianPrior(mean=0.0, sigma=0.1)
 
 multipole_4_a = af.GaussianPrior(mean=0.0, sigma=0.1)
 multipole_4_b = af.GaussianPrior(mean=0.0, sigma=0.1)
 
-multipole_list = []
+multipole_3 = af.Model(ag.EllipseMultipole)
+multipole_3.m = 3
+multipole_3.multipole_comps.multipole_comps_0 = multipole_3_a
+multipole_3.multipole_comps.multipole_comps_1 = multipole_3_b
 
-for i in range(len(ellipse_list)):
-    multipole_3 = af.Model(ag.EllipseMultipole)
-    multipole_3.m = 3
-    multipole_3.multipole_comps.multipole_comps_0 = multipole_3_a
-    multipole_3.multipole_comps.multipole_comps_1 = multipole_3_b
+multipole_4 = af.Model(ag.EllipseMultipole)
+multipole_4.m = 4
+multipole_4.multipole_comps.multipole_comps_0 = multipole_4_a
+multipole_4.multipole_comps.multipole_comps_1 = multipole_4_b
 
-    multipole_4 = af.Model(ag.EllipseMultipole)
-    multipole_4.m = 4
-    multipole_4.multipole_comps.multipole_comps_0 = multipole_4_a
-    multipole_4.multipole_comps.multipole_comps_1 = multipole_4_b
-
-    multipole_list.append([multipole_3, multipole_4])
+multipole_list.append([multipole_3, multipole_4])
 
 """
 Create the model, which is a `Collection` of `Ellipses` and `Multipole` components.
 """
-model = af.Collection(ellipses=ellipse_list, multipoles=multipole_list)
+model = af.Collection(ellipses=[ellipse], multipoles=multipole_list)
 
 """
 The `info` attribute shows the model in a readable format.
@@ -243,11 +229,11 @@ The model is fitted to the data using a non-linear search.
 Everything below uses the same API introduced in the `modeling.py` example.
 """
 search = af.DynestyStatic(
-    path_prefix=path.join("imaging", "modeling"),
-    name="ellipse_fitting_multipole",
+    path_prefix=path.join("ellipse_multipole"),
+    name=f"fit_start",
     unique_tag=dataset_name,
     sample="rwalk",
-    n_live=200,
+    n_live=50,
     number_of_cores=4,
     iterations_per_update=10000,
 )
@@ -338,6 +324,87 @@ significant degeneracies between the model parameters.
 """
 plotter = aplt.NestPlotter(samples=result.samples)
 plotter.corner_cornerpy()
+
+"""
+__Multiple Ellipses__
+"""
+number_of_ellipses = 10
+
+major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+
+total_ellipses = len(major_axis_list)
+
+result_list = []
+
+for i in range(len(major_axis_list)):
+    ellipse = af.Model(ag.Ellipse)
+
+    ellipse.centre.centre_0 = result.instance.ellipses[0].centre[0]
+    ellipse.centre.centre_1 = result.instance.ellipses[0].centre[1]
+
+    ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+    ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+
+    ellipse.major_axis = major_axis_list[i]
+
+    multipole_list = []
+
+    multipole_3_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+    multipole_3_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+
+    multipole_4_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+    multipole_4_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+
+    multipole_3 = af.Model(ag.EllipseMultipole)
+    multipole_3.m = 3
+    multipole_3.multipole_comps.multipole_comps_0 = multipole_3_a
+    multipole_3.multipole_comps.multipole_comps_1 = multipole_3_b
+
+    multipole_4 = af.Model(ag.EllipseMultipole)
+    multipole_4.m = 4
+    multipole_4.multipole_comps.multipole_comps_0 = multipole_4_a
+    multipole_4.multipole_comps.multipole_comps_1 = multipole_4_b
+
+    multipole_list.append([multipole_3, multipole_4])
+
+    model = af.Collection(ellipses=[ellipse], multipoles=multipole_list)
+
+    search = af.DynestyStatic(
+        path_prefix=path.join("ellipse_multipole"),
+        name=f"fit_{i}",
+        unique_tag=dataset_name,
+        sample="rwalk",
+        n_live=50,
+        number_of_cores=4,
+        iterations_per_update=10000,
+    )
+
+    analysis = ag.AnalysisEllipse(dataset=dataset)
+
+    result = search.fit(model=model, analysis=analysis)
+
+    result_list.append(result)
+
+"""
+__Final Fit__
+
+A final fit is performed combining all ellipses.
+"""
+ellipses = [result.instance.ellipses[0] for result in result_list]
+multipole_list = [result.instance.multipoles[0] for result in result_list]
+
+model = af.Collection(ellipses=ellipses, multipoles=multipole_list)
+
+model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+
+search = af.Drawer(
+    path_prefix=path.join("ellipse_multipole"),
+    name=f"fit_all",
+    unique_tag=dataset_name,
+    total_draws=1,
+)
+
+result = search.fit(model=model, analysis=analysis)
 
 """
 This script gives a concise overview of the ellipse fitting modeling API with multipole components.
