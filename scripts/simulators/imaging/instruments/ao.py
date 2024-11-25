@@ -56,7 +56,10 @@ psf = ag.Kernel2D.from_gaussian(
 Create the simulator for the imaging data, which defines the exposure time, background sky, noise levels and psf.
 """
 simulator = ag.SimulatorImaging(
-    exposure_time=1000.0, psf=psf, background_sky_level=1.0, add_poisson_noise=True
+    exposure_time=1000.0,
+    psf=psf,
+    background_sky_level=1.0,
+    add_poisson_noise_to_data=True,
 )
 
 """

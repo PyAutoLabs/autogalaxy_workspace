@@ -440,7 +440,7 @@ __Multiple Ellipses__
 """
 number_of_ellipses = 10
 
-major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+major_axis_list = np.linspace(0.3, mask_radius * 0.9, number_of_ellipses)
 
 total_ellipses = len(major_axis_list)
 
@@ -502,15 +502,14 @@ __Masking__
 mask_extra_galaxies = ag.Mask2D.from_fits(
     file_path=path.join(dataset_path, "mask_extra_galaxies.fits"),
     pixel_scales=dataset.pixel_scales,
-    invert=True,
 )
 
-dataset = dataset.apply_noise_scaling(mask=mask_extra_galaxies)
+dataset = dataset.apply_mask(mask=mask + mask_extra_galaxies)
 
 
 number_of_ellipses = 10
 
-major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+major_axis_list = np.linspace(0.3, mask_radius * 0.9, number_of_ellipses)
 
 total_ellipses = len(major_axis_list)
 
@@ -530,7 +529,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse])
 
     search = af.DynestyStatic(
-        path_prefix=path.join("ellipse_mask_0"),
+        path_prefix=path.join("ellipse_mask_2"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -552,7 +551,7 @@ model = af.Collection(ellipses=ellipses)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=path.join("ellipse_mask_0"),
+    path_prefix=path.join("ellipse_mask_2"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,

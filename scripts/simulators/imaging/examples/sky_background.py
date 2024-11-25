@@ -74,7 +74,7 @@ simulator = ag.SimulatorImaging(
     psf=psf,
     background_sky_level=5.0,
     subtract_background_sky=False,
-    add_poisson_noise=True,
+    add_poisson_noise_to_data=True,
 )
 
 """

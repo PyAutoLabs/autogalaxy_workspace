@@ -42,7 +42,7 @@ to create the `Aggregator` object.
 If you have not used the .sqlite database before, the `start_here.ipynb` example describes how to set it up and the API
 for the aggregator is identical from here on.
 """
-database_name = "ellipse_fitting"
+database_name = "ellipse"
 
 if path.exists(path.join("output", f"{database_name}.sqlite")):
     os.remove(path.join("output", f"{database_name}.sqlite"))
@@ -51,9 +51,7 @@ agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
 )
 
-agg.add_directory(
-    directory=path.join("output", "imaging", "modeling", "ellipse", database_name)
-)
+agg.add_directory(directory=path.join("output", database_name))
 
 """
 The masks we used to fit the imaging data is accessible via the aggregator.
@@ -234,7 +232,7 @@ dedicated tools for this.
 
 First, lets build a database of a model-fit using multipoles.
 """
-database_name = "ellipse_fitting_multipole"
+database_name = "ellipse_multipole"
 
 if path.exists(path.join("output", f"{database_name}.sqlite")):
     os.remove(path.join("output", f"{database_name}.sqlite"))
@@ -243,9 +241,7 @@ agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
 )
 
-agg.add_directory(
-    directory=path.join("output", "imaging", "modeling", "ellipse", database_name)
-)
+agg.add_directory(directory=path.join("output", database_name))
 
 """   
 __Multipoles via Aggregator__

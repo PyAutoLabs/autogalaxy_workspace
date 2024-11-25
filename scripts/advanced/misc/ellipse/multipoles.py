@@ -52,7 +52,7 @@ __Mask__
 
 Mask the data and retain its radius to set up the ellipses in the model fitting.
 """
-mask_radius = 4.0
+mask_radius = 5.0
 
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native,
@@ -138,7 +138,9 @@ __Multiple Perturbed Ellipses__
 The API above can be combined with lists to fit many ellipses with many multipoles, allowing for the most complex
 shapes to be fitted to the data.
 """
-major_axis_list = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
+number_of_ellipses = 10
+
+major_axis_list = np.linspace(0.3, mask_radius * 0.9, number_of_ellipses)
 
 fit_list = []
 
@@ -330,7 +332,7 @@ __Multiple Ellipses__
 """
 number_of_ellipses = 10
 
-major_axis_list = np.linspace(0.3, mask_radius, number_of_ellipses)
+major_axis_list = np.linspace(0.3, mask_radius * 0.9, number_of_ellipses)
 
 total_ellipses = len(major_axis_list)
 
@@ -399,6 +401,91 @@ model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
     path_prefix=path.join("ellipse_multipole"),
+    name=f"fit_all",
+    unique_tag=dataset_name,
+    total_draws=1,
+)
+
+result = search.fit(model=model, analysis=analysis)
+
+
+"""
+__Masking__
+"""
+mask_extra_galaxies = ag.Mask2D.from_fits(
+    file_path=path.join(dataset_path, "mask_extra_galaxies.fits"),
+    pixel_scales=dataset.pixel_scales,
+)
+
+dataset = dataset.apply_mask(mask=mask + mask_extra_galaxies)
+
+
+number_of_ellipses = 10
+
+major_axis_list = np.linspace(0.3, mask_radius * 0.9, number_of_ellipses)
+
+total_ellipses = len(major_axis_list)
+
+result_list = []
+
+for i in range(len(major_axis_list)):
+    ellipse = af.Model(ag.Ellipse)
+
+    ellipse.centre.centre_0 = result.instance.ellipses[0].centre[0]
+    ellipse.centre.centre_1 = result.instance.ellipses[0].centre[1]
+
+    ellipse.ell_comps.ell_comps_0 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+    ellipse.ell_comps.ell_comps_1 = af.UniformPrior(lower_limit=-0.6, upper_limit=0.6)
+
+    ellipse.major_axis = major_axis_list[i]
+
+    multipole_list = []
+
+    multipole_3_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+    multipole_3_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+
+    multipole_4_a = af.GaussianPrior(mean=0.0, sigma=0.1)
+    multipole_4_b = af.GaussianPrior(mean=0.0, sigma=0.1)
+
+    multipole_3 = af.Model(ag.EllipseMultipole)
+    multipole_3.m = 3
+    multipole_3.multipole_comps.multipole_comps_0 = multipole_3_a
+    multipole_3.multipole_comps.multipole_comps_1 = multipole_3_b
+
+    multipole_4 = af.Model(ag.EllipseMultipole)
+    multipole_4.m = 4
+    multipole_4.multipole_comps.multipole_comps_0 = multipole_4_a
+    multipole_4.multipole_comps.multipole_comps_1 = multipole_4_b
+
+    multipole_list.append([multipole_3, multipole_4])
+
+    model = af.Collection(ellipses=[ellipse], multipoles=multipole_list)
+
+    search = af.DynestyStatic(
+        path_prefix=path.join("ellipse_multipole_mask"),
+        name=f"fit_{i}",
+        unique_tag=dataset_name,
+        sample="rwalk",
+        n_live=50,
+        number_of_cores=4,
+        iterations_per_update=10000,
+    )
+
+    analysis = ag.AnalysisEllipse(dataset=dataset)
+
+    result = search.fit(model=model, analysis=analysis)
+
+    result_list.append(result)
+
+ellipses = [result.instance.ellipses[0] for result in result_list]
+multipole_list = [result.instance.multipoles[0] for result in result_list]
+
+model = af.Collection(ellipses=ellipses, multipoles=multipole_list)
+
+model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+
+search = af.Drawer(
+    path_prefix=path.join("ellipse_multipole_mask"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,
