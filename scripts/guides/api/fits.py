@@ -88,20 +88,13 @@ When calculating the amount of emission in each image pixel from galaxies, a two
 the emission within the area of that pixel should be performed. However, for complex models this can be difficult 
 to analytically compute and can lead to slow run times.
 
-Instead, an iterative algorithm is used to approximate the line integral. Grids of increasing resolution are used to 
-evaluate the flux in each pixel from the lens and source galaxies. Grids of higher resolution are used until the 
-fractional accuracy of the flux in each pixel meets a certain threshold, which we set below to 99.99%
-
-This uses the `OverSamplingIterate` object, which is input into to the `Grid2D` object you may have seen in other 
-example scripts, however it make sit perform the iterative ray-tracing described above.
+Instead, a high resolution grid of (y,x) coordinates is used, where the line integral of all the flux in a pixel
+is computed by summing up the flux values at these (y,x) coordinates. The code below uses the same over sampling
+size in every pixel for simplicity, but adaptive over sampling can also be used, which adapts the over sampling
+to the bright regions of the image but uses computationally faster lower valkues in the outer regions.
 """
 dataset = dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingDataset(
-        lp=ag.OverSamplingIterate(
-            fractional_accuracy=0.9999,
-            sub_steps=[2, 4, 8, 16],
-        )
-    )
+    over_sample_size_lp=4,
 )
 
 
