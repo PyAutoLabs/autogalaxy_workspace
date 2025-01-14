@@ -41,9 +41,7 @@ __Dataset__
 Following the `pixelization/log_likelihood_function.py` script, we load and mask an `Imaging` dataset and
 set oversampling to 1.
 """
-real_space_mask = ag.Mask2D.circular(
-    shape_native=(80, 80), pixel_scales=0.05, radius=4.0
-)
+real_space_mask = ag.Mask2D.circular(shape_native=(8, 8), pixel_scales=0.05, radius=4.0)
 
 dataset_name = "simple"
 dataset_path = path.join("dataset", "interferometer", dataset_name)
@@ -251,36 +249,32 @@ curvature_reg_matrix = np.add(curvature_matrix, regularization_matrix)
 reconstruction = np.linalg.solve(curvature_reg_matrix, data_vector)
 
 """
-__Likelihood Step: Visibilities Reconstruction__
+__Likelihood Step: Fast Chi Squared__
 
-The mapped reconstructed visibilities were another quantity computed in the `pixelization/log_likelihood_function.py`
-which used the `transformed_mapping_matrix` matrix.
+In the `pixelization/log_likelihood_function.py` example the mapped reconstructed visibilities were another quantity 
+computed which used the `transformed_mapping_matrix` matrix, which is another step that must skip computing this matrix.
 
-This is again a step which can be performed without the need to compute the `transformed_mapping_matrix` matrix.
-
-In the example below, this is computed by doing the following:
-
-1) Compute the real-space image of the source galaxy, which is computed by the pixelization.
-2) Perform an NUFFT on this image to compute the visibilities.
-
-This NUFFT can actually be slow for large numbers of visibilities (e.g. > 1e7) and will become a bottleneck in the
-likelihood function. However, this is another problem that can be solved using the "fast chi-squared" approach,
-which is described in the `log_likelihood_function/intereferometer/pixelization/fast_chi_squared.py` script.
+The w-tilde matrix again provides a trick which skips the need to compute the `transformed_mapping_matrix` matrix,
+with the code for this shown below.
 """
-mapped_reconstructed_data_dict = {}
+print(mapping_matrix.shape)
+print(w_tilde.shape)
 
-mapped_reconstructed_image = (
-    ag.util.inversion.mapped_reconstructed_data_via_mapping_matrix_from(
-        mapping_matrix=mapping_matrix,
-        reconstruction=reconstruction,
-    )
+chi_squared_term_1 = np.linalg.multi_dot(
+    [
+        mapping_matrix.T,  # NOTE: shape = (N, )
+        w_tilde,  # NOTE: shape = (N, N)
+        mapping_matrix,
+    ]
 )
 
-mapped_reconstructed_visibilities = dataset.transformer.visibilities_from(
-    image=mapped_reconstructed_image
-)
+chi_squared_term_2 = -np.multiply(
+    2.0, np.dot(mapping_matrix.T, dataset.w_tilde.dirty_image)
+)  # Need to double check dirty_image is the right input.
 
-visibilities = ag.Visibilities(visibilities=mapped_reconstructed_visibilities)
+chi_squared = chi_squared_term_1 + chi_squared_term_2
+
+print(chi_squared)
 
 """
 __Log Likelihood__
@@ -289,20 +283,6 @@ Finally, we verify that the log likelihood computed using the `curvature_matrix`
 `w_tilde` matrix is identical to the log likelihood computed using the `operated_mapping_matrix` matrix in the
 other example scripts.
 """
-model_visibilities = mapped_reconstructed_visibilities
-
-residual_map = dataset.data - model_visibilities
-
-chi_squared_map_real = (residual_map.real / dataset.noise_map.real) ** 2
-chi_squared_map_imag = (residual_map.imag / dataset.noise_map.imag) ** 2
-chi_squared_map = chi_squared_map_real + 1j * chi_squared_map_imag
-
-
-chi_squared_real = np.sum(chi_squared_map.real)
-chi_squared_imag = np.sum(chi_squared_map.imag)
-chi_squared = chi_squared_real + chi_squared_imag
-
-
 regularization_term = np.matmul(
     reconstruction.T, np.matmul(regularization_matrix, reconstruction)
 )
