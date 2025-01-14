@@ -62,8 +62,15 @@ dataset = ag.Interferometer.from_fits(
 This guide uses in-built visualization tools for plotting. 
 
 For example, using the `InterferometerPlotter` the dataset we perform a likelihood evaluation on is plotted.
-"""
 
+The `subplot_dataset` displays the visibilities in the uv-plane, which are the raw data of the interferometer
+dataset. These are what will ultimately be directly fitted in the Fourier space.
+
+The `subplot_dirty_images` displays the dirty images of the dataset, which are the reconstructed images of visibilities
+using an inverse Fourier transform to convert these to real-space. These dirty images are not the images we fit, but
+visualization of the dirty images are often used in radio interferometry to show the data in a way that is more
+interpretable to the human eye.
+"""
 dataset_plotter = aplt.InterferometerPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()
@@ -84,14 +91,14 @@ To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordina
 The dataset is defined in real-space, and is Fourier transformed to the uv-plane for the model-fit. The grid is
 therefore paired to the `real_space_mask`.
 
-The coordinates are given by `dataset.grids.uniform`, which we can plot and see is a uniform grid of (y,x) Cartesian 
+The coordinates are given by `dataset.grids.lp`, which we can plot and see is a uniform grid of (y,x) Cartesian 
 coordinates which have had the 3.0" circular mask applied.
 
 Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
 used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
 it straight forward to compute the light profile's image to the image data.
 """
-grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.uniform)
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.lp)
 grid_plotter.figure_2d()
 
 print(f"(y,x) coordinates of first ten unmasked image-pixels {dataset.grid[0:9]}")
@@ -104,7 +111,7 @@ To perform light profile calculations we convert this 2D (y,x) grid of coordinat
 
 Where:
 
- - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `dataset.grids.uniform`.
+ - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `dataset.grids.lp`.
  - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
  - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
  - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
@@ -119,10 +126,10 @@ $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
 """
-First we transform `dataset.grids.uniform` to the centre of profile and rotate it using its angle.
+First we transform `dataset.grids.lp` to the centre of profile and rotate it using its angle.
 """
 transformed_grid = profile.transformed_to_reference_frame_grid_from(
-    grid=dataset.grids.uniform
+    grid=dataset.grids.lp
 )
 
 grid_plotter = aplt.Grid2DPlotter(grid=transformed_grid)
@@ -308,7 +315,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 6: Calculate The Log Likelihood!__
+__Likelihood Step 6: Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.

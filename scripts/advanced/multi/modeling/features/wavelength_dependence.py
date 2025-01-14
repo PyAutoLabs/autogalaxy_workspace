@@ -234,7 +234,7 @@ Plotting each result's galaxies shows that the source appears different, owning 
 """
 for result in result_list:
     galaxies_plotter = aplt.GalaxiesPlotter(
-        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
+        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp
     )
     galaxies_plotter.subplot_galaxies()
 

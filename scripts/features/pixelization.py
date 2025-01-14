@@ -81,6 +81,24 @@ dataset = dataset.apply_mask(mask=mask)
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
+
+"""
+__Over Sampling__
+
+Apply adaptive over sampling to ensure the calculation is accurate, you can read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+
+Note that the over sampling is input into the `over_sample_size_pixelization` because we are using a `Pixelization`.
+"""
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=dataset.grid,
+    sub_size_list=[8, 4, 1],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)],
+)
+
+dataset = dataset.apply_over_sampling(over_sample_size_pixelization=over_sample_size)
+
 """
 __Model__
 
@@ -155,7 +173,7 @@ the inversion process are accurate.
 print(result.max_log_likelihood_instance)
 
 galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
+    galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp
 )
 galaxies_plotter.subplot()
 

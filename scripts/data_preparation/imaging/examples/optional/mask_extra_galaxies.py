@@ -77,8 +77,8 @@ whose emission needs to be omitted from the model-fit.
 mask = ag.Mask2D.all_false(
     shape_native=data.shape_native, pixel_scales=data.pixel_scales
 )
-mask[25:55, 77:96] = True
-mask[55:85, 3:27] = True
+mask[80:120, 21:58] = True
+mask[50:80, 100:125] = True
 
 """
 Apply the extra galaxies mask to the image, which will remove them from visualization.

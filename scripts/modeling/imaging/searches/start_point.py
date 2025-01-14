@@ -55,7 +55,7 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__Dataset__
+__Dataset + Masking__
 
 Load and plot the galaxy dataset `simple__sersic` via .fits files, which we will fit with the model.
 """
@@ -69,23 +69,20 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
-
-
-"""
-__Mask__
-
-Define a 3.0" circular mask, which includes the emission of the galaxy.
-"""
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
 dataset = dataset.apply_mask(mask=mask)
 
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=dataset.grid,
+    sub_size_list=[8, 4, 1],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)],
+)
+
+dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
 
 """
 __Model__

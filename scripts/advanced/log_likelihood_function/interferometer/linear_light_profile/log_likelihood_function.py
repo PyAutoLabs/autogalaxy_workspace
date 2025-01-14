@@ -1,0 +1,695 @@
+"""
+__Log Likelihood Function: Linear Light Profile__
+
+THIS DOES NOT CURRENTLY WORK, LINEAR LIGHT PROFILES ARE NOT SUPPORTED FOR INTERFEROMETRY YET.
+
+This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer`
+data with parametric linear light profiles (e.g. a Sersic bulge and Exponential disk).
+
+A "linear light profile" is a variant of a standard light profile where the `intensity` parameter is solved for
+via linear algebra every time the model is fitted to the data. This uses a process called an "inversion" and it
+always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood)
+given the light profile's other parameters.
+
+This script has the following aims:
+
+ - To provide a resource that authors can include in papers, so that readers can understand the likelihood
+ function (including references to the previous literature from which it is defined) without having to
+ write large quantities of text and equations.
+
+Accompanying this script is the `contributor_guide.py` which provides URL's to every part of the source-code that
+is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
+packages are called when the likelihood is evaluated.
+
+__Prerequisites__
+
+The likelihood function of linear light profiles builds on that used for standard parametric light profiles, therefore
+you should read the `light_profile/log_likelihood_function.py` script before this script.
+"""
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
+import matplotlib.pyplot as plt
+import numpy as np
+from os import path
+
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+
+"""
+__Mask__
+
+We define the ‘real_space_mask’ which defines the grid the image the galaxy is evaluated using.
+"""
+real_space_mask = ag.Mask2D.circular(
+    shape_native=(800, 800), pixel_scales=0.05, radius=4.0
+)
+
+"""
+__Dataset__
+
+Load and plot the galaxy `Interferometer` dataset `simple` from .fits files, which we will fit 
+with the model.
+
+This includes the method used to Fourier transform the real-space image of the galaxy to the uv-plane and compare 
+directly to the visibilities. We use a non-uniform fast Fourier transform, which is the most efficient method for 
+interferometer datasets containing ~1-10 million visibilities. We will discuss how the calculation of the likelihood
+function changes for different methods of Fourier transforming in this guide.
+"""
+dataset_name = "simple"
+dataset_path = path.join("dataset", "interferometer", dataset_name)
+
+dataset = ag.Interferometer.from_fits(
+    data_path=path.join(dataset_path, "data.fits"),
+    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerDFT,
+)
+
+"""
+This guide uses in-built visualization tools for plotting. 
+
+For example, using the `InterferometerPlotter` the dataset we perform a likelihood evaluation on is plotted.
+
+The `subplot_dataset` displays the visibilities in the uv-plane, which are the raw data of the interferometer
+dataset. These are what will ultimately be directly fitted in the Fourier space.
+
+The `subplot_dirty_images` displays the dirty images of the dataset, which are the reconstructed images of visibilities
+using an inverse Fourier transform to convert these to real-space. These dirty images are not the images we fit, but
+visualization of the dirty images are often used in radio interferometry to show the data in a way that is more
+interpretable to the human eye.
+"""
+dataset_plotter = aplt.InterferometerPlotter(dataset=dataset)
+dataset_plotter.subplot_dataset()
+dataset_plotter.subplot_dirty_images()
+
+"""
+__Over Sampling__
+
+If you are familiar with using imaging data, you may have seen that a numerical technique called over sampling is used, 
+which evaluates light profiles on a higher resolution grid than the image data to ensure the calculation is accurate.
+
+Interferometer does not observe galaxies in a way where over sampling is necessary, therefore all interferometer
+calculations are performed without over sampling.
+
+__Masked Image Grid__
+
+To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
+
+The dataset is defined in real-space, and is Fourier transformed to the uv-plane for the model-fit. The grid is
+therefore paired to the `real_space_mask`.
+
+The coordinates are given by `dataset.grids.lp`, which we can plot and see is a uniform grid of (y,x) Cartesian 
+coordinates which have had the 3.0" circular mask applied.
+
+Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
+used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
+it straight forward to compute the light profile's image to the image data.
+"""
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.lp)
+grid_plotter.figure_2d()
+
+print(f"(y,x) coordinates of first ten unmasked image-pixels {dataset.grid[0:9]}")
+
+"""
+__Masked Image Grid__
+
+To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
+
+These are given by `dataset.grids.lp`, which we can plot and see is a uniform grid of (y,x) Cartesian 
+coordinates which have had the 3.0" circular mask applied.
+
+Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
+used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
+it straight forward to compute the light profile's image to the image data.
+"""
+grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.lp)
+grid_plotter.figure_2d()
+
+print(f"(y,x) coordinates of first ten unmasked image-pixels {dataset.grid[0:9]}")
+
+"""
+To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
+
+ $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
+
+Where:
+
+ - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `dataset.grids.lp`.
+ - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
+ - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
+ - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
+ x-axis.
+
+$q$ and $\phi$ are not used to parameterize a light profile but expresses these  as "elliptical components", 
+or `ell_comps` for short:
+
+$\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
+$\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
+"""
+profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
+
+"""
+First we transform `dataset.grids.lp` to the centre of profile and rotate it using its angle.
+"""
+transformed_grid = profile.transformed_to_reference_frame_grid_from(
+    grid=dataset.grids.lp
+)
+
+grid_plotter = aplt.Grid2DPlotter(grid=transformed_grid)
+grid_plotter.figure_2d()
+print(
+    f"transformed coordinates of first ten unmasked image-pixels {transformed_grid[0:9]}"
+)
+
+"""
+Using these transformed (y',x') values we compute the elliptical coordinates $\eta = \sqrt{(x')^2 + (y')^2/q^2}$
+"""
+elliptical_radii = profile.elliptical_radii_grid_from(grid=transformed_grid)
+
+print(
+    f"elliptical coordinates of first ten unmasked image-pixels {elliptical_radii[0:9]}"
+)
+
+"""
+__Likelihood Setup: Light Profiles (Setup)__
+
+To perform a likelihood evaluation we now compose our galaxy model.
+
+We first define the light profiles which represents the galaxy's light, in this case its bulge and disk, which will be 
+used to fit the galaxy light.
+
+A light profile is defined by its intensity $I (\eta_{\rm l}) $, for example the Sersic profile:
+
+$I_{\rm  Ser} (\eta_{\rm l}) = I \exp \bigg\{ -k \bigg[ \bigg( \frac{\eta}{R} \bigg)^{\frac{1}{n}} - 1 \bigg] \bigg\}$
+
+Where:
+
+ - $\eta$ are the elliptical coordinates (see above).
+ - $I$ is the `intensity`, which controls the overall brightness of the Sersic profile.
+ - $n$ is the ``sersic_index``, which via $k$ controls the steepness of the inner profile.
+ - $R$ is the `effective_radius`, which defines the arc-second radius of a circle containing half the light.
+
+In this example, we assume our galaxy is composed of two light profiles, an elliptical Sersic and Exponential (a Sersic
+where `sersic_index=4`) which represent the bulge and disk of the galaxy. 
+
+__ Likelihood Setup: Linear Light Profiles__
+
+To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
+module instead of the `lp` module used throughout other example scripts. 
+
+The `intensity` parameter of the light profile is no longer passed into the light profiles created via the
+`lp_linear` module, as it is inferred via linear algebra.
+"""
+bulge = ag.lp_linear.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
+    effective_radius=0.6,
+    sersic_index=3.0,
+)
+
+disk = ag.lp_linear.Exponential(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
+    effective_radius=1.6,
+)
+
+"""
+Internally in the source code, linear light profiles have an `intensity` parameter, but its value is always set to 
+1.0. It will be clear why this is later in the script.
+"""
+print("Bulge Internal Intensity:")
+print(bulge.intensity)
+
+print("Disk Internal Intensity:")
+print(disk.intensity)
+
+"""
+Like standard light profiles, we can compute images of each linear light profile, but their overall
+normalization is arbitrary given that the internal `intensity` value of 1.0 is used.
+"""
+image_2d_bulge = bulge.image_2d_from(grid=dataset.grid)
+image_2d_disk = disk.image_2d_from(grid=dataset.grid)
+
+"""
+We can therefore also Fourier Transform the 2D image of each linear light profile using the Non Uniform Fast Fourier Transform (NUFFT)
+to produce the visibilities of each light profile.
+"""
+visibilities_bulge = dataset.transformer.visibilities_from(
+    image=image_2d_bulge,
+)
+
+visibilities_disk = dataset.transformer.visibilities_from(
+    image=image_2d_disk,
+)
+
+"""
+If we try and plot a linear light profile using a plotter, an exception is raised.
+
+This is to ensure that a user does not plot and interpret the intensity of a linear light profile, as it is not a
+physical quantity. Plotting only works after a linear light profile has had its `intensity` computed via linear
+algebra.
+
+Uncomment and run the code below to see the exception.
+"""
+print("This will raise an exception")
+
+# bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=dataset.grid)
+
+"""
+__Likelihood Step 1: LightProfileLinearObjFuncList__
+
+For standard light profiles, we combined our linear light profiles into a single `Galaxy` object. The 
+galaxy object computed each individual light profile's image and added them together.
+
+This no longer occurs for linear light profiles, instead each linear light profile is passed into the 
+`LightProfileLinearObjFuncList` object, which acts as an interface between the linear light profiles and the
+linear algebra used to compute their intensity via the inversion.
+
+The quantities used to compute the image, blurring image and blurred image of each light profiles (the
+dataset grid, PSF, etc.) are passed to the `LightProfileLinearObjFuncList` object, because it internally uses these
+to compute each linear light profile image to set up the linear algebra.
+"""
+lp_linear_func = ag.LightProfileLinearObjFuncList(
+    grid=dataset.grids.lp,
+    blurring_grid=dataset.grids.blurring,
+    convolver=dataset.convolver,
+    light_profile_list=[bulge, disk],
+    regularization=None,
+)
+
+"""
+This has a property `params` which is the number of intensity values that are computed via the inversion,
+which because we have 2 light profiles is equal to 2.
+
+The `params` defines the dimensions of many of the matrices used in the linear algebra we discuss below.
+"""
+print("Number of Parameters (Intensity Values) in Linear Algebra:")
+print(lp_linear_func.params)
+
+"""
+__Likelihood Step 2: Mapping Matrix__
+
+The `mapping_matrix` is a matrix where each column is an image of each linear light profiles (assuming its 
+intensity is 1.0), not accounting for the PSF convolution.
+
+It has dimensions `(total_image_pixels, total_linear_light_profiles)`.
+"""
+mapping_matrix = lp_linear_func.mapping_matrix
+
+"""
+Printing the first column of the mapping matrix shows the image of the bulge light profile.
+"""
+bulge_image = mapping_matrix[:, 0]
+print(bulge_image)
+print(image_2d_bulge.slim)
+
+"""
+A 2D plot of the `mapping_matrix` shows each light profile image in 1D, which is a bit odd to look at but
+is a good way to think about the linear algebra.
+"""
+plt.imshow(mapping_matrix, aspect=(mapping_matrix.shape[1] / mapping_matrix.shape[0]))
+plt.show()
+plt.close()
+
+"""
+__Likelihood Step 2: Blurred Mapping Matrix ($f$)__
+
+The `mapping_matrix` does not account for the blurring of the light profile images by the PSF and therefore 
+is not used directly to compute the likelihood.
+
+Instead, we create a `blurred_mapping_matrix` which does account for this blurring. This is computed by 
+convolving each light profile image with the PSF.
+
+The `blurred_mapping_matrix` is a matrix analogous to the mapping matrix, but where each column is the image of each
+light profile after it has been blurred by the PSF.
+
+This operation does not change the dimensions of the mapping matrix, meaning the `blurred_mapping_matrix` also has
+dimensions `(total_image_pixels, total_rectangular_pixels)`. 
+
+The property is actually called `operated_mapping_matrix_override` for two reasons: 
+
+1) The operated signifies that this matrix could have any operation applied to it, it just happens for imaging
+   data that this operation is a convolution with the PSF.
+
+2) The `override` signifies that in the source code is changes how the `operated_mapping_matrix` is computed internally. 
+   This is important if you are looking at the source code, but not important for the description of the likelihood 
+   function in this guide.
+"""
+blurred_mapping_matrix = lp_linear_func.operated_mapping_matrix_override
+
+
+"""
+Printing the first column of the mapping matrix shows the blurred image of the bulge light profile.
+"""
+bulge_image = blurred_mapping_matrix[:, 0]
+print(bulge_image)
+
+"""
+A 2D plot of the `mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
+"""
+plt.imshow(mapping_matrix, aspect=(mapping_matrix.shape[1] / mapping_matrix.shape[0]))
+plt.show()
+plt.close()
+
+"""
+Warren & Dye 2003 (https://arxiv.org/abs/astro-ph/0302587) (hereafter WD03) introduce the linear inversion formalism 
+used to compute the intensity values of the linear light profiles. In WD03, the science case is centred around strong
+gravitational lensing and the galaxy is reconstructed on a rectangular grid of pixels, as opposed to linear light 
+profiles.
+
+However, the mathematics of the WD03 linear inversion formalism is the same as tyhat used here, therefore this guide 
+describes which quantities in the linear inversion formalism map to the equations given in WD03. The pixelized 
+reconstruction methods, available in the code but described in the `pixelization` likelihood function guide, 
+also follow the WD03 formalism.
+
+The `blurred_mapping_matrix` is denoted $f_{ij}$ where $i$ maps over all $I$ linear light profiles and $j$ maps 
+over all $J$ image pixels. 
+
+For example: 
+
+ - $f_{0, 1} = 0.3$ indicates that image-pixel $2$ maps to linear light profile $1$ with an intensity in that image 
+   pixel of $0.3$ after PSF convolution.
+
+The indexing of the `mapping_matrix` is reversed compared to the notation of WD03 (e.g. image pixels
+are the first entry of `mapping_matrix` whereas for $f$ they are the second index).
+"""
+print(
+    f"Mapping between image pixel 0 and linear light profile pixel 1 = {mapping_matrix[0, 1]}"
+)
+
+"""
+__Likelihood Step 3: Data Vector (D)__
+
+To solve for the linear light profile intensities we now pose the problem as a linear inversion.
+
+This requires us to convert the `blurred_mapping_matrix` and our `data` and `noise map` into matrices of certain 
+dimensions. 
+
+The `data_vector`, $D$, is the first matrix and it has dimensions `(total_linear_light_profiles,)`.
+
+In WD03 (https://arxiv.org/abs/astro-ph/0302587) the data vector is given by: 
+
+ $\vec{D}_{i} = \sum_{\rm  j=1}^{J}f_{ij}(d_{j} - b_{j})/\sigma_{j}^2 \, \, .$
+
+Where:
+
+ - $d_{\rm j}$ are the image-pixel data flux values.
+ - $b_{\rm j}$ are the image values of all standard light profiles (therefore $d_{\rm  j} - b_{\rm j}$ is 
+ the data minus any standard light profiles).
+ - $\sigma{\rm _j}^2$ are the statistical uncertainties of each image-pixel value.
+
+$i$ maps over all $I$ linear light profiles and $j$ maps over all $J$ image pixels. 
+
+This equation highlights a first aspect of linear inversions, if we are combining standard light profiles (which
+have an input `intensity` value) with linear light profiles, the inversion is performed on the data minus
+the standard light profile images. In this example, we have no standard light profiles and therefore the data
+vector uses the data directly.
+"""
+data_vector = ag.util.inversion_imaging.data_vector_via_blurred_mapping_matrix_from(
+    blurred_mapping_matrix=blurred_mapping_matrix,
+    image=np.array(dataset.data),
+    noise_map=np.array(dataset.noise_map),
+)
+
+"""
+$D$'s meaning is a bit abstract, it essentially weights each linear light profile's `intensity` based on how it
+maps to the data, so that the linear algebra can compute the `intensity` values that best-fit the data.
+
+We can plot $D$ as a column vector:
+"""
+plt.imshow(
+    data_vector.reshape(data_vector.shape[0], 1), aspect=10.0 / data_vector.shape[0]
+)
+plt.colorbar()
+plt.show()
+plt.close()
+
+"""
+The dimensions of $D$ are the number of linear light profiles, which in this case is 2.
+"""
+print("Data Vector:")
+print(data_vector)
+print(data_vector.shape)
+
+"""
+__Likelihood Step 3: Curvature Matrix (F)__
+
+The `curvature_matrix` $F$ is the second matrix and it has 
+dimensions `(total_linear_light_profiles, total_linear_light_profiles)`.
+
+In WD03 (https://arxiv.org/abs/astro-ph/0302587) the curvature matrix is a 2D matrix given by:
+
+ ${F}_{ik} = \sum_{\rm  j=1}^{J}f_{ij}f_{kj}/\sigma_{j}^2 \, \, .$
+
+NOTE: this notation implicitly assumes a summation over $K$, where $k$ runs over all linear light profile indexes $K$.
+
+Note how summation over $J$ runs over $f$ twice, such that every entry of $F$ is the sum of the multiplication
+between all values in every two columns of $f$.
+
+For example, $F_{0,1}$ is the sum of every blurred image pixels values in $f$ of linear light profile 0 multiplied by
+every blurred image pixel value of linear light profile 1.
+
+$F$'s meaning is also a bit abstract, but it essentially quantifies how much each linear light profile's image
+overlaps with every other linear light profile's image, weighted by the noise in the data. This is what combined with
+the `data_vector` allows the inversion to compute the `intensity` values that best-fit the data.
+"""
+curvature_matrix = ag.util.inversion.curvature_matrix_via_mapping_matrix_from(
+    mapping_matrix=blurred_mapping_matrix, noise_map=dataset.noise_map
+)
+
+plt.imshow(curvature_matrix)
+plt.colorbar()
+plt.show()
+plt.close()
+
+
+"""
+__Likelihood Step 4: Reconstruction (Positive-Negative)__
+
+The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
+
+$\chi^2 = \sum_{\rm  j=1}^{J} \bigg[ \frac{(\sum_{\rm  i=1}^{I} s_{i} f_{ij}) + b_{j} - d_{j}}{\sigma_{j}} \bigg]$
+
+Where $s$ is the `intensity` values in all $I$ linear light profile images.
+
+The solution for $s$ is therefore given by (equation 5 WD03):
+
+ $s = F^{-1} D$
+
+We can compute this using NumPy linear algebra and the `solve` function.
+
+However, this function allows for the solved `intensity` values to be negative. For linear light profiles which
+are a good fit to the data, this is unlikely to happen and the `intensity` values will be positive. However, 
+for more complex models this may not be the case. Below, we describes how we can ensure the `intensity` values
+are positive.
+"""
+reconstruction = np.linalg.solve(curvature_matrix, data_vector)
+
+"""
+The `reconstruction` is a 1D vector of length equal to the number of linear light profiles, which in this case is 2.
+
+Each value represents the intensity of the linear light profile.
+
+In this example, both values are positive, but remember that this is not guaranteed for all linear inversions
+that are solve using this method.
+"""
+print("Reconstruction (S) of Linear Light Profiles Intensity:")
+print(reconstruction)
+
+"""
+__Likelihood Step 5: Reconstruction (Positive Only)__
+
+The linear algebra can be solved for with the constraint that all solutions, and therefore all `intensity` values,
+are positive. 
+
+This could be achieved by using the `scipy` `nnls` non-negative least squares solver.
+
+The nnls poses the problem slightly different than the code above. It solves for the `intensity` values in an
+iterative manner meaning that it is slower. It does not use `data_vector` $D$ and `curvature_matrix` $F$ but instead
+works directly with the `blurred_mapping_matrix` $f$ and the data and noise-map.
+
+The `nnls` function is therefore computationally slow, especially for cases where there are many linear light profiles 
+or even  more complex linear inversions like a pixelized reconstruction.
+
+The source code therefore uses a "fast nnls" algorithm, which is an adaptation of the algorithm found at
+this URL: https://github.com/jvendrow/fnnls
+
+Unlike the scipy nnls function, the fnnls method uses the `data_vector` $D$ and `curvature_matrix` $F$ to solve for
+the `intensity` values. This provides it with additional information about the linear algebra problem, which is
+why it is faster.
+
+The function `reconstruction_positive_only_from` uses the `fnnls` algorithm to compute the `intensity` values
+of the linear light profiles, ensuring they are positive.
+"""
+reconstruction = ag.util.inversion.reconstruction_positive_only_from(
+    data_vector=data_vector,
+    curvature_reg_matrix=curvature_matrix,  # ignore _reg_ tag in this guide
+)
+
+print(reconstruction)
+
+"""
+__Likelihood Step 6: Image Reconstruction__
+
+Using the reconstructed `intensity` values we can map the reconstruction back to the image plane (via 
+the `blurred mapping_matrix`) and produce a reconstruction of the image data.
+"""
+mapped_reconstructed_image_2d = (
+    ag.util.inversion.mapped_reconstructed_data_via_mapping_matrix_from(
+        mapping_matrix=blurred_mapping_matrix, reconstruction=reconstruction
+    )
+)
+
+mapped_reconstructed_image_2d = ag.Array2D(
+    values=mapped_reconstructed_image_2d, mask=mask
+)
+
+array_2d_plotter = aplt.Array2DPlotter(array=mapped_reconstructed_image_2d)
+array_2d_plotter.figure_2d()
+
+
+"""
+__Likelihood Step 7: Likelihood Function__
+
+We now quantify the goodness-of-fit of our galaxy model.
+
+We compute the `log_likelihood` of the fit, which is the value returned by the `log_likelihood_function`.
+
+The likelihood function for parametric galaxy modeling, even if linear light profiles are used, consists of two terms:
+
+ $-2 \mathrm{ln} \, \epsilon = \chi^2 + \sum_{\rm  j=1}^{J} { \mathrm{ln}} \left [2 \pi (\sigma_j)^2 \right]  \, .$
+
+We now explain what each of these terms mean.
+
+__Likelihood Step 8: Chi Squared__
+
+The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
+
+ - `model_data` = `convolved_image_2d`
+ - `residual_map` = (`data` - `model_data`)
+ - `normalized_residual_map` = (`data` - `model_data`) / `noise_map`
+ - `chi_squared_map` = (`normalized_residuals`) ** 2.0 = ((`data` - `model_data`)**2.0)/(`variances`)
+ - `chi_squared` = sum(`chi_squared_map`)
+
+The chi-squared therefore quantifies if our fit to the data is accurate or not. 
+
+High values of chi-squared indicate that there are many image pixels our model did not produce a good fit to the image 
+for, corresponding to a fit with a lower likelihood.
+"""
+model_image = mapped_reconstructed_image_2d
+
+residual_map = dataset.data - model_image
+normalized_residual_map = residual_map / dataset.noise_map
+chi_squared_map = normalized_residual_map**2.0
+
+chi_squared = np.sum(chi_squared_map)
+
+print(chi_squared)
+
+"""
+The `chi_squared_map` indicates which regions of the image we did and did not fit accurately.
+"""
+chi_squared_map = ag.Array2D(values=chi_squared_map, mask=mask)
+
+array_2d_plotter = aplt.Array2DPlotter(array=chi_squared_map)
+array_2d_plotter.figure_2d()
+
+
+"""
+__Likelihood Step 9: Noise Normalization Term__
+
+Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
+
+The final term in the likelihood function is therefore a `noise_normalization` term, which consists of the sum
+of the log of every noise-map value squared. 
+
+Given the `noise_map` is fixed, this term does not change during the galaxy modeling process and has no impact on the 
+model we infer.
+"""
+noise_normalization = float(np.sum(np.log(2 * np.pi * dataset.noise_map**2.0)))
+
+"""
+__Likelihood Step 10: Calculate The Log Likelihood__
+
+We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
+the likelihood function defined above.
+"""
+figure_of_merit = float(-0.5 * (chi_squared + noise_normalization))
+
+print(figure_of_merit)
+
+
+"""
+__Fit__
+
+This 9 step process to perform a likelihood function evaluation is what is performed in the `FitInterferometer` object.
+"""
+galaxy = ag.Galaxy(
+    redshift=0.5,
+    bulge=bulge,
+    disk=disk,
+)
+
+galaxies = ag.Galaxies(galaxies=[galaxy])
+
+fit = ag.FitInterferometer(
+    dataset=dataset,
+    galaxies=galaxies,
+    settings_inversion=ag.SettingsInversion(
+        use_w_tilde=False, use_border_relocator=True
+    ),
+)
+fit_log_evidence = fit.log_evidence
+print(fit_log_evidence)
+
+"""
+The fit contains an `Inversion` object, which handles all the linear algebra we have covered in this script.
+"""
+print(fit.inversion)
+print(fit.inversion.data_vector)
+print(fit.inversion.curvature_matrix)
+print(fit.inversion.reconstruction)
+print(fit.inversion.mapped_reconstructed_image)
+
+"""
+The `Inversion` object can be computed from a list of galaxies and a dataset, by passing them to
+the `GalaxiesToInversion` object.
+
+This objects handles a lot of extra functionality that we have not covered in this script, such as:
+
+- Separating out the linear light profiles from the standard light profiles.
+- Separating out objects which reconstruct the galaxy using a pixelized reconstruction, which are passed into
+  the `Inversion` object as well.
+"""
+galaxies_to_inversion = ag.GalaxiesToInversion(
+    galaxies=galaxies,
+    dataset=dataset,
+)
+
+inversion = galaxies_to_inversion.inversion
+
+"""
+__Galaxy Modeling__
+
+To fit a galaxy model to data, the likelihood function illustrated in this tutorial is sampled using a
+non-linear search algorithm.
+
+The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)
+but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms. 
+
+__Wrap Up__
+
+We have presented a visual step-by-step guide to the parametric linear light profile likelihood function, which uses 
+analytic light profiles to fit the galaxy light and solve for the `intensity` values via linear algebra.
+
+There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
+are described in additional notebooks found in the `guides` package:
+
+ - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
+ ray-traced to the source-plane and used to evaluate the light profile more accurately.
+"""

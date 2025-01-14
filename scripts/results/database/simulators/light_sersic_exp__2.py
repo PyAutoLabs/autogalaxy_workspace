@@ -38,29 +38,40 @@ The path where the dataset will be output, which in this case is:
 dataset_path = path.join("dataset", dataset_type, dataset_name)
 
 """
-__Simulate__
+__Grid__
 
-When simulating the amount of emission in each image pixel from galaxies, a two dimensional line integral of all of 
-the emission within the area of that pixel should be performed. However, for complex models this can be difficult 
-to analytically compute and can lead to slow run times.
+Define the 2d grid of (y,x) coordinates that the galaxy images are evaluated and therefore simulated on, via
+the inputs:
 
-Instead, an iterative algorithm is used to approximate the line integral. Grids of increasing resolution are used to 
-evaluate the flux in each pixel from the lens and source galaxies. Grids of higher resolution are used until the 
-fractional accuracy of the flux in each pixel meets a certain threshold, which we set below to 99.99%
-
-This uses the `OverSamplingIterate` object, which is input into to the `Grid2D` object you may have seen in other 
-example scripts, however it make sit perform the iterative ray-tracing described above.
-
-This ensures that the divergent and bright central regions of the galaxy are fully resolved when determining the
-total flux emitted within a pixel.
+ - `shape_native`: The (y_pixels, x_pixels) 2D shape of the grid defining the shape of the data that is simulated.
+ - `pixel_scales`: The arc-second to pixel conversion factor of the grid and data.
 """
 grid = ag.Grid2D.uniform(
     shape_native=(100, 100),
     pixel_scales=0.1,
-    over_sampling=ag.OverSamplingIterate(
-        fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
-    ),
 )
+
+"""
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+An adaptive oversampling scheme is implemented, evaluating the central regions at (0.0", 0.0") of the light profile at a 
+resolution of 32x32, transitioning to 8x8 in intermediate areas, and 2x2 in the outskirts. This ensures precise and 
+accurate image simulation while focusing computational resources on the bright regions that demand higher oversampling.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+"""
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=grid,
+    sub_size_list=[32, 8, 2],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)],
+)
+
+grid = grid.apply_over_sampling(over_sample_size=over_sample_size)
 
 """
 Simulate a simple Gaussian PSF for the image.

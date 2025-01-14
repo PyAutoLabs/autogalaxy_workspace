@@ -105,6 +105,28 @@ for dataset in dataset_list:
     dataset_plotter.subplot_dataset()
 
 """
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+For a new user, the details of over-sampling are not important, therefore just be aware that below we make it so that 
+all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+"""
+for dataset in dataset_list:
+    over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+        grid=dataset.grid,
+        sub_size_list=[8, 4, 1],
+        radial_list=[0.3, 0.6],
+        centre_list=[(0.0, 0.0)],
+    )
+
+    dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
+
+"""
 __Analysis__
 
 We create an `Analysis` object for every dataset.
@@ -202,7 +224,7 @@ Plotting each result's galaxies shows that the galaxy appears different, owning 
 """
 for result in result_list:
     galaxies_plotter = aplt.GalaxiesPlotter(
-        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.uniform
+        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp
     )
     galaxies_plotter.subplot_galaxies()
 

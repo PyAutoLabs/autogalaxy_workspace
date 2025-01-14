@@ -4,8 +4,8 @@ __Log Likelihood Function: Multi Gaussian Expansion__
 This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with
 a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.
 
-You should be famaliar with the `log_likelihood_function` of a parametric linear light profile before reading this script,
-which is described in the `log_likelihood_function/imaging/linear_light_profile/log_likelihood_function.py` script.
+You should be familiarwith the `log_likelihood_function` of a parametric linear light profile before reading this script,
+which is described in the `log_likelihood_function/imaging/linear_light_profile/log_likelihood_function.ipynb` notebook.
 
 This script has the following aims:
 
@@ -17,13 +17,14 @@ Accompanying this script is the `contributor_guide.py` which provides URL's to e
 is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
 
-__Simpler Likelihoods__
+__Prerequisites__
+
 
 The likelihood function of a multi Gaussian expansion builds on that used for standard parametric light profiles and
-linear light profiles, therefore you should read the following before this script:
+linear light profiles, therefore you must read the following notebooks before this script:
 
-- `light_profile/log_likelihood_function.py`.
-- `linear_light_profile/log_likelihood_function.py`.
+- `light_profile/log_likelihood_function.ipynb`.
+- `linear_light_profile/log_likelihood_function.ipynb`.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -42,13 +43,13 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-In order to perform a likelihood evaluation, we first load a dataset.
+Following the `linear_light_profile/log_likelihood_function.py` script, we load and mask an `Imaging` dataset and
+set oversampling to 1.
 
-This example fits a simulated galaxy where the imaging resolution is 0.1 arcsecond-per-pixel resolution.
-
-The galaxy has an asymmetric light distribution, which cannot be accurately fitted with `Sersic` profile and
-therefore requires a multi-Gaussian expansion to fit accurately.
+This example fits a simulated galaxy where galaxy has an asymmetric light distribution, which cannot be accurately 
+fitted with `Sersic` profile and therefore requires a multi-Gaussian expansion to fit accurately.
 """
+
 dataset_name = "asymmetric"
 dataset_path = path.join("dataset", "imaging", dataset_name)
 
@@ -59,130 +60,35 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
-"""
-This guide uses in-built visualization tools for plotting. 
-
-For example, using the `ImagingPlotter` the imaging dataset we perform a likelihood evaluation on is plotted.
-"""
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
-
-"""
-__Mask__
-
-The likelihood is only evaluated using image pixels contained within a 2D mask, which we choose before performing
-a likelihood evaluation.
-
-We define a 2D circular mask with a 3.0" radius.
-"""
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
 masked_dataset = dataset.apply_mask(mask=mask)
 
-"""
-When we plot the masked imaging, only the circular masked region is shown.
-"""
+masked_dataset = masked_dataset.apply_over_sampling(over_sample_size_lp=1)
+
 dataset_plotter = aplt.ImagingPlotter(dataset=masked_dataset)
 dataset_plotter.subplot_dataset()
 
 """
-__Over Sampling__
-
-Over sampling evaluates a light profile using multiple samples of its intensity per image-pixel.
-
-For simplicity, we disable over sampling in this guide by setting `sub_size=1`. 
-
-a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
-"""
-masked_dataset = masked_dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingDataset(uniform=ag.OverSamplingUniform(sub_size=1))
-)
-
-"""
 __Masked Image Grid__
 
-To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
+To perform galaxy calculations we used a 2D image-plane grid of (y,x) coordinates, which evaluated the
+emission of galaxy light profiles created as `LightProfile` objects.
 
-These are given by `masked_dataset.grids.uniform`, which we can plot and see is a uniform grid of (y,x) Cartesian 
-coordinates which have had the 3.0" circular mask applied.
-
-Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
-used to evaluate a light profile the intensity of the profile at the centre of each image-pixel is computed, making
-it straight forward to compute the light profile's image to the image data.
+The code below repeats that used in `light_profile/log_likelihood_function.py` to show how this was done.
 """
-grid_plotter = aplt.Grid2DPlotter(grid=masked_dataset.grids.uniform)
-grid_plotter.figure_2d()
-
-print(
-    f"(y,x) coordinates of first ten unmasked image-pixels {masked_dataset.grid[0:9]}"
+bulge = ag.lp.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
+    effective_radius=0.6,
+    sersic_index=3.0,
 )
 
-"""
-To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
-
- $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
-
-Where:
-
- - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `masked_dataset.grids.uniform`.
- - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
- - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
- - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
- x-axis.
-
-$q$ and $\phi$ are not used to parameterize a light profile but expresses these  as "elliptical components", 
-or `ell_comps` for short:
-
-$\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
-$\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
-"""
-profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
+image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 
 """
-First we transform `masked_dataset.grids.uniform` to the centre of profile and rotate it using its angle.
-"""
-transformed_grid = profile.transformed_to_reference_frame_grid_from(
-    grid=masked_dataset.grids.uniform
-)
-
-grid_plotter = aplt.Grid2DPlotter(grid=transformed_grid)
-grid_plotter.figure_2d()
-print(
-    f"transformed coordinates of first ten unmasked image-pixels {transformed_grid[0:9]}"
-)
-
-"""
-Using these transformed (y',x') values we compute the elliptical coordinates $\eta = \sqrt{(x')^2 + (y')^2/q^2}$
-"""
-elliptical_radii = profile.elliptical_radii_grid_from(grid=transformed_grid)
-
-print(
-    f"elliptical coordinates of first ten unmasked image-pixels {elliptical_radii[0:9]}"
-)
-
-"""
-__Likelihood Setup: Light Profiles (Setup)__
-
-To perform a likelihood evaluation we now compose our galaxy model.
-
-We first define the light profiles which represents the galaxy's light, in this case a superposition of 30
-2D Gaussian light profiles.
-
-A Gaussian light profile is defined by its intensity $I (\eta_{\rm l}) $, for example the Sersic profile:
-
-$I_{\rm  Gaussian} (\eta_{\rm l}) = I \exp \left( -\frac{\eta_{\rm l}^2}{2 \sigma^2} \right)$ 
-
-Where:
-
- - $\eta$ are the elliptical coordinates (see above).
- - $I$ is the `intensity`, which controls the overall brightness of the Gaussian profile.
- - $\sigma$ is the `sigma` value of the Gaussian, which sets the size of the Gaussian.
-
-In this example, we assume our galaxy is composed of 30 Gaussian light profiles, each with different elliptical 
-components, intensity and sigma values, such that it can capture complex light distributions with asymmetry.
-
 __Likelihood Setup: Multiple Gaussians & Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
@@ -216,7 +122,6 @@ for i in range(total_gaussians):
 
     basis_gaussian_list.append(gaussian)
 
-
 """
 __Basis__
 
@@ -235,7 +140,7 @@ emission on different scales.
 These Gaussians are visualized below using a `BasisPlotter`, which shows that the Gaussians expand in size as the
 sigma value increases, in log10 increments.
 
-This figure is is a brilliant way to visualize the multi-Gaussian expansion, showing the 30 different Gaussian light
+This figure is a brilliant way to visualize the multi-Gaussian expansion, showing the 30 different Gaussian light
 profiles that will be used perform the expansion on the data.
 
 Below, we will discuss how linear light profiles cannot be visualized (an exception is raised if you try). Therefore
@@ -297,6 +202,28 @@ print("This will raise an exception")
 # basis_plotter = aplt.LightProfilePlotter(light_profile=basis, grid=masked_dataset.grid)
 
 """
+__Comparison To Linear Light Profiles Example__
+
+The text below, for steps 1 through to 10, is nearly identical to 
+the `linear_light_profile/log_likelihood_function.ipynb` example, because the linear algebra and likelihood function
+of a multi-Gaussian expansion is essentially identical to that of a single linear light profile.
+
+The key difference between the linear light profile and multi-Gaussian expansion calculation is essentially the
+following:
+
+- The `mapping_matrix`, which for 2 linear light profiles had dimensions `(total_image_pixels, 2)`, now has dimensions
+ `(total_image_pixels, 30)`, corresponding to the 30 different Gaussian light profiles.
+ 
+- Each column of this `mapping_matrix` is the image of each Gaussian light profile, as opposed to the Sersic and
+  Exponential light profiles used in the previous example.
+
+- The use of the positive only solver for the reconstruction is more important for an MGE, because MGEs can otherwise
+  infer unphysical solutions where the Gaussians alternate between large positive and large negative values.
+
+Other than the above change, the calculation is performed in an identical manner to the linear light profile example,
+with the `data_vector`, `curvature_matrix`, `reconstruction` and `log_likelihood` all computed in the same way
+with the same dimensions. 
+
 __Likelihood Step 1: LightProfileLinearObjFuncList__
 
 For standard light profiles, we combined our linear light profiles into a single `Galaxy` object. The 
@@ -311,7 +238,7 @@ dataset grid, PSF, etc.) are passed to the `LightProfileLinearObjFuncList` objec
 to compute each linear light profile image to set up the linear algebra.
 """
 lp_linear_func = ag.LightProfileLinearObjFuncList(
-    grid=masked_dataset.grids.uniform,
+    grid=masked_dataset.grids.lp,
     blurring_grid=masked_dataset.grids.blurring,
     convolver=masked_dataset.convolver,
     light_profile_list=basis.light_profile_list,
@@ -690,7 +617,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 10: Calculate The Log Likelihood!__
+__Likelihood Step 10: Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.

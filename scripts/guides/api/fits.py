@@ -97,7 +97,7 @@ example scripts, however it make sit perform the iterative ray-tracing described
 """
 dataset = dataset.apply_over_sampling(
     over_sampling=ag.OverSamplingDataset(
-        uniform=ag.OverSamplingIterate(
+        lp=ag.OverSamplingIterate(
             fractional_accuracy=0.9999,
             sub_steps=[2, 4, 8, 16],
         )

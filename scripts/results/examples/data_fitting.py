@@ -140,8 +140,7 @@ The `FitImagingAgg` allow us to modify the fit settings. By default, it uses the
 during the model-fit. 
 
 However, we can change these settings such that the fit is performed differently. For example, what if I wanted to see 
-how the fit looks where the `Grid2D`'s `sub_size` is 4 (instead of the value of 2 that was used)? Or where the 
-pixelization didn`t use a border? 
+how the fit looks where the `Grid2D`'s `over_sample_size` is 4 (instead of the value of 2 that was used)? 
 
 You can do this by passing the settings objects, which overwrite the ones used by the analysis.
 """

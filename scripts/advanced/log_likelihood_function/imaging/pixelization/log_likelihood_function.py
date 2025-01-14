@@ -2,10 +2,11 @@
 __Log Likelihood Function: Pixelization__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with an inversion (specifically a `Rectangular` meshand `Constant` regularization scheme`).
+`Imaging` data with a pixelization (specifically a `Rectangular` mesh and `Constant` regularization scheme`).
 
-This example combines the reconstruction with a light profile evaluation, which is the most practical use-case for
-a reconstruction.
+This example combines does not include a light profile or linear light profiles, which can be combined with a
+pixelization to fit an image. The inclusion of these components is described in the notebook
+`log_likelihood_function/imaging/pixelization/with_light_profile.ipynb`.
 
 This script has the following aims:
 
@@ -19,19 +20,16 @@ Accompanying this script is the `contributor_guide.py` which provides URL's to e
 is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
 
-__Simpler Likelihoods__
+__Prerequisites__
 
 The likelihood function of pixelizations is the most complicated likelihood function.
 
-It is advised you read through the following two simpler likelihood functions first, which break down a number of the
+You must read through the following two simpler likelihood functions first, which break down a number of the
 concepts used in this script:
 
  - `light_profile/log_likelihood_function.py` the likelihood function for a parametric light profile.
  - `linear_light_profile/log_likelihood_function.py` the likelihood function for a linear light profile, which
  introduces the linear algebra used for a pixelization but with a simpler use case.
-
-This script repeats all text and code examples in the above likelihood function examples. It therefore can be used to
-learn about the linear light profile likelihood function without reading other likelihood scripts.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -46,12 +44,12 @@ from os import path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
+
 """
 __Dataset__
 
-In order to perform a likelihood evaluation, we first load a dataset.
-
-This example fits a simulated galaxy where the imaging resolution is 0.1 arcsecond-per-pixel resolution.
+Following the `pixelization/log_likelihood_function.py` script, we load and mask an `Imaging` dataset and
+set oversampling to 1.
 """
 dataset_path = path.join("dataset", "imaging", "simple")
 
@@ -62,48 +60,35 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
-"""
-This guide uses **PyAutoGalaxy**'s in-built visualization tools for plotting. 
-
-For example, using the `ImagingPlotter` the imaging dataset we perform a likelihood evaluation on is plotted.
-"""
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
-
-"""
-__Mask__
-
-The likelihood is only evaluated using image pixels contained within a 2D mask, which we choose before performing
-a likelihood evaluation.
-
-We define a 2D circular mask with a 3.0" radius.
-"""
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
 )
 
 masked_dataset = dataset.apply_mask(mask=mask)
 
-"""
-When we plot the masked imaging, only the circular masked region is shown.
-"""
 dataset_plotter = aplt.ImagingPlotter(dataset=masked_dataset)
 dataset_plotter.subplot_dataset()
 
 """
 __Over Sampling__
 
-Over sampling constructs a pixelization using multiple samples of an image pixel per pixelization pixel.
+Over sampling evaluates a light profile using multiple samples of its intensity per image-pixel.
 
-For simplicity, we disable over sampling in this guide by setting `sub_size_pixelization=1`. 
+For simplicity, in previous likelihood function examples we disabled over sampling by setting `sub_size=1`. 
 
 a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
+
+Over sampling is used for the same purpose in a pixelization, whereby it uses multiple samples of a pixel to
+perform the reconstruction via the pixelization. It uses an independent over sampling factor to the light profile
+over sampling factor, called `over_sample_size_pixelization`.
+
+For simplicity, we disable over sampling in this guide by setting `over_sample_size_pixelization=1`. 
+
+The notebook `log_likelihood_function/imaging/pixelization/with_over_sampling.ipynb` describes how the likelihood
+function of a pixelization changes when over sampling is used.
 """
 masked_dataset = masked_dataset.apply_over_sampling(
-    over_sampling=ag.OverSamplingDataset(
-        uniform=ag.OverSamplingUniform(sub_size=1),
-        pixelization=ag.OverSamplingUniform(sub_size=1),
-    )
+    over_sample_size_lp=1, over_sample_size_pixelization=1
 )
 
 """
@@ -111,126 +96,26 @@ __Masked Image Grid__
 
 To perform galaxy calculations we define a 2D image-plane grid of (y,x) coordinates.
 
-These are given by `masked_dataset.grid`, which we can plot and see is a uniform grid of (y,x) Cartesian coordinates
+For light profiles these are given by `masked_dataset.lp`, which is a uniform grid of (y,x) Cartesian coordinates
 which have had the 3.0" circular mask applied.
+
+A pixelization uses a separate grid of (y,x) coordinates, called `masked_dataset.grids.pixelization`, which is
+identical to the light profile grid but may of had a different over-sampling scale applied (but in this example
+does not).
 
 Each (y,x) coordinate coordinates to the centre of each image-pixel in the dataset, meaning that when this grid is
 used to construct a pixelization there is a straight forward mapping between the image data and pixelization pixels.
 """
-grid_plotter = aplt.Grid2DPlotter(grid=masked_dataset.grid)
+grid_plotter = aplt.Grid2DPlotter(grid=masked_dataset.grids.pixelization)
 grid_plotter.figure_2d()
 
-print(
-    f"(y,x) coordinates of first ten unmasked image-pixels {masked_dataset.grid[0:9]}"
-)
-
-"""
-To perform galaxy calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
-
- $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
-
-Where:
-
- - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `masked_dataset.grid`.
- - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile used to perform galaxying calculations.
- - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
- - The elliptical coordinates is rotated by position angle $\phi$, defined counter-clockwise from the positive 
- x-axis.
-
-**PyAutoGalaxy** does not use $q$ and $\phi$ to parameterize the galaxy model but expresses these as `elliptical_components`:
-
-$\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
-$\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
-
-Spherical profiles are append with `Sph`.
-"""
-profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
-
-"""
-First we transform `masked_dataset.grid ` to the centre of profile and rotate it using its angle `phi`.
-"""
-transformed_grid = profile.transformed_to_reference_frame_grid_from(
-    grid=masked_dataset.grid
-)
-
-grid_plotter = aplt.Grid2DPlotter(grid=transformed_grid)
-grid_plotter.figure_2d()
-print(
-    f"transformed coordinates of first ten unmasked image-pixels {transformed_grid[0:9]}"
-)
-
-"""
-Using these transformed (y',x') values we compute the elliptical coordinates $\eta = \sqrt{(x')^2 + (y')^2/q^2}$
-"""
-elliptical_radii = profile.elliptical_radii_grid_from(grid=transformed_grid)
-
-print(
-    f"elliptical coordinates of first ten unmasked image-pixels {elliptical_radii[0:9]}"
-)
-
-"""
-__Likelihood Setup: Galaxy Bulge + Disk (Setup)__
-
-To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
-
- $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
-
-Where:
-
- - $y$ and $x$ are the (y,x) arc-second coordinates of each unmasked image-pixel, given by `masked_dataset.grid`.
- - $y_c$ and $x_c$ are the (y,x) arc-second `centre` of the light or mass profile.
- - $q$ is the axis-ratio of the elliptical light or mass profile (`axis_ratio=1.0` for spherical profiles).
- - The elliptical coordinates are rotated by a position angle, defined counter-clockwise from the positive 
- x-axis.
-
-**PyAutoGalaxy** does not use $q$ and $\phi$ to parameterize a light profile but expresses these 
-as "elliptical components", or `ell_comps` for short:
-
-$\epsilon_{1} =\frac{1-q}{1+q} \sin 2\phi, \,\,$
-$\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
-"""
-bulge = ag.lp.Sersic(
-    centre=(0.0, 0.0),
-    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-    intensity=0.2,
-    effective_radius=0.8,
-    sersic_index=4.0,
-)
-
-disk = ag.lp.Exponential(
-    centre=(0.0, 0.0),
-    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
-    intensity=0.1,
-    effective_radius=1.6,
-)
-
-"""
-Using the masked 2D grid defined above, we can calculate and plot images of each light profile component.
-
-(The transformation to elliptical coordinates above are built into the `image_2d_from` function and performed implicitly).
-"""
-image_2d_bulge = bulge.image_2d_from(grid=masked_dataset.grid)
-
-bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=masked_dataset.grid)
-bulge_plotter.figures_2d(image=True)
-
-image_2d_disk = disk.image_2d_from(grid=masked_dataset.grid)
-
-disk_plotter = aplt.LightProfilePlotter(light_profile=disk, grid=masked_dataset.grid)
-disk_plotter.figures_2d(image=True)
 
 """
 __Likelihood Setup: Galaxy__
 
-We now combine the light and mass profiles into a single `Galaxy` object.
+We combine the pixelization into a single `Galaxy` object.
 
-When computing quantities for the light profiles from this object, it computes each individual quantity and adds 
-them together. 
-
-For example, for the `bulge` and `disk`, when it computes their 2D images it computes each individually and then adds
-them together.
-
-It also includes the rectangular mesh and constant regularization scheme, which will ultimately be used
+The galaxy includes the rectangular mesh and constant regularization scheme, which will ultimately be used
 to reconstruct its star forming clumps.
 """
 pixelization = ag.Pixelization(
@@ -238,58 +123,11 @@ pixelization = ag.Pixelization(
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 
-galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk, pixelization=pixelization)
+galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
+
 
 """
-__Likelihood Step 1: Galaxy Light Profiles__
-
-Compute a 2D image of the galaxy bulge and disk light as the sum of its individual light 
-profiles (the `Sersic` bulge and `Exponential` disk). 
-
-This computes the `image` of each light profile and adds them together. 
-"""
-image = galaxy.image_2d_from(grid=masked_dataset.grid)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grid)
-galaxy_plotter.figures_2d(image=True)
-
-"""
-To convolve the galaxy's 2D image with the imaging data's PSF, we need its `blurring_image`. 
-
-This represents all flux values not within the mask, which are close enough to it that their flux blurs into the mask 
-after PSF convolution.
-
-To compute this, a `blurring_mask` and `blurring_grid` are used, corresponding to these pixels near the edge of the 
-actual mask whose light blurs into the image:
-"""
-blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.grids.blurring)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grids.blurring)
-galaxy_plotter.figures_2d(image=True)
-
-"""
-__Likelihood Step 2: Galaxy Light Convolution + Subtraction__
-
-Convolve the 2D galaxy bulge and disk images above with the PSF in real-space (as opposed to via an FFT) 
-using a `Convolver`.
-"""
-convolved_image_2d = masked_dataset.convolver.convolve_image(
-    image=image, blurring_image=blurring_image_2d
-)
-
-array_2d_plotter = aplt.Array2DPlotter(array=convolved_image_2d)
-array_2d_plotter.figure_2d()
-
-"""
-We can now subtract this image from the observed image to produce a `light_subtracted_image_2d`:
-"""
-light_subtracted_image_2d = masked_dataset.data - convolved_image_2d
-
-array_2d_plotter = aplt.Array2DPlotter(array=light_subtracted_image_2d)
-array_2d_plotter.figure_2d()
-
-"""
-__Likelihood Step 6: Rectangular Mesh__
+__Likelihood Step: Rectangular Mesh__
 
 The pixelization is used to create the rectangular mesh which is used to reconstruct the galaxy.
 
@@ -301,7 +139,10 @@ grid_rectangular = ag.Mesh2DRectangular.overlay_grid(
 )
 
 """
-Plotting the rectangular mesh shows that the source-plane and been discretized into a grid of rectangular pixels.
+The rectangular mesh will now be referred to interchangeably as the `source-plane`, to represent that it is a 
+pixelization which will reconstruct a source of light,
+
+Plotting the rectangular mesh shows that the source-plane has been discretized into a grid of rectangular pixels.
 
 (To plot the rectangular mesh, we have to convert it to a `Mapper` object, which is described in the next likelihood 
 step).
@@ -317,7 +158,6 @@ mapper_grids = ag.MapperGrids(
 
 mapper = ag.Mapper(
     mapper_grids=mapper_grids,
-    over_sampler=masked_dataset.grids.over_sampler_pixelization,
     regularization=None,
 )
 
@@ -330,7 +170,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
 mapper_plotter.figure_2d()
 
 """
-__Likelihood Step 7: Image-Source Mapping__
+__Likelihood Step: Image-Source Mapping__
 
 We now combine grids computed above to create a `Mapper`, which describes how every masked image grid pixel maps to
 every rectangular pixelization pixel. 
@@ -345,7 +185,6 @@ mapper_grids = ag.MapperGrids(
 
 mapper = ag.Mapper(
     mapper_grids=mapper_grids,
-    over_sampler=masked_dataset.grids.over_sampler_pixelization,
     regularization=None,
 )
 
@@ -385,7 +224,7 @@ mapper_plotter = aplt.MapperPlotter(
     mapper=mapper, visuals_2d=visuals, include_2d=include
 )
 mapper_plotter.subplot_image_and_mapper(
-    image=light_subtracted_image_2d, interpolate_to_uniform=False
+    image=masked_dataset.data, interpolate_to_uniform=False
 )
 
 """
@@ -397,17 +236,17 @@ mapper_plotter = aplt.MapperPlotter(
 )
 
 mapper_plotter.subplot_image_and_mapper(
-    image=light_subtracted_image_2d, interpolate_to_uniform=False
+    image=masked_dataset.data, interpolate_to_uniform=False
 )
 
 """
-__Likelihood Step 8: Mapping Matrix__
+__Likelihood Step: Mapping Matrix__
 
 The `mapping_matrix` represents the image-pixel to pixelization-pixel mappings above in a 2D matrix. 
 
 It has dimensions `(total_image_pixels, total_rectangular_pixels)`.
 
-(A number of inputs are not used for the `Rectangular` meshand are expanded upon in the `features.ipynb`
+(A number of inputs are not used for the `Rectangular` mesh and are expanded upon in the `with_interpolation.ipynb`
 log likelihood guide notebook).
 """
 mapping_matrix = ag.util.mapper.mapping_matrix_from(
@@ -447,7 +286,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=array_2d)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step 9: Blurred Mapping Matrix ($f$)__
+__Likelihood Step: Blurred Mapping Matrix ($f$)__
 
 Each pixelization pixel can therefore be thought of as an image (where all entries of this image are zeros and ones). 
 
@@ -503,7 +342,7 @@ are the first entry of `mapping_matrix` whereas for $f$ they are the second inde
 print(f"Mapping between image pixel 0 and rectangular pixel 2 = {mapping_matrix[0, 2]}")
 
 """
-__Likelihood Step 10: Data Vector (D)__
+__Likelihood Step: Data Vector (D)__
 
 To solve for the rectangular pixel fluxes we now pose the problem as a linear inversion.
 
@@ -514,22 +353,18 @@ The `data_vector`, $D$, is the first matrix and it has dimensions `(total_rectan
 In WD03 (https://arxiv.org/abs/astro-ph/0302587) and N15 (https://arxiv.org/abs/1412.7436) the data vector 
 is give by: 
 
- $\vec{D}_{i} = \sum_{\rm  j=1}^{J}f_{ij}(d_{j} - b_{j})/\sigma_{j}^2 \, \, .$
+ $\vec{D}_{i} = \sum_{\rm  j=1}^{J}f_{ij}(d_{j})/\sigma_{j}^2 \, \, .$
 
 Where:
 
  - $d_{\rm j}$ are the image-pixel data flux values.
- - $b_{\rm j}$ are the brightness values of the bulge and disk light model (therefore $d_{\rm  j} - b_{\rm j}$ is 
- the bulge and disk light subtracted image).
  - $\sigma{\rm _j}^2$ are the statistical uncertainties of each image-pixel value.
 
 $i$ maps over all $I$ source pixels and $j$ maps over all $J$ image pixels. 
-
-NOTE: WD03 assume the data is already galaxy subtracted thus $b_{j}$ is omitted (e.g. all values are zero).
 """
 data_vector = ag.util.inversion_imaging.data_vector_via_blurred_mapping_matrix_from(
     blurred_mapping_matrix=blurred_mapping_matrix,
-    image=np.array(light_subtracted_image_2d),
+    image=np.array(masked_dataset.data),
     noise_map=np.array(masked_dataset.noise_map),
 )
 
@@ -554,7 +389,7 @@ print(data_vector)
 print(data_vector.shape)
 
 """
-__Likelihood Step 11: Curvature Matrix (F)__
+__Likelihood Step: Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
 dimensions `(total_rectangular_pixels, total_rectangular_pixels)`.
@@ -609,7 +444,7 @@ array_2d_plotter.figure_2d()
 """
 The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
 
-$\chi^2 = \sum_{\rm  j=1}^{J} \bigg[ \frac{(\sum_{\rm  i=1}^{I} s_{i} f_{ij}) + b_{j} - d_{j}}{\sigma_{j}} \bigg]$
+$\chi^2 = \sum_{\rm  j=1}^{J} \bigg[ \frac{(\sum_{\rm  i=1}^{I} s_{i} f_{ij}) - d_{j}}{\sigma_{j}} \bigg]$
 
 Where $s$ is the reconstructed pixel fluxes in all $I$ rectangular pixels.
 
@@ -643,7 +478,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
 
 """
-__Likelihood Step 12: Regularization Matrix (H)__
+__Likelihood Step: Regularization Matrix (H)__
 
 Regularization adds a linear regularization term $G_{\rm L}$ to the $\chi^2$ we solve for giving us a new merit 
 function $G$ (equation 11 WD03):
@@ -697,7 +532,7 @@ plt.show()
 plt.close()
 
 """
-__Likelihood Step 13: F + Lamdba H__
+__Likelihood Step: F + Lamdba H__
 
 $H$ enters the linear algebra system we solve for as follows (WD03 equation (12)):
 
@@ -706,7 +541,7 @@ $H$ enters the linear algebra system we solve for as follows (WD03 equation (12)
 curvature_reg_matrix = np.add(curvature_matrix, regularization_matrix)
 
 """
-__Likelihood Step 14: Galaxy Reconstruction (s)__
+__Likelihood Step: Galaxy Reconstruction (s)__
 
 We can now solve the linear system above using NumPy linear algebra. 
 
@@ -725,7 +560,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
 
 """
-__Likelihood Step 15: Image Reconstruction__
+__Likelihood Step: Image Reconstruction__
 
 Using the reconstructed pixel fluxes we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
@@ -744,9 +579,9 @@ array_2d_plotter = aplt.Array2DPlotter(array=mapped_reconstructed_image_2d)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step 16: Likelihood Function__
+__Likelihood Step: Likelihood Function__
 
-We now quantify the goodness-of-fit of our galaxy bulge and disk light profile model and galaxy reconstruction. 
+We now quantify the goodness-of-fit of our pixelization galaxy reconstruction. 
 
 We compute the `log_likelihood` of the fit, which is the value returned by the `log_likelihood_function`.
 
@@ -759,11 +594,11 @@ It was derived into **PyAutoGalaxy** notation in Dye 2008 (https://arxiv.org/abs
 
 We now explain what each of these terms mean.
 
-__Likelihood Step 17: Chi Squared__
+__Likelihood Step: Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
- - `model_data` = `mapped_reconstructed_image_2d` + `galaxy_light_convolved_image`
+ - `model_data` = `mapped_reconstructed_image_2d`
  - `residual_map` = (`data` - `model_data`)
  - `normalized_residual_map` = (`data` - `model_data`) / `noise_map`
  - `chi_squared_map` = (`normalized_residuals`) ** 2.0 = ((`data` - `model_data`)**2.0)/(`variances`)
@@ -774,7 +609,7 @@ The chi-squared therefore quantifies if our fit to the data is accurate or not.
 High values of chi-squared indicate that there are many image pixels our model did not produce a good fit to the image 
 for, corresponding to a fit with a lower likelihood.
 """
-model_image = convolved_image_2d + mapped_reconstructed_image_2d
+model_image = mapped_reconstructed_image_2d
 
 residual_map = masked_dataset.data - model_image
 normalized_residual_map = residual_map / masked_dataset.noise_map
@@ -794,7 +629,7 @@ array_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 18: Regularization Term__
+__Likelihood Step: Regularization Term__
 
 The second term, $s^{T} H s$, corresponds to the $\lambda $G_{\rm L}$ regularization term we added to our merit 
 function above.
@@ -813,7 +648,7 @@ regularization_term = np.matmul(
 print(regularization_term)
 
 """
-__Likelihood Step 19: Complexity Terms__
+__Likelihood Step: Complexity Terms__
 
 Up to this point, it is unclear why we chose a value of `regularization_coefficient=1.0`. 
 
@@ -849,7 +684,7 @@ print(log_curvature_reg_matrix_term)
 print(log_regularization_matrix_term)
 
 """
-__Likelihood Step 20: Noise Normalization Term__
+__Likelihood Step: Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -862,9 +697,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 21: Calculate The Log Likelihood!__
-
-We made it!
+__Likelihood Step: Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the five terms computed above using
 the likelihood function defined above.
@@ -885,7 +718,7 @@ print(log_evidence)
 """
 __Fit__
 
-This 21 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
+This process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
@@ -911,19 +744,17 @@ but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms.
 
 __Wrap Up__
 
-We have presented a visual step-by-step guide to the **PyAutoGalaxy** likelihood function, which uses parametric light
-profiles for the galaxy's bulge and disk and a pixelization, regularization scheme and inversion to reconstruct the 
-galaxy's irregular star forming clumps.
+We have presented a visual step-by-step guide to the pixelization likelihood function.
 
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
 are described in additional notebooks found in this package. In brief, these describe:
 
- - **Sub-gridding**: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
+ - **Over Sampling**: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
  paired fractionally with each rectangular pixel.
- 
+
  - **Source-plane Interpolation**: Using bilinear interpolation on the rectangular pixelization to pair each 
  image (sub-)pixel to multiple rectangular pixels with interpolation weights.
-  
+
  - **Luminosity Weighted Regularization**: Using an adaptive regularization coefficient which adapts the level of 
  regularization applied to the galaxy based on its luminosity.
 """

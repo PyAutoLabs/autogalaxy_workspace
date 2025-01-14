@@ -62,36 +62,35 @@ which is computed here:
 - See the method `blurring_grid`: https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/dataset/imaging/dataset.py
 
 
-__LH Step 2: Galaxy Light Convolution__
+__Likelihood Step 2: Fourier Transform__
 
-Convlution uses the `Convolver` object and its method `convolve_image`
+The Non-Uniform Fast Fourier Transform (NUFFT) uses one of the `Transformer` objects and its method `visibilities_from`
 
- https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/operators/convolver.py
+https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/operators/transformer.py
 
 
 __LH Step 3: Likelihood Function__
 
-The `model_image` was subtracted from the observed image, and the residuals, chi-squared
+The `model_data` was subtracted from the observed visibilities_from, and the residuals, chi-squared
 and log likelihood computed.
 
-This is performed in the `FitImaging` object:
+This is performed in the `FitInterferometer` object:
 
-https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/imaging/fit_imaging.py
+https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/interferometer/fit_interferometer.py
 
 The following methods are relevant in this module:
 
-`blurred_image`: Computes the blurred image via convolution described above.
-`model_data`: This is the blurred image, but the variable is renamed as for more advanced fits it is extended.
+`model_data`: This is the model visibilities.
 
-The steps of subtracting the model image from the observed image and computing the residuals, chi-squared and
-log likelihood are performed in the following `FitDataset` and `FitImaging` objects::
+The steps of subtracting the model data from the observed data and computing the residuals, chi-squared and
+log likelihood are performed in the following `FitDataset` and `FitInterferometer` objects::
 
 https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/fit/fit_dataset.py
-https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/fit/fit_imaging.py
+https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/fit/fit_interferometer.py
 
 Many calculations occur in `fit_util.py`:
 
 https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/fit/fit_util.py
 
-These modules also ihnclude the calcualtion of the `noise_normalization`.
+These modules also include the calculation of the `noise_normalization`.
 """

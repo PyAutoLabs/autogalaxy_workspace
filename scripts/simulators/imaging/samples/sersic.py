@@ -41,15 +41,22 @@ dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_
 """
 __Grid__
 
-Simulate the image using a `Grid2D` with the `OverSamplingIterate` object.
+Simulate the image using a `Grid2D` with the adaptive over sampling scheme.
 """
 grid = ag.Grid2D.uniform(
-    shape_native=(150, 150),
+    shape_native=(100, 100),
     pixel_scales=0.1,
-    over_sampling=ag.OverSamplingIterate(
-        fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
-    ),
 )
+
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=grid,
+    sub_size_list=[32, 8, 2],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)],
+)
+
+grid = grid.apply_over_sampling(over_sample_size=over_sample_size)
+
 
 grid = ag.Grid2D.uniform(shape_native=(150, 150), pixel_scales=0.1)
 

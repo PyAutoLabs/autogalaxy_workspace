@@ -21,23 +21,6 @@ The likelihood evaluation is spread over the following two GitHub repositories:
 
 __LH Setup: Light Profiles (Setup)__
 
-To see examples of all light profiles checkout the `light_profiles` package:
-
- https://github.com/Jammy2211/PyAutoGalaxy/tree/main/autogalaxy/profiles/light
-
-Each light profile has an `image_2d_from` method that returns the image of the profile, which is used in the
-likelihood function example.
-
-Each function uses a `@aa.grid_dec.transform` decorator, which performs the coordinate transformation of the
-grid to elliptical coordinates via the light profile's geometry.
-
-These coordinate transforms are performed in the following modules:
-
-https://github.com/Jammy2211/PyAutoGalaxy/blob/main/autogalaxy/profiles/geometry_profiles.py
-https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/geometry/geometry_util.py
-https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/structures/decorators/transform.py
-
-
 Every one of these light profiles has a corresponding linear light profile class which inherits from it,
 which can be found in the `light_profiles.linear` package:
 

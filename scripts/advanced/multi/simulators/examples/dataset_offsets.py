@@ -63,16 +63,24 @@ The pixel-scale of each color image is different meaning we make a list of grids
 """
 pixel_scales_list = [0.08, 0.12]
 
-grid_list = [
-    ag.Grid2D.uniform(
+grid_list = []
+
+for pixel_scales in pixel_scales_list:
+    grid = ag.Grid2D.uniform(
         shape_native=(150, 150),
         pixel_scales=pixel_scales,
-        over_sampling=ag.OverSamplingIterate(
-            fractional_accuracy=0.9999, sub_steps=[2, 4, 8, 16]
-        ),
     )
-    for pixel_scales in pixel_scales_list
-]
+
+    over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+        grid=grid,
+        sub_size_list=[32, 8, 2],
+        radial_list=[0.3, 0.6],
+        centre_list=[(0.0, 0.0)],
+    )
+
+    grid = grid.apply_over_sampling(over_sample_size=over_sample_size)
+
+    grid_list.append(grid)
 
 """
 __Offset__
@@ -187,8 +195,6 @@ for color, dataset in zip(color_list, dataset_list):
 __Visualize__
 
 Output a subplot of the simulated dataset, the image and the tracer's quantities to the dataset path as .png files.
-
-For a faster run time, the tracer visualization uses the binned grid instead of the iterative grid.
 """
 for color, dataset in zip(color_list, dataset_list):
     mat_plot = aplt.MatPlot2D(
