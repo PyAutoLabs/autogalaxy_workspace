@@ -269,6 +269,26 @@ extra_galaxies_centres = ag.Grid2DIrregular(
 print(extra_galaxies_centres)
 
 """
+__Extra Galaxies Over Sampling__
+
+Over sampling was discussed above, below we show how to apply it using the loaded centres of the extra galaxies.
+
+There is still a galaxy at the centre of the image so we include this in the `centre_list` with a centre 
+of (0.0", 0.0").
+"""
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=dataset.grid,
+    sub_size_list=[8, 4, 1],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)] + extra_galaxies_centres.in_list,
+)
+
+dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
+
+dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
+dataset_plotter.subplot_dataset()
+
+"""
 __Model__ 
 
 Perform the normal steps to set up the main model of the galaxy.
