@@ -119,6 +119,16 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
 dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
 
 """
+The imaging subplot updates the bottom two panels to reflect the update to over sampling, which now uses a higher
+values in the centre.
+
+Whilst you may not yet understand the details of over-sampling, you can at least track it visually in the plots
+and later learnt more about it in the `over_sampling.ipynb` guide.
+"""
+dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
+dataset_plotter.subplot_dataset()
+
+"""
 __Model__
 
 In this example we compose a model where:

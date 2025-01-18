@@ -99,6 +99,9 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
 
 dataset = dataset.apply_over_sampling(over_sample_size_pixelization=over_sample_size)
 
+dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
+dataset_plotter.subplot_dataset()
+
 """
 __Model__
 
