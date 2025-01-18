@@ -307,7 +307,7 @@ The interpolated errors on the reconstruction can also be computed, in case you 
 model-fitting of the reconstruction.
 """
 mapper_valued_errors = ag.MapperValued(
-    mapper=mapper, values=inversion.errors_dict[mapper]
+    mapper=mapper, values=inversion.reconstruction_noise_map_dict[mapper]
 )
 
 interpolated_errors = mapper_valued_errors.interpolated_array_from(
