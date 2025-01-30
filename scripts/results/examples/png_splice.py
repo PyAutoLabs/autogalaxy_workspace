@@ -53,6 +53,7 @@ especially if loading results from hard-disk is slow.
 
 import os
 from os import path
+from PIL import Image
 
 import autofit as af
 import autogalaxy as ag
@@ -212,115 +213,46 @@ image = agg_png.extract_image(
 image.save("png_splice_multi_subplot.png")
 
 """
+__Add Extra Png__
 
+We can also add an extra .png image to the subplot, for example an RGB image of the dataset.
+
+We create an image of shape (1, 2) and add the RGB image to the left of the subplot, so that the new subplot has
+shape (1, 3).
+
+When we add a single .png, we cannot extract or splice it, it simply gets added to the subplot.
 """
-
-"""
-__Saving the CSV__
-
-We can now output the results of all our model-fits to the .csv file, using the `save` method.
-
-This will output in your current working directory (e.g. the `autogalaxy_workspace`) as a .csv file containing the 
-median PDF values of the parameters, have a quick look now to see the format of the .csv file.
-"""
-agg_png.save(path="csv_simple.csv")
-
-"""
-__Customizing CSV Headers__
-
-The headers of the .csv file are by default the argument input above based on the model. 
-
-However, we can customize these headers using the `name` input of the `add_column` method, for example making them
-shorter or more readable.
-
-We recreate the `agg_png` first, so that we begin adding columns to a new .csv file.
-"""
-agg_png = af.AggregateCSV(aggregator=agg)
-
-agg_png.add_column(
-    argument="galaxies.galaxy.bulge.effective_radius",
-    name="bulge_effective_radius",
-)
-agg_png.add_column(
-    argument="galaxies.galaxy.bulge.sersic_index",
-    name="bulge_sersic_index",
-)
-
-agg_png.save(path="csv_simple_custom_headers.csv")
-
-"""
-__Maximum Likelihood Values__
-
-We can also output the maximum likelihood values of each parameter to the .csv file, using the `use_max_log_likelihood`
-input.
-"""
-# agg_png = af.AggregateCSV(aggregator=agg)
+# image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
-# agg_png.add_column(
-#     argument="galaxies.galaxy.bulge.effective_radius",
-#     name="bulge_effective_radius_max_lh",
-#     use_max_log_likelihood=True,
+# image = agg_png.extract_image(
+#     ag.agg.SubplotDataset.Data,
+#     ag.agg.SubplotDataset.PSFLog10,
+#     subplot_shape=(1, 2),
 # )
-#
-# agg_png.save(path="csv_simple_max_likelihood.csv")
+
+# image = ag.add_image_to_left(image, additional_img)
+
+# image.save("png_splice_with_rgb.png")
 
 """
-__Errors__
+__Shape Customization__
 
-We can also output PDF values at a given sigma confidence of each parameter to the .csv file, using 
-the `use_values_at_sigma` input and specifying the sigma confidence.
+The example above had an original subplot shape of (1, 2) and we added an extra .png to the left of the subplot
+to make it shape (1, 3).
 
-Below, we add the values at 3.0 sigma confidence to the .csv file, in order to compute the errors you would 
-subtract the median value from these values.
-
-The method below adds two columns to the .csv file, corresponding to the values at the lower and upper sigma values.
+An extra image can be added with more customization, for example we may want to RGB to be double the size of the
+subplot images.
 """
-# agg_png = af.AggregateCSV(aggregator=agg)
-#
-# agg_png.add_column(
-#     argument="galaxies.galaxy.bulge.effective_radius",
-#     name="bulge_effective_radius_sigma",
-#     use_values_at_sigma=3.0,
-# )
-#
-# agg_png.save(path="csv_simple_errors.csv")
+# I dont have a code example, will try add but is an important feature
 
 """
-__Latent Variables__
+__Zoom Png__
 
-Latent variables are not free model parameters but can be derived from the model, and they are described fully in
-?.
-
-This example was run with a latent variable called `example_latent`, and below we show that this latent variable
-can be added to the .csv file using the same API as above.
+We can also zoom into a specific region of the image, for example the central 20 x 20 pixels of the image.
 """
-# agg_png = af.AggregateCSV(aggregator=agg)
-#
-# agg_png.add_column(
-#     argument="example_latent",
-# )
-#
-# agg_png.save(path="csv_example_latent.csv")
 
 """
-__Computed Columns__
+__Path Navigation__
 
-We can also add columns to the .csv file that are computed from the median PDF instance values of the model.
-
-To do this, we write a function which is input into the `add_computed_column` method, where this function takes the
-median PDF instance as input and returns the computed value.
-
-Below, we add a trivial example of a computed column, where the value is twice the sersic index of the bulge.
+Example combinng `subplot_fit.png` from `source_lp[1]` and `mass_total[0]`.
 """
-def sersic_index_x2_from(instance):
-
-    return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
-
-agg_png = af.AggregateCSV(aggregator=agg)
-
-agg_png.add_computed_column(
-    name="bulge_sersic_index_x2_computed",
-    compute=sersic_index_x2_from,
-)
-
-agg_png.save(path="csv_computed_columns.csv")
