@@ -34,13 +34,8 @@ import autogalaxy.plot as aplt
 """
 __Aggregator__
 
-The functionality illustrated in this example only supports results loaded via the .sqlite database.
-
-We therefore do not load results from hard-disk like other scripts, but build a .sqlite database in order
-to create the `Aggregator` object.
-
-If you have not used the .sqlite database before, the `start_here.ipynb` example describes how to set it up and the API
-for the aggregator is identical from here on.
+Aggregator use is different to other `results` examples, creating an .sqlite database file which is then used
+throughout the example, with API that mirrors the normal aggregator.
 """
 database_name = "ellipse"
 
