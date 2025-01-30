@@ -1,11 +1,25 @@
 """
-Results: CSV
-============
+Results: PNG Splice
+===================
 
-In this tutorial, we use the aggregator to load the results of model-fits and output them in a single .csv file.
+In this tutorial, we use the aggregator to load .png files output by a model-fit, splice them together to create
+new .png images and then output them all to a single folder on your hard-disk.
 
-This enables the results of many model-fits to be concisely summarised and inspected in a single table, which
-can also be easily passed on to other collaborators.
+For example, a common use case is extracting a subset of 3 or 4 images from `subplot_fit.png` which show the model-fit
+quality, put them on a single line .png subplot and output them all to a single folder on your hard-disk. If you have
+modeled 100+ datasets, you can then inspect all fits as .pngs in a single folder (or make a single. png file of all of
+them which you scroll down), which is more efficient than clicking throughout the `output` folder to inspect
+each lens result one-by-one.
+
+Different .png images can be combined together, for example the goodness-of-fit images from `subplot.fits`,
+RGB images of each galaxy in the `dataset` folder and other images.
+
+This enables the results of many model-fits to be concisely visualized and inspected, which can also be easily passed
+on to other collaborators.
+
+Internally, splicing uses the Python Imaging Library (PIL) to open, edit and save .png files. This is a Python library
+that provides extensive file format support, an efficient internal representation and powerful image-processing
+capabilities.
 
 __Interferometer__
 
@@ -106,26 +120,100 @@ agg = Aggregator.from_directory(
 )
 
 """
-We next extract the `AggregateCSV` object, which has specific functions for outputting results in a CSV format.
+We next extract the `AggregatePNG` object, which has specific functions for outputting results in a CSV format.
 """
-agg_csv = af.AggregateCSV(aggregator=agg)
+agg_png = af.AggregateImages(aggregator=agg)
 
 """
-__Adding CSV Columns_
+__Extract Images__
 
-We first make a simple .csv which contains two columns, corresponding to the inferred median PDF values for
-the centre of the bulge of the galaxy.
+We now extract 3 images from the `subplot_fit.png` file and splice them together into a single image.
 
-To do this, we use the `add_column` method, which adds a column to the .csv file we write at the end. Every time
-we call `add_column` we add a new column to the .csv file.
+We will extract the `data`, `model_data` and `normalized_residual_map` images, which are images you are used to
+plotting and inspecting in the `output` folder of a model-fit.
 
-The `results_folder` contained three model-fits to three different datasets, meaning that each `add_column` call
-will add three rows, corresponding to the three model-fits.
+We do this by simply passing the `agg_png.extract_image` method the `ag.agg` attribute for each image we want to
+extract.
 
-This adds the median PDF value of the parameter to the .csv file, we show how to add other values later in this script.
+This runs on all results the `Aggregator` object has loaded from the `output` folder, meaning that for this example
+where two model-fits are loaded, the `image` object contains two images.
+
+The `subplot_shape` input above determines the layout of the subplots in the final image, which for the example below
+is a single row of 3 subplots.
 """
-agg_csv.add_column(argument="galaxies.galaxy.bulge.effective_radius")
-agg_csv.add_column(argument="galaxies.galaxy.bulge.sersic_index")
+image = agg_png.extract_image(
+    ag.agg.SubplotFit.Data,
+    ag.agg.SubplotFit.ModelImage,
+    ag.agg.SubplotFit.NormalizedResidualMap,
+   # subplot_shape=(1, 3),
+)
+
+
+"""
+__Output Single Png__
+
+The `image` object which has been extracted is a `Image` object from the Python package `PIL`, which we use
+to save the image to the hard-disk as a .png file.
+
+The .png is a single subplot of two rows, where each subplot is the data, model data and residual-map of a model-fit.
+"""
+image.save("png_splice_single_subplot.png")
+
+"""
+__Output to Folder__
+
+An alternative way to output the image is to output them as single .png files for each model-fit in a single folder,
+which is done using the `output_to_folder` method.
+
+It can sometimes be easier and quicker to inspect the results of many model-fits when they are output to individual
+files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
+file you scroll through, which may be slower to load and inspect.
+"""
+agg_png.output_to_folder(
+    name="png_splice_single_subplot",
+    path="output_folder",
+)
+
+"""
+__Naming Convention__
+
+By default, each subplot uses the input `name` with an integer index prefix to name the subplot, which is how
+the output folder .png files above are named.
+
+It is more informative to name the subplots after the dataset name. A list of the `name`'s of the datasets can be
+input to the `output_to_folder` method, which will name the subplots after the dataset names. 
+
+To use the names we use the `Aggregator` to loop over the `search` objects and extract their `unique_id`'s, which 
+when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
+of the search and build an informative list for the names of the subplots.
+"""
+# Code Missing
+
+"""
+__Combine Images From Subplots__
+
+We now combine images from two different subplots into a single image, which we will save to the hard-disk as a .png
+file.
+
+We will extract images from the `subplot_dataset.png` and `subplot_fit.png` images, which are images you are used to 
+plotting and inspecting in the `output` folder of a model-fit.
+
+We extract the `data` and `psf_log10` from the dataset and the `model_data` and `chi_squared_map` from the fit,
+and combine them into a subplot with an overall shape of (2, 2).
+"""
+image = agg_png.extract_image(
+    ag.agg.SubplotDataset.Data,
+    ag.agg.SubplotDataset.PSFLog10,
+    ag.agg.SubplotFit.ModelImage,
+    ag.agg.SubplotFit.ChiSquaredMap,
+    # subplot_shape=(2, 2),
+)
+
+image.save("png_splice_multi_subplot.png")
+
+"""
+
+"""
 
 """
 __Saving the CSV__
@@ -135,7 +223,7 @@ We can now output the results of all our model-fits to the .csv file, using the 
 This will output in your current working directory (e.g. the `autogalaxy_workspace`) as a .csv file containing the 
 median PDF values of the parameters, have a quick look now to see the format of the .csv file.
 """
-agg_csv.save(path="csv_simple.csv")
+agg_png.save(path="csv_simple.csv")
 
 """
 __Customizing CSV Headers__
@@ -145,20 +233,20 @@ The headers of the .csv file are by default the argument input above based on th
 However, we can customize these headers using the `name` input of the `add_column` method, for example making them
 shorter or more readable.
 
-We recreate the `agg_csv` first, so that we begin adding columns to a new .csv file.
+We recreate the `agg_png` first, so that we begin adding columns to a new .csv file.
 """
-agg_csv = af.AggregateCSV(aggregator=agg)
+agg_png = af.AggregateCSV(aggregator=agg)
 
-agg_csv.add_column(
+agg_png.add_column(
     argument="galaxies.galaxy.bulge.effective_radius",
     name="bulge_effective_radius",
 )
-agg_csv.add_column(
+agg_png.add_column(
     argument="galaxies.galaxy.bulge.sersic_index",
     name="bulge_sersic_index",
 )
 
-agg_csv.save(path="csv_simple_custom_headers.csv")
+agg_png.save(path="csv_simple_custom_headers.csv")
 
 """
 __Maximum Likelihood Values__
@@ -166,15 +254,15 @@ __Maximum Likelihood Values__
 We can also output the maximum likelihood values of each parameter to the .csv file, using the `use_max_log_likelihood`
 input.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
+# agg_png = af.AggregateCSV(aggregator=agg)
 #
-# agg_csv.add_column(
+# agg_png.add_column(
 #     argument="galaxies.galaxy.bulge.effective_radius",
 #     name="bulge_effective_radius_max_lh",
 #     use_max_log_likelihood=True,
 # )
 #
-# agg_csv.save(path="csv_simple_max_likelihood.csv")
+# agg_png.save(path="csv_simple_max_likelihood.csv")
 
 """
 __Errors__
@@ -187,42 +275,15 @@ subtract the median value from these values.
 
 The method below adds two columns to the .csv file, corresponding to the values at the lower and upper sigma values.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
+# agg_png = af.AggregateCSV(aggregator=agg)
 #
-# agg_csv.add_column(
+# agg_png.add_column(
 #     argument="galaxies.galaxy.bulge.effective_radius",
 #     name="bulge_effective_radius_sigma",
 #     use_values_at_sigma=3.0,
 # )
 #
-# agg_csv.save(path="csv_simple_errors.csv")
-
-"""
-__Column List__
-
-We can add a list of values to the .csv file, provided the list is the same length as the number of model-fits
-in the aggregator.
-
-A useful example of this would be adding the name of every dataset to the .csv file in a column on the left,
-which would allow you to know which dataset each row corresponds to.
-
-To make this list, we use the `Aggregator` to loop over the `search` objects and extract their `unique_tag`'s, which 
-when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
-of the search and build an informative list for the names of the subplots.
-
-We then pass this list to the `add_column` method, which will add a column to the .csv file.
-"""
-# unique_tag_list = [search.unique_tag for search in agg.values("search")]
-
-# agg_csv = af.AggregateCSV(aggregator=agg)
-
-# agg_csv.add_column(
-#     argument=unique_tag_list,
-#     name="dataset_name",
-# )
-
-# agg_csv.save(path="csv_simple_dataset_name.csv")
-
+# agg_png.save(path="csv_simple_errors.csv")
 
 """
 __Latent Variables__
@@ -233,13 +294,13 @@ Latent variables are not free model parameters but can be derived from the model
 This example was run with a latent variable called `example_latent`, and below we show that this latent variable
 can be added to the .csv file using the same API as above.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
+# agg_png = af.AggregateCSV(aggregator=agg)
 #
-# agg_csv.add_column(
+# agg_png.add_column(
 #     argument="example_latent",
 # )
 #
-# agg_csv.save(path="csv_example_latent.csv")
+# agg_png.save(path="csv_example_latent.csv")
 
 """
 __Computed Columns__
@@ -255,11 +316,11 @@ def sersic_index_x2_from(instance):
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
 
-agg_csv = af.AggregateCSV(aggregator=agg)
+agg_png = af.AggregateCSV(aggregator=agg)
 
-agg_csv.add_computed_column(
+agg_png.add_computed_column(
     name="bulge_sersic_index_x2_computed",
     compute=sersic_index_x2_from,
 )
 
-agg_csv.save(path="csv_computed_columns.csv")
+agg_png.save(path="csv_computed_columns.csv")
