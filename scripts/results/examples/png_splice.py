@@ -252,6 +252,13 @@ We can also zoom into a specific region of the image, for example the central 20
 """
 
 """
+__Custom Subplots in Analysis__
+
+Describe how a user can extend the `Analysis` class to compute custom images that are output to the .png files,
+which they can then extract and splice together.
+"""
+
+"""
 __Path Navigation__
 
 Example combinng `subplot_fit.png` from `source_lp[1]` and `mass_total[0]`.
