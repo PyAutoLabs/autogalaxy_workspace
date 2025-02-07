@@ -262,17 +262,23 @@ print(w_tilde.shape)
 
 chi_squared_term_1 = np.linalg.multi_dot(
     [
-        mapping_matrix.T,  # NOTE: shape = (N, )
-        w_tilde,  # NOTE: shape = (N, N)
-        mapping_matrix,
+        reconstruction.T, # NOTE: shape = (M, )
+        curvature_matrix, # NOTE: shape = (M, M)
+        reconstruction, # NOTE: shape = (M, )
     ]
 )
+chi_squared_term_2 = -2.0 * np.linalg.multi_dot(
+    [
+        reconstruction.T, # NOTE: shape = (M, )
+        data_vector # NOTE: i.e. dirty_image
+    ]
+)
+chi_squared_term_3 = np.add(# NOTE: i.e. noise_normalization
+    np.sum(dataset.data.real**2.0 / dataset.noise_map.real**2.0),
+    np.sum(dataset.data.imag**2.0 / dataset.noise_map.imag**2.0),
+)
 
-chi_squared_term_2 = -np.multiply(
-    2.0, np.dot(mapping_matrix.T, dataset.w_tilde.dirty_image)
-)  # Need to double check dirty_image is the right input.
-
-chi_squared = chi_squared_term_1 + chi_squared_term_2
+chi_squared = chi_squared_term_1 + chi_squared_term_2 + chi_squared_term_3
 
 print(chi_squared)
 
@@ -307,6 +313,36 @@ log_evidence = float(
 )
 
 print(log_evidence)
+
+"""
+__Repeated Pattern in W_Tilde__
+
+The `w_tilde` matrix has a repeated pattern, which can be used to perform the above calculations using far less
+memory, at the expense of code complexity. 
+
+First, let us consider the pattern of the `w_tilde` matrix, which is seen in the following 7 values: 
+"""
+print(w_tilde[0, 1])
+print(w_tilde[1, 2])
+print(w_tilde[2, 3])
+print(w_tilde[3, 4])
+print(w_tilde[4, 5])
+print(w_tilde[5, 6])
+print(w_tilde[6, 7])
+
+"""
+However, the pattern breaks for the next value, which is:
+"""
+print(w_tilde[7, 8])
+
+"""
+What do the first 7 values have in common?
+
+Let us think about the `real_space_mask` of the interferometer dataset, which I have made a really basic cartoon of
+below:
+"""
+
+fff
 
 """
 Finish.
