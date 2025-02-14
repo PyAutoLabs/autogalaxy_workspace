@@ -52,7 +52,6 @@ The code below performs a model-fit using nautilus.
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 """
 for i in range(2):
-
     dataset_name = f"simple"
     dataset_path = path.join("dataset", "imaging", dataset_name)
 
@@ -86,7 +85,6 @@ for i in range(2):
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
-
         def compute_latent_variables(self, instance):
             return {"example_latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
 
@@ -114,17 +112,19 @@ agg_csv = af.AggregateCSV(aggregator=agg)
 __Adding CSV Columns_
 
 We first make a simple .csv which contains two columns, corresponding to the inferred median PDF values for
-the centre of the bulge of the galaxy.
+the y centre of the bulge of the galaxy and its effective radius.
 
 To do this, we use the `add_column` method, which adds a column to the .csv file we write at the end. Every time
 we call `add_column` we add a new column to the .csv file.
+
+Note the API for the `centre`, which is a tuple parameter and therefore needs for `centre_0` to be specified.
 
 The `results_folder` contained three model-fits to three different datasets, meaning that each `add_column` call
 will add three rows, corresponding to the three model-fits.
 
 This adds the median PDF value of the parameter to the .csv file, we show how to add other values later in this script.
 """
-agg_csv.add_column(argument="galaxies.galaxy.bulge.effective_radius")
+agg_csv.add_column(argument="galaxies.galaxy.bulge.centre.centre_0")
 agg_csv.add_column(argument="galaxies.galaxy.bulge.sersic_index")
 
 """
@@ -150,8 +150,8 @@ We recreate the `agg_csv` first, so that we begin adding columns to a new .csv f
 agg_csv = af.AggregateCSV(aggregator=agg)
 
 agg_csv.add_column(
-    argument="galaxies.galaxy.bulge.effective_radius",
-    name="bulge_effective_radius",
+    argument="galaxies.galaxy.bulge.centre.centre_0",
+    name="bulge_centre._0",
 )
 agg_csv.add_column(
     argument="galaxies.galaxy.bulge.sersic_index",
@@ -166,15 +166,15 @@ __Maximum Likelihood Values__
 We can also output the maximum likelihood values of each parameter to the .csv file, using the `use_max_log_likelihood`
 input.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
-#
-# agg_csv.add_column(
-#     argument="galaxies.galaxy.bulge.effective_radius",
-#     name="bulge_effective_radius_max_lh",
-#     use_max_log_likelihood=True,
-# )
-#
-# agg_csv.save(path="csv_simple_max_likelihood.csv")
+agg_csv = af.AggregateCSV(aggregator=agg)
+
+agg_csv.add_column(
+    argument="galaxies.galaxy.bulge.effective_radius",
+    name="bulge_effective_radius_max_lh",
+    use_max_log_likelihood=True,
+)
+
+agg_csv.save(path="csv_simple_max_likelihood.csv")
 
 """
 __Errors__
@@ -251,9 +251,12 @@ median PDF instance as input and returns the computed value.
 
 Below, we add a trivial example of a computed column, where the value is twice the sersic index of the bulge.
 """
-def sersic_index_x2_from(instance):
+def sersic_index_x2_from(samples):
+
+    instance = samples.median_pdf()
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
+
 
 agg_csv = af.AggregateCSV(aggregator=agg)
 

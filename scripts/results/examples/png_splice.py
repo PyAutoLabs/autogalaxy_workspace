@@ -67,7 +67,6 @@ The code below performs a model-fit using nautilus.
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
 """
 for i in range(2):
-
     dataset_name = f"simple"
     dataset_path = path.join("dataset", "imaging", dataset_name)
 
@@ -101,7 +100,6 @@ for i in range(2):
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
-
         def compute_latent_variables(self, instance):
             return {"example_latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
 
@@ -146,7 +144,7 @@ image = agg_png.extract_image(
     ag.agg.SubplotFit.Data,
     ag.agg.SubplotFit.ModelImage,
     ag.agg.SubplotFit.NormalizedResidualMap,
-   # subplot_shape=(1, 3),
+    # subplot_shape=(1, 3),
 )
 
 
