@@ -141,9 +141,9 @@ The `subplot_shape` input above determines the layout of the subplots in the fin
 is a single row of 3 subplots.
 """
 image = agg_png.extract_image(
-    ag.agg.SubplotFit.Data,
-    ag.agg.SubplotFit.ModelImage,
-    ag.agg.SubplotFit.NormalizedResidualMap,
+    ag.agg.subplot_fit.data,
+    ag.agg.subplot_fit.model_image,
+    ag.agg.subplot_fit.normalized_residual_map,
     # subplot_shape=(1, 3),
 )
 
@@ -168,10 +168,10 @@ It can sometimes be easier and quicker to inspect the results of many model-fits
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
 """
-agg_png.output_to_folder(
-    name="png_splice_single_subplot",
-    path="output_folder",
-)
+# agg_png.output_to_folder(
+#     name="png_splice_single_subplot",
+#     path="output_folder",
+# )
 
 """
 __Naming Convention__
@@ -186,7 +186,12 @@ To use the names we use the `Aggregator` to loop over the `search` objects and e
 when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
 of the search and build an informative list for the names of the subplots.
 """
-# Code Missing
+# name_list = [search.unique_tag for search in agg.values("search")]
+#
+# agg_png.output_to_folder(
+#      name_list=name_list,
+#      path="output_folder",
+#  )
 
 """
 __Combine Images From Subplots__
@@ -201,14 +206,15 @@ We extract the `data` and `psf_log10` from the dataset and the `model_data` and 
 and combine them into a subplot with an overall shape of (2, 2).
 """
 image = agg_png.extract_image(
-    ag.agg.SubplotDataset.Data,
-    ag.agg.SubplotDataset.PSFLog10,
-    ag.agg.SubplotFit.ModelImage,
-    ag.agg.SubplotFit.ChiSquaredMap,
+    ag.agg.subplot_dataset.data,
+    ag.agg.subplot_dataset.psf_log_10,
+    ag.agg.subplot_fit.model_image,
+    ag.agg.subplot_fit.chi_squared_map,
     # subplot_shape=(2, 2),
 )
 
 image.save("png_splice_multi_subplot.png")
+
 
 """
 __Add Extra Png__
@@ -223,8 +229,8 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 # image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
 # image = agg_png.extract_image(
-#     ag.agg.SubplotDataset.Data,
-#     ag.agg.SubplotDataset.PSFLog10,
+#     ag.agg.subplot_dataset.data,
+#     ag.agg.subplot_dataset.psf_log_10,
 #     subplot_shape=(1, 2),
 # )
 

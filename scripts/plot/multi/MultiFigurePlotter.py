@@ -66,7 +66,7 @@ for dataset in dataset_list:
     dataset_plotter.subplot_dataset()
 
 """
-__Multi Plot__
+__Multi Subplot__
 
 We now pass the list of `ImagingPlotter` objects to a `MultiFigurePlotter` object, which we use to plot the 
 image of each dataset on the same subplot.
@@ -85,6 +85,27 @@ imaging_plotter_list = [
 multi_figure_plotter = aplt.MultiFigurePlotter(plotter_list=imaging_plotter_list)
 
 multi_figure_plotter.subplot_of_figure(func_name="figures_2d", figure_name="data")
+
+"""
+__Multi Fits__
+"""
+mat_plot_2d = aplt.MatPlot2D(output=aplt.Output(path="."))
+
+imaging_plotter_list = [
+    aplt.ImagingPlotter(dataset=dataset, mat_plot_2d=mat_plot_2d) for dataset in dataset_list
+]
+
+multi_plotter = aplt.MultiFigurePlotter(
+    plotter_list=imaging_plotter_list,
+)
+
+multi_plotter.output_to_fits(
+    func_name_list=["figures_2d"],
+    figure_name_list=["data"],
+    filename="data",
+    tag_list=["DATA"],
+    remove_fits_first=True
+)
 
 """
 __Wrap Up__
