@@ -26,7 +26,7 @@ __Database File__
 
 The aggregator can also load results from a `.sqlite` database file.
 
-This is benefitial when loading results for large numbers of model-fits (e.g. more than hundreds)
+This is beneficial when loading results for large numbers of model-fits (e.g. more than hundreds)
 because it is optimized for fast querying of results.
 
 See the package `results/database` for a full description of how to set up the database and the benefits it provides,

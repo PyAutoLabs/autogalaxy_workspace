@@ -1,25 +1,23 @@
 """
-Results: PNG Splice
-===================
+Results: Fits Splice
+====================
 
-In this tutorial, we use the aggregator to load .png files output by a model-fit, splice them together to create
-new .png images and then output them all to a single folder on your hard-disk.
+In this tutorial, we use the aggregator to load .fits files output by a model-fit, extract hdu images and create
+new .fits files, for example all to a single folder on your hard-disk.
 
-For example, a common use case is extracting a subset of 3 or 4 images from `subplot_fit.png` which show the model-fit
-quality, put them on a single line .png subplot and output them all to a single folder on your hard-disk. If you have
-modeled 100+ datasets, you can then inspect all fits as .pngs in a single folder (or make a single. png file of all of
-them which you scroll down), which is more efficient than clicking throughout the `output` folder to inspect
-each lens result one-by-one.
+For example, a common use case is extracting an image from `model_galaxy_images.fits` of many fits and putting them
+into a single .fits file on your hard-disk. If you have modeled 100+ datasets, you can then inspect all model images
+in DS9 in .fits format n a single folder, which is more efficient than clicking throughout the `output` open each
+.fits file one-by-one.
 
-Different .png images can be combined together, for example the goodness-of-fit images from `subplot.fits`,
-RGB images of each galaxy in the `dataset` folder and other images.
+The most common use of .fits splciing is where multiple observations of the same galaxy are analysed, for example
+at different wavelengths, where each fit outputs a different .fits files. The model images of each fit to each
+wavelength can then be packaged up into a single .fits file.
 
 This enables the results of many model-fits to be concisely visualized and inspected, which can also be easily passed
 on to other collaborators.
 
-Internally, splicing uses the Python Imaging Library (PIL) to open, edit and save .png files. This is a Python library
-that provides extensive file format support, an efficient internal representation and powerful image-processing
-capabilities.
+Internally, splicing uses standard Astorpy functions to open, edit and save .fit files.
 
 __Interferometer__
 
@@ -119,57 +117,56 @@ agg = Aggregator.from_directory(
 )
 
 """
-Extract the `AggregateImages` object, which has specific functions for loading image files (e.g. .png, .pdf) and
-outputting results in an image format (e.g. .png, .pdf).
+Extract the `AggregateFits` object, which has specific functions for loading .fits files and outputting results in 
+.fits format.
 """
-agg_image = af.AggregateImages(aggregator=agg)
+agg_fits = af.AggregateFits(aggregator=agg)
 
 """
 __Extract Images__
 
-We now extract 3 images from the `subplot_fit.png` file and splice them together into a single image.
+We now extract 2 images from the `fit.fits` file and combine them together into a single .fits file.
 
-We will extract the `data`, `model_image` and `normalized_residual_map` images, which are images you are used to
-plotting and inspecting in the `output` folder of a model-fit.
+We will extract the `model_image` and `residual_map` images, which are images you are used to
+plotting and inspecting in the `output` folder of a model-fit and can load and inspect in DS9 from the file
+`fit.fits`.
 
-We do this by simply passing the `agg_image.extract_image` method the `ag.agg` attribute for each image we want to
-extract.
+By inspecting `fit.fits` you will see it contains four images which each have a an `ext_name`: `model_image`,
+`residual_map`, `normalized_residual_map`, `chi_squared_map`.
+
+We do this by simply passing the `agg_fits.extract_image` method the name of the fits file we load from `fits.fit`
+and the `ext_name` of what we extract.
 
 This runs on all results the `Aggregator` object has loaded from the `output` folder, meaning that for this example
 where two model-fits are loaded, the `image` object contains two images.
-
-The `subplot_shape` input above determines the layout of the subplots in the final image, which for the example below
-is a single row of 3 subplots.
 """
-image = agg_image.extract_image(
-    ag.agg.subplot_fit.data,
-    ag.agg.subplot_fit.model_image,
-    ag.agg.subplot_fit.normalized_residual_map,
-    # subplot_shape=(1, 3),
+image = agg_fits.extract_image(
+    name="fits.fit",
+    ext_name_list=["model_image", "residual_map"]
 )
 
 
 """
-__Output Single Png__
+__Output Single Fits__
 
-The `image` object which has been extracted is a `Image` object from the Python package `PIL`, which we use
-to save the image to the hard-disk as a .png file.
+The `image` object which has been extracted is an `astropy` `Fits` object, which we use to save the .fits to the 
+hard-disk.
 
-The .png is a single subplot of two rows, where each subplot is the data, model data and residual-map of a model-fit.
+The .fits has 4 hdus, the `model_image` and `residual_map` for the two datasets fitted.
 """
 image.save("png_splice_single_subplot.png")
 
 """
 __Output to Folder__
 
-An alternative way to output the image is to output them as single .png files for each model-fit in a single folder,
-which is done using the `output_to_folder` method.
+An alternative way to output the .fits files is to output them as single .fits files for each model-fit in a single 
+folder, which is done using the `output_to_folder` method.
 
 It can sometimes be easier and quicker to inspect the results of many model-fits when they are output to individual
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
 """
-# agg_image.output_to_folder(
+# agg_fits.output_to_folder(
 #     name="png_splice_single_subplot",
 #     path="output_folder",
 # )
@@ -180,7 +177,7 @@ __Naming Convention__
 By default, each subplot uses the input `name` with an integer index prefix to name the subplot, which is how
 the output folder .png files above are named.
 
-It is more informative to name the subplots after the dataset name. A list of the `name`'s of the datasets can be
+It is more informative to name the .fits files after the dataset name. A list of the `name`'s of the datasets can be
 input to the `output_to_folder` method, which will name the subplots after the dataset names. 
 
 To use the names we use the `Aggregator` to loop over the `search` objects and extract their `unique_id`'s, which 
@@ -189,38 +186,15 @@ of the search and build an informative list for the names of the subplots.
 """
 # name_list = [search.unique_tag for search in agg.values("search")]
 #
-# agg_image.output_to_folder(
+# agg_fits.output_to_folder(
 #      name_list=name_list,
 #      path="output_folder",
 #  )
 
 """
-__Combine Images From Subplots__
+__Add Extra Fits__
 
-We now combine images from two different subplots into a single image, which we will save to the hard-disk as a .png
-file.
-
-We will extract images from the `subplot_dataset.png` and `subplot_fit.png` images, which are images you are used to 
-plotting and inspecting in the `output` folder of a model-fit.
-
-We extract the `data` and `psf_log10` from the dataset and the `model_data` and `chi_squared_map` from the fit,
-and combine them into a subplot with an overall shape of (2, 2).
-"""
-image = agg_image.extract_image(
-    ag.agg.subplot_dataset.data,
-    ag.agg.subplot_dataset.psf_log_10,
-    ag.agg.subplot_fit.model_image,
-    ag.agg.subplot_fit.chi_squared_map,
-    # subplot_shape=(2, 2),
-)
-
-image.save("png_splice_multi_subplot.png")
-
-
-"""
-__Add Extra Png__
-
-We can also add an extra .png image to the subplot, for example an RGB image of the dataset.
+We can also add an extra .fits image to the extracted .fits file, for example an RGB image of the dataset.
 
 We create an image of shape (1, 2) and add the RGB image to the left of the subplot, so that the new subplot has
 shape (1, 3).
@@ -229,7 +203,7 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 """
 # image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
-# image = agg_image.extract_image(
+# image = agg_fits.extract_image(
 #     ag.agg.subplot_dataset.data,
 #     ag.agg.subplot_dataset.psf_log_10,
 #     subplot_shape=(1, 2),
@@ -240,24 +214,7 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 # image.save("png_splice_with_rgb.png")
 
 """
-__Shape Customization__
-
-The example above had an original subplot shape of (1, 2) and we added an extra .png to the left of the subplot
-to make it shape (1, 3).
-
-An extra image can be added with more customization, for example we may want to RGB to be double the size of the
-subplot images.
-"""
-# I dont have a code example, will try add but is an important feature
-
-"""
-__Zoom Png__
-
-We can also zoom into a specific region of the image, for example the central 20 x 20 pixels of the image.
-"""
-
-"""
-__Custom Subplots in Analysis__
+__Custom Fits Files in Analysis__
 
 Describe how a user can extend the `Analysis` class to compute custom images that are output to the .png files,
 which they can then extract and splice together.
@@ -266,5 +223,5 @@ which they can then extract and splice together.
 """
 __Path Navigation__
 
-Example combinng `subplot_fit.png` from `source_lp[1]` and `mass_total[0]`.
+Example combinig `fit.fits` from `source_lp[1]` and `mass_total[0]`.
 """
