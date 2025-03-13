@@ -49,9 +49,8 @@ especially if loading results from hard-disk is slow.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-import os
 from os import path
-from PIL import Image
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -117,10 +116,10 @@ agg = Aggregator.from_directory(
 )
 
 """
-Extract the `AggregateFits` object, which has specific functions for loading .fits files and outputting results in 
+Extract the `AggregateFITS` object, which has specific functions for loading .fits files and outputting results in 
 .fits format.
 """
-agg_fits = af.AggregateFits(aggregator=agg)
+agg_fits = af.AggregateFITS(aggregator=agg)
 
 """
 __Extract Images__
@@ -134,17 +133,16 @@ plotting and inspecting in the `output` folder of a model-fit and can load and i
 By inspecting `fit.fits` you will see it contains four images which each have a an `ext_name`: `model_image`,
 `residual_map`, `normalized_residual_map`, `chi_squared_map`.
 
-We do this by simply passing the `agg_fits.extract_image` method the name of the fits file we load from `fits.fit`
+We do this by simply passing the `agg_fits.extract_fits` method the name of the fits file we load from `fits.fit`
 and the `ext_name` of what we extract.
 
 This runs on all results the `Aggregator` object has loaded from the `output` folder, meaning that for this example
 where two model-fits are loaded, the `image` object contains two images.
 """
-image = agg_fits.extract_image(
-    name="fits.fit",
-    ext_name_list=["model_image", "residual_map"]
+hdu_list = agg_fits.extract_fits(
+    af.FitFITS.ModelImage,
+    af.FitFITS.ResidualMap,
 )
-
 
 """
 __Output Single Fits__
@@ -154,7 +152,7 @@ hard-disk.
 
 The .fits has 4 hdus, the `model_image` and `residual_map` for the two datasets fitted.
 """
-image.save("png_splice_single_subplot.png")
+# image.save("png_splice_single_subplot.png")
 
 """
 __Output to Folder__
@@ -166,10 +164,11 @@ It can sometimes be easier and quicker to inspect the results of many model-fits
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
 """
-# agg_fits.output_to_folder(
-#     name="png_splice_single_subplot",
-#     path="output_folder",
-# )
+agg_fits.output_to_folder(
+    Path("."),
+    hdu_list,
+    name="fits",
+)
 
 """
 __Naming Convention__
@@ -203,7 +202,7 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 """
 # image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
-# image = agg_fits.extract_image(
+# image = agg_fits.extract_fits(
 #     ag.agg.subplot_dataset.data,
 #     ag.agg.subplot_dataset.psf_log_10,
 #     subplot_shape=(1, 2),

@@ -1,28 +1,16 @@
 """
-Modeling: Light Parametric
-==========================
+Modeling: Light Inversion
+=========================
 
 This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:
 
- - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
+ - The galaxy's light is modeled using an `Inversion` with a rectangular pixelization and constant regularization
+ scheme.
 
 Two images are fitted, corresponding to a greener ('g' band) and redder image (`r` band).
 
 This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for galaxy modeling. Thus,
 certain parts of code are not documented to ensure the script is concise.
-
-__Linear Light Profiles__
-
-The example `multi/light_parametric_linear.py` shows an example scripts which use linear light profiles,
-where the `intensity` parameters of each light profile components is solved via linear algebra.
-
-These can straight forwardly be used for multi-wavelength datasets, by simply changing the light profiles
-in the model below from `ag.lp_linear.Sersic` to `ag.lp_linear.Sersic`.
-
-In this script, we make the `intensity` parameter of each component a free parameter in every waveband of imaging,
-increasing the number of free parameters and dimensionality of non-linear parameter space for every waveband of
-imaging we fit. By using linear light profiles, each component can effectively have a free `intensity` in a way that
-does not make parameter space more complex.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -105,28 +93,6 @@ for dataset in dataset_list:
     dataset_plotter.subplot_dataset()
 
 """
-__Over Sampling__
-
-Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
-on a higher resolution grid than the image data to ensure the calculation is accurate. 
-
-For a new user, the details of over-sampling are not important, therefore just be aware that below we make it so that 
-all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
-
-Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
-"""
-for dataset in dataset_list:
-    over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
-        grid=dataset.grid,
-        sub_size_list=[8, 4, 1],
-        radial_list=[0.3, 0.6],
-        centre_list=[(0.0, 0.0)],
-    )
-
-    dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
-
-"""
 __Analysis__
 
 We create an `Analysis` object for every dataset.
@@ -160,46 +126,42 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's light uses a `Rectangular` meshwhose resolution is free to vary [2 parameters]. 
  
- - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
- 
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
-"""
-bulge = af.Model(ag.lp_linear.Sersic)
-disk = af.Model(ag.lp_linear.Exponential)
+ - This pixelization is regularized using a `Constant` scheme which smooths every pixel 
+ equally, where its `regularization_coefficient` varies across the datasets [2 parameter]. 
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=4.
+"""
+pixelization = af.Model(
+    ag.Pixelization, mesh=ag.mesh.Rectangular, regularization=ag.reg.Constant
+)
+
+galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-Galaxies change appearance across wavelength, with the most significant change in their brightness.
-
-Models applied to summed analyses can be extended to include free parameters specific to each dataset. In this example,
-we want the galaxy's effective radii to vary across the g and r-band datasets.
-
-The API for doing this is shown below, where by inputting the `effective_radius` model parameters to the `with_free_parameter` 
-method the effective_radius of the lens's bulge and source's bulge become free parameters across every analysis object.
-
-NOTE: Other aspects of galaxies may vary across wavelength, none of which are included in this example. The API below 
-can easily be extended to include these additional parameters, and the `features` package explains other tools for 
-extending the model across datasets.
+We now make the regularization coefficient a free parameter across every analysis object.
 """
 analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.effective_radius,
-    model.galaxies.galaxy.disk.effective_radius,
+    model.galaxies.galaxy.pixelization.regularization.coefficient
 )
 
 """
 __Search__
+
+The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
+Nautilus (https://nautilus.readthedocs.io/en/latest/).
+
+A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
-    name="start_here",
+    path_prefix=path.join("multi", "modeling_graph"),
+    name="light[pixelization]",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=2,
+    number_of_cores=1,
 )
 
 """
@@ -214,13 +176,13 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `effective_radius` of the source galaxy's `bulge`, are identical.
+except the `coefficient` of the galaxy's pixelization identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)
 
 """
-Plotting each result's galaxies shows that the galaxy appears different, owning to its different intensities.
+Plotting each result's galaxies shows that the source appears different, owning to its different intensities.
 """
 for result in result_list:
     galaxies_plotter = aplt.GalaxiesPlotter(
@@ -232,12 +194,13 @@ for result in result_list:
     fit_plotter.subplot_fit()
 
 """
-The `Samples` object still has the dimensions of the overall non-linear search (in this case N=16). 
+The `Samples` object still has the dimensions of the overall non-linear search (in this case N=15). 
 
 Therefore, the samples is identical in every result object.
 """
-plotter = aplt.NestPlotter(samples=result_list.samples)
-plotter.corner_cornerpy()
+for result in result_list:
+    plotter = aplt.NestPlotter(samples=result.samples)
+    plotter.corner_cornerpy()
 
 """
 Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.

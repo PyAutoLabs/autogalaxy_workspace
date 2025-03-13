@@ -127,34 +127,6 @@ for dataset in dataset_list:
     dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
 
 """
-__Analysis__
-
-We create an `Analysis` object for every dataset.
-"""
-analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
-
-"""
-By summing this list of analysis objects, we create an overall `CombinedAnalysis` which we can use to fit the 
-multi-wavelength imaging data, where:
-
- - The log likelihood function of this summed analysis class is the sum of the log likelihood functions of each 
- individual analysis objects (e.g. the fit to each separate waveband).
-
- - The summing process ensures that tasks such as outputting results to hard-disk, visualization, etc use a 
- structure that separates each analysis and therefore each dataset.
- 
- - Next, we will use this combined analysis to parameterize a model where certain galaxy parameters vary across
- the dataset.
-"""
-analysis = sum(analysis_list)
-
-"""
-We can parallelize the likelihood function of these analysis classes, whereby each evaluation is performed on a 
-different CPU.
-"""
-analysis.n_cores = 1
-
-"""
 __Model__
 
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
@@ -174,28 +146,64 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-Galaxies change appearance across wavelength, with the most significant change in their brightness.
+__Analysis__
 
-Models applied to summed analyses can be extended to include free parameters specific to each dataset. In this example,
-we want the galaxy's effective radii to vary across the g and r-band datasets.
+We create an `Analysis` object for every dataset.
+"""
+analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 
-The API for doing this is shown below, where by inputting the `effective_radius` model parameters to the `with_free_parameter` 
-method the effective_radius of the lens's bulge and source's bulge become free parameters across every analysis object.
+"""
+__Factor Graph__
+
+When fitting multiple datasets using multiple `Analysis` objects, we create a `FactorGraph` of all `Analysis` objects,
+where each `Factor` in the `FactorGraph` corresponds to a different dataset and model.
+
+The `FactorGraph` allows do the following:
+
+ - The log likelihood function of the overall factor graph is the sum of the log likelihood functions of each 
+ individual analysis objects (e.g. the fit to each separate waveband).
+
+ - The factor graph ensures that tasks such as outputting results to hard-disk, visualization, etc use a 
+ structure that separates each analysis and therefore each dataset.
+
+ - The API for the factor graph allows us to customize the model components and fit of every dataset individually,
+
+__Model Customization__
+
+The factor graph API allows us to customize the model components and fit of every dataset individually, which is 
+necessary for modeling multi-wavelength imaging data, for example fitting the `effective_radius` of each galaxy
+at at wavelength independently.
+
+In this example, we custpmize each galaxy's effective radii to vary across the g and r-band datasets.
+
+The API for doing this is shown below, where the `bulge` and `disk` `effective_radius` model parameters are overwritten
+with their own unique autofit prior, adding them to the model as free parameters each time.
 
 NOTE: Other aspects of galaxies may vary across wavelength, none of which are included in this example. The API below 
 can easily be extended to include these additional parameters, and the `features` package explains other tools for 
 extending the model across datasets.
 """
-analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.effective_radius,
-    model.galaxies.galaxy.disk.effective_radius,
-)
+analysis_factor_list = []
+
+for analysis in analysis_list:
+
+    analysis_model = model.copy()
+    galaxy = analysis_model.galaxies.galaxy
+
+    galaxy.bulge.effective_radius = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
+    galaxy.disk.effective_radius = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
+
+    analysis_factor = af.AnalysisFactor(prior_model=analysis_model, analysis=analysis)
+
+    analysis_factor_list.append(analysis_factor)
+
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
 
 """
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
+    path_prefix=path.join("multi", "modeling_graph"),
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
@@ -205,7 +213,7 @@ search = af.Nautilus(
 """
 __Model-Fit__
 """
-result_list = search.fit(model=model, analysis=analysis)
+result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 
 """
 __Result__

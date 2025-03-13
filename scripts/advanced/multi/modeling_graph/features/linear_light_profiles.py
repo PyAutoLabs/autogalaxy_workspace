@@ -13,16 +13,27 @@ certain parts of code are not documented to ensure the script is concise.
 
 __Linear Light Profiles__
 
-The example `multi/light_parametric_linear.py` shows an example scripts which use linear light profiles,
-where the `intensity` parameters of each light profile components is solved via linear algebra.
+This script uses a light profile variant called a 'linear light profile'. The `intensity` parameters of all parametric
+components are solved via linear algebra every time the model is fitted using a process called an inversion. This
+inversion always computes `intensity` values that give the best fit to the data (e.g. they maximize the likelihood)
+given the other parameter values of the light profile.
 
-These can straight forwardly be used for multi-wavelength datasets, by simply changing the light profiles
-in the model below from `ag.lp_linear.Sersic` to `ag.lp_linear.Sersic`.
+The `intensity` parameter of each light profile is therefore not a free parameter in the model-fit, reducing the
+dimensionality of non-linear parameter space by the number of light profiles (in this example, 4) and removing the
+degeneracies that occur between the `intnensity` and other light profile
+parameters (e.g. `effective_radius`, `sersic_index`).
 
-In this script, we make the `intensity` parameter of each component a free parameter in every waveband of imaging,
-increasing the number of free parameters and dimensionality of non-linear parameter space for every waveband of
-imaging we fit. By using linear light profiles, each component can effectively have a free `intensity` in a way that
-does not make parameter space more complex.
+For complex models, linear light profiles are a powerful way to simplify the parameter space to ensure the best-fit
+model is inferred.
+
+This is especially true for multi-wavelength datasets, where each waveband of imaging can often increasing the
+dimensionality of parameter space by adding an addition `intensity` parameter per image. For multi-wavelength lens
+modeling we therefore recommend you use linear light profiles for this reason.
+
+__Notes__
+
+This script is identical to `modeling/light_parametric.py` except that the light profiles are switched to linear
+light profiles.
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -105,28 +116,6 @@ for dataset in dataset_list:
     dataset_plotter.subplot_dataset()
 
 """
-__Over Sampling__
-
-Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
-on a higher resolution grid than the image data to ensure the calculation is accurate. 
-
-For a new user, the details of over-sampling are not important, therefore just be aware that below we make it so that 
-all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
-
-Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
-"""
-for dataset in dataset_list:
-    over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
-        grid=dataset.grid,
-        sub_size_list=[8, 4, 1],
-        radial_list=[0.3, 0.6],
-        centre_list=[(0.0, 0.0)],
-    )
-
-    dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
-
-"""
 __Analysis__
 
 We create an `Analysis` object for every dataset.
@@ -160,11 +149,13 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge, where the `intensity` parameter for each individual 
+ waveband of imaging is solved for indepedently via linear algebra [6 parameters]. 
  
- - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
+ - The galaxy's disk is a linear parametric `Exponential` disk, where the `intensity` parameter for each individual 
+ waveband of imaging is solved for indepedently via linear algebra [5 parameters].
  
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -174,32 +165,23 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-Galaxies change appearance across wavelength, with the most significant change in their brightness.
+In the example `light_parametric.py` we made every `intensity` parameter free via the code commented out below.
 
-Models applied to summed analyses can be extended to include free parameters specific to each dataset. In this example,
-we want the galaxy's effective radii to vary across the g and r-band datasets.
-
-The API for doing this is shown below, where by inputting the `effective_radius` model parameters to the `with_free_parameter` 
-method the effective_radius of the lens's bulge and source's bulge become free parameters across every analysis object.
-
-NOTE: Other aspects of galaxies may vary across wavelength, none of which are included in this example. The API below 
-can easily be extended to include these additional parameters, and the `features` package explains other tools for 
-extending the model across datasets.
+Note how we don't have to do that in this script, owing to our use of linear light profiles. 
 """
-analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.effective_radius,
-    model.galaxies.galaxy.disk.effective_radius,
-)
+# analysis = analysis.with_free_parameters(
+#     model.galaxies.galaxy.bulge.intensity, model.galaxies.galaxy.disk.intensity
+# )
 
 """
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
-    name="start_here",
+    path_prefix=path.join("multi", "modeling_graph"),
+    name="linear_light_profiles",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=2,
+    number_of_cores=1,
 )
 
 """
@@ -214,13 +196,13 @@ The result object returned by this model-fit is a list of `Result` objects, beca
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,
-except the `effective_radius` of the source galaxy's `bulge`, are identical.
+except the `intensity` of the source galaxy's `bulge`, are identical.
 """
 print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)
 
 """
-Plotting each result's galaxies shows that the galaxy appears different, owning to its different intensities.
+Plotting each result's galaxies shows that the source appears different, owning to its different intensities.
 """
 for result in result_list:
     galaxies_plotter = aplt.GalaxiesPlotter(
