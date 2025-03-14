@@ -51,7 +51,7 @@ especially if loading results from hard-disk is slow.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-import os
+from pathlib import Path
 from os import path
 from PIL import Image
 
@@ -145,7 +145,6 @@ image = agg_image.extract_image(
     ag.agg.subplot_fit.data,
     ag.agg.subplot_fit.model_image,
     ag.agg.subplot_fit.normalized_residual_map,
-    # subplot_shape=(1, 3),
 )
 
 
@@ -169,10 +168,10 @@ It can sometimes be easier and quicker to inspect the results of many model-fits
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
 """
-# agg_image.output_to_folder(
-#     name="png_splice_single_subplot",
-#     path="output_folder",
-# )
+agg_image.output_to_folder(
+    folder=Path("output_folder"),
+    name="unique_tag",
+)
 
 """
 __Naming Convention__

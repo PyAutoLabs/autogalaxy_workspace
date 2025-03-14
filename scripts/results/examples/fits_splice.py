@@ -167,7 +167,7 @@ file you scroll through, which may be slower to load and inspect.
 agg_fits.output_to_folder(
     Path("."),
     hdu_list,
-    name="fits",
+    name="unique_tag",
 )
 
 """
