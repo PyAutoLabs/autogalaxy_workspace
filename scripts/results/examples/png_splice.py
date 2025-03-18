@@ -11,7 +11,7 @@ modeled 100+ datasets, you can then inspect all fits as .pngs in a single folder
 them which you scroll down), which is more efficient than clicking throughout the `output` folder to inspect
 each lens result one-by-one.
 
-Different .png images can be combined together, for example the goodness-of-fit images from `subplot.fits`,
+Different .png images can be combined together, for example the goodness-of-fit images from `subplot.png`,
 RGB images of each galaxy in the `dataset` folder and other images.
 
 This enables the results of many model-fits to be concisely visualized and inspected, which can also be easily passed
@@ -142,9 +142,11 @@ The `subplot_shape` input above determines the layout of the subplots in the fin
 is a single row of 3 subplots.
 """
 image = agg_image.extract_image(
-    ag.agg.subplot_fit.data,
-    ag.agg.subplot_fit.model_image,
-    ag.agg.subplot_fit.normalized_residual_map,
+    subplots=[
+        ag.agg.subplot_fit.data,
+        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.normalized_residual_map,
+    ],
 )
 
 
@@ -167,31 +169,48 @@ which is done using the `output_to_folder` method.
 It can sometimes be easier and quicker to inspect the results of many model-fits when they are output to individual
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
+
+__Naming Convention__
+
+We require a naming convention for the output files. In this example, we have two model-fits, therefore two .png
+files are going to be output.
+
+One way to name the .png files is to use the `unique_tag` of the search, which is unique to every model-fit. For
+the search above, the `unique_tag` was `simple_0` and `simple_1`, therefore this will informatively name the .png
+files the names of the datasets.
+
+We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
 """
 agg_image.output_to_folder(
     folder=Path("output_folder"),
     name="unique_tag",
+    subplots=[
+        ag.agg.subplot_fit.data,
+        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.normalized_residual_map,
+    ],
 )
 
 """
-__Naming Convention__
+The `name` can be any search attribute, for example the `name` of the search, the `path_prefix` of the search, etc,
+if they will give informative names to the .png files.
 
-By default, each subplot uses the input `name` with an integer index prefix to name the subplot, which is how
-the output folder .png files above are named.
-
-It is more informative to name the subplots after the dataset name. A list of the `name`'s of the datasets can be
-input to the `output_to_folder` method, which will name the subplots after the dataset names. 
-
-To use the names we use the `Aggregator` to loop over the `search` objects and extract their `unique_id`'s, which 
-when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
-of the search and build an informative list for the names of the subplots.
+You can also manually input a list of names, one for each fit, if you want to name the .png files something else.
+However, the list must be the same length as the number of fits in the aggregator, and you may not be certain of the
+order of fits in the aggregator and therefore will need to extract this information, for example by printing the
+`unique_tag` of each search (or another attribute containing the dataset name).
 """
-# name_list = [search.unique_tag for search in agg.values("search")]
-#
-# agg_image.output_to_folder(
-#      name_list=name_list,
-#      path="output_folder",
-#  )
+print([search.unique_tag for search in agg.values("search")])
+
+agg_image.output_to_folder(
+    folder=Path("output_folder"),
+    name="unique_tag",
+    subplots=[
+        ag.agg.subplot_fit.data,
+        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.normalized_residual_map,
+    ],
+)
 
 """
 __Combine Images From Subplots__
@@ -206,10 +225,12 @@ We extract the `data` and `psf_log10` from the dataset and the `model_data` and 
 and combine them into a subplot with an overall shape of (2, 2).
 """
 image = agg_image.extract_image(
-    ag.agg.subplot_dataset.data,
-    ag.agg.subplot_dataset.psf_log_10,
-    ag.agg.subplot_fit.model_image,
-    ag.agg.subplot_fit.chi_squared_map,
+    subplots=[
+        ag.agg.subplot_dataset.data,
+        ag.agg.subplot_dataset.psf_log_10,
+        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.chi_squared_map,
+    ]
     # subplot_shape=(2, 2),
 )
 

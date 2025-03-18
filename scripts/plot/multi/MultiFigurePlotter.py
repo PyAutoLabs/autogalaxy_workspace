@@ -110,7 +110,8 @@ Therefore in the example below we input `figures_2d` twice in `func_name_list`, 
 mat_plot_2d = aplt.MatPlot2D(output=aplt.Output(path="."))
 
 imaging_plotter_list = [
-    aplt.ImagingPlotter(dataset=dataset, mat_plot_2d=mat_plot_2d) for dataset in dataset_list
+    aplt.ImagingPlotter(dataset=dataset, mat_plot_2d=mat_plot_2d)
+    for dataset in dataset_list
 ]
 
 multi_plotter = aplt.MultiFigurePlotter(
@@ -122,7 +123,7 @@ multi_plotter.output_to_fits(
     figure_name_list=["data", "noise_map"],
     filename="data_and_noise_map",
     tag_list=["DATA", "NOISE_MAP"],
-    remove_fits_first=True
+    remove_fits_first=True,
 )
 
 """

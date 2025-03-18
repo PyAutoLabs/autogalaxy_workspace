@@ -186,7 +186,6 @@ extending the model across datasets.
 analysis_factor_list = []
 
 for analysis in analysis_list:
-
     analysis_model = model.copy()
     galaxy = analysis_model.galaxies.galaxy
 

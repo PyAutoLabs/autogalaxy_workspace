@@ -140,8 +140,7 @@ This runs on all results the `Aggregator` object has loaded from the `output` fo
 where two model-fits are loaded, the `image` object contains two images.
 """
 hdu_list = agg_fits.extract_fits(
-    af.FitFITS.ModelImage,
-    af.FitFITS.ResidualMap,
+    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
 )
 
 """
@@ -152,7 +151,8 @@ hard-disk.
 
 The .fits has 4 hdus, the `model_image` and `residual_map` for the two datasets fitted.
 """
-# image.save("png_splice_single_subplot.png")
+print(hdu_list)
+hdu_list.writeto("fits_splice_single.fits", overwrite=True)
 
 """
 __Output to Folder__
@@ -163,32 +163,41 @@ folder, which is done using the `output_to_folder` method.
 It can sometimes be easier and quicker to inspect the results of many model-fits when they are output to individual
 files in a folder, as using an IDE you can click load and flick through the images. This contrasts a single .png
 file you scroll through, which may be slower to load and inspect.
+
+__Naming Convention__
+
+We require a naming convention for the output files. In this example, we have two model-fits, therefore two .fits
+files are going to be output.
+
+One way to name the .fits files is to use the `unique_tag` of the search, which is unique to every model-fit. For
+the search above, the `unique_tag` was `simple_0` and `simple_1`, therefore this will informatively name the .fits
+files the names of the datasets.
+
+We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
 """
 agg_fits.output_to_folder(
-    Path("."),
-    hdu_list,
+    folder=Path("."),
     name="unique_tag",
+    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
 )
 
 """
-__Naming Convention__
+The `name` can be any search attribute, for example the `name` of the search, the `path_prefix` of the search, etc,
+if they will give informative names to the .fits files.
 
-By default, each subplot uses the input `name` with an integer index prefix to name the subplot, which is how
-the output folder .png files above are named.
-
-It is more informative to name the .fits files after the dataset name. A list of the `name`'s of the datasets can be
-input to the `output_to_folder` method, which will name the subplots after the dataset names. 
-
-To use the names we use the `Aggregator` to loop over the `search` objects and extract their `unique_id`'s, which 
-when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
-of the search and build an informative list for the names of the subplots.
+You can also manually input a list of names, one for each fit, if you want to name the .fits files something else.
+However, the list must be the same length as the number of fits in the aggregator, and you may not be certain of the
+order of fits in the aggregator and therefore will need to extract this information, for example by printing the
+`unique_tag` of each search (or another attribute containing the dataset name).
 """
-# name_list = [search.unique_tag for search in agg.values("search")]
-#
-# agg_fits.output_to_folder(
-#      name_list=name_list,
-#      path="output_folder",
-#  )
+print([search.unique_tag for search in agg.values("search")])
+
+agg_fits.output_to_folder(
+    folder=Path("."),
+    name=["hi_0.fits", "hi_1.fits"],
+    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
+)
+
 
 """
 __Add Extra Fits__

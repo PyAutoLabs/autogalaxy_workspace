@@ -251,8 +251,9 @@ median PDF instance as input and returns the computed value.
 
 Below, we add a trivial example of a computed column, where the value is twice the sersic index of the bulge.
 """
-def sersic_index_x2_from(samples):
 
+
+def sersic_index_x2_from(samples):
     instance = samples.median_pdf()
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index

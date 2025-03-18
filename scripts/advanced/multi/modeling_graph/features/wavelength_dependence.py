@@ -180,12 +180,15 @@ analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list
 analysis_factor_list = []
 
 for wavelength, analysis in zip(wavelength_list, analysis_list):
-
     analysis_model = model.copy()
     galaxy = analysis_model.galaxies.galaxy
 
-    galaxy.bulge.effective_radius = bulge_effective_radius = (wavelength * bulge_m) + bulge_c
-    galaxy.disk.effective_radius = disk_effective_radius = (wavelength * disk_m) + disk_c
+    galaxy.bulge.effective_radius = bulge_effective_radius = (
+        wavelength * bulge_m
+    ) + bulge_c
+    galaxy.disk.effective_radius = disk_effective_radius = (
+        wavelength * disk_m
+    ) + disk_c
 
     analysis_factor = af.AnalysisFactor(prior_model=analysis_model, analysis=analysis)
 

@@ -176,7 +176,6 @@ of all datasets after the first dataset a free parameter, to account for the off
 analysis_factor_list = []
 
 for i, analysis in enumerate(analysis_list):
-
     analysis_model = model.copy()
 
     if i > 0:
