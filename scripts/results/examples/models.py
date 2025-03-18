@@ -37,7 +37,7 @@ import autogalaxy.plot as aplt
 """
 __Aggregator__
 
-First, set up the aggregator as shown in `start_here.py`.
+Set up the aggregator as shown in `start_here.py`.
 """
 from autofit.aggregator.aggregator import Aggregator
 

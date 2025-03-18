@@ -2,10 +2,20 @@
 Results: CSV
 ============
 
+This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting
+and interpreting the large libraries of modeling results.
+
 In this tutorial, we use the aggregator to load the results of model-fits and output them in a single .csv file.
 
 This enables the results of many model-fits to be concisely summarised and inspected in a single table, which
 can also be easily passed on to other collaborators.
+
+__CSV, Png and Fits__
+
+Workflow functionality closely mirrors the `png_make.py` and `fits_make.py`  examples, which load results of
+model-fits and output th em as .png files and .fits files to quickly summarise results. 
+
+The same initial fit creating results in a folder called `results_folder_csv_png_fits` is therefore used.
 
 __Interferometer__
 
@@ -37,7 +47,7 @@ especially if loading results from hard-disk is slow.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-import os
+from pathlib import Path
 from os import path
 
 import autofit as af
@@ -50,6 +60,14 @@ __Model Fit__
 The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
+
+__Unique Tag__
+
+One thing to note is that the `unique_tag` of the search is given the name of the dataset with an index for the
+fit of 0 and 1. 
+
+This `unique_tag` names the fit in a descriptive and human-readable way, which we will exploit to make our .csv files
+more descriptive and easier to interpret.
 """
 for i in range(2):
     dataset_name = f"simple"
@@ -77,7 +95,7 @@ for i in range(2):
     model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
     search = af.Nautilus(
-        path_prefix=path.join("results_folder_csv"),
+        path_prefix=path.join("results_folder_csv_png_fits"),
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
@@ -95,16 +113,26 @@ for i in range(2):
 """
 __Aggregator__
 
-First, set up the aggregator as shown in `start_here.py`.
+Set up the aggregator as shown in `start_here.py`.
 """
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder_csv"),
+    directory=path.join("output", "results_folder_csv_png_fits"),
 )
 
 """
-We next extract the `AggregateCSV` object, which has specific functions for outputting results in a CSV format.
+__Workflow Paths__
+
+The workflow examples are designed to take large libraries of results and distill them down to the key information
+required for your science, which are therefore placed in a single path for easy access.
+
+The `workflow_path` specifies where these files are output, in this case the .csv files which summarise the results.
+"""
+workflow_path = Path("output") / "results_folder_csv_png_fits" / "workflow_make_example"
+
+"""
+Extract the `AggregateCSV` object, which has specific functions for outputting results in a CSV format.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
@@ -119,8 +147,8 @@ we call `add_column` we add a new column to the .csv file.
 
 Note the API for the `centre`, which is a tuple parameter and therefore needs for `centre_0` to be specified.
 
-The `results_folder` contained three model-fits to three different datasets, meaning that each `add_column` call
-will add three rows, corresponding to the three model-fits.
+The `results_folder_csv_png_fits` contained two model-fits to two different datasets, meaning that each `add_column` 
+call will add three rows, corresponding to the three model-fits.
 
 This adds the median PDF value of the parameter to the .csv file, we show how to add other values later in this script.
 """
@@ -132,10 +160,11 @@ __Saving the CSV__
 
 We can now output the results of all our model-fits to the .csv file, using the `save` method.
 
-This will output in your current working directory (e.g. the `autogalaxy_workspace`) as a .csv file containing the 
-median PDF values of the parameters, have a quick look now to see the format of the .csv file.
+This will output in your current working directory (e.g. the `autogalaxy_workspace/output.results_folder_csv_png_fits`) 
+as a .csv file containing the median PDF values of the parameters, have a quick look now to see the format of 
+the .csv file.
 """
-agg_csv.save(path="csv_simple.csv")
+agg_csv.save(path=workflow_path / "csv_simple.csv")
 
 """
 __Customizing CSV Headers__
@@ -158,7 +187,7 @@ agg_csv.add_column(
     name="bulge_sersic_index",
 )
 
-agg_csv.save(path="csv_simple_custom_headers.csv")
+agg_csv.save(path=workflow_path / "csv_simple_custom_headers.csv")
 
 """
 __Maximum Likelihood Values__
@@ -174,7 +203,7 @@ agg_csv.add_column(
     use_max_log_likelihood=True,
 )
 
-agg_csv.save(path="csv_simple_max_likelihood.csv")
+agg_csv.save(path=workflow_path / "csv_simple_max_likelihood.csv")
 
 """
 __Errors__
@@ -239,7 +268,7 @@ can be added to the .csv file using the same API as above.
 #     argument="example_latent",
 # )
 #
-# agg_csv.save(path="csv_example_latent.csv")
+# agg_csv.save(path=workflow_path / "csv_example_latent.csv")
 
 """
 __Computed Columns__
@@ -266,4 +295,4 @@ agg_csv.add_computed_column(
     compute=sersic_index_x2_from,
 )
 
-agg_csv.save(path="csv_computed_columns.csv")
+agg_csv.save(path=workflow_path / "csv_computed_columns.csv")

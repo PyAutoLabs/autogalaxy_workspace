@@ -1,8 +1,11 @@
 """
-Results: PNG Splice
-===================
+Results: PNG Make
+=================
 
-In this tutorial, we use the aggregator to load .png files output by a model-fit, splice them together to create
+This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting
+and interpreting the large libraries of modeling results.
+
+In this tutorial, we use the aggregator to load .png files output by a model-fit, make them together to create
 new .png images and then output them all to a single folder on your hard-disk.
 
 For example, a common use case is extracting a subset of 3 or 4 images from `subplot_fit.png` which show the model-fit
@@ -20,6 +23,13 @@ on to other collaborators.
 Internally, splicing uses the Python Imaging Library (PIL) to open, edit and save .png files. This is a Python library
 that provides extensive file format support, an efficient internal representation and powerful image-processing
 capabilities.
+
+__CSV, Png and Fits__
+
+Workflow functionality closely mirrors the `png_make.py` and `fits_make.py`  examples, which load results of
+model-fits and output th em as .png files and .fits files to quickly summarise results.
+
+The same initial fit creating results in a folder called `results_folder_csv_png_fits` is therefore used.
 
 __Interferometer__
 
@@ -65,6 +75,14 @@ __Model Fit__
 The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
+
+__Unique Tag__
+
+One thing to note is that the `unique_tag` of the search is given the name of the dataset with an index for the
+fit of 0 and 1. 
+
+This `unique_tag` names the fit in a descriptive and human-readable way, which we will exploit to make our .png files
+more descriptive and easier to interpret.
 """
 for i in range(2):
     dataset_name = f"simple"
@@ -92,7 +110,7 @@ for i in range(2):
     model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
     search = af.Nautilus(
-        path_prefix=path.join("results_folder_csv"),
+        path_prefix=path.join("results_folder_csv_png_fits"),
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
@@ -107,15 +125,29 @@ for i in range(2):
 
     result = search.fit(model=model, analysis=analysis)
 
+
+"""
+__Workflow Paths__
+
+The workflow examples are designed to take large libraries of results and distill them down to the key information
+required for your science, which are therefore placed in a single path for easy access.
+
+The `workflow_path` specifies where these files are output, in this case the .png files containing the key 
+results we require.
+"""
+workflow_path = Path("output") / "results_folder_csv_png_fits" / "workflow_make_example"
+folder_path = workflow_path.parent if workflow_path.suffix else workflow_path
+folder_path.mkdir(parents=True, exist_ok=True)
+
 """
 __Aggregator__
 
-First, set up the aggregator as shown in `start_here.py`.
+Set up the aggregator as shown in `start_here.py`.
 """
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder_csv"),
+    directory=path.join("output", "results_folder_csv_png_fits"),
 )
 
 """
@@ -127,7 +159,7 @@ agg_image = af.AggregateImages(aggregator=agg)
 """
 __Extract Images__
 
-We now extract 3 images from the `subplot_fit.png` file and splice them together into a single image.
+We now extract 3 images from the `subplot_fit.png` file and make them together into a single image.
 
 We will extract the `data`, `model_image` and `normalized_residual_map` images, which are images you are used to
 plotting and inspecting in the `output` folder of a model-fit.
@@ -158,7 +190,7 @@ to save the image to the hard-disk as a .png file.
 
 The .png is a single subplot of two rows, where each subplot is the data, model data and residual-map of a model-fit.
 """
-image.save("png_splice_single_subplot.png")
+image.save(workflow_path / "png_make_single_subplot.png")
 
 """
 __Output to Folder__
@@ -182,7 +214,7 @@ files the names of the datasets.
 We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
 """
 agg_image.output_to_folder(
-    folder=Path("output_folder"),
+    folder=workflow_path,
     name="unique_tag",
     subplots=[
         ag.agg.subplot_fit.data,
@@ -203,7 +235,7 @@ order of fits in the aggregator and therefore will need to extract this informat
 print([search.unique_tag for search in agg.values("search")])
 
 agg_image.output_to_folder(
-    folder=Path("output_folder"),
+    folder=workflow_path,
     name="unique_tag",
     subplots=[
         ag.agg.subplot_fit.data,
@@ -234,7 +266,7 @@ image = agg_image.extract_image(
     # subplot_shape=(2, 2),
 )
 
-image.save("png_splice_multi_subplot.png")
+image.save("png_make_multi_subplot.png")
 
 
 """
@@ -245,7 +277,7 @@ We can also add an extra .png image to the subplot, for example an RGB image of 
 We create an image of shape (1, 2) and add the RGB image to the left of the subplot, so that the new subplot has
 shape (1, 3).
 
-When we add a single .png, we cannot extract or splice it, it simply gets added to the subplot.
+When we add a single .png, we cannot extract or make it, it simply gets added to the subplot.
 """
 # image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
@@ -257,7 +289,7 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 
 # image = ag.add_image_to_left(image, additional_img)
 
-# image.save("png_splice_with_rgb.png")
+# image.save("png_make_with_rgb.png")
 
 """
 __Shape Customization__
@@ -280,7 +312,7 @@ We can also zoom into a specific region of the image, for example the central 20
 __Custom Subplots in Analysis__
 
 Describe how a user can extend the `Analysis` class to compute custom images that are output to the .png files,
-which they can then extract and splice together.
+which they can then extract and make together.
 """
 
 """

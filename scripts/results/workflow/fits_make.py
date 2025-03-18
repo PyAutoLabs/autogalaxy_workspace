@@ -1,6 +1,9 @@
 """
-Results: Fits Splice
-====================
+Results: Fits Make
+==================
+
+This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting
+and interpreting the large libraries of modeling results.
 
 In this tutorial, we use the aggregator to load .fits files output by a model-fit, extract hdu images and create
 new .fits files, for example all to a single folder on your hard-disk.
@@ -18,6 +21,13 @@ This enables the results of many model-fits to be concisely visualized and inspe
 on to other collaborators.
 
 Internally, splicing uses standard Astorpy functions to open, edit and save .fit files.
+
+__CSV, Png and Fits__
+
+Workflow functionality closely mirrors the `png_make.py` and `fits_make.py`  examples, which load results of
+model-fits and output th em as .png files and .fits files to quickly summarise results. 
+
+The same initial fit creating results in a folder called `results_folder_csv_png_fits` is therefore used.
 
 __Interferometer__
 
@@ -62,6 +72,14 @@ __Model Fit__
 The code below performs a model-fit using nautilus. 
 
 You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
+
+__Unique Tag__
+
+One thing to note is that the `unique_tag` of the search is given the name of the dataset with an index for the
+fit of 0 and 1. 
+
+This `unique_tag` names the fit in a descriptive and human-readable way, which we will exploit to make our .fits files
+more descriptive and easier to interpret.
 """
 for i in range(2):
     dataset_name = f"simple"
@@ -89,7 +107,7 @@ for i in range(2):
     model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
     search = af.Nautilus(
-        path_prefix=path.join("results_folder_csv"),
+        path_prefix=path.join("results_folder_csv_png_fits"),
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
@@ -107,13 +125,24 @@ for i in range(2):
 """
 __Aggregator__
 
-First, set up the aggregator as shown in `start_here.py`.
+Set up the aggregator as shown in `start_here.py`.
 """
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder_csv"),
+    directory=path.join("output", "results_folder_csv_png_fits"),
 )
+
+"""
+__Workflow Paths__
+
+The workflow examples are designed to take large libraries of results and distill them down to the key information
+required for your science, which are therefore placed in a single path for easy access.
+
+The `workflow_path` specifies where these files are output, in this case the .fits files containing the key 
+results we require.
+"""
+workflow_path = Path("output") / "results_folder_csv_png_fits" / "workflow_make_example"
 
 """
 Extract the `AggregateFITS` object, which has specific functions for loading .fits files and outputting results in 
@@ -140,7 +169,7 @@ This runs on all results the `Aggregator` object has loaded from the `output` fo
 where two model-fits are loaded, the `image` object contains two images.
 """
 hdu_list = agg_fits.extract_fits(
-    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
+    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
 )
 
 """
@@ -151,8 +180,7 @@ hard-disk.
 
 The .fits has 4 hdus, the `model_image` and `residual_map` for the two datasets fitted.
 """
-print(hdu_list)
-hdu_list.writeto("fits_splice_single.fits", overwrite=True)
+hdu_list.writeto("fits_make_single.fits", overwrite=True)
 
 """
 __Output to Folder__
@@ -176,9 +204,9 @@ files the names of the datasets.
 We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
 """
 agg_fits.output_to_folder(
-    folder=Path("."),
+    folder=workflow_path,
     name="unique_tag",
-    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
+    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
 )
 
 """
@@ -193,9 +221,9 @@ order of fits in the aggregator and therefore will need to extract this informat
 print([search.unique_tag for search in agg.values("search")])
 
 agg_fits.output_to_folder(
-    folder=Path("."),
+    folder=workflow_path,
     name=["hi_0.fits", "hi_1.fits"],
-    hdus=[af.FitFITS.ModelImage, af.FitFITS.ResidualMap],
+    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
 )
 
 
@@ -207,7 +235,7 @@ We can also add an extra .fits image to the extracted .fits file, for example an
 We create an image of shape (1, 2) and add the RGB image to the left of the subplot, so that the new subplot has
 shape (1, 3).
 
-When we add a single .png, we cannot extract or splice it, it simply gets added to the subplot.
+When we add a single .png, we cannot extract or make it, it simply gets added to the subplot.
 """
 # image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
 #
@@ -219,13 +247,13 @@ When we add a single .png, we cannot extract or splice it, it simply gets added 
 
 # image = ag.add_image_to_left(image, additional_img)
 
-# image.save("png_splice_with_rgb.png")
+# image.save("png_make_with_rgb.png")
 
 """
 __Custom Fits Files in Analysis__
 
 Describe how a user can extend the `Analysis` class to compute custom images that are output to the .png files,
-which they can then extract and splice together.
+which they can then extract and make together.
 """
 
 """

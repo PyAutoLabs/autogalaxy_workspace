@@ -152,7 +152,7 @@ result_1 = search_1.fit(model=model_1, analysis=analysis_1)
 """
 __Result (Search 1)__
 
-The results which are used for prior passing are summarized in the `info` attribute.
+The results which are used for prior passing are summarised in the `info` attribute.
 """
 print(result_1.info)
 
@@ -204,7 +204,7 @@ search = af.Nautilus(
 result_2 = search.fit(model=model_2, analysis=analysis)
 
 """
-The results can be summarized via printing `info`.
+The results can be summarised via printing `info`.
 """
 print(result_2.info)
 
@@ -261,7 +261,7 @@ search_3 = af.Nautilus(
 result_3 = search.fit(model=model_3, analysis=analysis_3)
 
 """
-The final results can be summarized via printing `info`.
+The final results can be summarised via printing `info`.
 """
 print(result_3.info)
 

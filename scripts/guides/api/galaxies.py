@@ -316,7 +316,7 @@ galaxy_plotter.subplot_of_light_profiles(image=True)
 """
 __Galaxies Composition__
 
-Lets quickly summarize what we've learnt by printing every object:
+Lets quickly summarise what we've learnt by printing every object:
 """
 print(galaxies)
 print(galaxies[0])

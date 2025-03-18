@@ -140,7 +140,7 @@ result_1 = search_1.fit(model=model_1, analysis=analysis_1)
 """
 __Result (Search 1)__
 
-The results which are used for prior passing are summarized in the `info` attribute.
+The results which are used for prior passing are summarised in the `info` attribute.
 """
 print(result_1.info)
 
@@ -206,7 +206,7 @@ result_2 = search_2.fit(model=model_2, analysis=analysis_2)
 """
 __Result (Search 2)__
 
-The final results can be summarized via printing `info`.
+The final results can be summarised via printing `info`.
 """
 print(result_2.info)
 
@@ -268,7 +268,7 @@ analysis_3 = ag.AnalysisImaging(dataset=dataset)
 result_3 = search_3.fit(model=model_3, analysis=analysis_3)
 
 """
-The final results can be summarized via printing `info`.
+The final results can be summarised via printing `info`.
 """
 print(result_3.info)
 
