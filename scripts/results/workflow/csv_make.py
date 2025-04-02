@@ -142,18 +142,18 @@ __Adding CSV Columns_
 We first make a simple .csv which contains two columns, corresponding to the inferred median PDF values for
 the y centre of the bulge of the galaxy and its effective radius.
 
-To do this, we use the `add_column` method, which adds a column to the .csv file we write at the end. Every time
-we call `add_column` we add a new column to the .csv file.
+To do this, we use the `add_variable` method, which adds a column to the .csv file we write at the end. Every time
+we call `add_variable` we add a new column to the .csv file.
 
 Note the API for the `centre`, which is a tuple parameter and therefore needs for `centre_0` to be specified.
 
-The `results_folder_csv_png_fits` contained two model-fits to two different datasets, meaning that each `add_column` 
+The `results_folder_csv_png_fits` contained two model-fits to two different datasets, meaning that each `add_variable` 
 call will add three rows, corresponding to the three model-fits.
 
 This adds the median PDF value of the parameter to the .csv file, we show how to add other values later in this script.
 """
-agg_csv.add_column(argument="galaxies.galaxy.bulge.centre.centre_0")
-agg_csv.add_column(argument="galaxies.galaxy.bulge.sersic_index")
+agg_csv.add_variable(argument="galaxies.galaxy.bulge.centre.centre_0")
+agg_csv.add_variable(argument="galaxies.galaxy.bulge.sersic_index")
 
 """
 __Saving the CSV__
@@ -171,18 +171,18 @@ __Customizing CSV Headers__
 
 The headers of the .csv file are by default the argument input above based on the model. 
 
-However, we can customize these headers using the `name` input of the `add_column` method, for example making them
+However, we can customize these headers using the `name` input of the `add_variable` method, for example making them
 shorter or more readable.
 
 We recreate the `agg_csv` first, so that we begin adding columns to a new .csv file.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
-agg_csv.add_column(
+agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.centre.centre_0",
     name="bulge_centre._0",
 )
-agg_csv.add_column(
+agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.sersic_index",
     name="bulge_sersic_index",
 )
@@ -197,10 +197,10 @@ input.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
-agg_csv.add_column(
+agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.effective_radius",
     name="bulge_effective_radius_max_lh",
-    use_max_log_likelihood=True,
+    value_types=[af.ValueType.MaxLogLikelihood]
 )
 
 agg_csv.save(path=workflow_path / "csv_simple_max_likelihood.csv")
@@ -216,41 +216,41 @@ subtract the median value from these values.
 
 The method below adds two columns to the .csv file, corresponding to the values at the lower and upper sigma values.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
-#
-# agg_csv.add_column(
-#     argument="galaxies.galaxy.bulge.effective_radius",
-#     name="bulge_effective_radius_sigma",
-#     use_values_at_sigma=3.0,
-# )
-#
-# agg_csv.save(path="csv_simple_errors.csv")
+agg_csv = af.AggregateCSV(aggregator=agg)
+
+agg_csv.add_variable(
+    argument="galaxies.galaxy.bulge.effective_radius",
+    name="bulge_effective_radius_sigma",
+    value_types=[af.ValueType.Median, af.ValueType.ValuesAt3Sigma]
+)
+
+agg_csv.save(path=workflow_path / "csv_simple_errors.csv")
 
 """
-__Column List__
+__Column Label List__
 
 We can add a list of values to the .csv file, provided the list is the same length as the number of model-fits
 in the aggregator.
 
-A useful example of this would be adding the name of every dataset to the .csv file in a column on the left,
-which would allow you to know which dataset each row corresponds to.
+A useful example is adding the name of every dataset to the .csv file in a column on the left, indicating 
+which dataset each row corresponds to.
 
 To make this list, we use the `Aggregator` to loop over the `search` objects and extract their `unique_tag`'s, which 
 when we fitted the model above used the dataset names. This API can also be used to extract the `name` or `path_prefix`
 of the search and build an informative list for the names of the subplots.
 
-We then pass this list to the `add_column` method, which will add a column to the .csv file.
+We then pass the column `name` and this list to the `add_label_column` method, which will add a column to the .csv file.
 """
-# unique_tag_list = [search.unique_tag for search in agg.values("search")]
+agg_csv = af.AggregateCSV(aggregator=agg)
 
-# agg_csv = af.AggregateCSV(aggregator=agg)
+unique_tag_list = [search.unique_tag for search in agg.values("search")]
 
-# agg_csv.add_column(
-#     argument=unique_tag_list,
-#     name="dataset_name",
-# )
+agg_csv.add_label_column(
+    name="lens_name",
+    values=unique_tag_list,
+)
 
-# agg_csv.save(path="csv_simple_dataset_name.csv")
+agg_csv.save(path=workflow_path / "csv_simple_dataset_name.csv")
 
 
 """
@@ -264,7 +264,7 @@ can be added to the .csv file using the same API as above.
 """
 # agg_csv = af.AggregateCSV(aggregator=agg)
 #
-# agg_csv.add_column(
+# agg_csv.add_variable(
 #     argument="example_latent",
 # )
 #
@@ -273,22 +273,21 @@ can be added to the .csv file using the same API as above.
 """
 __Computed Columns__
 
-We can also add columns to the .csv file that are computed from the median PDF instance values of the model.
+We can also add columns to the .csv file that are computed from the non-linear search samples (e.g. the nested sampling
+samples), for example a value derived from the median PDF instance values of the model.
 
 To do this, we write a function which is input into the `add_computed_column` method, where this function takes the
 median PDF instance as input and returns the computed value.
 
-Below, we add a trivial example of a computed column, where the value is twice the sersic index of the bulge.
+Below, we add a trivial example of a computed column, where the median PDF value that is twice the sersic index of the 
+bulge is computed and added to the .csv file.
 """
-
+agg_csv = af.AggregateCSV(aggregator=agg)
 
 def sersic_index_x2_from(samples):
     instance = samples.median_pdf()
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
-
-
-agg_csv = af.AggregateCSV(aggregator=agg)
 
 agg_csv.add_computed_column(
     name="bulge_sersic_index_x2_computed",
