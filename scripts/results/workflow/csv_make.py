@@ -100,11 +100,12 @@ for i in range(2):
         unique_tag=f"simple_{i}",
         n_live=100,
         number_of_cores=1,
+        n_like_max=1000,
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
         def compute_latent_variables(self, instance):
-            return {"example_latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
+            return {"example.latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
 
     analysis = AnalysisLatent(dataset=dataset)
 
@@ -200,7 +201,7 @@ agg_csv = af.AggregateCSV(aggregator=agg)
 agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.effective_radius",
     name="bulge_effective_radius_max_lh",
-    value_types=[af.ValueType.MaxLogLikelihood]
+    value_types=[af.ValueType.MaxLogLikelihood],
 )
 
 agg_csv.save(path=workflow_path / "csv_simple_max_likelihood.csv")
@@ -221,7 +222,7 @@ agg_csv = af.AggregateCSV(aggregator=agg)
 agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.effective_radius",
     name="bulge_effective_radius_sigma",
-    value_types=[af.ValueType.Median, af.ValueType.ValuesAt3Sigma]
+    value_types=[af.ValueType.Median, af.ValueType.ValuesAt3Sigma],
 )
 
 agg_csv.save(path=workflow_path / "csv_simple_errors.csv")
@@ -262,13 +263,13 @@ Latent variables are not free model parameters but can be derived from the model
 This example was run with a latent variable called `example_latent`, and below we show that this latent variable
 can be added to the .csv file using the same API as above.
 """
-# agg_csv = af.AggregateCSV(aggregator=agg)
-#
-# agg_csv.add_variable(
-#     argument="example_latent",
-# )
-#
-# agg_csv.save(path=workflow_path / "csv_example_latent.csv")
+agg_csv = af.AggregateCSV(aggregator=agg)
+
+agg_csv.add_variable(
+    argument="example.latent",
+)
+
+agg_csv.save(path=workflow_path / "csv_example_latent.csv")
 
 """
 __Computed Columns__
@@ -284,10 +285,12 @@ bulge is computed and added to the .csv file.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
+
 def sersic_index_x2_from(samples):
     instance = samples.median_pdf()
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
+
 
 agg_csv.add_computed_column(
     name="bulge_sersic_index_x2_computed",
