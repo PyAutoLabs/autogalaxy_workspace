@@ -52,7 +52,6 @@ from os import path
 
 import autofit as af
 import autogalaxy as ag
-import autogalaxy.plot as aplt
 
 """
 __Model Fit__
@@ -100,7 +99,6 @@ for i in range(2):
         unique_tag=f"simple_{i}",
         n_live=100,
         number_of_cores=1,
-        n_like_max=1000,
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
@@ -210,18 +208,20 @@ agg_csv.save(path=workflow_path / "csv_simple_max_likelihood.csv")
 __Errors__
 
 We can also output PDF values at a given sigma confidence of each parameter to the .csv file, using 
-the `use_values_at_sigma` input and specifying the sigma confidence.
+the `af.ValueType.ValuesAt3Sigma` input and specifying the sigma confidence.
 
 Below, we add the values at 3.0 sigma confidence to the .csv file, in order to compute the errors you would 
-subtract the median value from these values.
+subtract the median value from these values. We add this after the median value, so that the overall inferred
+uncertainty of the parameter is clear.
 
-The method below adds two columns to the .csv file, corresponding to the values at the lower and upper sigma values.
+The method below adds three columns to the .csv file, corresponding to the values at the median, lower and upper sigma 
+values.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
 agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.effective_radius",
-    name="bulge_effective_radius_sigma",
+    name="bulge_effective_radius",
     value_types=[af.ValueType.Median, af.ValueType.ValuesAt3Sigma],
 )
 
