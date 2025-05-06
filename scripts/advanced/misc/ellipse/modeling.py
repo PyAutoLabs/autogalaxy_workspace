@@ -42,6 +42,7 @@ unmasked data points
 
 These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

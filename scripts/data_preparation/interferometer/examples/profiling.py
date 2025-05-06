@@ -32,6 +32,7 @@ There are two ways the linear algebra can be calculated for an `Inversion`:
  store the linear algebra calculations. For any dataset with > 1 million visibilities this is the only viable approach
  to perform modeling efficiently.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

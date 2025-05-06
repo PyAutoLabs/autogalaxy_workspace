@@ -28,6 +28,7 @@ Previously, there was only a bulge in each galaxy dataset which all had the same
 In this tutorial, each dataset now contains a bulge and disk, where all bulges have `sersic_index=4` and all disks
 `sersic_index=1.0`
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

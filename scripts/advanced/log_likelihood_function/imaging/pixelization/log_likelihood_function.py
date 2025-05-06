@@ -31,6 +31,7 @@ concepts used in this script:
  - `linear_light_profile/log_likelihood_function.py` the likelihood function for a linear light profile, which
  introduces the linear algebra used for a pixelization but with a simpler use case.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

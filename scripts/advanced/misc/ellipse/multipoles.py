@@ -14,6 +14,7 @@ To ensure this is the case, make sure you've complted the examples `fit.py` and 
 For brevity, this example does not repeat the description of the API used to perform the fit and how the model is
 composed. It only discusses new aspects of the API that are used to perform multipoles modeling.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

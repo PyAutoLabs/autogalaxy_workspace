@@ -26,6 +26,7 @@ The likelihood function of linear light profiles builds on standard parametric l
 Therefore you must read the `light_profile/log_likelihood_function.ipynb` notebook before this script, as content
 covered in that notebook will not be repeated in this script.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

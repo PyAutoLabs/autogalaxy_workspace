@@ -13,6 +13,7 @@ A number of benefits are apparent if we combine the analysis of both datasets at
  - The galaxy appears completely different in the g-band and at sub-millimeter wavelengths, providing a lot
  more information with which to constrain the galaxy structure.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -93,23 +94,6 @@ imaging = imaging.apply_mask(mask=mask)
 imaging_plotter = aplt.ImagingPlotter(dataset=imaging)
 imaging_plotter.subplot_dataset()
 
-"""
-__Model__
-
-We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
-example our galaxy model is:
-
- - An `Sersic` `LightProfile` for the galaxy's bulge and disk, which are complete different for each 
- waveband. [28 parameters].
-
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=28.
-"""
-bulge = af.Model(ag.lp_linear.Sersic)
-disk = af.Model(ag.lp_linear.Exponential)
-
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
-
-model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
 __Analysis__
@@ -120,40 +104,44 @@ analysis_imaging = ag.AnalysisImaging(dataset=imaging)
 analysis_interferometer = ag.AnalysisInterferometer(dataset=interferometer)
 
 """
-By adding the two analysis objects together, we create an overall `CombinedAnalysis` which we can use to fit the 
-multi-wavelength imaging data, where:
+We now combine them using the factor analysis class, which allows us to fit the two datasets simultaneously.
 
- - The log likelihood function of this summed analysis class is the sum of the log likelihood functions of each 
- individual analysis objects (e.g. the fit to each separate waveband).
-
- - The summing process ensures that tasks such as outputting results to hard-disk, visualization, etc use a 
- structure that separates each analysis and therefore each dataset.
- 
- - Next, we will use this combined analysis to parameterize a model where certain galaxy parameters vary across
- the dataset.
-"""
-analysis = analysis_imaging + analysis_interferometer
-
-"""
-We can parallelize the likelihood function of these analysis classes, whereby each evaluation is performed on a 
-different CPU.
-"""
-analysis.n_cores = 1
-
-"""
 Imaging and interferometer datasets observe completely different properties of the, such that the galaxy appears 
 completely different in the imaging data (e.g. optical emission) and sub-millimeter wavelengths, meaning a completely 
 different model should be used for each dataset.
+
+For this reason, we move all model composition to the `AnalysisFactor` class, which allows us to fit the two datasets
+simultaneously but with different models.
+
+There is actually no benefit to fitting both simultaneously when the model for each fit is completely different, 
+so this is simply an illustration of how to combine two different datasets. However, if you do this combination
+of datasets you should not do them simultaneously unless you update the model to link them together.
 """
-analysis = analysis.with_free_parameters(model.galaxies.galaxy)
+analysis_factor_list = []
+
+for analysis in [analysis_imaging, analysis_interferometer]:
+
+    bulge = af.Model(ag.lp_linear.Sersic)
+    disk = af.Model(ag.lp_linear.Exponential)
+
+    galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
+
+    model_analysis = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+    analysis_factor = af.AnalysisFactor(prior_model=model_analysis, analysis=analysis)
+
+    analysis_factor_list.append(analysis_factor)
+
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
+
+"""
+The `info` of the model shows us there are two models, one for the imaging dataset and one for the interferometer
+dataset. 
+"""
+print(factor_graph.global_prior_model.info)
 
 """
 __Search__
-
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Nautilus (https://nautilus.readthedocs.io/en/latest/).
-
-A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
 search = af.Nautilus(
     path_prefix=path.join("multi", "modeling"),
@@ -165,14 +153,8 @@ search = af.Nautilus(
 
 """
 __Model-Fit__
-
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
 """
-result_list = search.fit(model=model, analysis=analysis)
+result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 
 """
 __Result__

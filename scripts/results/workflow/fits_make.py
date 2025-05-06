@@ -25,7 +25,7 @@ Internally, splicing uses standard Astorpy functions to open, edit and save .fit
 __CSV, Png and Fits__
 
 Workflow functionality closely mirrors the `png_make.py` and `fits_make.py`  examples, which load results of
-model-fits and output th em as .png files and .fits files to quickly summarise results. 
+model-fits and output th em as .png files and .fits files to quickly summarise results.
 
 The same initial fit creating results in a folder called `results_folder_csv_png_fits` is therefore used.
 
@@ -53,6 +53,7 @@ because it is optimized for fast querying of results.
 See the package `results/database` for a full description of how to set up the database and the benefits it provides,
 especially if loading results from hard-disk is slow.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -169,7 +170,7 @@ This runs on all results the `Aggregator` object has loaded from the `output` fo
 where two model-fits are loaded, the `image` object contains two images.
 """
 hdu_list = agg_fits.extract_fits(
-    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
+    hdus=[ag.agg.fits_fit.model_data, ag.agg.fits_fit.residual_map],
 )
 
 """
@@ -206,7 +207,7 @@ We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_fol
 agg_fits.output_to_folder(
     folder=workflow_path,
     name="unique_tag",
-    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
+    hdus=[ag.agg.fits_fit.model_data, ag.agg.fits_fit.residual_map],
 )
 
 """
@@ -223,7 +224,7 @@ print([search.unique_tag for search in agg.values("search")])
 agg_fits.output_to_folder(
     folder=workflow_path,
     name=["hi_0.fits", "hi_1.fits"],
-    hdus=[ag.agg.fits_fit.model_image, ag.agg.fits_fit.residual_map],
+    hdus=[ag.agg.fits_fit.model_data, ag.agg.fits_fit.residual_map],
 )
 
 

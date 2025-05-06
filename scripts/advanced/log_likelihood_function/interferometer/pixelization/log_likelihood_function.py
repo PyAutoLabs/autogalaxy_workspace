@@ -30,6 +30,7 @@ concepts used in this script:
 This script repeats all text and code examples in the above likelihood function examples. It therefore can be used to
 learn about the linear light profile likelihood function without reading other likelihood scripts.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

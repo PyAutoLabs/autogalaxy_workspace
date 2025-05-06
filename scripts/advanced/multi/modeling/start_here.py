@@ -1,6 +1,6 @@
 """
-Modeling: Light Parametric
-==========================
+Modeling: Multi Modeling
+========================
 
 This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:
 
@@ -10,20 +10,8 @@ Two images are fitted, corresponding to a greener ('g' band) and redder image (`
 
 This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for galaxy modeling. Thus,
 certain parts of code are not documented to ensure the script is concise.
-
-__Linear Light Profiles__
-
-The example `multi/light_parametric_linear.py` shows an example scripts which use linear light profiles,
-where the `intensity` parameters of each light profile components is solved via linear algebra.
-
-These can straight forwardly be used for multi-wavelength datasets, by simply changing the light profiles
-in the model below from `ag.lp_linear.Sersic` to `ag.lp_linear.Sersic`.
-
-In this script, we make the `intensity` parameter of each component a free parameter in every waveband of imaging,
-increasing the number of free parameters and dimensionality of non-linear parameter space for every waveband of
-imaging we fit. By using linear light profiles, each component can effectively have a free `intensity` in a way that
-does not make parameter space more complex.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -127,44 +115,31 @@ for dataset in dataset_list:
     dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
 
 """
-__Analysis__
-
-We create an `Analysis` object for every dataset.
-"""
-analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
-
-"""
-By summing this list of analysis objects, we create an overall `CombinedAnalysis` which we can use to fit the 
-multi-wavelength imaging data, where:
-
- - The log likelihood function of this summed analysis class is the sum of the log likelihood functions of each 
- individual analysis objects (e.g. the fit to each separate waveband).
-
- - The summing process ensures that tasks such as outputting results to hard-disk, visualization, etc use a 
- structure that separates each analysis and therefore each dataset.
- 
- - Next, we will use this combined analysis to parameterize a model where certain galaxy parameters vary across
- the dataset.
-"""
-analysis = sum(analysis_list)
-
-"""
-We can parallelize the likelihood function of these analysis classes, whereby each evaluation is performed on a 
-different CPU.
-"""
-analysis.n_cores = 1
-
-"""
 __Model__
 
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
  - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
- 
+
  - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
- 
+
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
+
+__Model Extension__
+
+Galaxies change appearance across wavelength, for example their size.
+
+Models applied to combined analyses can be extended to include free parameters specific to each dataset. In this example,
+we want the galaxy's effective radii to vary across the g and r-band datasets, which will be illustrated below.
+
+__Linear Light Profiles__
+
+As an advanced user you should be familiar wiht linear light profiles, see elsewhere in the workspace for informaiton
+if not.
+
+For multi wavelength dataset modeling, the `lp_linear` API is extremely powerful as the `intensity` varies across
+the datasets, meaning that making it linear reduces the dimensionality of parameter space significantly.
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -174,22 +149,68 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-Galaxies change appearance across wavelength, with the most significant change in their brightness.
+__Analysis List__
 
-Models applied to summed analyses can be extended to include free parameters specific to each dataset. In this example,
-we want the galaxy's effective radii to vary across the g and r-band datasets.
+Set up two instances of the `Analysis` class object, one for each dataset.
+"""
+analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 
-The API for doing this is shown below, where by inputting the `effective_radius` model parameters to the `with_free_parameter` 
-method the effective_radius of the lens's bulge and source's bulge become free parameters across every analysis object.
+"""
+__Analysis Factor__
+
+Each analysis object is wrapped in an `AnalysisFactor`, which pairs it with the model and prepares it for use in a 
+factor graph. This step allows us to flexibly define how each dataset relates to the model.
+
+The term "Factor" comes from factor graphs, a type of probabilistic graphical model. In this context, each factor 
+represents the connection between one dataset and the shared model.
+
+The API for extending the model across datasets is shown below, by overwriting the `effective_radius`
+variables of the model passed to each `AnalysisFactor` object with new priors, making each dataset have its own
+`effective_radius` free parameter.
 
 NOTE: Other aspects of galaxies may vary across wavelength, none of which are included in this example. The API below 
 can easily be extended to include these additional parameters, and the `features` package explains other tools for 
 extending the model across datasets.
 """
-analysis = analysis.with_free_parameters(
-    model.galaxies.galaxy.bulge.effective_radius,
-    model.galaxies.galaxy.disk.effective_radius,
-)
+analysis_factor_list = []
+
+for analysis in analysis_list:
+
+    model_analysis = model.copy()
+    model_analysis.galaxies.galaxy.bulge.effective_radius = af.UniformPrior(
+        lower_limit=0.0, upper_limit=10.0
+    )
+
+    analysis_factor = af.AnalysisFactor(prior_model=model_analysis, analysis=analysis)
+
+    analysis_factor_list.append(analysis_factor)
+
+"""
+__Factor Graph__
+
+All `AnalysisFactor` objects are combined into a `FactorGraphModel`, which represents a global model fit to 
+multiple datasets using a graphical model structure.
+
+The key outcomes of this setup are:
+
+ - The individual log likelihoods from each `Analysis` object are summed to form the total log likelihood 
+   evaluated during the model-fitting process.
+   
+ - Results from all datasets are output to a unified directory, with subdirectories for visualizations 
+   from each analysis object, as defined by their `visualize` methods.
+
+This is a basic use of **PyAutoFit**'s graphical modeling capabilities, which support advanced hierarchical 
+and probabilistic modeling for large, multi-dataset analyses.
+"""
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
+
+"""
+To inspect this new model, with extra parameters for each dataset created, we 
+print `factor_graph.global_prior_model.info`.
+"""
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
+
+print(factor_graph.global_prior_model.info)
 
 """
 __Search__
@@ -204,8 +225,15 @@ search = af.Nautilus(
 
 """
 __Model-Fit__
+
+To fit multiple datasets, we pass the `FactorGraphModel` to a non-linear search.
+
+Unlike single-dataset fitting, we now pass the `factor_graph.global_prior_model` as the model and 
+the `factor_graph` itself as the analysis object.
+
+This structure enables simultaneous fitting of multiple datasets in a consistent and scalable way.
 """
-result_list = search.fit(model=model, analysis=analysis)
+result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 
 """
 __Result__
@@ -240,5 +268,14 @@ plotter = aplt.NestPlotter(samples=result_list.samples)
 plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+__Wrap Up__
+
+This simple example introduces the basic API for fitting multiple datasets with a shared model.
+
+It should already be quite intuitive how this API can be adapted to fit more complex models, or fit different
+datasets with different models. For example, an `AnalysisImaging` and `AnalysisInterferometer` can be combined, into
+a single factor graph model, to simultaneously fit a imaging and interferometric data.
+
+The `advanced/multi/modeling` package has more examples of how to fit multiple datasets with different models,
+including relational models that vary parameters across datasets as a function of wavelength.
 """

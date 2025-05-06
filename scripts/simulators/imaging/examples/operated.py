@@ -6,7 +6,7 @@ This script simulates `Imaging` of a galaxy using light profiles where:
 
  - The galaxy's bulge is an `Sersic`.
  - The galaxy has a point source of emission at its centre which is modeled as a operated `Gaussian`.
- 
+
 __Advanced__
 
 This is an advanced simulator script, meaning that detailed explanations of certain code are omitted. Refer to
@@ -16,6 +16,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

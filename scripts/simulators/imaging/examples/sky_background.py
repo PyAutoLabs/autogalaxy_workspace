@@ -5,7 +5,7 @@ Simulator: Sky Background
 This script simulates `Imaging` of a galaxy where the sky background is not subtracted from the image and therefore
 appears in the dataset.
 
-It is used to demonstrate sky background modeling in 
+It is used to demonstrate sky background modeling in
 the `autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example.
 
 __Model__
@@ -19,6 +19,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

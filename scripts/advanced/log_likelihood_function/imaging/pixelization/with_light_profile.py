@@ -13,6 +13,7 @@ You must read through the following likelihood functions first:
 
  - `pixelization/log_likelihood_function.py` the likelihood function for a pixelization.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

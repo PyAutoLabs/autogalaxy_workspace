@@ -24,6 +24,7 @@ Lets first import autogalaxy, its plotting module and the other libraries we'll 
 
 You'll see these imports in the majority of workspace examples.
 """
+
 # %matplotlib inline
 
 import autogalaxy as ag

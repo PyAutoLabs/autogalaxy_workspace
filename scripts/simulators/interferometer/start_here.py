@@ -6,6 +6,7 @@ This script simulates `Interferometer` data of a galaxy where:
 
  - The galaxy's bulge is an `Sersic`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

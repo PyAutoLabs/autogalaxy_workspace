@@ -42,6 +42,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -125,7 +126,8 @@ __Analysis__
 
 We create an `Analysis` object for every dataset.
 
-We do not sum the analyses, like we do in most other example scripts, as we are going to fit each dataset one-by-one.
+We do not combine the analyses using a factor graph, like we do in most other example scripts, as we are going to fit 
+each dataset one-by-one.
 """
 analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 

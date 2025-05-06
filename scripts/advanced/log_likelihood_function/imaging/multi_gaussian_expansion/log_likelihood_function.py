@@ -26,6 +26,7 @@ linear light profiles, therefore you must read the following notebooks before th
 - `light_profile/log_likelihood_function.ipynb`.
 - `linear_light_profile/log_likelihood_function.ipynb`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

@@ -16,6 +16,7 @@ results API.
 If you are not familiar with the modeling API and process, checkout the `autogalaxy_workspace/examples/modeling`
 folder for examples.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

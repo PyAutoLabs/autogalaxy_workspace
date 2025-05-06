@@ -7,6 +7,7 @@ This script simulates `Imaging` of a galaxy using light profiles where:
  - The galaxy's bulge is an `Sersic`.
  - The galaxy's disk is an `Exponential`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

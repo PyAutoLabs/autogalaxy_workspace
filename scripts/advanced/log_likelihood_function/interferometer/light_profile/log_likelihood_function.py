@@ -1,7 +1,7 @@
 """
 __Log Likelihood Function: Parametric__
 
-This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data 
+This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data
 with parametric light profiles (e.g. a Sersic bulge and Exponential disk).
 
 This script has the following aims:
@@ -14,6 +14,7 @@ Accompanying this script is the `contributor_guide.py` which provides URL's to e
 is illustrated in this guide. This gives contributors a sequential run through of what source-code functions, modules and
 packages are called when the likelihood is evaluated.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

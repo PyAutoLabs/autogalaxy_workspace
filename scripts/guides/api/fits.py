@@ -41,6 +41,7 @@ functionality that interfacts with the `FitImaging` object.
 This is described in the dedicated example scripts `modeling/features/linear_light_profiles.py`
 and `modeling/features/pixelizaiton.py`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

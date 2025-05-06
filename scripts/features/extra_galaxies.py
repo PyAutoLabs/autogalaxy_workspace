@@ -9,11 +9,11 @@ to ensure it does not impact the model-fit. In this script, we first illustrate 
 different approaches to masking the emission of these extra galaxies which is appropriate for different models.
 
 Next, we consider a different approach which extends the modeling API to include these extra galaxies in the model-fit.
-This includes light profiles for every galaxy which fit and subtract their emission. The centres of each galaxy (e.g. 
-their brightest pixels in the data)  are used as the centre of the light and mass profiles of these galaxies, in 
+This includes light profiles for every galaxy which fit and subtract their emission. The centres of each galaxy (e.g.
+their brightest pixels in the data)  are used as the centre of the light and mass profiles of these galaxies, in
 order to reduce model complexity.
 
-The second approach is more complex and computationally expensive, but if the emission of the extra galaxies blends 
+The second approach is more complex and computationally expensive, but if the emission of the extra galaxies blends
 significantly with the main galaxy emission, it is the best approach to take.
 
 The script concludes with some advanced approaches to modeling extra galaxies, for example where their light is modeled
@@ -36,6 +36,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

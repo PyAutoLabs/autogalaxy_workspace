@@ -37,6 +37,7 @@ these in memory before the non-linear search begins such that they are not recom
 
 In this example no preloading occurs.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

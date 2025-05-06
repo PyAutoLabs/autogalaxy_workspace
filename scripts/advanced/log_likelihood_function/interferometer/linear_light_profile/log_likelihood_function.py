@@ -28,6 +28,7 @@ __Prerequisites__
 The likelihood function of linear light profiles builds on that used for standard parametric light profiles, therefore
 you should read the `light_profile/log_likelihood_function.py` script before this script.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

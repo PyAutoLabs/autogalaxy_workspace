@@ -10,6 +10,7 @@ are initialized in a robust manner, ensuring automated modeling.
 This example script shows how models can be fitted via chaining and output /loaded from to .json files in order
 to combine search chaining with graphical models.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
