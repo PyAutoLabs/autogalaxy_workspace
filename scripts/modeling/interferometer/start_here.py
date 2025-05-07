@@ -39,7 +39,6 @@ directly to the visiblities. We use a non-uniform fast Fourier transform, which 
 interferometer datasets containing ~1-10 million visibilities.
 """
 dataset_name = "simple"
-dataset_name = "simple_offset_centre"
 dataset_path = path.join("dataset", "interferometer", dataset_name)
 
 dataset = ag.Interferometer.from_fits(
