@@ -249,7 +249,7 @@ curvature_reg_matrix = np.add(curvature_matrix, regularization_matrix)
 reconstruction = np.linalg.solve(curvature_reg_matrix, data_vector)
 
 """
-__Likelihood Step: Fast Chi Squared__
+__Fast Chi Squared__
 
 In the `pixelization/log_likelihood_function.py` example the mapped reconstructed visibilities were another quantity 
 computed which used the `transformed_mapping_matrix` matrix, which is another step that must skip computing this matrix.

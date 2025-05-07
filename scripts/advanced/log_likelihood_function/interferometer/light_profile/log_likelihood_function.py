@@ -127,7 +127,7 @@ $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
 """
-First we transform `dataset.grids.lp` to the centre of profile and rotate it using its angle.
+Transform `dataset.grids.lp` to the centre of profile and rotate it using its angle.
 """
 transformed_grid = profile.transformed_to_reference_frame_grid_from(
     grid=dataset.grids.lp
@@ -215,7 +215,7 @@ them together.
 galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk)
 
 """
-__Likelihood Step 1: Galaxy Image__
+__Galaxy Image__
 
 Compute a 2D image of the galaxy's light as the sum of its individual light profiles (the `Sersic` 
 bulge and `Exponential` disk). 
@@ -234,7 +234,7 @@ whose light is convolved into the masked, is also computed at this point.
 For interferometer data, this is not necessary as the Fourier transform of the real-space image to the uv-plane 
 does not require that the emission from outside the mask is accounted for.
 
-__Likelihood Step 2: Fourier Transform__
+__Fourier Transform__
 
 Fourier Transform the 2D image of the galaxy above using the Non Uniform Fast Fourier Transform (NUFFT).
 """
@@ -257,7 +257,7 @@ grid_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 3: Likelihood Function__
+__Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
 
@@ -269,7 +269,7 @@ The likelihood function for parametric galaxy modeling consists of two terms:
 
 We now explain what each of these terms mean.
 
-__Likelihood Step 4: Chi Squared__
+__Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
@@ -303,7 +303,7 @@ grid_2d_plotter = aplt.Grid2DPlotter(grid=chi_squared_map.in_grid)
 grid_2d_plotter.figure_2d()
 
 """
-__Likelihood Step 5: Noise Normalization Term__
+__Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -316,7 +316,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 6: Calculate The Log Likelihood__
+__Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.
@@ -328,8 +328,7 @@ print(figure_of_merit)
 """
 __Fit__
 
-This 6 step process to perform a likelihood function evaluation is what is performed in the `FitInterferometer` object, 
-which those of you familiar will have seen before.
+This process to perform a likelihood function evaluation performed via the `FitInterferometer` object.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 

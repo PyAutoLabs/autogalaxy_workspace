@@ -29,7 +29,7 @@ which can be found in the `light_profiles.linear` package:
 This is the module which is imported as `lp_linear` and allows us to create light profiles via the
 `ag.lp.Linear` API.
 
-__Likelihood Step 1: LightProfileLinearObjFuncList__
+__LightProfileLinearObjFuncList__
 
 This step passed the linear light profiles into the `LightProfileLinearObjFuncList` object, which acts as an
 interface between the linear light profiles and the linear algebra used to compute their intensity via the inversion.

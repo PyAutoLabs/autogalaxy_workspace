@@ -124,7 +124,7 @@ $\epsilon_{2} =\frac{1-q}{1+q} \cos 2\phi.$
 profile = ag.EllProfile(centre=(0.1, 0.2), ell_comps=(0.1, 0.2))
 
 """
-First we transform `masked_dataset.grids.lp` to the centre of profile and rotate it using its angle.
+Transform `masked_dataset.grids.lp` to the centre of profile and rotate it using its angle.
 """
 transformed_grid = profile.transformed_to_reference_frame_grid_from(
     grid=masked_dataset.grids.lp
@@ -212,7 +212,7 @@ them together.
 galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk)
 
 """
-__Likelihood Step 1: Galaxy Image__
+__Galaxy Image__
 
 Compute a 2D image of the galaxy's light as the sum of its individual light profiles (the `Sersic` 
 bulge and `Exponential` disk). 
@@ -239,7 +239,7 @@ galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_dataset.grids.blu
 galaxy_plotter.figures_2d(image=True)
 
 """
-__Likelihood Step 2: Convolution__
+__Convolution__
 
 Convolve the 2D image of the galaxy above with the PSF in real-space (as opposed to via an FFT) using a `Convolver`.
 """
@@ -251,7 +251,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=convolved_image_2d)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step 3: Likelihood Function__
+__Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
 
@@ -263,7 +263,7 @@ The likelihood function for parametric galaxy modeling consists of two terms:
 
 We now explain what each of these terms mean.
 
-__Likelihood Step 4: Chi Squared__
+__Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
@@ -297,7 +297,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=chi_squared_map)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step 5: Noise Normalization Term__
+__Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -310,7 +310,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 6: Calculate The Log Likelihood__
+__Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.

@@ -62,7 +62,7 @@ which is computed here:
 - See the method `blurring_grid`: https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/dataset/imaging/dataset.py
 
 
-__Likelihood Step 2: Fourier Transform__
+__Fourier Transform__
 
 The Non-Uniform Fast Fourier Transform (NUFFT) uses one of the `Transformer` objects and its method `visibilities_from`
 

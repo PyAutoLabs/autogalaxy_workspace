@@ -25,8 +25,10 @@ packages are called when the likelihood is evaluated.
 
 __Prerequisites__
 
-The likelihood function of linear light profiles builds on that used for standard parametric light profiles, therefore
-you should read the `light_profile/log_likelihood_function.py` script before this script.
+The likelihood function of a linear light profile builds on that used for standard parametric light profiles,
+therefore you must read the following notebooks before this script:
+
+- `light_profile/log_likelihood_function.ipynb`.
 """
 
 # %matplotlib inline
