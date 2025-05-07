@@ -227,6 +227,52 @@ agg_fits.output_to_folder(
     hdus=[ag.agg.fits_fit.model_data, ag.agg.fits_fit.residual_map],
 )
 
+"""
+__CSV Files__
+
+In the results `image` folder .csv files containing the information to visualize aspects of a result may be present.
+
+A common example is the file `source_plane_reconstruction_0.csv`, which contains the y and x coordinates of the 
+pixelization mesh, the reconstruct values and the noise map of these values.
+
+The `AggregateFITS` object has a method `extract_csv` which extracts this table from each .csv file in the results,
+returning the extracted data as a list of dictionaries. This can then be used to visualize the data, and output
+it to a .fits file elsewhere.
+
+Below, we demonstrate a common use case for a pixelization. Each .csv file is loaded, benefitting from the fact
+that because it stores the irregular mesh values it is the most accurate way to store the data whilst also using
+much less hard-disk space than, for example. converting it to a 2D array and .fits file. We then use the
+loaded values to interpolate the data onto a regular grid and output it to .fits files in a folder.
+
+The code below is commented out because the model does not use a pixelization, but it does work if a
+pixelization is used.
+"""
+# reconstruction_dict_list = agg_fits.extract_csv(
+#     filename="source_plane_reconstruction_0",
+# )
+#
+# from scipy.interpolate import griddata
+#
+# for i, reconstruction_dict in enumerate(reconstruction_dict_list):
+#
+#     y = reconstruction_dict["y"]
+#     x = reconstruction_dict["x"]
+#     values = reconstruction_dict["reconstruction"]
+#
+#     points = np.stack(
+#         arrays=(reconstruction_dict["x"], reconstruction_dict["y"]), axis=-1
+#     )
+#
+#     interpolation_grid = al.Grid2D.from_extent(
+#         extent=(-1.0, 1.0, -1.0, 1.0), shape_native=(201, 201)
+#     )
+#
+#     interpolated_array = griddata(points=points, values=values, xi=interpolation_grid)
+#
+#     al.output_to_fits(
+#         values=interpolated_array,
+#         file_path=workflow_path / f"interpolated_reconstruction_{i}.fits",
+#     )
 
 """
 __Add Extra Fits__
