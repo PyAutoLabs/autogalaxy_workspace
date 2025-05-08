@@ -4,7 +4,7 @@ __Log Likelihood Function: Multi Gaussian Expansion__
 This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with
 a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.
 
-You should be familiarwith the `log_likelihood_function` of a parametric linear light profile before reading this script,
+You should be familiar with the `log_likelihood_function` of a parametric linear light profile before reading this script,
 which is described in the `log_likelihood_function/imaging/linear_light_profile/log_likelihood_function.ipynb` notebook.
 
 This script has the following aims:
@@ -89,7 +89,7 @@ bulge = ag.lp.Sersic(
 image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 
 """
-__Likelihood Setup: Multiple Gaussians & Linear Light Profiles__
+__Multiple Gaussians & Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
 module instead of the `lp` module used throughout other example scripts. 
@@ -232,6 +232,9 @@ galaxy object computed each individual light profile's image and added them toge
 This no longer occurs for linear light profiles or basis objects. Instead, each linear light profile is passed into the 
 `LightProfileLinearObjFuncList` object, which acts as an interface between the linear light profiles and the
 linear algebra used to compute their intensity via the inversion.
+
+For an MGE, we input the whole `Basis` object into the `LightProfileLinearObjFuncList` object, which
+contains all the Gaussian linmear light profiles.
 
 The quantities used to compute the image, blurring image and blurred image of each light profiles (the
 dataset grid, PSF, etc.) are passed to the `LightProfileLinearObjFuncList` object, because it internally uses these
@@ -648,6 +651,9 @@ fit = ag.FitImaging(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 The fit contains an `Inversion` object, which handles all the linear algebra we have covered in this script.

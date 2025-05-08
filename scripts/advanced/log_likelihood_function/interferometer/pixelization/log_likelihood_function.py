@@ -123,7 +123,7 @@ grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.pixelization)
 grid_plotter.figure_2d()
 
 """
-__Likelihood Setup: Galaxy__
+__Galaxy__
 
 We combine the pixelization into a single `Galaxy` object.
 
@@ -253,7 +253,7 @@ mapper_plotter.subplot_image_and_mapper(
 """
 __Mapping Matrix__
 
-The `mapping_matrix` represents the image-pixel to pixelization-pixel mappings above in a 2D matrix. 
+The `mapping_matrix` represents the image-pixel to source-pixel mappings above in a 2D matrix. 
 
 It has dimensions `(total_image_pixels, total_rectangular_pixels)`.
 
@@ -791,6 +791,9 @@ fit = ag.FitInterferometer(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitInterferometerPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 __Galaxy Modeling__

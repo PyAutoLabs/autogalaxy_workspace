@@ -146,7 +146,7 @@ print(
 )
 
 """
-__Likelihood Setup: Light Profiles (Setup)__
+__Light Profiles (Setup)__
 
 To perform a likelihood evaluation we now compose our galaxy model.
 
@@ -199,7 +199,7 @@ disk_plotter = aplt.LightProfilePlotter(light_profile=disk, grid=masked_dataset.
 disk_plotter.figures_2d(image=True)
 
 """
-__Likelihood Setup: Galaxy__
+__Galaxy__
 
 We now combine the light profiles into a single `Galaxy` object.
 
@@ -329,6 +329,9 @@ galaxies = ag.Galaxies(galaxies=[galaxy])
 fit = ag.FitImaging(dataset=masked_dataset, galaxies=galaxies)
 fit_figure_of_merit = fit.figure_of_merit
 print(fit_figure_of_merit)
+
+fit_plotter = aplt.FitInterferometerPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 
 """

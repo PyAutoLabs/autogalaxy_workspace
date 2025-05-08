@@ -85,7 +85,7 @@ bulge = ag.lp.Sersic(
 image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 
 """
-__Likelihood Setup: Linear Light Profiles__
+__Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
 module instead of the `lp` module used throughout other example scripts. 
@@ -208,7 +208,7 @@ The `blurred_mapping_matrix` is a matrix analogous to the mapping matrix, but wh
 light profile after it has been blurred by the PSF.
 
 This operation does not change the dimensions of the mapping matrix, meaning the `blurred_mapping_matrix` also has
-dimensions `(total_image_pixels, total_rectangular_pixels)`. 
+dimensions `(total_image_pixels, total_linear_light_profiles)`. 
 
 The property is actually called `operated_mapping_matrix_override` for two reasons: 
 
@@ -228,9 +228,12 @@ bulge_image = blurred_mapping_matrix[:, 0]
 print(bulge_image)
 
 """
-A 2D plot of the `mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
+A 2D plot of the `blurred_mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
 """
-plt.imshow(mapping_matrix, aspect=(mapping_matrix.shape[1] / mapping_matrix.shape[0]))
+plt.imshow(
+    blurred_mapping_matrix,
+    aspect=(blurred_mapping_matrix.shape[1] / blurred_mapping_matrix.shape[0]),
+)
 plt.show()
 plt.close()
 
@@ -505,7 +508,7 @@ print(figure_of_merit)
 """
 __Fit__
 
-This 9 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
+This process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
@@ -524,6 +527,9 @@ fit = ag.FitImaging(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 The fit contains an `Inversion` object, which handles all the linear algebra we have covered in this script.
@@ -559,6 +565,10 @@ non-linear search algorithm.
 
 The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)
 but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms. 
+
+For linear light profiles, the reduced number of free parameters (e.g. the `intensity` values are solved for
+via linear algebra and not a dimension of the non-linear parameter space) means that the sampler converges in fewer
+iterations and is less likely to infer a local maximum.
 
 __Wrap Up__
 
