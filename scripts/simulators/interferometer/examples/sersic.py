@@ -33,8 +33,7 @@ dataset_type = "interferometer"
 dataset_name = "simple__sersic"
 
 """
-The path where the dataset will be output, which in this case is
-`/autogalaxy_workspace/dataset/interferometer/simple__sersic`
+The path where the dataset will be output.
 """
 dataset_path = path.join("dataset", dataset_type, dataset_name)
 

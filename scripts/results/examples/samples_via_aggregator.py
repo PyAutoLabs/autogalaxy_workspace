@@ -2,7 +2,7 @@
 Database: Samples
 =================
 
-In the script `autogalaxy_workspace/*/imaging/results/examples/samples.py` we show how to inspect the non-linear
+In the script `autogalaxy_workspace/*/results/examples/samples.py` we show how to inspect the non-linear
 search samples from a result.
 
 We have also shown how to use the `Aggregator` to load the samples of a non-linear search from hard-disk or a

@@ -202,7 +202,7 @@ __Samples__
 The result's `Samples` object contains the complete set of non-linear search nautilus samples, where each sample 
 corresponds to a set of model parameters that were evaluated and accepted. 
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/samples.py` provides a detailed description of 
+The examples script `autogalaxy_workspace/*/results/examples/samples.py` provides a detailed description of 
 this object, including:
 
  - Extracting the maximum likelihood model.
@@ -290,7 +290,7 @@ The guide `autogalaxy_workspace/*/guides/galaxies.py` provides a detailed descri
  - Inspecting mass model components like the convergence, potential and deflection angles.
  - Other lensing quantities like the critical curve and caustics.
 
-The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+The example result script `autogalaxy_workspace/*/results/examples/galaxies_fits.py` show how to use 
 model-fitting results specific functionality of galaxies, including:
 
  - Drawing galaxies from the samples and plotting their images.
@@ -317,7 +317,7 @@ The guide `autogalaxy_workspace/*/guides/fits.py` provides a detailed descriptio
  - Inspecting the model data, residual-map, chi-squared, noise-map of the fit.
  - Other properties of the fit that inspect how good it is.
 
-The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+The example result script `autogalaxy_workspace/*/results/examples/galaxies_fits.py` show how to use 
 model-fitting results specific functionality of galaxies, including:
 
  - Repeating fits using the results contained in the samples.
@@ -377,7 +377,7 @@ __Pixelization__
 
 The model can reconstruct the galaxy using a pixelization, for example on a Voronoi mesh.
 
-The example script `autogalaxy_workspace/*/imaging/results/examples/pixelizations.py` describes using pixelization 
+The example script `autogalaxy_workspace/*/results/examples/pixelizations.py` describes using pixelization 
 results including:
 
  - Producing galaxy reconstructions using the Voronoi mesh, Delaunay triangulation or whichever mesh is used.

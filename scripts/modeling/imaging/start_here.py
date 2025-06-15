@@ -437,7 +437,7 @@ __Features__
 
 The examples in the `autogalaxy_workspace/*/imaging/modeling/features` package illustrate other modeling features. 
 
-We recommend you checkout the following four features, because the make modeling in general more reliable and 
+We recommend you checkout the following features, because the make modeling in general more reliable and 
 efficient (you will therefore benefit from using these features irrespective of the quality of your data and 
 scientific topic of study).
 

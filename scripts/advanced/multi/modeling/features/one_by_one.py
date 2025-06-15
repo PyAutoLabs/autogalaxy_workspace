@@ -137,7 +137,7 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
  
  - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
  
@@ -265,5 +265,5 @@ search = af.Nautilus(
 result = search.fit(model=model, analysis=analysis_list[0])
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **Pyautogalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **Pyautogalaxy**.
 """

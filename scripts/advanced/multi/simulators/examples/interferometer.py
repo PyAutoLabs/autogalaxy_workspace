@@ -35,8 +35,7 @@ dataset_label = "interferometer"
 dataset_name = "simple"
 
 """
-The path where the dataset will be output, which in this case is
-`/autogalaxy_workspace/dataset/multi/interferometer/simple`
+The path where the dataset will be output.
 """
 dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
 

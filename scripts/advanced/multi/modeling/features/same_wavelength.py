@@ -190,5 +190,5 @@ plotter = aplt.NestPlotter(samples=result_list.samples)
 plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
 """

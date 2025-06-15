@@ -91,7 +91,7 @@ tutorials.
 Workspace Version
 -----------------
 
-This version of the workspace is built and tested for using **PyAutoGalaxy v2025.5.7.16**.
+This version of the workspace is built and tested for using **PyAutoGalaxy v2025.5.10.1**.
 
 HowToGalaxy
 -----------

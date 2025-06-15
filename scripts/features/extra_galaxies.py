@@ -410,7 +410,7 @@ fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
 
 These examples show how the results API can be extended to investigate extra galaxies in the results.
 
@@ -436,7 +436,7 @@ https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
 __Multi Gaussian Expansion__
 
 The most powerful way to model the light of extra galaxies is to use a mutli Gaussian expansion (MGE), which is 
-documented in the `autogalaxy_workspace/*/imaging/features/multi_gaussian_expansion.py` example script.
+documented in the `autogalaxy_workspace/*/features/multi_gaussian_expansion.py` example script.
 
 The reasons for this will be expanded upon here in the future, but in brief the MGE can capture light profiles
 more complex than Sersic profiles using fewer parameters. It can therefore fit many extra galaxies in a model
