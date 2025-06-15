@@ -2,7 +2,7 @@
 Tutorial 6: Science Case
 ========================
 
-This tutorial shows a realistic science case. 
+This tutorial shows a realistic science case.
 
 We have a dataset containing 10 galaxies, each of which are made of an `Sersic` bulge and `Sersic` disk, where:
 
@@ -10,11 +10,12 @@ We have a dataset containing 10 galaxies, each of which are made of an `Sersic` 
  and `sigma=2.0`,
 
  - The `sersic_index` parameters of the disks are drawn from an independent parent Gaussian distribution with
- `mean=1.0` and `sigma=1.0`. 
+ `mean=1.0` and `sigma=1.0`.
 
 This tutorial fits this dataset using expectation propagation (EP) in order to infer the parameters of both parent
 hierarchical distributions.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

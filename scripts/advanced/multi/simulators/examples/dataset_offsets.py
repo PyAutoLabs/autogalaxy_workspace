@@ -28,6 +28,7 @@ Two images are simulated, corresponding to a greener ('g' band) redder image (`r
 This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for simulating images. Thus,
 certain parts of code are not documented to ensure the script is concise.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

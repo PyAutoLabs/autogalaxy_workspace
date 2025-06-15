@@ -2,8 +2,8 @@
 Imaging: Data Preparation
 =========================
 
-When a CCD imaging dataset is analysed, it must conform to certain standards in order for the 
-analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts which 
+When a CCD imaging dataset is analysed, it must conform to certain standards in order for the
+analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts which
 will help you prepare your dataset to adhere to them if it does not already.
 
 __Pixel Scale__
@@ -21,6 +21,7 @@ The pixel scale of some common telescopes is as follows:
 
 It is absolutely vital you use the correct pixel scale, so double check this value!
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

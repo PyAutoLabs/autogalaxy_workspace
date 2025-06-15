@@ -19,9 +19,10 @@ to illustrate the database in the database tutorials that follow.
 __Model__
 
 The search fits each galaxy with:
- 
+
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

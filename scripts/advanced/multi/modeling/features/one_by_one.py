@@ -42,6 +42,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -125,7 +126,8 @@ __Analysis__
 
 We create an `Analysis` object for every dataset.
 
-We do not sum the analyses, like we do in most other example scripts, as we are going to fit each dataset one-by-one.
+We do not combine the analyses using a factor graph, like we do in most other example scripts, as we are going to fit 
+each dataset one-by-one.
 """
 analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 
@@ -135,7 +137,7 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
  
  - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
  
@@ -263,5 +265,5 @@ search = af.Nautilus(
 result = search.fit(model=model, analysis=analysis_list[0])
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **Pyautogalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **Pyautogalaxy**.
 """

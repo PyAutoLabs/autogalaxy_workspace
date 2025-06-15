@@ -18,18 +18,13 @@ packages are called when the likelihood is evaluated.
 
 __Prerequisites__
 
-The likelihood function of pixelizations is the most complicated likelihood function.
+The likelihood function of a pixelization builds on that used for standard parametric light profiles and
+linear light profiles, therefore you must read the following notebooks before this script:
 
-It is advised you read through the following two simpler likelihood functions first, which break down a number of the
-concepts used in this script:
-
- - `interferometer/light_profile/log_likelihood_function.py` the likelihood function for a parametric light profile.
- - `imaging/linear_light_profile/log_likelihood_function.py` the likelihood function for a linear light profile, which
- introduces the linear algebra used for a pixelization but with a simpler use case.
-
-This script repeats all text and code examples in the above likelihood function examples. It therefore can be used to
-learn about the linear light profile likelihood function without reading other likelihood scripts.
+- `light_profile/log_likelihood_function.ipynb`.
+- `linear_light_profile/log_likelihood_function.ipynb`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -128,7 +123,7 @@ grid_plotter = aplt.Grid2DPlotter(grid=dataset.grids.pixelization)
 grid_plotter.figure_2d()
 
 """
-__Likelihood Setup: Galaxy__
+__Galaxy__
 
 We combine the pixelization into a single `Galaxy` object.
 
@@ -143,7 +138,7 @@ pixelization = ag.Pixelization(
 galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
 
 """
-__Likelihood Step: Rectangular Mesh__
+__Rectangular Mesh__
 
 The pixelization is used to create the rectangular mesh which is used to reconstruct the galaxy.
 
@@ -186,7 +181,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
 mapper_plotter.figure_2d()
 
 """
-__Likelihood Step: Image-Source Mapping__
+__Image-Source Mapping__
 
 We now combine grids computed above to create a `Mapper`, which describes how every masked image grid pixel maps to
 every rectangular pixelization pixel. 
@@ -256,9 +251,9 @@ mapper_plotter.subplot_image_and_mapper(
 )
 
 """
-__Likelihood Step: Mapping Matrix__
+__Mapping Matrix__
 
-The `mapping_matrix` represents the image-pixel to pixelization-pixel mappings above in a 2D matrix. 
+The `mapping_matrix` represents the image-pixel to source-pixel mappings above in a 2D matrix. 
 
 It has dimensions `(total_image_pixels, total_rectangular_pixels)`.
 
@@ -302,7 +297,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=array_2d)
 grid_plotter.figure_2d()
 
 """
-__Likelihood Step: Transformed Mapping Matrix ($f$)__
+__Transformed Mapping Matrix ($f$)__
 
 Each pixelization pixel can therefore be thought of as an image (where all entries of this image are zeros and ones). 
 
@@ -374,7 +369,7 @@ are the first entry of `mapping_matrix` whereas for $f$ they are the second inde
 print(f"Mapping between visibility 0 and rectangular pixel 2 = {mapping_matrix[0, 2]}")
 
 """
-__Likelihood Step: Data Vector (D)__
+__Data Vector (D)__
 
 To solve for the rectangular pixel fluxes we now pose the problem as a linear inversion.
 
@@ -423,7 +418,7 @@ print(data_vector)
 print(data_vector.shape)
 
 """
-__Likelihood Step: Curvature Matrix (F)__
+__Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
 dimensions `(total_rectangular_pixels, total_rectangular_pixels)`.
@@ -523,7 +518,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
 
 """
-__Likelihood Step: Regularization Matrix (H)__
+__Regularization Matrix (H)__
 
 Regularization adds a linear regularization term $G_{\rm L}$ to the $\chi^2$ we solve for giving us a new merit 
 function $G$ (equation 11 WD03):
@@ -577,7 +572,7 @@ plt.show()
 plt.close()
 
 """
-__Likelihood Step: F + Lamdba H__
+__F + Lamdba H__
 
 $H$ enters the linear algebra system we solve for as follows (WD03 equation (12)):
 
@@ -586,7 +581,7 @@ $H$ enters the linear algebra system we solve for as follows (WD03 equation (12)
 curvature_reg_matrix = np.add(curvature_matrix, regularization_matrix)
 
 """
-__Likelihood Step: Galaxy Reconstruction (s)__
+__Galaxy Reconstruction (s)__
 
 We can now solve the linear system above using NumPy linear algebra. 
 
@@ -605,7 +600,7 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
 
 """
-__Likelihood Step: Visibilities Reconstruction__
+__Visibilities Reconstruction__
 
 Using the reconstructed pixel fluxes we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
@@ -626,7 +621,7 @@ grid_plotter.figure_2d()
 
 
 """
-__Likelihood Step: Likelihood Function__
+__Likelihood Function__
 
 We now quantify the goodness-of-fit of our pixelization galaxy reconstruction. 
 
@@ -641,7 +636,7 @@ It was derived into **PyAutoGalaxy** notation in Dye 2008 (https://arxiv.org/abs
 
 We now explain what each of these terms mean.
 
-__Likelihood Step: Chi Squared__
+__Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
@@ -692,7 +687,7 @@ grid_plotter = aplt.Grid2DPlotter(grid=chi_squared_map.in_grid)
 grid_plotter.figure_2d()
 
 """
-__Likelihood Step: Regularization Term__
+__Regularization Term__
 
 The second term, $s^{T} H s$, corresponds to the $\lambda $G_{\rm L}$ regularization term we added to our merit 
 function above.
@@ -711,7 +706,7 @@ regularization_term = np.matmul(
 print(regularization_term)
 
 """
-__Likelihood Step: Complexity Terms__
+__Complexity Terms__
 
 Up to this point, it is unclear why we chose a value of `regularization_coefficient=1.0`. 
 
@@ -747,7 +742,7 @@ print(log_curvature_reg_matrix_term)
 print(log_regularization_matrix_term)
 
 """
-__Likelihood Step: Noise Normalization Term__
+__Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -762,7 +757,7 @@ noise_normalization_imag = np.sum(np.log(2 * np.pi * dataset.noise_map.imag**2.0
 noise_normalization = noise_normalization_real + noise_normalization_imag
 
 """
-__Likelihood Step: Calculate The Log Likelihood__
+__Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the five terms computed above using
 the likelihood function defined above.
@@ -783,7 +778,7 @@ print(log_evidence)
 """
 __Fit__
 
-This process to perform a likelihood function evaluation is what is performed in the `FitInterferometer` object.
+This process to perform a likelihood function evaluation performed via the `FitInterferometer` object.
 """
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
@@ -796,6 +791,9 @@ fit = ag.FitInterferometer(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitInterferometerPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 __Galaxy Modeling__

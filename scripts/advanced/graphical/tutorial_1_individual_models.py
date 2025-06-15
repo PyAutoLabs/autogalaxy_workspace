@@ -23,7 +23,7 @@ the `sersic_index`  the global parameter we seek to estimate.
 
 The data that we fit is going to be low resolution, meaning that our estimate of each `sersic_index` has large errors.
 To estimate the global Sersic index of the sample, this tutorial does not use graphical models, but instead estimates
-the `sersic_index` by fitting each dataset one-by-one and combining the results post model-fitting. This will act as a 
+the `sersic_index` by fitting each dataset one-by-one and combining the results post model-fitting. This will act as a
 point of comparison to tutorial 2, where we will fit for the sersic_index using graphical models.
 
 __Sample Simulation__
@@ -49,6 +49,7 @@ One can easily imagine datasets where the shared parameter is the same across th
 where cosmological parameters (e.g. the Hubble constant, H0) are included in the graphical mode. The tools introduced
 in tutorials 1 and 2 could therefore be used for many science cases!
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

@@ -52,6 +52,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -357,7 +358,7 @@ plotter = aplt.NestPlotter(samples=result.samples)
 plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**, which 
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**, which 
 includes a dedicated tutorial for linear objects like basis functions.
 
 __Regularization__

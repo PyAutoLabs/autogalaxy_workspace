@@ -9,11 +9,11 @@ to ensure it does not impact the model-fit. In this script, we first illustrate 
 different approaches to masking the emission of these extra galaxies which is appropriate for different models.
 
 Next, we consider a different approach which extends the modeling API to include these extra galaxies in the model-fit.
-This includes light profiles for every galaxy which fit and subtract their emission. The centres of each galaxy (e.g. 
-their brightest pixels in the data)  are used as the centre of the light and mass profiles of these galaxies, in 
+This includes light profiles for every galaxy which fit and subtract their emission. The centres of each galaxy (e.g.
+their brightest pixels in the data)  are used as the centre of the light and mass profiles of these galaxies, in
 order to reduce model complexity.
 
-The second approach is more complex and computationally expensive, but if the emission of the extra galaxies blends 
+The second approach is more complex and computationally expensive, but if the emission of the extra galaxies blends
 significantly with the main galaxy emission, it is the best approach to take.
 
 The script concludes with some advanced approaches to modeling extra galaxies, for example where their light is modeled
@@ -36,6 +36,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -409,7 +410,7 @@ fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
 fit_plotter.subplot_fit()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
 
 These examples show how the results API can be extended to investigate extra galaxies in the results.
 
@@ -435,7 +436,7 @@ https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
 __Multi Gaussian Expansion__
 
 The most powerful way to model the light of extra galaxies is to use a mutli Gaussian expansion (MGE), which is 
-documented in the `autogalaxy_workspace/*/imaging/features/multi_gaussian_expansion.py` example script.
+documented in the `autogalaxy_workspace/*/features/multi_gaussian_expansion.py` example script.
 
 The reasons for this will be expanded upon here in the future, but in brief the MGE can capture light profiles
 more complex than Sersic profiles using fewer parameters. It can therefore fit many extra galaxies in a model

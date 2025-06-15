@@ -11,6 +11,7 @@ provides interferometer observations of the same galaxy.
 
 It is used to demonstrate the combination of imaging and interferometer datasets.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -34,8 +35,7 @@ dataset_label = "interferometer"
 dataset_name = "simple"
 
 """
-The path where the dataset will be output, which in this case is
-`/autogalaxy_workspace/dataset/multi/interferometer/simple`
+The path where the dataset will be output.
 """
 dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
 

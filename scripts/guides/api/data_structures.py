@@ -5,7 +5,7 @@ Data Structures
 This tutorial illustrates the data structure objects which data and results quantities are stored using, which are
 extensions of NumPy arrays.
 
-These data structures are used because for different calculations it is convenient to store the data in different 
+These data structures are used because for different calculations it is convenient to store the data in different
 formats. For example, mapping images between 1D and 2D representations allows for more efficient PSF convolutions
 to be performed internally by **PyAutoGalaxy**.
 
@@ -29,6 +29,7 @@ arc seconds, luminosities in electrons per second and mass quantities (e.g. conv
 The guide `units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
 kiloparsecs, magnitudes and solar masses.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

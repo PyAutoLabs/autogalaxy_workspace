@@ -1,6 +1,6 @@
 """
-Modeling: Light Parametric
-========================================
+Modeling: Wavelength Dependence
+===============================
 
 This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:
 
@@ -22,6 +22,7 @@ of parameters across the datasets in a way that does not lead to a very complex 
 
 If a free `effective radius` is created for every dataset, this would add 5+ free parameters to the model for 5+ datasets.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -110,12 +111,19 @@ for dataset in dataset_list:
     dataset_plotter.subplot_dataset()
 
 """
+__Analysis__
+
+We create an `Analysis` object for every dataset.
+"""
+analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
+
+"""
 __Model__
 
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
  
  - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
 
@@ -131,10 +139,10 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 """
 __Model + Analysis__
 
-We now make the galaxy bulge and disk `effective)radius` a free parameter across every analysis object.
+We now make the galaxy bulge and disk `effective_radius` a free parameter across every analysis object.
 
 We will assume that the `effective_radius` of the galaxy linearly varies as a function of wavelength, and therefore 
-compute  the `effective_radius` value for each color image using a linear relation `y = mx + c`.
+compute the `effective_radius` value for each color image using a linear relation `y = mx + c`.
 
 The function below is not used to compose the model, but illustrates how the `effective_radius` values were computed
 in the corresponding `wavelength_dependence` simulator script.
@@ -170,31 +178,29 @@ The free parameters of our model there are no longer `effective_radius` values, 
 above. 
 
 The model complexity therefore does not increase as we add more parameters to the model.
-
-__Analysis__
-
-We create an `Analysis` object for every dataset and sum it to combine the analysis of all images.
 """
 
-analysis_list = []
+analysis_factor_list = []
 
-for wavelength, dataset in zip(wavelength_list, dataset_list):
+for wavelength, analysis in zip(wavelength_list, analysis_list):
     bulge_effective_radius = (wavelength * bulge_m) + bulge_c
     disk_effective_radius = (wavelength * disk_m) + disk_c
 
-    analysis_list.append(
-        ag.AnalysisImaging(dataset=dataset).with_model(
-            model.replacing(
-                {
-                    model.galaxies.galaxy.bulge.effective_radius: bulge_effective_radius,
-                    model.galaxies.galaxy.disk.effective_radius: disk_effective_radius,
-                }
-            )
-        )
-    )
+    model_analysis = model.copy()
 
-analysis = sum(analysis_list)
-analysis.n_cores = 1
+    model_analysis.galaxies.galaxy.bulge.effective_radius = bulge_effective_radius
+    model_analysis.galaxies.galaxy.disk.effective_radius = disk_effective_radius
+
+    analysis_factor = af.AnalysisFactor(prior_model=model_analysis, analysis=analysis)
+
+    analysis_factor_list.append(analysis_factor)
+
+"""
+The factor graph is created and its info can be printed after the relational model has been defined.
+"""
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
+
+print(factor_graph.global_prior_model.info)
 
 """
 __Search__
@@ -215,7 +221,7 @@ search = af.Nautilus(
 """
 __Model-Fit__
 """
-result_list = search.fit(model=model, analysis=analysis)
+result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 
 """
 __Result__
@@ -251,5 +257,5 @@ for result in result_list:
     plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
 """

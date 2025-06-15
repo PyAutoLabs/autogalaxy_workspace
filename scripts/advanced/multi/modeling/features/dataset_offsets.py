@@ -48,6 +48,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -140,29 +141,17 @@ We create an `Analysis` object for every dataset.
 analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 
 """
-Sum the analyses to create an overall analysis object, which sums the `log_likelihood_function` of each dataset
-and returns the overall likelihood of the model fit to the dataset.
-"""
-analysis = sum(analysis_list)
-
-"""
-We can parallelize the likelihood function of these analysis classes, whereby each evaluation is performed on a 
-different CPU.
-"""
-analysis.n_cores = 1
-
-"""
 __Model__
 
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - Parameters which shift the second dataset's image (y_offset_0, x_offset_0) relative to the first dataset's image
- are included via the `DatasetModel` object [2 parameters].
-
- - The galaxy's bulge is a linear parametric `Sersic` bulge [7 parameters]. 
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
  
  - The galaxy's disk is a linear parametric `Exponential` disk [6 parameters].
+ 
+  - Parameters which shift the the dataset's image (y_offset_0, x_offset_0) relative to one another are included,
+    however this model does not yet have free parameters and is customized in a moment.
  
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=17.
 """
@@ -178,18 +167,41 @@ model = af.Collection(
 )
 
 """
-We now make the dataset offsets vary across every analysis object.
+The `DatasetModel` can apply a shift to each dataset, however we do not want this to be applied to both
+datasets as they will then both have free parameters for the same offset, duplicating free parameters.
+
+The default prior on a `DatasetModel`'s offsets are actually not a prior, but fixed values of (0.0, 0.0),
+meaning that if we do not update the model the shift will not be applied to the datasets.
+
+We therefore update the `DatasetModel` below, to only apply a shift to the second dataset, which is the r-band image.
+
+If we add more datasets, the code will apply the shift to each one after the first dataset, which are all shifted
+relative to the first dataset, making it the reference point.
 """
-analysis = analysis.with_free_parameters(model.dataset_model.grid_offset)
+analysis_factor_list = []
+
+for i, analysis in enumerate(analysis_list):
+    model_analysis = model.copy()
+
+    if i > 0:
+        model_analysis.dataset_model.grid_offset.grid_offset_0 = af.UniformPrior(
+            lower_limit=-1.0, upper_limit=1.0
+        )
+        model_analysis.dataset_model.grid_offset.grid_offset_1 = af.UniformPrior(
+            lower_limit=-1.0, upper_limit=1.0
+        )
+
+    analysis_factor = af.AnalysisFactor(prior_model=model, analysis=analysis)
+
+    analysis_factor_list.append(analysis_factor)
+
+factor_graph = af.FactorGraphModel(*analysis_factor_list)
 
 """
-The default prior on a `DatasetModel`'s offsets are actually not a prior, but fixed values of (0.0, 0.0).
-
-We must therefore manually overwrite the prior on the offsets of datasets we wish to be included. 
-
-We updated the priors on the offsets of the second dataset to be GaussianPrior's with mean 0.0" and sigma 0.1".
+The `info` of the model shows us that the dataset shifts have been applied correctly, with only the shift
+to the second dataset having free parameters.
 """
-pass
+print(factor_graph.global_prior_model.info)
 
 """
 __Search__
@@ -205,7 +217,7 @@ search = af.Nautilus(
 """
 __Model-Fit__
 """
-result_list = search.fit(model=model, analysis=analysis)
+result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 
 """
 __Result__
@@ -238,5 +250,5 @@ for result in result_list:
     plotter.corner_anesthetic()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/results` for a full description of analysing results in **Pyautogalaxy**.
+Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **Pyautogalaxy**.
 """

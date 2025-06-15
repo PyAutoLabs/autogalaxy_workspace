@@ -6,6 +6,7 @@ This script fits `Interferometer` dataset of a galaxy with a model where:
 
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -38,7 +39,6 @@ directly to the visiblities. We use a non-uniform fast Fourier transform, which 
 interferometer datasets containing ~1-10 million visibilities.
 """
 dataset_name = "simple"
-dataset_name = "simple_offset_centre"
 dataset_path = path.join("dataset", "interferometer", dataset_name)
 
 dataset = ag.Interferometer.from_fits(

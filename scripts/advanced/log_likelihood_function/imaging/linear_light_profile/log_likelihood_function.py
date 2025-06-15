@@ -21,11 +21,12 @@ packages are called when the likelihood is evaluated.
 
 __Prerequisites__
 
-The likelihood function of linear light profiles builds on standard parametric light profiles.
+The likelihood function of a linear light profile builds on that used for standard parametric light profiles,
+therefore you must read the following notebooks before this script:
 
-Therefore you must read the `light_profile/log_likelihood_function.ipynb` notebook before this script, as content
-covered in that notebook will not be repeated in this script.
+- `light_profile/log_likelihood_function.ipynb`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -84,7 +85,7 @@ bulge = ag.lp.Sersic(
 image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 
 """
-__Likelihood Setup: Linear Light Profiles__
+__Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
 module instead of the `lp` module used throughout other example scripts. 
@@ -139,7 +140,7 @@ print("This will raise an exception")
 # bulge_plotter = aplt.LightProfilePlotter(light_profile=bulge, grid=masked_dataset.grid)
 
 """
-__Likelihood Step 1: LightProfileLinearObjFuncList__
+__LightProfileLinearObjFuncList__
 
 For standard light profiles, we combined our linear light profiles into a single `Galaxy` object. The 
 galaxy object computed each individual light profile's image and added them together.
@@ -170,7 +171,7 @@ print("Number of Parameters (Intensity Values) in Linear Algebra:")
 print(lp_linear_func.params)
 
 """
-__Likelihood Step 2: Mapping Matrix__
+__Mapping Matrix__
 
 The `mapping_matrix` is a matrix where each column is an image of each linear light profiles (assuming its 
 intensity is 1.0), not accounting for the PSF convolution.
@@ -195,7 +196,7 @@ plt.show()
 plt.close()
 
 """
-__Likelihood Step 2: Blurred Mapping Matrix ($f$)__
+__Blurred Mapping Matrix ($f$)__
 
 The `mapping_matrix` does not account for the blurring of the light profile images by the PSF and therefore 
 is not used directly to compute the likelihood.
@@ -207,7 +208,7 @@ The `blurred_mapping_matrix` is a matrix analogous to the mapping matrix, but wh
 light profile after it has been blurred by the PSF.
 
 This operation does not change the dimensions of the mapping matrix, meaning the `blurred_mapping_matrix` also has
-dimensions `(total_image_pixels, total_rectangular_pixels)`. 
+dimensions `(total_image_pixels, total_linear_light_profiles)`. 
 
 The property is actually called `operated_mapping_matrix_override` for two reasons: 
 
@@ -227,9 +228,12 @@ bulge_image = blurred_mapping_matrix[:, 0]
 print(bulge_image)
 
 """
-A 2D plot of the `mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
+A 2D plot of the `blurred_mapping_matrix` shows each light profile image in 1D, with a PSF convolution applied.
 """
-plt.imshow(mapping_matrix, aspect=(mapping_matrix.shape[1] / mapping_matrix.shape[0]))
+plt.imshow(
+    blurred_mapping_matrix,
+    aspect=(blurred_mapping_matrix.shape[1] / blurred_mapping_matrix.shape[0]),
+)
 plt.show()
 plt.close()
 
@@ -260,7 +264,7 @@ print(
 )
 
 """
-__Likelihood Step 3: Data Vector (D)__
+__Data Vector (D)__
 
 To solve for the linear light profile intensities we now pose the problem as a linear inversion.
 
@@ -314,7 +318,7 @@ print(data_vector)
 print(data_vector.shape)
 
 """
-__Likelihood Step 3: Curvature Matrix (F)__
+__Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
 dimensions `(total_linear_light_profiles, total_linear_light_profiles)`.
@@ -346,7 +350,7 @@ plt.close()
 
 
 """
-__Likelihood Step 4: Reconstruction (Positive-Negative)__
+__Reconstruction (Positive-Negative)__
 
 The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
 
@@ -379,7 +383,7 @@ print("Reconstruction (S) of Linear Light Profiles Intensity:")
 print(reconstruction)
 
 """
-__Likelihood Step 5: Reconstruction (Positive Only)__
+__Reconstruction (Positive Only)__
 
 The linear algebra can be solved for with the constraint that all solutions, and therefore all `intensity` values,
 are positive. 
@@ -411,7 +415,7 @@ reconstruction = ag.util.inversion.reconstruction_positive_only_from(
 print(reconstruction)
 
 """
-__Likelihood Step 6: Image Reconstruction__
+__Image Reconstruction__
 
 Using the reconstructed `intensity` values we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
@@ -431,7 +435,7 @@ array_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 7: Likelihood Function__
+__Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
 
@@ -443,7 +447,7 @@ The likelihood function for parametric galaxy modeling, even if linear light pro
 
 We now explain what each of these terms mean.
 
-__Likelihood Step 8: Chi Squared__
+__Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
@@ -478,7 +482,7 @@ array_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 9: Noise Normalization Term__
+__Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -491,7 +495,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 10: Calculate The Log Likelihood__
+__Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.
@@ -504,7 +508,7 @@ print(figure_of_merit)
 """
 __Fit__
 
-This 9 step process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
+This process to perform a likelihood function evaluation is what is performed in the `FitImaging` object.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
@@ -523,6 +527,9 @@ fit = ag.FitImaging(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 The fit contains an `Inversion` object, which handles all the linear algebra we have covered in this script.
@@ -558,6 +565,10 @@ non-linear search algorithm.
 
 The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)
 but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms. 
+
+For linear light profiles, the reduced number of free parameters (e.g. the `intensity` values are solved for
+via linear algebra and not a dimension of the non-linear parameter space) means that the sampler converges in fewer
+iterations and is less likely to infer a local maximum.
 
 __Wrap Up__
 

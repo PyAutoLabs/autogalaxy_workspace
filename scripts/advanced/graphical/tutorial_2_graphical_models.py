@@ -40,6 +40,7 @@ assumed in tutorials 1, 2 and 3. We make this assumption here to simplify the pr
 illustrate graphical models. Later tutorials fit more realistic graphical models where each galaxy has its own value of
 Sersic index!
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

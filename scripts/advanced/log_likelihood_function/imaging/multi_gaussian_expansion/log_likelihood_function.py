@@ -4,7 +4,7 @@ __Log Likelihood Function: Multi Gaussian Expansion__
 This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with
 a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.
 
-You should be familiarwith the `log_likelihood_function` of a parametric linear light profile before reading this script,
+You should be familiar with the `log_likelihood_function` of a parametric linear light profile before reading this script,
 which is described in the `log_likelihood_function/imaging/linear_light_profile/log_likelihood_function.ipynb` notebook.
 
 This script has the following aims:
@@ -19,13 +19,13 @@ packages are called when the likelihood is evaluated.
 
 __Prerequisites__
 
-
 The likelihood function of a multi Gaussian expansion builds on that used for standard parametric light profiles and
 linear light profiles, therefore you must read the following notebooks before this script:
 
 - `light_profile/log_likelihood_function.ipynb`.
 - `linear_light_profile/log_likelihood_function.ipynb`.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -89,7 +89,7 @@ bulge = ag.lp.Sersic(
 image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 
 """
-__Likelihood Setup: Multiple Gaussians & Linear Light Profiles__
+__Multiple Gaussians & Linear Light Profiles__
 
 To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
 module instead of the `lp` module used throughout other example scripts. 
@@ -224,7 +224,7 @@ Other than the above change, the calculation is performed in an identical manner
 with the `data_vector`, `curvature_matrix`, `reconstruction` and `log_likelihood` all computed in the same way
 with the same dimensions. 
 
-__Likelihood Step 1: LightProfileLinearObjFuncList__
+__LightProfileLinearObjFuncList__
 
 For standard light profiles, we combined our linear light profiles into a single `Galaxy` object. The 
 galaxy object computed each individual light profile's image and added them together.
@@ -232,6 +232,9 @@ galaxy object computed each individual light profile's image and added them toge
 This no longer occurs for linear light profiles or basis objects. Instead, each linear light profile is passed into the 
 `LightProfileLinearObjFuncList` object, which acts as an interface between the linear light profiles and the
 linear algebra used to compute their intensity via the inversion.
+
+For an MGE, we input the whole `Basis` object into the `LightProfileLinearObjFuncList` object, which
+contains all the Gaussian linmear light profiles.
 
 The quantities used to compute the image, blurring image and blurred image of each light profiles (the
 dataset grid, PSF, etc.) are passed to the `LightProfileLinearObjFuncList` object, because it internally uses these
@@ -255,7 +258,7 @@ print("Number of Parameters (Intensity Values) in Linear Algebra:")
 print(lp_linear_func.params)
 
 """
-__Likelihood Step 2: Mapping Matrix__
+__Mapping Matrix__
 
 The `mapping_matrix` is a matrix where each column is an image of each Gaussian linear light profiles (assuming its 
 intensity is 1.0), not accounting for the PSF convolution.
@@ -280,7 +283,7 @@ plt.show()
 plt.close()
 
 """
-__Likelihood Step 2: Blurred Mapping Matrix ($f$)__
+__Blurred Mapping Matrix ($f$)__
 
 The `mapping_matrix` does not account for the blurring of the light profile images by the PSF and therefore 
 is not used directly to compute the likelihood.
@@ -345,7 +348,7 @@ print(
 )
 
 """
-__Likelihood Step 3: Data Vector (D)__
+__Data Vector (D)__
 
 To solve for the linear light profile intensities we now pose the problem as a linear inversion.
 
@@ -399,7 +402,7 @@ print(data_vector)
 print(data_vector.shape)
 
 """
-__Likelihood Step 3: Curvature Matrix (F)__
+__Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
 dimensions `(total_linear_light_profiles, total_linear_light_profiles)`.
@@ -431,7 +434,7 @@ plt.close()
 
 
 """
-__Likelihood Step 4: Reconstruction (Positive-Negative)__
+__Reconstruction (Positive-Negative)__
 
 The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
 
@@ -469,7 +472,7 @@ print("Reconstruction (S) of Linear Light Profiles Intensity:")
 print(reconstruction)
 
 """
-__Likelihood Step 5: Reconstruction (Positive Only)__
+__Reconstruction (Positive Only)__
 
 The linear algebra can be solved for with the constraint that all solutions, and therefore all `intensity` values,
 are positive. 
@@ -537,7 +540,7 @@ reconstruction = ag.util.inversion.reconstruction_positive_only_from(
 print(reconstruction)
 
 """
-__Likelihood Step 6: Image Reconstruction__
+__Image Reconstruction__
 
 Using the reconstructed `intensity` values we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
@@ -557,7 +560,7 @@ array_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 7: Likelihood Function__
+__Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
 
@@ -569,7 +572,7 @@ The likelihood function for parametric galaxy modeling, even if linear light pro
 
 We now explain what each of these terms mean.
 
-__Likelihood Step 8: Chi Squared__
+__Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
@@ -604,7 +607,7 @@ array_2d_plotter.figure_2d()
 
 
 """
-__Likelihood Step 9: Noise Normalization Term__
+__Noise Normalization Term__
 
 Our likelihood function assumes the imaging data consists of independent Gaussian noise in every image pixel.
 
@@ -617,7 +620,7 @@ model we infer.
 noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
-__Likelihood Step 10: Calculate The Log Likelihood__
+__Calculate The Log Likelihood__
 
 We can now, finally, compute the `log_likelihood` of the galaxy model, by combining the two terms computed above using
 the likelihood function defined above.
@@ -648,6 +651,9 @@ fit = ag.FitImaging(
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
+
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
 
 """
 The fit contains an `Inversion` object, which handles all the linear algebra we have covered in this script.

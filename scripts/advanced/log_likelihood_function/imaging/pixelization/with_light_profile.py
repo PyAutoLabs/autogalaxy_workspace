@@ -13,6 +13,7 @@ You must read through the following likelihood functions first:
 
  - `pixelization/log_likelihood_function.py` the likelihood function for a pixelization.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -70,7 +71,7 @@ profiles.
 
 Text is only included for steps which differ from the example in `pixelization/log_likelihood_function.py`.
 
-__Likelihood Step: Galaxy__
+__Galaxy__
 
 The light profiles are created and combined with the `Pixelization` to create a `Galaxy` object.
 """
@@ -96,7 +97,7 @@ pixelization = ag.Pixelization(
 
 
 """
-__Likelihood Step: Light Subtracted Image__
+__Light Subtracted Image__
 
 The image of the light profiles is computed, convolved with the PSF and subtracted from the observed image
 to create the light subtracted image which will be input to the pixelization linear inversion.
@@ -116,7 +117,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=light_subtracted_image_2d)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step: Mapping Matrix__
+__Mapping Matrix__
 
 Steps creating the `mapping_matrix` and blurred_mapping_matrix` are identical to the previous example.
 """
@@ -150,7 +151,7 @@ blurred_mapping_matrix = masked_dataset.convolver.convolve_mapping_matrix(
 )
 
 """
-__Likelihood Step: Data Vector (D)__
+__Data Vector (D)__
 
 The step which creates the `data_vector` is updated, as it now receives the light subtracted image as input.
 
@@ -173,7 +174,7 @@ data_vector = ag.util.inversion_imaging.data_vector_via_blurred_mapping_matrix_f
 )
 
 """
-__Likelihood Step: Linear Alegbra__
+__Linear Alegbra__
 
 Steps creating the `curvature_matrix` and other quantities are identical.
 """
@@ -205,7 +206,7 @@ array_2d_plotter = aplt.Array2DPlotter(array=mapped_reconstructed_image_2d)
 array_2d_plotter.figure_2d()
 
 """
-__Likelihood Step: Model Image__
+__Model Image__
 
 Whereas previously the model image was only the reconstructed image, it now includes the light profile image.
 
@@ -225,7 +226,7 @@ chi_squared = np.sum(chi_squared_map)
 print(chi_squared)
 
 """
-__Likelihood Step: Likelihood Function__
+__Likelihood Function__
 
 The overall likelihood function is the same as before, except the model image now includes the light profiles.
 """

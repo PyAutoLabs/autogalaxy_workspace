@@ -34,12 +34,14 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+import numpy as np
 from os import path
 import autofit as af
 import autogalaxy as ag
@@ -139,7 +141,7 @@ A full description of the settings below is given in the beginner modeling scrip
 """
 search = af.Nautilus(
     path_prefix=path.join("imaging", "modeling"),
-    name="light[pixelization]",
+    name="pixelization",
     unique_tag=dataset_name,
     n_live=100,
     number_of_cores=1,
@@ -337,6 +339,56 @@ print(mapper.source_plane_mesh_grid)
 The mapper also contains the (y,x) grid of coordinates that correspond to the imaging data's grid
 """
 print(mapper.source_plane_data_grid)
+
+"""
+__Reconstruction CSV__
+
+In the results `image` folder there is a .csv file called `source_plane_reconstruction_0.csv` which contains the
+y and x coordinates of the pixelization mesh, the reconstruct values and the noise map of these values.
+
+This file is provides all information on the source reconstruciton in a format that does not depend autolens
+and therefore be easily loaded to create images of the source or shared collaobrations who do not have PyAutoLens
+installed.
+
+First, lets load `source_plane_reconstruction_0.csv` as a dictionary, using basic `csv` functionality in Python.
+"""
+import csv
+
+with open(
+    search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
+) as file:
+    reader = csv.reader(file)
+    header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
+
+    reconstruction_dict = {header: [] for header in header_list}
+
+    for row in reader:
+        for key, value in zip(header_list, row):
+            reconstruction_dict[key].append(float(value))
+
+    # Convert lists to NumPy arrays
+    for key in reconstruction_dict:
+        reconstruction_dict[key] = np.array(reconstruction_dict[key])
+
+print(reconstruction_dict["y"])
+print(reconstruction_dict["x"])
+print(reconstruction_dict["reconstruction"])
+print(reconstruction_dict["noise_map"])
+
+"""
+You can now use standard libraries to performed calculations with the reconstruction on the mesh, again avoiding
+the need to use autolens.
+
+For example, we can create a Delaunay mesh using the scipy.spatial library, which is a triangulation
+of the y and x coordinates of the pixelization mesh. This is useful for visualizing the pixelization
+and performing calculations on the mesh.
+"""
+import scipy
+
+points = np.stack(arrays=(reconstruction_dict["x"], reconstruction_dict["y"]), axis=-1)
+
+delaunay = scipy.spatial.Delaunay(points)
+
 
 """
 __Mapped Reconstructed Images__

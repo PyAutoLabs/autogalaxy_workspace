@@ -24,6 +24,7 @@ The model fitted in this tutorial is the simpler model fitted in tutorials 1 & 2
 proivided an accurate estimate of the shared parameter. We fit the same simple model here to illustrate EP, and will
 fit a more challenging model that is only possible because of EP in the next tutorial.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())

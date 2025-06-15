@@ -16,6 +16,7 @@ results API.
 If you are not familiar with the modeling API and process, checkout the `autogalaxy_workspace/examples/modeling`
 folder for examples.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -184,7 +185,7 @@ and the code below can easily be adapted to output the .png and .fits files.
 workflow_path = Path("output") / "results_folder_csv_png_fits" / "workflow_make_example"
 
 agg_csv = af.AggregateCSV(aggregator=agg)
-agg_csv.add_column(
+agg_csv.add_variable(
     argument="galaxies.galaxy.bulge.sersic_index"
 )  # Example of adding a column
 agg_csv.save(path=workflow_path / "csv_very_simple.csv")
@@ -201,7 +202,7 @@ __Samples__
 The result's `Samples` object contains the complete set of non-linear search nautilus samples, where each sample 
 corresponds to a set of model parameters that were evaluated and accepted. 
 
-The examples script `autogalaxy_workspace/*/imaging/results/examples/samples.py` provides a detailed description of 
+The examples script `autogalaxy_workspace/*/results/examples/samples.py` provides a detailed description of 
 this object, including:
 
  - Extracting the maximum likelihood model.
@@ -289,7 +290,7 @@ The guide `autogalaxy_workspace/*/guides/galaxies.py` provides a detailed descri
  - Inspecting mass model components like the convergence, potential and deflection angles.
  - Other lensing quantities like the critical curve and caustics.
 
-The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+The example result script `autogalaxy_workspace/*/results/examples/galaxies_fits.py` show how to use 
 model-fitting results specific functionality of galaxies, including:
 
  - Drawing galaxies from the samples and plotting their images.
@@ -316,7 +317,7 @@ The guide `autogalaxy_workspace/*/guides/fits.py` provides a detailed descriptio
  - Inspecting the model data, residual-map, chi-squared, noise-map of the fit.
  - Other properties of the fit that inspect how good it is.
 
-The example result script `autogalaxy_workspace/*/imaging/results/examples/galaxies_fits.py` show how to use 
+The example result script `autogalaxy_workspace/*/results/examples/galaxies_fits.py` show how to use 
 model-fitting results specific functionality of galaxies, including:
 
  - Repeating fits using the results contained in the samples.
@@ -376,7 +377,7 @@ __Pixelization__
 
 The model can reconstruct the galaxy using a pixelization, for example on a Voronoi mesh.
 
-The example script `autogalaxy_workspace/*/imaging/results/examples/pixelizations.py` describes using pixelization 
+The example script `autogalaxy_workspace/*/results/examples/pixelizations.py` describes using pixelization 
 results including:
 
  - Producing galaxy reconstructions using the Voronoi mesh, Delaunay triangulation or whichever mesh is used.

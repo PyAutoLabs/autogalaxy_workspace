@@ -8,7 +8,7 @@ interested in.
 We therefore will mask the emission of these extra galaxies or include them in the model as light profiles which
 fit and subtract the emission.
 
-This uses the **PyAutoGalaxy** extra galaxies API, which is illustrated in 
+This uses the **PyAutoGalaxy** extra galaxies API, which is illustrated in
 the  script `autogalaxy_workspace/*/imaging/modeling/features/extra_galaxies.py`.
 
 This script simulates an imaging dataset which includes extra galaxies near the main galaxy.
@@ -48,6 +48,7 @@ __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
 """
+
 # %matplotlib inline
 # from pyprojroot import here
 # workspace_path = str(here())
@@ -61,7 +62,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset Paths__
 
-The path where the dataset will be output.
+The `dataset_type` describes the type of data being simulated and `dataset_name` gives it a descriptive name. 
 """
 dataset_type = "imaging"
 dataset_name = "extra_galaxies"

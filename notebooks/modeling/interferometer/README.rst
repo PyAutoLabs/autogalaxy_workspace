@@ -17,4 +17,4 @@ Notes
 
 These scripts show how to perform modeling but only give a brief overview of how to analyse and interpret the results a model fit.
 
-A full guide to result analysis is given at ``autogalaxy_workspace/*/imaging/results``.
+A full guide to result analysis is given at ``autogalaxy_workspace/*/results``.
