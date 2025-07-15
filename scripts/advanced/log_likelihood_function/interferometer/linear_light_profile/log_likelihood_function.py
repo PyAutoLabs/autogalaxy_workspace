@@ -39,7 +39,7 @@ therefore you must read the following notebooks before this script:
 
 # import matplotlib.pyplot as plt
 # import numpy as np
-# from os import path
+# from pathlib import Path
 #
 # import autogalaxy as ag
 # import autogalaxy.plot as aplt

@@ -37,7 +37,7 @@ linear light profiles, therefore you must read the following notebooks before th
 
 import matplotlib.pyplot as plt
 import numpy as np
-from os import path
+from pathlib import Path
 
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -49,12 +49,12 @@ __Dataset__
 Following the `pixelization/log_likelihood_function.py` script, we load and mask an `Imaging` dataset and
 set oversampling to 1.
 """
-dataset_path = path.join("dataset", "imaging", "simple")
+dataset_path = Path("dataset", "imaging", "simple")
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 

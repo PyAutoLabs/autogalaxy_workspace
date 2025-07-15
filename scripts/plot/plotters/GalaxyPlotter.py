@@ -75,26 +75,13 @@ The `GalaxyPlotter` also has subplot method that plot each individual `Profile` 
 galaxy_plotter.subplot_of_light_profiles(image=True)
 
 """
-__Include__
+A galaxy consists of light and mass profiles, and their centres can be extracted and plotted over the image. 
+The `visuals.ipynb` notebook, under the sections `LightProfileCentreScatter` and `MassProfilesCentreScatter`,
+describes how to plot these visuals over images.
 
-A `Galaxy` and its `Grid2D` contains the following attributes which can be plotted automatically via 
-the `Include2D` object.
+If the galaxy has a mass profile, it also has critical curves and caustics. The `visuals.ipynb` notebook, under the 
+sections `CriticalCurvesLine` and `CausticsLine`, describes how to plot these visuals over images.
 
-(By default, a `Grid2D` does not contain a `Mask2D`, we therefore manually created a `Grid2D` with a mask to illustrate
-plotting its mask and border below).
-"""
-include = aplt.Include2D(origin=True, mask=True, light_profile_centres=True)
-
-mask = ag.Mask2D.circular(
-    shape_native=grid.shape_native, pixel_scales=grid.pixel_scales, radius=2.0
-)
-masked_grid = ag.Grid2D.from_mask(mask=mask)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxy, grid=masked_grid, include_2d=include)
-galaxy_plotter.figures_2d(image=True)
-
-
-"""
 __Errors__
 
 Using a `GalaxyPDFPlotter`, we can make 1D plots that show the errors of the light and mass models estimated via a 

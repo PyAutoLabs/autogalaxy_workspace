@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -121,12 +121,6 @@ The `FitQuantityPlotter` may also plot a subplot of these attributes.
 """
 fit_dataset_plotter.subplot_fit()
 
-"""`
-__Include__
-
-`FitQuantity` contains the following attributes which can be plotted automatically via the `Include2D` object.
 """
-include = aplt.Include2D(origin=True, mask=True, light_profile_centres=True)
-
-fit_plotter = aplt.FitQuantityPlotter(fit=fit, include_2d=include)
-fit_plotter.subplot_fit()
+Finish.
+"""

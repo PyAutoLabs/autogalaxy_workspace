@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -25,16 +25,16 @@ __Dataset__
 First, lets load example interferometer of of a galaxy as an `Interferometer` object.
 """
 dataset_name = "simple__sersic"
-dataset_path = path.join("dataset", "interferometer", dataset_name)
+dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 real_space_mask = ag.Mask2D.circular(
     shape_native=(200, 200), pixel_scales=0.05, radius=3.0
 )
 
 dataset = ag.Interferometer.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
 )
 
@@ -72,16 +72,6 @@ The `InterferometerPlotter` may also plot a subplot of all of these attributes.
 """
 dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()
-
-"""
-__Include__
-
-The `Interferometer` contains the following attributes which can be plotted automatically via the `Include2D` object.
-"""
-include = aplt.Include2D()
-
-dataset_plotter = aplt.InterferometerPlotter(dataset=dataset, include_2d=include)
-dataset_plotter.subplot_dataset()
 
 """
 Finish.

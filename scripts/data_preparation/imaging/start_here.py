@@ -29,12 +29,12 @@ It is absolutely vital you use the correct pixel scale, so double check this val
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 # %matplotlib inline
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 dataset_name = "simple"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
 __Image__
@@ -44,7 +44,7 @@ The image is the image of your galaxy, which comes from a telescope like the Hub
 Lets inspect an image which conforms to **PyAutoGalaxy** standards:
 """
 data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=0.1
+    file_path=dataset_path / "data.fits", pixel_scales=0.1
 )
 
 array_plotter = aplt.Array2DPlotter(array=data)
@@ -80,7 +80,7 @@ RMS standard deviation in every pixel (not the variances, HST WHT-map values, et
 Lets inspect a noise-map which conforms to **PyAutoGalaxy** standards:
 """
 noise_map = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "noise_map.fits"), pixel_scales=0.1
+    file_path=dataset_path / "noise_map.fits", pixel_scales=0.1
 )
 
 array_plotter = aplt.Array2DPlotter(array=noise_map)
@@ -124,7 +124,7 @@ for Hubble).
 Lets inspect a PSF which conforms to **PyAutoGalaxy** standards:
 """
 psf = ag.Kernel2D.from_fits(
-    file_path=path.join(dataset_path, "psf.fits"), hdu=0, pixel_scales=0.1
+    file_path=dataset_path / "psf.fits", hdu=0, pixel_scales=0.1
 )
 
 array_plotter = aplt.Array2DPlotter(array=psf)

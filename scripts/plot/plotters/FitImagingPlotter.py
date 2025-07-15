@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -25,12 +25,12 @@ __Dataset__
 First, lets load example imaging of of a galaxy as an `Imaging` object.
 """
 dataset_name = "sersic_x2"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -122,27 +122,17 @@ fit_plotter.figures_2d(
     normalized_residual_map=True,
 )
 
-"""`
-__Include__
-
-`FitImaging` contains the following attributes which can be plotted automatically via the `Include2D` object.
 """
-include = aplt.Include2D(
-    origin=True,
-    mask=True,
-    border=True,
-    light_profile_centres=True,
-    mass_profile_centres=True,
-    tangential_critical_curves=True,
-    radial_critical_curves=True,
-    tangential_caustics=True,
-    radial_caustics=True,
-)
+__Mesh Grids__
 
-fit_plotter = aplt.FitImagingPlotter(fit=fit, include_2d=include)
-fit_plotter.subplot_fit()
-fit_plotter.subplot_of_galaxies(galaxy_index=0)
-fit_plotter.subplot_of_galaxies(galaxy_index=1)
+The image plane mesh grid, showing the centre of every pixel in the image-plane can be computed and plotted.
+"""
+mapper = fit.inversion.cls_list_from(cls=al.AbstractMapper)[0]
+
+image_plane_mesh_grid = mapper.image_plane_mesh_grid
+visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
+fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals=visuals_2d)
+fit_plotter.figures_2d_of_planes(plane_index=0, plane_image=True)
 
 """
 __Pixelization__
@@ -159,19 +149,6 @@ galaxy = ag.Galaxy(redshift=1.0, pixelization=pixelization)
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
 fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
-
-"""
-__Include__
-
-The `figures_2d_of_galaxies` method now plots the reconstructed galaxy on the Rectangular pixel-grid. It can use the
-`Include2D` object to plot the `Mapper`'s specific structures like the pixelization grids.
-"""
-include = aplt.Include2D(
-    mapper_image_plane_mesh_grid=True, mapper_source_plane_data_grid=True
-)
-
-fit_plotter = aplt.FitImagingPlotter(fit=fit, include_2d=include)
-fit_plotter.figures_2d_of_galaxies(galaxy_index=0, model_image=True)
 
 """
 __Inversion Plotter__

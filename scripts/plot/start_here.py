@@ -2,7 +2,7 @@
 Plots: Start Here
 =================
 
-This example illustrates the basic API for plotting.
+This example illustrates the API for plotting.
 
 __Contents__
 
@@ -24,7 +24,7 @@ __Contents__
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -33,8 +33,8 @@ __Dataset__
 
 First, lets load an example image of of a galaxy as an `Array2D`.
 """
-dataset_path = path.join("dataset", "imaging", "complex")
-data_path = path.join(dataset_path, "data.fits")
+dataset_path = Path("dataset") / "imaging" / "complex"
+data_path = dataset_path / "data.fits"
 data = ag.Array2D.from_fits(file_path=data_path, hdu=0, pixel_scales=0.1)
 
 """
@@ -70,6 +70,17 @@ mat_plot = aplt.MatPlot2D(
 )
 
 array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=mat_plot)
+array_plotter.figure_2d()
+
+"""
+__Log10__
+
+Many of the quantities we plot are often clearer in log10 space, for example the image, convergence and potential of a
+tracer.
+
+For all `Plotter` objects, the `use_log10` input can be set to `True` to plot these quantities in log10 space.
+"""
+array_plotter = aplt.Array2DPlotter(array=data, mat_plot_2d=aplt.MatPlot2D(use_log10=True))
 array_plotter.figure_2d()
 
 """
@@ -116,28 +127,6 @@ visuals = aplt.Visuals2D(mask=mask)
 array_plotter = aplt.Array2DPlotter(array=data, visuals_2d=visuals)
 array_plotter.figure_2d()
 
-
-"""
-__Customize Visuals With Include__
-
-Many of the visuals above (e.g. mass profile centres, critical curves, caustics) may be plotted by default and
-therefore appear in the figure without being explicitly input.
-
-If you want to disable their appears, or make a visual appear that is not in the figure by default, you can use
-the `Include2D` object.
-
-By passing an attribute as `True`, if the attribute is contained in the object being plotted then it will be plotted.
-
-For example, the `data` input into the `Array2DPlotter` object has a mask, so it will be plotted if `mask=True`,
-which is the default behaviour and therefore why it is plotted above. If we set `mask=False`, it is not plotted.
-
-Checkout the API docs of the `Include2D` object for all options, which are also documented individually throuhgout the
-`autolens.workspace.*.plot` examples.
-"""
-include = aplt.Include2D(mask=False)
-
-array_plotter = aplt.Array2DPlotter(array=data, include_2d=include)
-array_plotter.figure_2d()
 
 """
 __Customize Visuals With Config__

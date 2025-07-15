@@ -6,6 +6,6 @@ Sky:
     width_modifier:
       type: Absolute
       value: 0.5
-    gaussian_limits:
+    limits:
       lower: 0.0
       upper: inf

@@ -22,7 +22,7 @@ composed. It only discusses new aspects of the API that are used to perform mult
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -34,11 +34,11 @@ We we begin by loading the galaxy dataset `simple` from .fits files, which is th
 previous examples.
 """
 dataset_name = "ellipse"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -232,7 +232,7 @@ The model is fitted to the data using a non-linear search.
 Everything below uses the same API introduced in the `modeling.py` example.
 """
 search = af.DynestyStatic(
-    path_prefix=path.join("ellipse_multipole"),
+    path_prefix=Path("ellipse_multipole"),
     name=f"fit_start",
     unique_tag=dataset_name,
     sample="rwalk",
@@ -271,14 +271,7 @@ increases, as well as the complexity of the model and parameter space.
 
 We estimate the overall run time of the model-fit below, noting that it generally still stays well below an hour
 and is therefore feasible to perform on a laptop.
-"""
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
 
-"""
 __Model-Fit__
 
 We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
@@ -373,7 +366,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse], multipoles=multipole_list)
 
     search = af.DynestyStatic(
-        path_prefix=path.join("ellipse_multipole"),
+        path_prefix=Path("ellipse_multipole"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -401,7 +394,7 @@ model = af.Collection(ellipses=ellipses, multipoles=multipole_list)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=path.join("ellipse_multipole"),
+    path_prefix=Path("ellipse_multipole"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,
@@ -414,7 +407,7 @@ result = search.fit(model=model, analysis=analysis)
 __Masking__
 """
 mask_extra_galaxies = ag.Mask2D.from_fits(
-    file_path=path.join(dataset_path, "mask_extra_galaxies.fits"),
+    file_path=Path(dataset_path, "mask_extra_galaxies.fits"),
     pixel_scales=dataset.pixel_scales,
 )
 
@@ -463,7 +456,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse], multipoles=multipole_list)
 
     search = af.DynestyStatic(
-        path_prefix=path.join("ellipse_multipole_mask"),
+        path_prefix=Path("ellipse_multipole_mask"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -486,7 +479,7 @@ model = af.Collection(ellipses=ellipses, multipoles=multipole_list)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=path.join("ellipse_multipole_mask"),
+    path_prefix=Path("ellipse_multipole_mask"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,

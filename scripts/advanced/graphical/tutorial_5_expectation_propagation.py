@@ -33,7 +33,7 @@ fit a more challenging model that is only possible because of EP in the next tut
 
 import autogalaxy as ag
 import autofit as af
-from os import path
+from pathlib import Path
 
 """
 __Initialization__
@@ -44,20 +44,20 @@ dataset_label = "samples"
 dataset_type = "imaging"
 dataset_sample_name = "dev"
 
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
+dataset_path = Path("dataset", dataset_type, dataset_label, dataset_sample_name)
 
 total_datasets = 3
 
 dataset_list = []
 
 for dataset_index in range(total_datasets):
-    dataset_sample_path = path.join(dataset_path, f"dataset_{dataset_index}")
+    dataset_sample_path = Path(dataset_path, f"dataset_{dataset_index}")
 
     dataset_list.append(
         ag.Imaging.from_fits(
-            data_path=path.join(dataset_sample_path, "data.fits"),
-            psf_path=path.join(dataset_sample_path, "psf.fits"),
-            noise_map_path=path.join(dataset_sample_path, "noise_map.fits"),
+            data_path=Path(dataset_sample_path, "data.fits"),
+            psf_path=Path(dataset_sample_path, "psf.fits"),
+            noise_map_path=Path(dataset_sample_path, "noise_map.fits"),
             pixel_scales=0.1,
         )
     )
@@ -88,7 +88,7 @@ for dataset in dataset_list:
 """
 __Paths__
 """
-path_prefix = path.join("imaging", "graphical")
+path_prefix = Path("imaging") / "graphical"
 
 """
 __Model__
@@ -167,7 +167,7 @@ For complex graphs consisting of many  nodes, one could easily use different sea
 graph.
 """
 nautilus = af.Nautilus(
-    path_prefix=path.join("imaging", "graphical"),
+    path_prefix=Path("imaging") / "graphical",
     name="tutorial_5_expectation_propagation",
     n_live=150,
 )
@@ -238,7 +238,7 @@ stored in.
 laplace = af.LaplaceOptimiser()
 
 paths = af.DirectoryPaths(
-    name=path.join(path_prefix, "tutorial_5_expectation_propagation_2")
+    name=Path(path_prefix, "tutorial_5_expectation_propagation_2")
 )
 
 factor_graph_result = factor_graph.optimise(

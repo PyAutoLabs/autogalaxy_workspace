@@ -26,7 +26,7 @@ especially if loading results from hard-disk is slow.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 
@@ -39,7 +39,7 @@ what the `Aggregator` does if you have not seen it!).
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder"),
+    directory=Path("output") / "results_folder",
 )
 
 """

@@ -69,7 +69,7 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -81,12 +81,12 @@ Load and plot the galaxy dataset `light_basis` via .fits files, which we will fi
 the model.
 """
 dataset_name = "asymmetric"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -282,7 +282,7 @@ Owing to the simplicity of fitting an MGE we an use even fewer live points than 
 75 live points, speeding up convergence of the non-linear search.
 """
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
+    path_prefix=Path("imaging") / "modeling",
     name="light[basis]",
     unique_tag=dataset_name,
     n_live=75,
@@ -313,19 +313,7 @@ points, further speeding up the model-fit.
 Overall, it is difficult to state which approach will be faster overall. However, the MGE's ability to fit the data
 more accurately and the less complex parameter due to removing parameters that scale the lens galaxy make it the 
 superior approach.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
 
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
-
-"""
 __Model-Fit__
 
 We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
@@ -417,7 +405,7 @@ The `info` attribute shows the model, which has addition priors now associated w
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
+    path_prefix=Path("imaging") / "modeling",
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,

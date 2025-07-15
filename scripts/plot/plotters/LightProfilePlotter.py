@@ -49,29 +49,11 @@ light_profile_plotter.figures_1d(image=True)
 light_profile_plotter.figures_2d(image=True)
 
 """
-__Include__
+__Visuals__
 
-A `LightProfile` and its `Grid2D` contains the following attributes which can be plotted automatically via 
-the `Include2D` object.
+A light profile centre can be extracted and plotted over the image. The `visuals.ipynb` notebook, under the 
+section `LightProfileCentreScatter` describes how to plot these visuals over images.
 
-(By default, a `Grid2D` does not contain a `Mask2D`, we therefore manually created a `Grid2D` with a mask to illustrate
-plotting its mask and border below).
-"""
-include = aplt.Include2D(
-    origin=True, mask=True, border=True, light_profile_centres=True
-)
-
-mask = ag.Mask2D.circular(
-    shape_native=grid.shape_native, pixel_scales=grid.pixel_scales, radius=2.0
-)
-masked_grid = ag.Grid2D.from_mask(mask=mask)
-
-light_profile_plotter = aplt.LightProfilePlotter(
-    light_profile=bulge, grid=masked_grid, include_2d=include
-)
-light_profile_plotter.figures_2d(image=True)
-
-"""
 __Log10__
 
 Light profiles are often clearer in log10 space, which inputting `use_log10=True` into the `MatPlot2D` object

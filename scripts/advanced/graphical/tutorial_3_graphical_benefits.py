@@ -36,7 +36,7 @@ In this tutorial, each dataset now contains a bulge and disk, where all bulges h
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -54,20 +54,20 @@ dataset_label = "samples"
 dataset_type = "imaging"
 dataset_sample_name = "dev_exp"
 
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
+dataset_path = Path("dataset", dataset_type, dataset_label, dataset_sample_name)
 
 total_datasets = 3
 
 dataset_list = []
 
 for dataset_index in range(total_datasets):
-    dataset_sample_path = path.join(dataset_path, f"dataset_{dataset_index}")
+    dataset_sample_path = Path(dataset_path, f"dataset_{dataset_index}")
 
     dataset_list.append(
         ag.Imaging.from_fits(
-            data_path=path.join(dataset_sample_path, "data.fits"),
-            psf_path=path.join(dataset_sample_path, "psf.fits"),
-            noise_map_path=path.join(dataset_sample_path, "noise_map.fits"),
+            data_path=Path(dataset_sample_path, "data.fits"),
+            psf_path=Path(dataset_sample_path, "psf.fits"),
+            noise_map_path=Path(dataset_sample_path, "noise_map.fits"),
             pixel_scales=0.1,
         )
     )
@@ -104,7 +104,7 @@ __Paths__
 
 The path the results of all model-fits are output:
 """
-path_prefix = path.join("imaging", "graphical")
+path_prefix = Path("imaging") / "graphical"
 
 """
 __Model (one-by-one)__
@@ -160,7 +160,7 @@ result_list = []
 
 for dataset_index, analysis in enumerate(analysis_list):
     dataset_name_with_index = f"dataset_{dataset_index}"
-    path_prefix_with_index = path.join(path_prefix, "tutorial_3_graphical_benefits")
+    path_prefix_with_index = Path(path_prefix, "tutorial_3_graphical_benefits")
 
     search = af.Nautilus(
         path_prefix=path_prefix_with_index, name=dataset_name_with_index, n_live=100

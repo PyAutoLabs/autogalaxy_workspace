@@ -18,7 +18,7 @@ with a Gaussian distribution.
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -36,20 +36,20 @@ dataset_label = "samples"
 dataset_type = "imaging"
 dataset_sample_name = "simple__sersic"
 
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_sample_name)
+dataset_path = Path("dataset", dataset_type, dataset_label, dataset_sample_name)
 
 total_datasets = 3
 
 dataset_list = []
 
 for dataset_index in range(total_datasets):
-    dataset_sample_path = path.join(dataset_path, f"dataset_{dataset_index}")
+    dataset_sample_path = Path(dataset_path, f"dataset_{dataset_index}")
 
     dataset_list.append(
         ag.Imaging.from_fits(
-            data_path=path.join(dataset_sample_path, "data.fits"),
-            psf_path=path.join(dataset_sample_path, "psf.fits"),
-            noise_map_path=path.join(dataset_sample_path, "noise_map.fits"),
+            data_path=Path(dataset_sample_path, "data.fits"),
+            psf_path=Path(dataset_sample_path, "psf.fits"),
+            noise_map_path=Path(dataset_sample_path, "noise_map.fits"),
             pixel_scales=0.1,
         )
     )
@@ -87,7 +87,7 @@ __Paths__
 
 The path the results of all model-fits are output:
 """
-path_prefix = path.join("imaging", "graphical")
+path_prefix = Path("imaging") / "graphical"
 
 """
 __Analysis__
@@ -132,7 +132,7 @@ for dataset_index, analysis in enumerate(analysis_list):
     """
     nautilus = af.Nautilus(
         name="",
-        path_prefix=path.join("tutorial_optional_hierarchical_individual"),
+        path_prefix=Path("tutorial_optional_hierarchical_individual"),
         unique_tag=dataset_name,
         n_live=200,
         f_live=1e-4,

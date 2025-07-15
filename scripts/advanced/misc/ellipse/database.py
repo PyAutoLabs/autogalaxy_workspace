@@ -27,6 +27,7 @@ especially if loading results from hard-disk is slow.
 
 import os
 from os import path
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -40,14 +41,14 @@ throughout the example, with API that mirrors the normal aggregator.
 """
 database_name = "ellipse"
 
-if path.exists(path.join("output", f"{database_name}.sqlite")):
-    os.remove(path.join("output", f"{database_name}.sqlite"))
+if path.exists(Path("output") / f"{database_name}.sqlite"):
+    os.remove(Path("output") / f"{database_name}.sqlite")
 
 agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
 )
 
-agg.add_directory(directory=path.join("output", database_name))
+agg.add_directory(directory=Path("output") / database_name)
 
 """
 The masks we used to fit the imaging data is accessible via the aggregator.
@@ -192,7 +193,7 @@ for fit_lists_list in fit_gen:
     mat_plot = aplt.MatPlot2D(
         title=aplt.Title(label="Hey"),
         output=aplt.Output(
-            path=path.join("output", "path", "of", "file"),
+            path=Path("output") / "path" / "of" / "file",
             filename="publication",
             format="png",
         ),
@@ -230,14 +231,14 @@ First, lets build a database of a model-fit using multipoles.
 """
 database_name = "ellipse_multipole"
 
-if path.exists(path.join("output", f"{database_name}.sqlite")):
-    os.remove(path.join("output", f"{database_name}.sqlite"))
+if path.exists(Path("output") / f"{database_name}.sqlite"):
+    os.remove(Path("output") / f"{database_name}.sqlite")
 
 agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
 )
 
-agg.add_directory(directory=path.join("output", database_name))
+agg.add_directory(directory=Path("output") / database_name)
 
 """   
 __Multipoles via Aggregator__

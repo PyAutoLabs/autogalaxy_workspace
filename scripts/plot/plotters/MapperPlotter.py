@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -25,12 +25,12 @@ __Dataset__
 First, lets load example imaging of of a galaxy as an `Imaging` object.
 """
 dataset_name = "simple__sersic"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 mask = ag.Mask2D.circular(
@@ -112,20 +112,18 @@ mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals)
 mapper_plotter.subplot_image_and_mapper(image=dataset.data)
 
 """
-__Include__
+__Mesh Grids__
 
-A `Mapper` contains the following attributes which can be plotted automatically via the `Include2D` object.
+The image and source plane mesh grids, showing the centre of every source pixel in the image-plane and source-plane, 
+can be computed and plotted.
 """
-include = aplt.Include2D(
-    origin=True,
-    mask=True,
-    border=True,
-    mapper_image_plane_mesh_grid=True,
-    mapper_source_plane_mesh_grid=True,
-    mapper_source_plane_data_grid=True,
+image_plane_mesh_grid = mapper.image_plane_mesh_grid
+
+visuals_2d = aplt.Visuals2D(
+    mesh_grid=image_plane_mesh_grid
 )
 
-mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
+mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals=visuals_2d)
 mapper_plotter.subplot_image_and_mapper(image=dataset.data)
 
 """

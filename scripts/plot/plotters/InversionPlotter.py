@@ -15,7 +15,7 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -25,12 +25,12 @@ __Dataset__
 First, lets load example imaging of of a galaxy as an `Imaging` object.
 """
 dataset_name = "simple__sersic"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -105,23 +105,18 @@ The `Inversion` attributes can also be plotted as a subplot.
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
 inversion_plotter.subplot_of_mapper(mapper_index=0)
 
-"""`
-__Include__
-
-Inversion`'s have their own unique attributes that can be plotted via the `Include2D` class:
 """
-include = aplt.Include2D(
-    origin=True,
-    mask=True,
-    border=True,
-    mapper_image_plane_mesh_grid=True,
-    mapper_source_plane_mesh_grid=True,
-    mapper_source_plane_data_grid=True,
-)
+__Mesh Grids__
 
-inversion_plotter = aplt.InversionPlotter(inversion=inversion, include_2d=include)
+The image and source plane mesh grids, showing the centre of every source pixel in the image-plane and source-plane, 
+can be computed and plotted.
+"""
+mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[0]
+
+image_plane_mesh_grid = mapper.image_plane_mesh_grid
+visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
+inversion_plotter = aplt.InversionPlotter(inversion=inversion, visuals=visuals_2d)
 inversion_plotter.figures_2d(reconstructed_image=True)
-inversion_plotter.figures_2d_of_pixelization(pixelization_index=0, reconstruction=True)
 
 """
 Finish.

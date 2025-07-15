@@ -40,7 +40,7 @@ especially if loading results from hard-disk is slow.
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import os
-from os import path
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -54,7 +54,7 @@ Set up the aggregator as shown in `start_here.py`.
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder"),
+    directory=Path("output") / "results_folder",
 )
 
 """
@@ -188,7 +188,7 @@ for fit_list in fit_gen:  # Only Max LH sample so fit_list contains 1 lists of f
     mat_plot = aplt.MatPlot2D(
         title=aplt.Title(label="Hey"),
         output=aplt.Output(
-            path=path.join("output", "path", "of", "file"),
+            path=Path("output") / "path" / "of" / "file",
             filename="publication",
             format="png",
         ),

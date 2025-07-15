@@ -35,7 +35,7 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 # %matplotlib inline
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -60,7 +60,7 @@ dataset_name = "simple"
 Returns the path where the mask will be output, which in this case is
 `/autogalaxy_workspace/dataset/imaging/simple`
 """
-dataset_path = path.join("dataset", dataset_type, dataset_name)
+dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
 The pixel scale of the imaging dataset.
@@ -71,7 +71,7 @@ pixel_scales = 0.1
 First, load the image of the dataset, so that the mask can be plotted over the galaxy.
 """
 data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=pixel_scales
+    file_path=dataset_path / "data.fits", pixel_scales=pixel_scales
 )
 
 """
@@ -137,7 +137,7 @@ array_plotter.figure_2d()
 Now we`re happy with the mask, lets output it to the dataset folder of the galaxy, so that we can load it from a .fits
 file in our pipelines!
 """
-mask.output_to_fits(file_path=path.join(dataset_path, "mask.fits"), overwrite=True)
+mask.output_to_fits(file_path=Path(dataset_path, "mask.fits"), overwrite=True)
 
 """
 The workspace also includes a GUI for drawing a mask, which can be found at 

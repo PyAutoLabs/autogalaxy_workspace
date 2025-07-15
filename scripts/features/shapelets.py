@@ -60,7 +60,7 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -72,12 +72,12 @@ Load and plot the galaxy dataset `light_basis` via .fits files, which we will fi
 the model.
 """
 dataset_name = "simple__sersic"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -304,7 +304,7 @@ For users on a Windows Operating system, using `number_of_cores>1` may lead to a
 reduced back to 1 to fix it.
 """
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
+    path_prefix=Path("imaging") / "modeling",
     name="light[shapelets]_polar_5_ell",
     unique_tag=dataset_name,
     n_live=150,
@@ -389,7 +389,7 @@ The `info` attribute shows the model, which has addition priors now associated w
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=path.join("imaging", "modeling"),
+    path_prefix=Path("imaging") / "modeling",
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,

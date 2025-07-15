@@ -47,15 +47,5 @@ grid_plotter = aplt.Grid2DPlotter(grid=lensed_grid)
 grid_plotter.figure_2d()
 
 """
-__Include__
-
-A `Grid2D` contains the following attributes which can be plotted automatically via the `Include2D` object.
-"""
-include = aplt.Include2D(origin=True)
-
-grid_plotter = aplt.Grid2DPlotter(grid=lensed_grid, include_2d=include)
-grid_plotter.figure_2d()
-
-"""
 Finish.
 """

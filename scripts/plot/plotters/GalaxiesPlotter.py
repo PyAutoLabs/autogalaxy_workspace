@@ -51,27 +51,15 @@ galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
 galaxies_plotter.figures_2d(image=True)
 
 """
-__Include__
+__Visuals__
 
-A `Plane` and its `Grid2D` contains the following attributes which can be plotted automatically via 
-the `Include2D` object.
+A galaxy consists of light and mass profiles, and their centres can be extracted and plotted over the image. 
+The `visuals.ipynb` notebook, under the sections `LightProfileCentreScatter` and `MassProfilesCentreScatter`,
+describes how to plot these visuals over images.
 
-(By default, a `Grid2D` does not contain a `Mask2D`, we therefore manually created a `Grid2D` with a mask to illustrate
-plotting its mask and border below).
-"""
-mask = ag.Mask2D.circular(
-    shape_native=grid.shape_native, pixel_scales=grid.pixel_scales, radius=2.0
-)
-masked_grid = ag.Grid2D.from_mask(mask=mask)
+If the galaxy has a mass profile, it also has critical curves and caustics. The `visuals.ipynb` notebook, under the 
+sections `CriticalCurvesLine` and `CausticsLine`, describes how to plot these visuals over images.
 
-include = aplt.Include2D(origin=True, mask=True, light_profile_centres=True)
-
-galaxies_plotter = aplt.GalaxiesPlotter(
-    galaxies=galaxies, grid=masked_grid, include_2d=include
-)
-galaxies_plotter.figures_2d(image=True)
-
-"""
 __Log10__
 
 A galaxy's light and mass profiles are often clearer in log10 space, which inputting `use_log10=True` into 

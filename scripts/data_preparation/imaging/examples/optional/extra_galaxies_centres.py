@@ -44,7 +44,7 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 # %matplotlib inline
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -53,7 +53,7 @@ The path where the extra galaxy centres are output, which is `dataset/imaging/ex
 """
 dataset_type = "imaging"
 dataset_name = "extra_galaxies"
-dataset_path = path.join("dataset", dataset_type, dataset_name)
+dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
 The pixel scale of the imaging dataset.
@@ -64,7 +64,7 @@ pixel_scales = 0.1
 Load the `Imaging` dataset, so that the galaxy light centres can be plotted over the galaxy image.
 """
 data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=pixel_scales
+    file_path=dataset_path / "data.fits", pixel_scales=pixel_scales
 )
 
 """
@@ -104,7 +104,7 @@ when we model them.
 """
 ag.output_to_json(
     obj=extra_galaxies_centres,
-    file_path=path.join(dataset_path, "extra_galaxies_centres.json"),
+    file_path=Path(dataset_path, "extra_galaxies_centres.json"),
 )
 
 """

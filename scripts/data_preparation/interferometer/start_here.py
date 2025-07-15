@@ -37,11 +37,11 @@ Fourier transform. If the pixel scale is too large, the Fourier transform will s
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 # %matplotlib inline
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
-dataset_path = path.join("dataset", "interferometer", "simple")
+dataset_path = Path("dataset", "interferometer", "simple")
 
 """
 __Visibilities__
@@ -51,7 +51,7 @@ The image is the image of your galaxy, which comes from a telescope like the Hub
 Lets inspect an image which conforms to **PyAutoGalaxy** standards:
 """
 visibilities = ag.Visibilities.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), hdu=0
+    file_path=dataset_path / "data.fits", hdu=0
 )
 
 array_plotter = aplt.Grid2DPlotter(grid=visibilities.in_grid)
@@ -72,7 +72,7 @@ It is common for all visibilities to have the same noise value, depending on the
 the data.
 """
 visibilities = ag.VisibilitiesNoiseMap.from_fits(
-    file_path=path.join(dataset_path, "noise_map.fits"), hdu=0
+    file_path=dataset_path / "noise_map.fits", hdu=0
 )
 
 array_plotter = aplt.Grid2DPlotter(grid=visibilities.in_grid)
@@ -85,7 +85,7 @@ The uv-wavelengths define the baselines of the interferometer. They are used to 
 uv-plane, which is where the model is evaluated.
 """
 uv_wavelengths = ag.ndarray_via_fits_from(
-    file_path=path.join(dataset_path, "uv_wavelengths.fits"), hdu=0
+    file_path=Path(dataset_path, "uv_wavelengths.fits"), hdu=0
 )
 
 uv_wavelengths = ag.Grid2DIrregular.from_yx_1d(

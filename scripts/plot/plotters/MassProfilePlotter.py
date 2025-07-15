@@ -57,37 +57,14 @@ mass_profile_plotter.figures_2d(
 mass_profile_plotter.figures_1d(convergence=True, potential=True)
 
 """
-__Include__
+__Visuals__
 
-A `MassProfile` and its `Grid2D` contains the following attributes which can be plotted automatically via 
-the `Include2D` object.
+A mass profile centre can be extracted and plotted over the image.  The `visuals.ipynb` notebook, under the 
+section `MassProfilesCentreScatter`, describes how to plot these visuals over images.
 
-(By default, a `Grid2D` does not contain a `Mask2D`, we therefore manually created a `Grid2D` with a mask to illustrate
-plotting its mask and border below).
-"""
-include = aplt.Include2D(
-    origin=True,
-    mask=True,
-    border=True,
-    mass_profile_centres=True,
-    tangential_critical_curves=True,
-    radial_critical_curves=True,
-)
+A mass profile also has critical curves and caustics. The `visuals.ipynb` notebook, under the 
+sections `CriticalCurvesLine` and `CausticsLine`, describes how to plot these visuals over images.
 
-mask = ag.Mask2D.circular_annular(
-    shape_native=grid.shape_native,
-    pixel_scales=grid.pixel_scales,
-    inner_radius=0.3,
-    outer_radius=2.0,
-)
-masked_grid = ag.Grid2D.from_mask(mask=mask)
-
-mass_profile_plotter = aplt.MassProfilePlotter(
-    mass_profile=mass, grid=masked_grid, include_2d=include
-)
-mass_profile_plotter.figures_2d(convergence=True)
-
-"""
 __Log10__
 
 Mass profiles are often clearer in log10 space, which inputting `use_log10=True` into the `MatPlot2D` object
@@ -97,7 +74,7 @@ The same image can be set up manually via the `CMap`, `Contour` and `Colorbar` o
 use-case, the `use_log10` input is provided for convenience.
 """
 mass_profile_plotter = aplt.MassProfilePlotter(
-    mass_profile=mass, grid=masked_grid, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
+    mass_profile=mass, grid=grid, mat_plot_2d=aplt.MatPlot2D(use_log10=True)
 )
 mass_profile_plotter.figures_2d(convergence=True, potential=True)
 

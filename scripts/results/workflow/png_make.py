@@ -63,7 +63,7 @@ especially if loading results from hard-disk is slow.
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 from pathlib import Path
-from os import path
+from pathlib import Path
 from PIL import Image
 
 import autofit as af
@@ -87,12 +87,12 @@ more descriptive and easier to interpret.
 """
 for i in range(2):
     dataset_name = f"simple"
-    dataset_path = path.join("dataset", "imaging", dataset_name)
+    dataset_path = Path("dataset") / "imaging" / dataset_name
 
     dataset = ag.Imaging.from_fits(
-        data_path=path.join(dataset_path, "data.fits"),
-        psf_path=path.join(dataset_path, "psf.fits"),
-        noise_map_path=path.join(dataset_path, "noise_map.fits"),
+        data_path=dataset_path / "data.fits",
+        psf_path=dataset_path / "psf.fits",
+        noise_map_path=dataset_path / "noise_map.fits",
         pixel_scales=0.1,
     )
 
@@ -111,7 +111,7 @@ for i in range(2):
     model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
     search = af.Nautilus(
-        path_prefix=path.join("results_folder_csv_png_fits"),
+        path_prefix=Path("results_folder_csv_png_fits"),
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
@@ -148,7 +148,7 @@ Set up the aggregator as shown in `start_here.py`.
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder_csv_png_fits"),
+    directory=Path("output") / "results_folder_csv_png_fits",
 )
 
 """
@@ -280,7 +280,7 @@ shape (1, 3).
 
 When we add a single .png, we cannot extract or make it, it simply gets added to the subplot.
 """
-# image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
+# image_rgb = Image.open(Path(dataset_path, "rgb.png"))
 #
 # image = agg_image.extract_image(
 #     ag.agg.subplot_dataset.data,

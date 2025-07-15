@@ -1,6 +1,6 @@
 """
-Customize: Model Cookbook
-=========================
+Model Cookbook
+==============
 
 The model cookbook provides a concise reference to model composition tools, specifically the `Model` and
 `Collection` objects.
@@ -19,7 +19,7 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 
@@ -198,11 +198,11 @@ API documentation pages:
 import os
 import json
 
-model_path = path.join("path", "to", "model", "json")
+model_path = Path("path", "to", "model", "json")
 
 os.makedirs(model_path, exist_ok=True)
 
-model_file = path.join(model_path, "model.json")
+model_file = Path(model_path, "model.json")
 
 with open(model_file, "w+") as f:
     json.dump(model.dict(), f, indent=4)

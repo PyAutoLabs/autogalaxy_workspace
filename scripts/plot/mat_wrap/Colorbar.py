@@ -15,15 +15,15 @@ If any code in this script is unclear, refer to the `plot/start_here.ipynb` note
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
 First, lets load an example Hubble Space Telescope image of a real galaxy as an `Array2D`.
 """
-dataset_path = path.join("dataset", "imaging", "complex")
-data_path = path.join(dataset_path, "data.fits")
+dataset_path = Path("dataset") / "imaging" / "complex"
+data_path = dataset_path / "data.fits"
 data = ag.Array2D.from_fits(file_path=data_path, hdu=0, pixel_scales=0.1)
 
 """

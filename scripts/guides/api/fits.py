@@ -49,7 +49,7 @@ and `modeling/features/pixelizaiton.py`.
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -61,12 +61,12 @@ We we begin by loading the galaxy dataset `simple__sersic` from .fits files, whi
 demonstrate fitting.
 """
 dataset_name = "sersic_x2"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -379,7 +379,7 @@ we could fit this image again with an independent modeling script.
 """
 galaxy_subtracted_image_2d = fit.subtracted_images_of_galaxies_list[1]
 galaxy_subtracted_image_2d.output_to_fits(
-    file_path=path.join(dataset_path, "galaxy_subtracted_data.fits"), overwrite=True
+    file_path=Path(dataset_path, "galaxy_subtracted_data.fits"), overwrite=True
 )
 
 """

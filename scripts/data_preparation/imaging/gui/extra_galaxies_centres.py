@@ -18,7 +18,7 @@ above which requires you to input these values manually.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 from matplotlib import pyplot as plt
@@ -29,7 +29,7 @@ __Dataset__
 The path where the extra galaxy centres are output, which is `dataset/imaging/extra_galaxies`.
 """
 dataset_name = "extra_galaxies"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
 The pixel scale of the imaging dataset.
@@ -40,7 +40,7 @@ pixel_scales = 0.1
 Load the image which we will use to mark the galaxy light centre.
 """
 data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=pixel_scales
+    file_path=dataset_path / "data.fits", pixel_scales=pixel_scales
 )
 
 """
@@ -115,5 +115,5 @@ when we model them.
 """
 ag.output_to_json(
     obj=extra_galaxies_centres,
-    file_path=path.join(dataset_path, "extra_galaxies_centres.json"),
+    file_path=Path(dataset_path, "extra_galaxies_centres.json"),
 )
