@@ -43,9 +43,7 @@ folder `dataset/data_preparation/imaging/simple`.
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
-data = ag.Array2D.from_fits(
-    file_path=dataset_path / "data.fits", pixel_scales=0.1
-)
+data = ag.Array2D.from_fits(file_path=dataset_path / "data.fits", pixel_scales=0.1)
 noise_map = ag.Array2D.from_fits(
     file_path=dataset_path / "noise_map.fits", pixel_scales=0.1
 )

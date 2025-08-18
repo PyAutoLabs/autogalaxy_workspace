@@ -148,7 +148,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/imaging/modeling/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -415,7 +415,7 @@ So, what next?
 
 __Features__
 
-The examples in the `autogalaxy_workspace/*/imaging/modeling/features` package illustrate other modeling features. 
+The examples in the `autogalaxy_workspace/*/modeling/imaging/features` package illustrate other modeling features. 
 
 We recommend you checkout the following features, because the make modeling in general more reliable and 
 efficient (you will therefore benefit from using these features irrespective of the quality of your data and 
@@ -428,7 +428,7 @@ We recommend you now checkout the following feature:
 All other features may be useful to specific users with specific datasets and scientific goals, but are not useful
 for general modeling.
 
-The folders `autogalaxy_workspace/*/imaging/modeling/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`
+The folders `autogalaxy_workspace/*/modeling/imaging/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`
 provide guides on how to customize many other aspects of the model-fit. Check them out to see if anything
 sounds useful, but for most users you can get by without using these forms of customization!
   

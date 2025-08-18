@@ -510,7 +510,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse])
 
     search = af.DynestyStatic(
-        path_prefix=Path("ellipse_mask_2"),
+        path_prefix=Path("ellipse_mask"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -532,7 +532,7 @@ model = af.Collection(ellipses=ellipses)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=Path("ellipse_mask_2"),
+    path_prefix=Path("ellipse_mask"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,

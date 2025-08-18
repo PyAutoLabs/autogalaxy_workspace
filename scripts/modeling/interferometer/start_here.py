@@ -80,7 +80,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/imaging/modeling/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -122,7 +122,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 The folders: 
 
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
+ - `autogalaxy_workspace/*/modeling/imaging/searches`.
  - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the

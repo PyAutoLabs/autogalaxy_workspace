@@ -6,7 +6,7 @@ This script simulates `Imaging` of a galaxy where the sky background is not subt
 appears in the dataset.
 
 It is used to demonstrate sky background modeling in
-the `autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example.
+the `autogalaxy_workspace/*/modeling/imaging/features/sky_background.py` example.
 
 __Model__
 

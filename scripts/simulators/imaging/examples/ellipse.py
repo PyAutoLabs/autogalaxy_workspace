@@ -7,7 +7,7 @@ position of multiple elliptical isophotes to an image of a galaxy. This allows t
 a galaxy to be determined.
 
 This script simulates a very elliptical galaxy with a `Sersic` light profile, which is used to illustrate ellipse fitting
-in the `autogalaxy_workspace/*/notebooks/imaging/modeling/fearure/ellipse_fitting.py` example.
+in the `autogalaxy_workspace/*/notebooks/modeling/imaging/fearure/ellipse_fitting.py` example.
 
 This script simulates `Imaging` of a galaxy using light profiles where:
 

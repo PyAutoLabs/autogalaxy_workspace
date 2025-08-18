@@ -9,7 +9,7 @@ We therefore will mask the emission of these extra galaxies or include them in t
 fit and subtract the emission.
 
 This uses the **PyAutoGalaxy** extra galaxies API, which is illustrated in
-the  script `autogalaxy_workspace/*/imaging/modeling/features/extra_galaxies.py`.
+the  script `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.py`.
 
 This script simulates an imaging dataset which includes extra galaxies near the main galaxy.
 This is used to illustrate the extra galaxies API in the script above.
@@ -35,7 +35,7 @@ not impact the model.
 
 To illustrate how mark extra galaxy centres on a dataset so they can be used in the model.
 
- `autogalaxy_workspace/*/imaging/modeling/features/extra_galaxies.ipynb`
+ `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.ipynb`
 
 To illustrate how compose and fit a model which includes the extra galaxies as light profiles.
 

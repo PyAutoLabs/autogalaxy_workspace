@@ -231,7 +231,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 The folders: 
 
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
+ - `autogalaxy_workspace/*/modeling/imaging/searches`.
  - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
@@ -239,7 +239,7 @@ model-fit, including the priors on the model.
 
 The `name` and `path_prefix` below specify the path where results ae stored in the output folder:  
 
- `/autogalaxy_workspace/output/imaging/modeling/simple__sersic/mass[sie]/unique_identifier`.
+ `/autogalaxy_workspace/output/modeling/imaging/simple__sersic/mass[sie]/unique_identifier`.
 """
 search = af.Nautilus(
     path_prefix="cosma_example",

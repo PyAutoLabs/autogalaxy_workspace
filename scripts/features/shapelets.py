@@ -262,7 +262,7 @@ creates, which requires more thorough sampling by the non-linear search.
 
 The folders: 
 
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
+ - `autogalaxy_workspace/*/modeling/imaging/searches`.
  - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the

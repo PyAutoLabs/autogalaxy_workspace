@@ -50,9 +50,7 @@ The image is the image of your galaxy, which comes from a telescope like the Hub
 
 Lets inspect an image which conforms to **PyAutoGalaxy** standards:
 """
-visibilities = ag.Visibilities.from_fits(
-    file_path=dataset_path / "data.fits", hdu=0
-)
+visibilities = ag.Visibilities.from_fits(file_path=dataset_path / "data.fits", hdu=0)
 
 array_plotter = aplt.Grid2DPlotter(grid=visibilities.in_grid)
 array_plotter.figure_2d()

@@ -201,5 +201,5 @@ plotter = aplt.NestPlotter(samples=result.samples)
 plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/imaging/modeling/results.py` for a full description of the result object.
+Checkout `autogalaxy_workspace/*/modeling/imaging/results.py` for a full description of the result object.
 """

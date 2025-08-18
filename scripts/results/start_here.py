@@ -366,7 +366,7 @@ This includes Basis objects such as a Multi-Gaussian expansion of Shapelets.
 These objects mostly behave identically to ordinary light profiles, but due to the linear algebra have their own
 specific functionality.
 
-The example script `autogalaxy_workspace/*/imaging/modeling/linear_light_profiles.py` provides a detailed description of 
+The example script `autogalaxy_workspace/*/modeling/imaging/linear_light_profiles.py` provides a detailed description of 
 using linear light profile results including:
 
  - Extracting individual quantities from the linear light profile, such as the coefficients of the basis functions.

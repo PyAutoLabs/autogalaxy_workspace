@@ -46,9 +46,7 @@ This image represents a good data-reduction that conforms **PyAutoGalaxy** forma
 """
 dataset_path = Path("dataset", "imaging", "simple")
 
-data = ag.Array2D.from_fits(
-    file_path=dataset_path / "data.fits", pixel_scales=0.1
-)
+data = ag.Array2D.from_fits(file_path=dataset_path / "data.fits", pixel_scales=0.1)
 
 array_plotter = aplt.Array2DPlotter(array=data)
 array_plotter.figure_2d()
@@ -215,7 +213,7 @@ Functions related to background subtraction are:
 - `background_noise_map_via_edges_from`
 
 Alternatively, it is possible to model the background sky as part of your fitting procedure. This is described in the
-`autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example script. 
+`autogalaxy_workspace/*/modeling/imaging/features/sky_background.py` example script. 
 
 Modeling the sky has only a small impact on computational run times but does produce more accurate results, and 
 therefore is recommended. Even if your data is sky subtracted, you can still include the sky in the model to ensure
