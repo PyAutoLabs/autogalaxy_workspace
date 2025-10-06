@@ -103,8 +103,53 @@ for i in range(2):
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
-        def compute_latent_variables(self, instance):
-            return {"example.latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
+
+        LATENT_KEYS = ["galaxies.galaxy.bulge.sersic_index"]
+
+        def compute_latent_variables(self, parameters, model):
+            """
+            A latent variable is not a model parameter but can be derived from the model. Its value and errors may be
+            of interest and aid in the interpretation of a model-fit.
+
+            This code implements a simple example of a latent variable, the magn
+
+            By overwriting this method we can manually specify latent variables that are calculated and output to
+            a `latent.csv` file, which mirrors the `samples.csv` file.
+
+            In the example below, the `latent.csv` file will contain at least two columns with the shear magnitude and
+            angle sampled by the non-linear search.
+
+            You can add your own custom latent variables here, if you have particular quantities that you
+            would like to output to the `latent.csv` file.
+
+            This function is called at the end of search, following one of two schemes depending on the settings in
+            `output.yaml`:
+
+            1) Call for every search sample, which produces a complete `latent/samples.csv` which mirrors the normal
+            `samples.csv` file but takes a long time to compute.
+
+            2) Call only for N random draws from the posterior inferred at the end of the search, which only produces a
+            `latent/latent_summary.json` file with the median and 1 and 3 sigma errors of the latent variables but is
+            fast to compute.
+
+
+            Parameters
+            ----------
+            parameters : array-like
+                The parameter vector of the model sample. This will typically come from the non-linear search.
+                Inside this method it is mapped back to a model instance via `model.instance_from_vector`.
+            model : Model
+                The model object defining how the parameter vector is mapped to an instance. Passed explicitly
+                so that this function can be used inside JAX transforms (`vmap`, `jit`) with `functools.partial`.
+
+            Returns
+            -------
+            A dictionary mapping every latent variable name to its value.
+
+            """
+            instance = model.instance_from_vector(vector=parameters)
+
+            return (instance.galaxies.galaxy.bulge.sersic_index * 2.0,)
 
     analysis = AnalysisLatent(dataset=dataset)
 
