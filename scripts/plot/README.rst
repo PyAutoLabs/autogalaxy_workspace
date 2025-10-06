@@ -1,22 +1,21 @@
 The ``plot` folder contains scripts which show how to use **PyAutoGalaxy** built-in visualization tools.
 
-The **PyAutoGalaxy** API provides a simple interface with matplotlib for making plots that does not require the user to
+The API provides a simple interface with matplotlib for making plots that does not require the user to
 write any matplotlib code themselves.
 
-This is illustrate in the ``overview.py`` / ``overview.ipynb`` file, which I strongly recommend new users read!
+This is illustrated in the ``start_here.py`` / ``start_here.ipynb`` file, where new users should begin.
 
 Files (Beginner)
 ----------------
 
-- ``overview.py``: An overview of plotting and visualization (RECOMMENDED READ).
+- ``start_here.py``: An introduction to plotting and visualization (RECOMMENDED READ).
 
 Folders (Beginner)
 ------------------
 
-- ``mat_wrap``: Objects which wrap Matplotlib functions which customize a figure's appearance.
-- ``multi``: Plotting multiple subplots or lines on 1D figures.
-- ``plots``: Output plots written to hard-disk.
-- ``plotters``: Plotters which plot specific **PyAutoGalaxy** objects (e.g. ``GalaxyPlotter``, ``GalaxiesPlotter``).
-- ``search``: Visualization tools for the results of a non-linear search (e.g. ``NestPlotter``).
-- ``visuals_1d``: Include 1D visuals on a 1D plot (e.g. a vertical line of the Einstein on a 1D convergence plot).
-- ``visuals_2d``: Include 2D visuals on a 2D plot (e.g. a critical curve on an image).
+- ``examples``: Examples showing how to use all of the core plotting API.
+
+Folders (Advanced)
+------------------
+
+- ``advanced``: Advanced examples showing how to use the plotting API to create custom plots.

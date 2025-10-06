@@ -12,7 +12,7 @@ value in pipelines.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 from matplotlib import pyplot as plt
@@ -24,7 +24,7 @@ Setup the path the datasets we'll use to illustrate preprocessing, which is the
 folder `dataset/imaging/simple__sersic`.
 """
 dataset_name = "simple__sersic"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
 The pixel scale of the imaging dataset.
@@ -35,7 +35,7 @@ pixel_scales = 0.1
 Load the image which we will use to mark the galaxy light centre.
 """
 data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=pixel_scales
+    file_path=dataset_path / "data.fits", pixel_scales=pixel_scales
 )
 
 """
@@ -107,7 +107,7 @@ Output the galaxy light centres to a .json file in the dataset folder, so we can
 """
 ag.output_to_json(
     obj=light_centres,
-    file_path=path.join(dataset_path, "light_centre.json"),
+    file_path=Path(dataset_path, "light_centre.json"),
 )
 
 """

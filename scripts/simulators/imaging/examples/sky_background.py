@@ -6,7 +6,7 @@ This script simulates `Imaging` of a galaxy where the sky background is not subt
 appears in the dataset.
 
 It is used to demonstrate sky background modeling in
-the `autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example.
+the `autogalaxy_workspace/*/modeling/imaging/features/sky_background.py` example.
 
 __Model__
 
@@ -26,7 +26,7 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -38,7 +38,7 @@ The `dataset_type` describes the type of data being simulated and `dataset_name`
 dataset_type = "imaging"
 dataset_name = "sky_background"
 
-dataset_path = path.join("dataset", dataset_type, dataset_name)
+dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
 __Grid__
@@ -124,9 +124,9 @@ __Output__
 Output the simulated dataset to the dataset path as .fits files.
 """
 dataset.output_to_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     overwrite=True,
 )
 
@@ -156,7 +156,7 @@ This can be loaded via the method `galaxies = ag.from_json()`.
 """
 ag.output_to_json(
     obj=galaxies,
-    file_path=path.join(dataset_path, "galaxies.json"),
+    file_path=Path(dataset_path, "galaxies.json"),
 )
 
 """

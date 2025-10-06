@@ -9,7 +9,7 @@ We therefore will mask the emission of these extra galaxies or include them in t
 fit and subtract the emission.
 
 This uses the **PyAutoGalaxy** extra galaxies API, which is illustrated in
-the  script `autogalaxy_workspace/*/imaging/modeling/features/extra_galaxies.py`.
+the  script `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.py`.
 
 This script simulates an imaging dataset which includes extra galaxies near the main galaxy.
 This is used to illustrate the extra galaxies API in the script above.
@@ -35,7 +35,7 @@ not impact the model.
 
 To illustrate how mark extra galaxy centres on a dataset so they can be used in the model.
 
- `autogalaxy_workspace/*/imaging/modeling/features/extra_galaxies.ipynb`
+ `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.ipynb`
 
 To illustrate how compose and fit a model which includes the extra galaxies as light profiles.
 
@@ -55,7 +55,7 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -66,7 +66,7 @@ The `dataset_type` describes the type of data being simulated and `dataset_name`
 """
 dataset_type = "imaging"
 dataset_name = "extra_galaxies"
-dataset_path = path.join("dataset", dataset_type, dataset_name)
+dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
 __Grid__
@@ -181,9 +181,9 @@ __Output__
 Output the simulated dataset to the dataset path as .fits files.
 """
 dataset.output_to_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     overwrite=True,
 )
 
@@ -213,7 +213,7 @@ This can be loaded via the method `galaxies = ag.from_json()`.
 """
 ag.output_to_json(
     obj=galaxies,
-    file_path=path.join(dataset_path, "galaxies.json"),
+    file_path=Path(dataset_path, "galaxies.json"),
 )
 
 """

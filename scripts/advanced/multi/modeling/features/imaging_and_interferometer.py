@@ -20,7 +20,7 @@ A number of benefits are apparent if we combine the analysis of both datasets at
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -44,12 +44,12 @@ with the galaxy model.
 dataset_type = "multi"
 dataset_label = "interferometer"
 dataset_name = "simple"
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
+dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 interferometer = ag.Interferometer.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerNUFFT,
 )
@@ -67,12 +67,12 @@ Load and plot the galaxy dataset `simple` via .fits files, which we will fit wit
 dataset_type = "multi"
 dataset_label = "imaging"
 dataset_name = "simple"
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
+dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 imaging = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "g_data.fits"),
-    psf_path=path.join(dataset_path, "g_psf.fits"),
-    noise_map_path=path.join(dataset_path, "g_noise_map.fits"),
+    data_path=Path(dataset_path, "g_data.fits"),
+    psf_path=Path(dataset_path, "g_psf.fits"),
+    noise_map_path=Path(dataset_path, "g_noise_map.fits"),
     pixel_scales=0.08,
 )
 
@@ -144,7 +144,7 @@ print(factor_graph.global_prior_model.info)
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
+    path_prefix=Path("multi") / "modeling",
     name="imaging_and_interferometer",
     unique_tag=dataset_name,
     n_live=100,

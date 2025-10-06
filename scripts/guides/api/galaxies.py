@@ -40,7 +40,7 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt

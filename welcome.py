@@ -17,7 +17,7 @@ input(
     
     
     cd path/to/autogalaxy_workspace (if you are not already in the autogalaxy_workspace).
-    python3 scripts/imaging/modeling/light_parametric.py
+    python3 scripts/modeling/imaging/light_parametric.py
 
 
     The reasons for this are so that PyAutoGalaxy can:

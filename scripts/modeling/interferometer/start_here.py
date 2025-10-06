@@ -13,7 +13,7 @@ This script fits `Interferometer` dataset of a galaxy with a model where:
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -39,12 +39,12 @@ directly to the visiblities. We use a non-uniform fast Fourier transform, which 
 interferometer datasets containing ~1-10 million visibilities.
 """
 dataset_name = "simple"
-dataset_path = path.join("dataset", "interferometer", dataset_name)
+dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 dataset = ag.Interferometer.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )
@@ -80,7 +80,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/imaging/modeling/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -122,7 +122,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 
 The folders: 
 
- - `autogalaxy_workspace/*/imaging/modeling/searches`.
+ - `autogalaxy_workspace/*/modeling/imaging/searches`.
  - `autogalaxy_workspace/*/modeling/imaging/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
@@ -158,7 +158,7 @@ For users on a Windows Operating system, using `number_of_cores>1` may lead to a
 reduced back to 1 to fix it.
 """
 search = af.Nautilus(
-    path_prefix=path.join("interferometer", "modeling"),
+    path_prefix=Path("interferometer", "modeling"),
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
@@ -200,10 +200,7 @@ The overall log likelihood evaluation time is given by the `fit_time` key.
 For this example, it should be around ~0.25 seconds, which is extremely fast for interferometer modeling. 
 More advanced modeling features (e.g. shapelets, multi Gaussian expansions, pixelizations) have slower log 
 likelihood evaluation times (1-3 seconds), and you should be wary of this when using these features.PointDataset
-"""
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
 
-"""
 To estimate the expected overall run time of the model-fit we multiply the log likelihood evaluation time by an 
 estimate of the number of iterations the non-linear search will perform. 
 
@@ -217,14 +214,7 @@ If you perform the fit over multiple CPUs, you can divide the run time by the nu
 the time it will take to fit the model. Parallelization with Nautilus scales well, it speeds up the model-fit by the 
 `number_of_cores` for N < 8 CPUs and roughly `0.5*number_of_cores` for N > 8 CPUs. This scaling continues 
 for N> 50 CPUs, meaning that with super computing facilities you can always achieve fast run times!
-"""
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
 
-"""
 __Model-Fit__
 
 We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear

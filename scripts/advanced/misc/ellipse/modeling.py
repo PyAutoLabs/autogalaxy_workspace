@@ -50,7 +50,7 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -66,11 +66,11 @@ This uses the `Imaging` object used in other examples.
 Ellipse fitting does not use the Point Spread Function (PSF) of the dataset, so we do not need to load it.
 """
 dataset_name = "ellipse"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 
@@ -269,7 +269,7 @@ output results and visualization frequently to hard-disk. If your fit is consist
 is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
 """
 search = af.DynestyStatic(
-    path_prefix=path.join("ellipse"),
+    path_prefix=Path("ellipse"),
     name=f"fit_start",
     unique_tag=dataset_name,
     sample="rwalk",
@@ -307,22 +307,9 @@ Run times are dictated by two factors:
  - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex
    models require more iterations to converge to a solution.
 
-The log likelihood evaluation time can be estimated before a fit using the `profile_log_likelihood_function` method,
-which returns two dictionaries containing the run-times and information about the fit.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
-
-"""
-The overall log likelihood evaluation time is given by the `fit_time` key.
-
-For this example, it is ~0.04 seconds, which is extremely fast for modeling. For higher resolution datasets ellipse
+For this analysis, the log likelihood evaluation time is ~0.04 seconds, which is extremely fast for modeling. For higher resolution datasets ellipse
 fitting can slow down to a likelihood evaluation time of order 0.5 - 1.0 second, which is still reasonably fast.
-"""
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
 
-"""
 To estimate the expected overall run time of the model-fit we multiply the log likelihood evaluation time by an 
 estimate of the number of iterations the non-linear search will perform. 
 
@@ -336,14 +323,7 @@ If you perform the fit over multiple CPUs, you can divide the run time by the nu
 the time it will take to fit the model. Parallelization with Nautilus scales well, it speeds up the model-fit by the 
 `number_of_cores` for N < 8 CPUs and roughly `0.5*number_of_cores` for N > 8 CPUs. This scaling continues 
 for N> 50 CPUs, meaning that with super computing facilities you can always achieve fast run times!
-"""
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
 
-"""
 __Model-Fit__
 
 We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
@@ -461,7 +441,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse])
 
     search = af.DynestyStatic(
-        path_prefix=path.join("ellipse"),
+        path_prefix=Path("ellipse"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -489,7 +469,7 @@ model = af.Collection(ellipses=ellipses)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=path.join("ellipse"),
+    path_prefix=Path("ellipse"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,
@@ -501,7 +481,7 @@ result = search.fit(model=model, analysis=analysis)
 __Masking__
 """
 mask_extra_galaxies = ag.Mask2D.from_fits(
-    file_path=path.join(dataset_path, "mask_extra_galaxies.fits"),
+    file_path=Path(dataset_path, "mask_extra_galaxies.fits"),
     pixel_scales=dataset.pixel_scales,
 )
 
@@ -530,7 +510,7 @@ for i in range(len(major_axis_list)):
     model = af.Collection(ellipses=[ellipse])
 
     search = af.DynestyStatic(
-        path_prefix=path.join("ellipse_mask_2"),
+        path_prefix=Path("ellipse_mask"),
         name=f"fit_{i}",
         unique_tag=dataset_name,
         sample="rwalk",
@@ -552,7 +532,7 @@ model = af.Collection(ellipses=ellipses)
 model.dummy_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 
 search = af.Drawer(
-    path_prefix=path.join("ellipse_mask_2"),
+    path_prefix=Path("ellipse_mask"),
     name=f"fit_all",
     unique_tag=dataset_name,
     total_draws=1,

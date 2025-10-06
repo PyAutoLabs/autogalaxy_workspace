@@ -42,7 +42,7 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import numpy as np
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -57,11 +57,11 @@ This uses the `Imaging` object used in other examples.
 Ellipse fitting does not use the Point Spread Function (PSF) of the dataset, so we do not need to load it.
 """
 dataset_name = "ellipse"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 

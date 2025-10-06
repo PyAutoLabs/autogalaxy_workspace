@@ -22,7 +22,7 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -40,7 +40,7 @@ dataset_name = "asymmetric"
 """
 The path where the dataset will be output.
 """
-dataset_path = path.join("dataset", dataset_type, dataset_name)
+dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
 __Simulate__
@@ -57,9 +57,9 @@ By default we use baselines from the Square Mile Array (SMA), which produces low
 can be fitted extremely efficiently. The `autogalaxy_workspace` includes ALMA uv_wavelengths files for simulating
 much high resolution datasets (which can be performed by replacing "sma.fits" below with "alma.fits").
 """
-uv_wavelengths_path = path.join("dataset", dataset_type, "uv_wavelengths")
+uv_wavelengths_path = Path("dataset", dataset_type, "uv_wavelengths")
 uv_wavelengths = ag.ndarray_via_fits_from(
-    file_path=path.join(uv_wavelengths_path, "sma.fits"), hdu=0
+    file_path=Path(uv_wavelengths_path, "sma.fits"), hdu=0
 )
 
 """
@@ -90,7 +90,7 @@ in degrees and defined counter clockwise from the positive x-axis.
 
 We can use the `convert` module to determine the elliptical components from the axis-ratio and angle.
 """
-# galaxy = ag.Galaxy.from_json(file_path=path.join(dataset_path, "galaxy_mge.json"))
+# galaxy = ag.Galaxy.from_json(file_path=Path(dataset_path, "galaxy_mge.json"))
 
 centre_y_list = [
     -0.00361289,
@@ -242,9 +242,9 @@ __Output__
 Output the simulated dataset to the dataset path as .fits files.
 """
 dataset.output_to_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     overwrite=True,
 )
 
@@ -275,7 +275,7 @@ This can be loaded via the method `galaxies = ag.from_json()`.
 """
 ag.output_to_json(
     obj=galaxies,
-    file_path=path.join(dataset_path, "galaxies.json"),
+    file_path=Path(dataset_path, "galaxies.json"),
 )
 
 """

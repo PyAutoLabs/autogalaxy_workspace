@@ -29,7 +29,7 @@ If a free `effective radius` is created for every dataset, this would add 5+ fre
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -70,13 +70,13 @@ dataset_type = "multi"
 dataset_label = "imaging"
 dataset_name = "wavelength_dependence"
 
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
+dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 dataset_list = [
     ag.Imaging.from_fits(
-        data_path=path.join(dataset_path, f"{color}_data.fits"),
-        psf_path=path.join(dataset_path, f"{color}_psf.fits"),
-        noise_map_path=path.join(dataset_path, f"{color}_noise_map.fits"),
+        data_path=Path(dataset_path) / f"{color}_data.fits",
+        psf_path=Path(dataset_path) / f"{color}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
         pixel_scales=pixel_scales,
     )
     for color, pixel_scales in zip(color_list, pixel_scales_list)
@@ -211,7 +211,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
+    path_prefix=Path("multi") / "modeling",
     name="wavelength_dependence",
     unique_tag=dataset_name,
     n_live=100,

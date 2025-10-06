@@ -33,7 +33,7 @@ linear light profiles, therefore you must read the following notebooks before th
 
 import matplotlib.pyplot as plt
 import numpy as np
-from os import path
+from pathlib import Path
 
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -59,12 +59,12 @@ interferometer datasets containing ~1-10 million visibilities. We will discuss h
 function changes for different methods of Fourier transforming in this guide.
 """
 dataset_name = "simple"
-dataset_path = path.join("dataset", "interferometer", dataset_name)
+dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 dataset = ag.Interferometer.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
-    uv_wavelengths_path=path.join(dataset_path, "uv_wavelengths.fits"),
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )
@@ -172,13 +172,14 @@ mapper = ag.Mapper(
     regularization=None,
 )
 
-include = aplt.Include2D(mapper_source_plane_data_grid=False)
-mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
-mapper_plotter.figure_2d()
+mapper_plotter = aplt.MapperPlotter(mapper=mapper)
+mapper_plotter.figure_2d(interpolate_to_uniform=False)
 
-include = aplt.Include2D(mapper_source_plane_data_grid=True)
-mapper_plotter = aplt.MapperPlotter(mapper=mapper, include_2d=include)
-mapper_plotter.figure_2d()
+visuals = aplt.Visuals2D(
+    grid=mapper_grids.source_plane_data_grid,
+)
+mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals)
+mapper_plotter.figure_2d(interpolate_to_uniform=False)
 
 """
 __Image-Source Mapping__
@@ -227,12 +228,11 @@ This array can be used to visualize how an input list of image-pixel indexes map
 It also shows that image-pixel indexing begins from the top-left and goes rightwards and downwards, accounting for 
 all image-pixels which are not masked.
 """
-include = aplt.Include2D(mapper_source_plane_data_grid=False)
-
 visuals = aplt.Visuals2D(indexes=[list(range(2050, 2090))])
 
 mapper_plotter = aplt.MapperPlotter(
-    mapper=mapper, visuals_2d=visuals, include_2d=include
+    mapper=mapper,
+    visuals_2d=visuals,
 )
 mapper_plotter.subplot_image_and_mapper(
     image=dataset.dirty_image, interpolate_to_uniform=False
@@ -241,10 +241,13 @@ mapper_plotter.subplot_image_and_mapper(
 """
 The reverse mappings of pixelization pixels to image-pixels can also be used.
 """
-visuals = aplt.Visuals2D(pix_indexes=[[200]])
-mapper_plotter = aplt.MapperPlotter(
-    mapper=mapper, visuals_2d=visuals, include_2d=include
-)
+pix_indexes = [[200]]
+
+indexes = mapper.slim_indexes_for_pix_indexes(pix_indexes=pix_indexes)
+
+visuals = aplt.Visuals2D(indexes=indexes)
+
+mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals)
 
 mapper_plotter.subplot_image_and_mapper(
     image=dataset.dirty_image, interpolate_to_uniform=False

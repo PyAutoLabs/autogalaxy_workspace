@@ -35,7 +35,7 @@ linear light profiles, therefore you must read the following notebooks before th
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import nnls
-from os import path
+from pathlib import Path
 
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -51,12 +51,12 @@ fitted with `Sersic` profile and therefore requires a multi-Gaussian expansion t
 """
 
 dataset_name = "asymmetric"
-dataset_path = path.join("dataset", "imaging", dataset_name)
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
-    data_path=path.join(dataset_path, "data.fits"),
-    psf_path=path.join(dataset_path, "psf.fits"),
-    noise_map_path=path.join(dataset_path, "noise_map.fits"),
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
 )
 

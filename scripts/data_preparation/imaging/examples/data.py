@@ -33,7 +33,7 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 # %matplotlib inline
-from os import path
+from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -44,11 +44,9 @@ Load an image from .fits files (a format commonly used by Astronomers) via the `
 
 This image represents a good data-reduction that conforms **PyAutoGalaxy** formatting standards!
 """
-dataset_path = path.join("dataset", "imaging", "simple")
+dataset_path = Path("dataset", "imaging", "simple")
 
-data = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=0.1
-)
+data = ag.Array2D.from_fits(file_path=dataset_path / "data.fits", pixel_scales=0.1)
 
 array_plotter = aplt.Array2DPlotter(array=data)
 array_plotter.figure_2d()
@@ -130,7 +128,7 @@ electrons per second instead.
 format.]
 """
 # exposure_time_map = ag.Array2D.from_fits(
-#     file_path=path.join(dataset_path, "exposure_time_map.fits"),
+#     file_path=Path(dataset_path, "exposure_time_map.fits"),
 #     pixel_scales=data_eps.pixel_scales,
 # )
 #
@@ -171,10 +169,10 @@ keep the edges surrounding the galaxy if they are masked out anyway?
 
 Lets look at an example of a very large postage stamp - we can barely even see the galaxy!
 """
-dataset_path = path.join("dataset", "imaging", "simple__big_stamp")
+dataset_path = Path("dataset", "imaging", "simple__big_stamp")
 
 data_large_stamp = ag.Array2D.from_fits(
-    file_path=path.join(dataset_path, "data.fits"), pixel_scales=0.1
+    file_path=dataset_path / "data.fits", pixel_scales=0.1
 )
 
 array_plotter = aplt.Array2DPlotter(array=data_large_stamp)
@@ -215,7 +213,7 @@ Functions related to background subtraction are:
 - `background_noise_map_via_edges_from`
 
 Alternatively, it is possible to model the background sky as part of your fitting procedure. This is described in the
-`autogalaxy_workspace/*/imaging/modeling/features/sky_background.py` example script. 
+`autogalaxy_workspace/*/modeling/imaging/features/sky_background.py` example script. 
 
 Modeling the sky has only a small impact on computational run times but does produce more accurate results, and 
 therefore is recommended. Even if your data is sky subtracted, you can still include the sky in the model to ensure

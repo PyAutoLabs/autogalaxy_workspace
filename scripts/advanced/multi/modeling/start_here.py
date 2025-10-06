@@ -18,7 +18,7 @@ certain parts of code are not documented to ensure the script is concise.
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-from os import path
+from pathlib import Path
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -51,13 +51,13 @@ dataset_type = "multi"
 dataset_label = "imaging"
 dataset_name = "simple"
 
-dataset_path = path.join("dataset", dataset_type, dataset_label, dataset_name)
+dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 dataset_list = [
     ag.Imaging.from_fits(
-        data_path=path.join(dataset_path, f"{color}_data.fits"),
-        psf_path=path.join(dataset_path, f"{color}_psf.fits"),
-        noise_map_path=path.join(dataset_path, f"{color}_noise_map.fits"),
+        data_path=Path(dataset_path) / f"{color}_data.fits",
+        psf_path=Path(dataset_path) / f"{color}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
         pixel_scales=pixel_scales,
     )
     for color, pixel_scales in zip(color_list, pixel_scales_list)
@@ -216,7 +216,7 @@ print(factor_graph.global_prior_model.info)
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=path.join("multi", "modeling"),
+    path_prefix=Path("multi") / "modeling",
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
@@ -270,7 +270,7 @@ plotter.corner_cornerpy()
 """
 __Wrap Up__
 
-This simple example introduces the basic API for fitting multiple datasets with a shared model.
+This simple example introduces the API for fitting multiple datasets with a shared model.
 
 It should already be quite intuitive how this API can be adapted to fit more complex models, or fit different
 datasets with different models. For example, an `AnalysisImaging` and `AnalysisInterferometer` can be combined, into

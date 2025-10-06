@@ -63,7 +63,7 @@ especially if loading results from hard-disk is slow.
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 from pathlib import Path
-from os import path
+from pathlib import Path
 from PIL import Image
 
 import autofit as af
@@ -87,12 +87,12 @@ more descriptive and easier to interpret.
 """
 for i in range(2):
     dataset_name = f"simple"
-    dataset_path = path.join("dataset", "imaging", dataset_name)
+    dataset_path = Path("dataset") / "imaging" / dataset_name
 
     dataset = ag.Imaging.from_fits(
-        data_path=path.join(dataset_path, "data.fits"),
-        psf_path=path.join(dataset_path, "psf.fits"),
-        noise_map_path=path.join(dataset_path, "noise_map.fits"),
+        data_path=dataset_path / "data.fits",
+        psf_path=dataset_path / "psf.fits",
+        noise_map_path=dataset_path / "noise_map.fits",
         pixel_scales=0.1,
     )
 
@@ -111,7 +111,7 @@ for i in range(2):
     model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
     search = af.Nautilus(
-        path_prefix=path.join("results_folder_csv_png_fits"),
+        path_prefix=Path("results_folder_csv_png_fits"),
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
@@ -119,8 +119,51 @@ for i in range(2):
     )
 
     class AnalysisLatent(ag.AnalysisImaging):
-        def compute_latent_variables(self, instance):
-            return {"example_latent": instance.galaxies.galaxy.bulge.sersic_index * 2.0}
+        LATENT_KEYS = ["galaxies.galaxy.bulge.sersic_index"]
+
+        def compute_latent_variables(self, parameters, model):
+            """
+            A latent variable is not a model parameter but can be derived from the model. Its value and errors may be
+            of interest and aid in the interpretation of a model-fit.
+
+            This code implements a simple example of a latent variable, the magn
+
+            By overwriting this method we can manually specify latent variables that are calculated and output to
+            a `latent.csv` file, which mirrors the `samples.csv` file.
+
+            In the example below, the `latent.csv` file will contain at least two columns with the shear magnitude and
+            angle sampled by the non-linear search.
+
+            You can add your own custom latent variables here, if you have particular quantities that you
+            would like to output to the `latent.csv` file.
+
+            This function is called at the end of search, following one of two schemes depending on the settings in
+            `output.yaml`:
+
+            1) Call for every search sample, which produces a complete `latent/samples.csv` which mirrors the normal
+            `samples.csv` file but takes a long time to compute.
+
+            2) Call only for N random draws from the posterior inferred at the end of the search, which only produces a
+            `latent/latent_summary.json` file with the median and 1 and 3 sigma errors of the latent variables but is
+            fast to compute.
+
+            Parameters
+            ----------
+            parameters : array-like
+                The parameter vector of the model sample. This will typically come from the non-linear search.
+                Inside this method it is mapped back to a model instance via `model.instance_from_vector`.
+            model : Model
+                The model object defining how the parameter vector is mapped to an instance. Passed explicitly
+                so that this function can be used inside JAX transforms (`vmap`, `jit`) with `functools.partial`.
+
+            Returns
+            -------
+            A dictionary mapping every latent variable name to its value.
+
+            """
+            instance = model.instance_from_vector(vector=parameters)
+
+            return (instance.galaxies.galaxy.bulge.sersic_index * 2.0,)
 
     analysis = AnalysisLatent(dataset=dataset)
 
@@ -148,7 +191,7 @@ Set up the aggregator as shown in `start_here.py`.
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=path.join("output", "results_folder_csv_png_fits"),
+    directory=Path("output") / "results_folder_csv_png_fits",
 )
 
 """
@@ -280,7 +323,7 @@ shape (1, 3).
 
 When we add a single .png, we cannot extract or make it, it simply gets added to the subplot.
 """
-# image_rgb = Image.open(path.join(dataset_path, "rgb.png"))
+# image_rgb = Image.open(Path(dataset_path, "rgb.png"))
 #
 # image = agg_image.extract_image(
 #     ag.agg.subplot_dataset.data,
