@@ -158,7 +158,6 @@ search = af.Nautilus(
     name="linear_light_profiles",
     unique_tag=dataset_name,
     n_live=300,
-    number_of_cores=4,
 )
 
 """
@@ -185,20 +184,7 @@ fit will take less than 10000 per free parameter to converge. This is aided furt
 Fits using standard light profiles and linear light profiles therefore take roughly the same time to run. However,
 the simpler parameter space of linear light profiles means that the model-fit is more reliable, less susceptible to
 converging to an incorrect solution and scales better if even more light profiles are included in the model.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
 
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
-print(
-    "Estimated Run Time Upper Limit (seconds) = ",
-    (run_time_dict["fit_time"] * model.total_free_parameters * 10000)
-    / search.number_of_cores,
-)
-
-
-"""
 __Model-Fit__
 
 We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder

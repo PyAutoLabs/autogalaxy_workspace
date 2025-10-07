@@ -158,7 +158,6 @@ search = af.Nautilus(
     name="one_by_one__main_dataset",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=1,
 )
 
 """
@@ -216,7 +215,6 @@ search = af.Nautilus(
     name="one_by_one__second_bulge_fixed",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=1,
 )
 
 result_bulge_fixed = search.fit(model=model, analysis=analysis_list[0])
@@ -259,7 +257,6 @@ search = af.Nautilus(
     name="one_by_one__dataset_offset",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=4,
 )
 
 result = search.fit(model=model, analysis=analysis_list[0])

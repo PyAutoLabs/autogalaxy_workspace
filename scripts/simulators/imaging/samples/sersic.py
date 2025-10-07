@@ -91,15 +91,15 @@ Below, we define the distributions the galaxy's bulge light is drawn from.
 bulge = af.Model(ag.lp_snr.Sersic)
 
 bulge.centre = (0.0, 0.0)
-bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
+bulge.ell_comps.ell_comps_0 = af.TruncatedGaussianPrior(
     mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
 )
-bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
+bulge.ell_comps.ell_comps_1 = af.TruncatedGaussianPrior(
     mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
 )
 bulge.signal_to_noise_ratio = af.UniformPrior(lower_limit=20.0, upper_limit=60.0)
 bulge.effective_radius = af.UniformPrior(lower_limit=1.0, upper_limit=5.0)
-bulge.sersic_index = af.GaussianPrior(
+bulge.sersic_index = af.TruncatedGaussianPrior(
     mean=4.0, sigma=1.0, lower_limit=0.8, upper_limit=5.0
 )
 

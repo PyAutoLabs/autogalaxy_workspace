@@ -159,7 +159,7 @@ mapper = fit.inversion.cls_list_from(cls=ag.AbstractMapper)[0]
 
 image_plane_mesh_grid = mapper.image_plane_mesh_grid
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
-fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals=visuals_2d)
+fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals_2d=visuals_2d)
 fit_plotter.figures_2d_of_planes(plane_index=0, plane_image=True)
 
 """
@@ -215,7 +215,7 @@ image_plane_mesh_grid = mapper.image_plane_mesh_grid
 
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 
-mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals=visuals_2d)
+mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals_2d)
 mapper_plotter.subplot_image_and_mapper(image=dataset.data)
 
 """

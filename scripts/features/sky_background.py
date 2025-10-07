@@ -191,7 +191,6 @@ search = af.Nautilus(
     name="sky_background",
     unique_tag=dataset_name,
     n_live=75,
-    number_of_cores=4,
 )
 
 """

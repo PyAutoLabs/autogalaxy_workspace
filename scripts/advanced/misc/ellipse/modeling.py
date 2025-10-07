@@ -274,7 +274,6 @@ search = af.DynestyStatic(
     unique_tag=dataset_name,
     sample="rwalk",
     n_live=50,
-    number_of_cores=4,
     iterations_per_update=10000,
 )
 

@@ -218,7 +218,7 @@ sample a specific region of parameter space, to determine what solutions look li
 The start-point API allows us to do this, by manually specifying the start-point of an MLE fit or the start-point of
 the walkers in an MCMC fit. Because nested sampling draws from priors, it cannot use the start-point API.
 
-Similar behaviour can be achieved by customizing the priors of a model-fit. We could place `GaussianPrior`'s
+Similar behaviour can be achieved by customizing the priors of a model-fit. We could place `TruncatedGaussianPrior`'s
 centred on the regions of parameter space we want to sample, or we could place tight `UniformPrior`'s on regions
 of parameter space we believe the correct answer lies.
 

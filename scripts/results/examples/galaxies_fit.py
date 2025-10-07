@@ -96,7 +96,6 @@ search = af.Nautilus(
     name="results",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=1,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)

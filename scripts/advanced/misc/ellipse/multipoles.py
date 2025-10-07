@@ -237,7 +237,6 @@ search = af.DynestyStatic(
     unique_tag=dataset_name,
     sample="rwalk",
     n_live=50,
-    number_of_cores=4,
     iterations_per_update=10000,
 )
 
@@ -258,14 +257,7 @@ is almost negligible.
 
 This is because perturbing the ellipse with a multipole is a simple operation that does not require significant
 computation time.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
 
-print(f"Log Likelihood Evaluation Time (second) = {run_time_dict['fit_time']}")
-
-"""
 The biggest increase in run time when fitting multipoles is because the number of free parameters in the model
 increases, as well as the complexity of the model and parameter space.
 

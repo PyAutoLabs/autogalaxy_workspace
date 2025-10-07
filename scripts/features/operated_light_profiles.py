@@ -156,7 +156,6 @@ search = af.Nautilus(
     name="light[bulge_psf]",
     unique_tag=dataset_name,
     n_live=150,
-    number_of_cores=1,
 )
 
 """

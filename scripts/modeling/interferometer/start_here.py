@@ -162,7 +162,6 @@ search = af.Nautilus(
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=1,
 )
 
 """
@@ -176,52 +175,28 @@ analysis = ag.AnalysisInterferometer(dataset=dataset)
 """
 __Run Times__
 
-modeling can be a computationally expensive process. When fitting complex models to high resolution datasets 
+Modeling can be a computationally expensive process. When fitting complex models to high resolution datasets 
 run times can be of order hours, days, weeks or even months.
 
 Run times are dictated by two factors:
 
- - The log likelihood evaluation time: the time it takes for a single `instance` of the model to be fitted to 
+ - The log likelihood evaluation time: the time it takes for a single `instance` of the lens model to be fitted to 
    the dataset such that a log likelihood is returned.
-
+ 
  - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex lens
    models require more iterations to converge to a solution.
-
-The log likelihood evaluation time can be estimated before a fit using the `profile_log_likelihood_function` method,
-which returns two dictionaries containing the run-times and information about the fit.
-"""
-run_time_dict, info_dict = analysis.profile_log_likelihood_function(
-    instance=model.random_instance()
-)
-
-"""
-The overall log likelihood evaluation time is given by the `fit_time` key.
-
-For this example, it should be around ~0.25 seconds, which is extremely fast for interferometer modeling. 
-More advanced modeling features (e.g. shapelets, multi Gaussian expansions, pixelizations) have slower log 
-likelihood evaluation times (1-3 seconds), and you should be wary of this when using these features.PointDataset
+   
+For this analysis, the log likelihood evaluation time is ~0.01 seconds on CPU, < 0.001 seconds on GPU, which is 
+extremely fast for lens modeling. 
 
 To estimate the expected overall run time of the model-fit we multiply the log likelihood evaluation time by an 
-estimate of the number of iterations the non-linear search will perform. 
-
-Estimating this quantity is more tricky, as it varies depending on the model complexity (e.g. number of parameters)
-and the properties of the dataset and model being fitted.
-
-For this example, we conservatively estimate that the non-linear search will perform ~10000 iterations per free 
-parameter in the model. This is an upper limit, with models typically converging in far fewer iterations.
-
-If you perform the fit over multiple CPUs, you can divide the run time by the number of cores to get an estimate of
-the time it will take to fit the model. Parallelization with Nautilus scales well, it speeds up the model-fit by the 
-`number_of_cores` for N < 8 CPUs and roughly `0.5*number_of_cores` for N > 8 CPUs. This scaling continues 
-for N> 50 CPUs, meaning that with super computing facilities you can always achieve fast run times!
+estimate of the number of iterations the non-linear search will perform. For this model, this is typically around
+? iterations, meaning that this script takes ? on CPU and ? on GPU.
 
 __Model-Fit__
 
-We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
-search to find which models fit the data with the highest likelihood.
-
-Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
-fit model!
+We can now begin the model-fit by passing the model and analysis object to the search, which performs the 
+Nautilus non-linear search in order to find which models fit the data with the highest likelihood.
 """
 result = search.fit(model=model, analysis=analysis)
 

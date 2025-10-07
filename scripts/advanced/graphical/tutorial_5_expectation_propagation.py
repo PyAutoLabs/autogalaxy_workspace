@@ -98,7 +98,7 @@ We first set up a shared prior for `sersic_index` which will be attached to the 
 By overwriting their `sersic_index` parameters in this way, only one `sersic_index` parameter shared across the whole 
 model is used.
 """
-sersic_index_shared_prior = af.GaussianPrior(
+sersic_index_shared_prior = af.TruncatedGaussianPrior(
     mean=4.0, sigma=4.0, lower_limit=0.0, upper_limit=10.0
 )
 
@@ -128,13 +128,13 @@ for model_index in range(total_datasets):
 
     galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 
-    bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
+    bulge.ell_comps.ell_comps_0 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
     )
-    bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
+    bulge.ell_comps.ell_comps_1 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
     )
-    bulge.effective_radius = af.GaussianPrior(
+    bulge.effective_radius = af.TruncatedGaussianPrior(
         mean=5.0, sigma=3.0, lower_limit=1.0, upper_limit=10.0
     )
     bulge.sersic_index = sersic_index_shared_prior

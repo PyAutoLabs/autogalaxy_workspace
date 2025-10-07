@@ -286,7 +286,6 @@ search = af.Nautilus(
     name="light[basis]",
     unique_tag=dataset_name,
     n_live=75,
-    number_of_cores=1,
 )
 
 """
@@ -409,7 +408,6 @@ search = af.Nautilus(
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,
-    number_of_cores=1,
 )
 
 result = search.fit(model=model, analysis=analysis)

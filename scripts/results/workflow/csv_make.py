@@ -104,7 +104,7 @@ for i in range(2):
 
     class AnalysisLatent(ag.AnalysisImaging):
 
-        LATENT_KEYS = ["galaxies.galaxy.bulge.sersic_index"]
+        LATENT_KEYS = ["galaxies.galaxy.bulge.sersic_index_x2"]
 
         def compute_latent_variables(self, parameters, model):
             """
@@ -306,13 +306,13 @@ __Latent Variables__
 Latent variables are not free model parameters but can be derived from the model, and they are described fully in
 ?.
 
-This example was run with a latent variable called `example_latent`, and below we show that this latent variable
-can be added to the .csv file using the same API as above.
+This example was run with a latent variable called `galaxies.galaxy.bulge.sersic_index_x2`, and below we show that 
+this latent variable can be added to the .csv file using the same API as above.
 """
 agg_csv = af.AggregateCSV(aggregator=agg)
 
 agg_csv.add_variable(
-    argument="example.latent",
+    argument="galaxies.galaxy.bulge.sersic_index_x2",
 )
 
 agg_csv.save(path=workflow_path / "csv_example_latent.csv")

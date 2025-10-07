@@ -211,7 +211,6 @@ search = af.Nautilus(
     name="dataset_offsets",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=1,
 )
 
 """

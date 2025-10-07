@@ -158,7 +158,6 @@ search = af.Nautilus(
     name="extra_galaxies_simple_mask",
     unique_tag=dataset_name,
     n_live=150,
-    number_of_cores=4,
     iterations_per_update=20000,
 )
 
@@ -364,7 +363,6 @@ search = af.Nautilus(
     name="extra_galaxies_model",
     unique_tag=dataset_name,
     n_live=150,
-    number_of_cores=4,
     iterations_per_update=20000,
 )
 

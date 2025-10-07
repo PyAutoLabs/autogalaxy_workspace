@@ -108,31 +108,31 @@ for model_index in range(total_datasets):
     bulge = af.Model(ag.lp_linear.Sersic)
     bulge.centre = (0.0, 0.0)
 
-    bulge.ell_comps.ell_comps_0 = af.GaussianPrior(
+    bulge.ell_comps.ell_comps_0 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
     )
-    bulge.ell_comps.ell_comps_1 = af.GaussianPrior(
+    bulge.ell_comps.ell_comps_1 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
     )
-    bulge.effective_radius = af.GaussianPrior(
+    bulge.effective_radius = af.TruncatedGaussianPrior(
         mean=3.0, sigma=3.0, lower_limit=0.0, upper_limit=10.0
     )
-    bulge.sersic_index = af.GaussianPrior(
+    bulge.sersic_index = af.TruncatedGaussianPrior(
         mean=4.0, sigma=3.0, lower_limit=0.5, upper_limit=10.0
     )
 
     disk = af.Model(ag.lp_linear.Sersic)
     disk.centre = (0.0, 0.0)
-    disk.ell_comps.ell_comps_0 = af.GaussianPrior(
+    disk.ell_comps.ell_comps_0 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.3, lower_limit=-1.0, upper_limit=1.0
     )
-    disk.ell_comps.ell_comps_1 = af.GaussianPrior(
+    disk.ell_comps.ell_comps_1 = af.TruncatedGaussianPrior(
         mean=0.0, sigma=0.3, lower_limit=-1.0, upper_limit=1.0
     )
-    disk.effective_radius = af.GaussianPrior(
+    disk.effective_radius = af.TruncatedGaussianPrior(
         mean=3.0, sigma=3.0, lower_limit=0.0, upper_limit=10.0
     )
-    disk.sersic_index = af.GaussianPrior(
+    disk.sersic_index = af.TruncatedGaussianPrior(
         mean=1.0, sigma=3.0, lower_limit=0.5, upper_limit=10.0
     )
 
@@ -183,15 +183,23 @@ __Model__
 We now compose the hierarchical model components that we fit.
 """
 hierarchical_factor_bulge = af.HierarchicalFactor(
-    af.GaussianPrior,
-    mean=af.GaussianPrior(mean=3.0, sigma=5.0, lower_limit=0.5, upper_limit=10.0),
-    sigma=af.GaussianPrior(mean=5.0, sigma=5.0, lower_limit=0.0, upper_limit=10.0),
+    af.TruncatedGaussianPrior,
+    mean=af.TruncatedGaussianPrior(
+        mean=3.0, sigma=5.0, lower_limit=0.5, upper_limit=10.0
+    ),
+    sigma=af.TruncatedGaussianPrior(
+        mean=5.0, sigma=5.0, lower_limit=0.0, upper_limit=10.0
+    ),
 )
 
 hierarchical_factor_disk = af.HierarchicalFactor(
-    af.GaussianPrior,
-    mean=af.GaussianPrior(mean=3.0, sigma=5.0, lower_limit=0.5, upper_limit=10.0),
-    sigma=af.GaussianPrior(mean=5.0, sigma=5.0, lower_limit=0.0, upper_limit=10.0),
+    af.TruncatedGaussianPrior,
+    mean=af.TruncatedGaussianPrior(
+        mean=3.0, sigma=5.0, lower_limit=0.5, upper_limit=10.0
+    ),
+    sigma=af.TruncatedGaussianPrior(
+        mean=5.0, sigma=5.0, lower_limit=0.0, upper_limit=10.0
+    ),
 )
 
 for model in model_list:

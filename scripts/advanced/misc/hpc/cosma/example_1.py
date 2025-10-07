@@ -19,6 +19,7 @@ __COSMA PATHS SETUP__
 All of the code below is a repeat of `example_0.py`
 """
 
+
 from pathlib import Path
 
 cosma_path = Path(path.sep, "cosma7", "data", "dp004", "cosma_username")
@@ -115,16 +116,12 @@ model = af.Collection(galaxies=af.Collection(lens=lens, source=source))
 """
 __Search__
 
-Here is where we differ from `example_0.py`. 
-
-The only change is that the `number_of_cores` input into `Nautilus` is now 16.
 """
 search = af.Nautilus(
     path_prefix="cosma_example",
     name="mass[sie]",
     unique_tag=dataset_name,
     n_live=100,
-    number_of_cores=16,
 )
 
 """

@@ -122,7 +122,7 @@ We can customize the priors of the model component individual parameters as foll
 bulge = af.Model(ag.lp_linear.Sersic)
 bulge.centre.centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
 bulge.centre.centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
-bulge.sersic_index = af.GaussianPrior(
+bulge.sersic_index = af.TruncatedGaussianPrior(
     mean=4.0, sigma=1.0, lower_limit=1.0, upper_limit=8.0
 )
 
