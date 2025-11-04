@@ -88,6 +88,9 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
+THE MASKING ARPPOACH BELOW IS NOT SUPPORTED CURRENTLY AND LIKELY TO BE DELETED IN THE NEAR FUTURE, SO USE THE
+NOISE SCASLING FURTHER DOWN INSTEAD.
+
 __Extra Galaxies Mask__
 
 Our first approach to modeling the extra galaxies is to mask their emission in the data and not include them in the
@@ -107,10 +110,10 @@ mask_extra_galaxies = ag.Mask2D.from_fits(
 
 mask = mask_main + mask_extra_galaxies
 
-dataset = dataset.apply_mask(mask=mask)
-
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
+# dataset = dataset.apply_mask(mask=mask)
+#
+# dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
+# dataset_plotter.subplot_dataset()
 
 """
 __Extra Galaxies Over Sampling__
@@ -127,17 +130,17 @@ sampled correctly.
 Once you are more experienced, you should read up on over-sampling in more detail via 
 the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
 """
-over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
-    grid=dataset.grid,
-    sub_size_list=[8, 4, 1],
-    radial_list=[0.3, 0.6],
-    centre_list=[(0.0, 0.0), (1.0, 3.5), (-2.0, -3.5)],
-)
-
-dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
-
-dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
-dataset_plotter.subplot_dataset()
+# over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+#     grid=dataset.grid,
+#     sub_size_list=[8, 4, 1],
+#     radial_list=[0.3, 0.6],
+#     centre_list=[(0.0, 0.0), (1.0, 3.5), (-2.0, -3.5)],
+# )
+#
+# dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
+#
+# dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
+# dataset_plotter.subplot_dataset()
 
 """
 We now perform a model-fit using the standard API, where the extra galaxies are not included in the model.
@@ -145,25 +148,25 @@ We now perform a model-fit using the standard API, where the extra galaxies are 
 The mask we have applied ensures the extra galaxies do not impact the fit, and the model-fit returns a good fit to the
 galaxy.
 """
-bulge = af.Model(ag.lp_linear.Sersic)
-disk = af.Model(ag.lp_linear.Exponential)
-bulge.centre = disk.centre
-
-galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
-
-model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
-
-search = af.Nautilus(
-    path_prefix=Path("imaging", "features"),
-    name="extra_galaxies_simple_mask",
-    unique_tag=dataset_name,
-    n_live=150,
-    iterations_per_update=20000,
-)
-
-analysis = ag.AnalysisImaging(dataset=dataset)
-
-result = search.fit(model=model, analysis=analysis)
+# bulge = af.Model(ag.lp_linear.Sersic)
+# disk = af.Model(ag.lp_linear.Exponential)
+# bulge.centre = disk.centre
+#
+# galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
+#
+# model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+#
+# search = af.Nautilus(
+#     path_prefix=Path("imaging", "features"),
+#     name="extra_galaxies_simple_mask",
+#     unique_tag=dataset_name,
+#     n_live=150,
+#     iterations_per_quick_update=20000,
+# )
+#
+# analysis = ag.AnalysisImaging(dataset=dataset)
+#
+# result = search.fit(model=model, analysis=analysis)
 
 """
 The fit is satisfactory, whereby the emission of the extra galaxies is masked and omitted from the model-fit.
@@ -363,7 +366,7 @@ search = af.Nautilus(
     name="extra_galaxies_model",
     unique_tag=dataset_name,
     n_live=150,
-    iterations_per_update=20000,
+    iterations_per_quick_update=20000,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset)

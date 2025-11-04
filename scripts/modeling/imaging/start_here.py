@@ -24,7 +24,7 @@ The `PLotter` API is described in the script `autogalaxy_workspace/*/plot/start_
 __Simulation__
 
 This script fits a simulated `Imaging` dataset of a galaxy, which is produced in the
-script `autogalaxy_workspace/*/imaging/simulators/start_here.py`
+script `autogalaxy_workspace/*/simulators/imaging/start_here.py`
 
 __Data Preparation__
 
@@ -78,9 +78,9 @@ dataset_plotter.subplot_dataset()
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the model to the data. 
+The model-fit requires a 2D mask defining the regions of the image we fit the model to the data. 
 
-Below, we create a 3.0 arcsecond circular mask and apply it to the `Imaging` object that the model fits.
+We create a 3.0 arcsecond circular mask and apply it to the `Imaging` object that the model fits.
 """
 mask = ag.Mask2D.circular(
     shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
@@ -266,7 +266,7 @@ which includes producing visualization.
 Depending on how long it takes for the model to be fitted to the data (see discussion about run times below), 
 this can take up a large fraction of the run-time of the non-linear search.
 
-For this fit, the fit is very fast, thus we set a high value of `iterations_per_update=10000` to ensure these updates
+For this fit, the fit is very fast, thus we set a high value of `iterations_per_quick_update=10000` to ensure these updates
 so not slow down the overall speed of the model-fit. 
 # 
 **If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
@@ -278,7 +278,7 @@ search = af.Nautilus(
     name="start_here",
     unique_tag=dataset_name,
     n_live=200,
-    iterations_per_update=10000,
+    iterations_per_quick_update=10000,
 )
 
 """

@@ -10,7 +10,7 @@ To simulate the sample of galaxies, each galaxy is set up as a `Model` such that
 distributions defined via priors.
 
 This script uses the signal-to-noise based light profiles described in the
-script `imaging/simulators/misc/manual_signal_to_noise_ratio.ipynb`, to make it straight forward to ensure every galaxy
+script `simulators/imaging/misc/manual_signal_to_noise_ratio.ipynb`, to make it straight forward to ensure every galaxy
 is visible in each image.
 
 __Start Here Notebook__

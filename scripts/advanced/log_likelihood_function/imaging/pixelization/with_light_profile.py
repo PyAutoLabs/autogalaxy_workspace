@@ -107,7 +107,7 @@ galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk, pixelization=pixelizati
 image = galaxy.image_2d_from(grid=masked_dataset.grid)
 blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.grids.blurring)
 
-convolved_image_2d = masked_dataset.convolver.convolve_image(
+convolved_image_2d = masked_dataset.psf.convolved_image_from(
     image=image, blurring_image=blurring_image_2d
 )
 
@@ -146,7 +146,7 @@ mapping_matrix = ag.util.mapper.mapping_matrix_from(
     sub_fraction=np.array(mapper.over_sampler.sub_fraction),
 )
 
-blurred_mapping_matrix = masked_dataset.convolver.convolve_mapping_matrix(
+blurred_mapping_matrix = masked_dataset.psf.convolved_mapping_matrix_from(
     mapping_matrix=mapping_matrix
 )
 

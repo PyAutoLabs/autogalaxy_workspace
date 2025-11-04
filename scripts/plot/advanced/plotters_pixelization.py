@@ -160,7 +160,7 @@ mapper = fit.inversion.cls_list_from(cls=ag.AbstractMapper)[0]
 image_plane_mesh_grid = mapper.image_plane_mesh_grid
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals_2d=visuals_2d)
-fit_plotter.figures_2d_of_planes(plane_index=0, plane_image=True)
+fit_plotter.figures_2d_of_galaxies(galaxy_index=0, plane_image=True)
 
 """
 __Mapper__
@@ -197,10 +197,7 @@ mapper_plotter.subplot_image_and_mapper(image=dataset.data)
 """
 The Indexes of `Mapper` plots can be highlighted to show how certain image pixels map to the source plane.
 """
-visuals = aplt.Visuals2D(
-    image_plane_data_indexes=[0, 1, 2, 3, 4],
-    source_plane_mesh_indexes=[[10, 11], [12, 13, 14]],
-)
+visuals = aplt.Visuals2D(indexes=[0, 1, 2, 3, 4])
 
 mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals)
 mapper_plotter.subplot_image_and_mapper(image=dataset.data)

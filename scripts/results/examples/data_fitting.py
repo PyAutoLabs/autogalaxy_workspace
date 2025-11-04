@@ -152,7 +152,7 @@ __Visualization Customization__
 The benefit of inspecting fits using the aggregator, rather than the files outputs to the hard-disk, is that we can 
 customize the plots using the PyAutoGalaxy `mat_plot`.
 
-Below, we create a new function to apply as a generator to do this. However, we use a convenience method available 
+We create a new function to apply as a generator to do this. However, we use a convenience method available 
 in the aggregator package to set up the fit.
 """
 fit_agg = ag.agg.FitImagingAgg(aggregator=agg)

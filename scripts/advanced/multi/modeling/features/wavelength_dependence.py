@@ -89,7 +89,7 @@ for dataset in dataset_list:
 """
 __Mask__
 
-The model-fit requires a `Mask2D` defining the regions of the image we fit the galaxy model to the data, which we define
+The model-fit requires a 2D mask defining the regions of the image we fit the galaxy model to the data, which we define
 and use to set up the `Imaging` object that the galaxy model fits.
 
 For multi-wavelength galaxy modeling, we use the same mask for every dataset whenever possible. This is not
@@ -225,7 +225,7 @@ result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_
 """
 __Result__
 
-The result object returned by this model-fit is a list of `Result` objects, because we used a combined analysis.
+The result object returned by this model-fit is a list of `Result` objects, because we used a factor graph.
 Each result corresponds to each analysis, and therefore corresponds to the model-fit at that wavelength.
 
 For example, close inspection of the `max_log_likelihood_instance` of the two results shows that all parameters,

@@ -64,9 +64,9 @@ which is computed here:
 
 __LH Step 2: Galaxy Light Convolution__
 
-Convlution uses the `Convolver` object and its method `convolve_image`
+Convlution uses the `Kernel2D` object and its method `convolved_image_from`
 
- https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/operators/convolver.py
+https://github.com/Jammy2211/PyAutoArray/blob/main/autoarray/structures/arrays/kernel_2d.py
 
 
 __LH Step 3: Likelihood Function__

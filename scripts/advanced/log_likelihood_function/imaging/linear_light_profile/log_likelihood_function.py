@@ -156,7 +156,7 @@ to compute each linear light profile image to set up the linear algebra.
 lp_linear_func = ag.LightProfileLinearObjFuncList(
     grid=masked_dataset.grids.lp,
     blurring_grid=masked_dataset.grids.blurring,
-    convolver=masked_dataset.convolver,
+    psf=masked_dataset.psf,
     light_profile_list=[bulge, disk],
     regularization=None,
 )

@@ -241,9 +241,9 @@ galaxy_plotter.figures_2d(image=True)
 """
 __Convolution__
 
-Convolve the 2D image of the galaxy above with the PSF in real-space (as opposed to via an FFT) using a `Convolver`.
+Convolve the 2D image of the galaxy above with the PSF in real-space (as opposed to via an FFT) using a `Kernel2D`.
 """
-convolved_image_2d = masked_dataset.convolver.convolve_image(
+convolved_image_2d = masked_dataset.psf.convolved_image_from(
     image=galaxy_image_2d, blurring_image=galaxy_blurring_image_2d
 )
 
@@ -329,9 +329,6 @@ galaxies = ag.Galaxies(galaxies=[galaxy])
 fit = ag.FitImaging(dataset=masked_dataset, galaxies=galaxies)
 fit_figure_of_merit = fit.figure_of_merit
 print(fit_figure_of_merit)
-
-fit_plotter = aplt.FitInterferometerPlotter(fit=fit)
-fit_plotter.subplot_fit()
 
 
 """
