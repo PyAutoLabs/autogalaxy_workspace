@@ -237,7 +237,7 @@ search = af.DynestyStatic(
     unique_tag=dataset_name,
     sample="rwalk",
     n_live=50,
-    iterations_per_update=10000,
+    iterations_per_quick_update=10000,
 )
 
 """
@@ -364,7 +364,7 @@ for i in range(len(major_axis_list)):
         sample="rwalk",
         n_live=50,
         number_of_cores=4,
-        iterations_per_update=10000,
+        iterations_per_quick_update=10000,
     )
 
     analysis = ag.AnalysisEllipse(dataset=dataset)
@@ -454,7 +454,7 @@ for i in range(len(major_axis_list)):
         sample="rwalk",
         n_live=50,
         number_of_cores=4,
-        iterations_per_update=10000,
+        iterations_per_quick_update=10000,
     )
 
     analysis = ag.AnalysisEllipse(dataset=dataset)

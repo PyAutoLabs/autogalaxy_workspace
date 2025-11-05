@@ -193,16 +193,16 @@ print(model_2.info)
 """
 __Search + Analysis + Model-Fit (Search 2)__
 """
-analysis = ag.AnalysisImaging(dataset=dataset)
+analysis_2 = ag.AnalysisImaging(dataset=dataset)
 
-search = af.Nautilus(
+search_2 = af.Nautilus(
     path_prefix=path_prefix,
     name="search[2]__right_galaxy_light[bulge]",
     unique_tag=dataset_name,
     n_live=75,
 )
 
-result_2 = search.fit(model=model_2, analysis=analysis)
+result_2 = search_2.fit(model=model_2, analysis=analysis_2)
 
 """
 The results can be summarised via printing `info`.
@@ -259,7 +259,7 @@ search_3 = af.Nautilus(
     n_live=100,
 )
 
-result_3 = search.fit(model=model_3, analysis=analysis_3)
+result_3 = search_3.fit(model=model_3, analysis=analysis_3)
 
 """
 The final results can be summarised via printing `info`.

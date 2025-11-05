@@ -220,7 +220,7 @@ is a single row of 3 subplots.
 image = agg_image.extract_image(
     subplots=[
         ag.agg.subplot_fit.data,
-        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.model_data,
         ag.agg.subplot_fit.normalized_residual_map,
     ],
 )
@@ -262,7 +262,7 @@ agg_image.output_to_folder(
     name="unique_tag",
     subplots=[
         ag.agg.subplot_fit.data,
-        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.model_data,
         ag.agg.subplot_fit.normalized_residual_map,
     ],
 )
@@ -283,7 +283,7 @@ agg_image.output_to_folder(
     name="unique_tag",
     subplots=[
         ag.agg.subplot_fit.data,
-        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.model_data,
         ag.agg.subplot_fit.normalized_residual_map,
     ],
 )
@@ -304,7 +304,7 @@ image = agg_image.extract_image(
     subplots=[
         ag.agg.subplot_dataset.data,
         ag.agg.subplot_dataset.psf_log_10,
-        ag.agg.subplot_fit.model_image,
+        ag.agg.subplot_fit.model_data,
         ag.agg.subplot_fit.chi_squared_map,
     ]
     # subplot_shape=(2, 2),

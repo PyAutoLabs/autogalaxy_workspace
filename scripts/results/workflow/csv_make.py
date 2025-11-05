@@ -182,7 +182,7 @@ Extract the `AggregateCSV` object, which has specific functions for outputting r
 agg_csv = af.AggregateCSV(aggregator=agg)
 
 """
-__Adding CSV Columns_
+__Adding CSV Columns__
 
 We first make a simple .csv which contains two columns, corresponding to the inferred median PDF values for
 the y centre of the bulge of the galaxy and its effective radius.
@@ -332,7 +332,10 @@ bulge is computed and added to the .csv file.
 agg_csv = af.AggregateCSV(aggregator=agg)
 
 
-def sersic_index_x2_from(samples):
+def sersic_index_x2_from(result):
+
+    samples = result.samples
+
     instance = samples.median_pdf()
 
     return 2.0 * instance.galaxies.galaxy.bulge.sersic_index
