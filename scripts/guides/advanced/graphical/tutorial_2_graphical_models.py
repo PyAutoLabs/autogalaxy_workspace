@@ -216,7 +216,7 @@ our overall graphical model. This is effectively the `AnalysisFactor` objects we
 - Links: these define the model components and parameters that are shared across different nodes and thus retain the 
 same values when fitting different datasets.
 """
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 """
 The fit will use the factor graph's `global_prior_model`, which uses the models contained in every analysis factor 
