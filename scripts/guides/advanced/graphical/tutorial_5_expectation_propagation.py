@@ -149,7 +149,7 @@ __Analysis__
 analysis_list = []
 
 for masked_dataset in masked_imaging_list:
-    analysis = ag.AnalysisImaging(dataset=masked_dataset)
+    analysis = ag.AnalysisImaging(dataset=masked_dataset, use_jax=True)
 
     analysis_list.append(analysis)
 

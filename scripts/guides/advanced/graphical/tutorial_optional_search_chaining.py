@@ -123,7 +123,7 @@ for dataset_index, masked_dataset in enumerate(masked_imaging_list):
         n_live=100,
     )
 
-    analysis_1 = ag.AnalysisImaging(dataset=masked_dataset)
+    analysis_1 = ag.AnalysisImaging(dataset=masked_dataset, use_jax=True)
 
     result_1 = search_1.fit(model=model, analysis=analysis_1)
     result_1_list.append(result_1)
@@ -174,7 +174,7 @@ for dataset_index, masked_dataset in enumerate(masked_imaging_list):
         n_live=100,
     )
 
-    analysis_2 = ag.AnalysisImaging(dataset=masked_dataset)
+    analysis_2 = ag.AnalysisImaging(dataset=masked_dataset, use_jax=True)
 
     result_2 = search_2.fit(model=model_2, analysis=analysis_2)
     result_2_list.append(result_2)

@@ -163,7 +163,7 @@ __Analysis__
 
 Create the `AnalysisImaging` object defining how the model is fitted to the data. 
 """
-analysis = ag.AnalysisImaging(dataset=dataset)
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
 __Model-Fit__

@@ -614,7 +614,7 @@ model_image = mapped_reconstructed_image_2d
 
 residual_map = masked_dataset.data - model_image
 normalized_residual_map = residual_map / masked_dataset.noise_map
-chi_squared_map = normalized_residual_map ** 2.0
+chi_squared_map = normalized_residual_map**2.0
 
 chi_squared = np.sum(chi_squared_map)
 
@@ -694,7 +694,7 @@ of the log of every noise-map value squared.
 Given the `noise_map` is fixed, this term does not change during the galaxy modeling process and has no impact on the 
 model we infer.
 """
-noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map ** 2.0)))
+noise_normalization = float(np.sum(np.log(2 * np.pi * masked_dataset.noise_map**2.0)))
 
 """
 __Calculate The Log Likelihood__
@@ -705,11 +705,11 @@ the likelihood function defined above.
 log_evidence = float(
     -0.5
     * (
-            chi_squared
-            + regularization_term
-            + log_curvature_reg_matrix_term
-            - log_regularization_matrix_term
-            + noise_normalization
+        chi_squared
+        + regularization_term
+        + log_curvature_reg_matrix_term
+        - log_regularization_matrix_term
+        + noise_normalization
     )
 )
 
@@ -981,7 +981,7 @@ model_image = convolved_image_2d + mapped_reconstructed_image_2d
 
 residual_map = masked_dataset.data - model_image
 normalized_residual_map = residual_map / masked_dataset.noise_map
-chi_squared_map = normalized_residual_map ** 2.0
+chi_squared_map = normalized_residual_map**2.0
 
 chi_squared = np.sum(chi_squared_map)
 
@@ -996,7 +996,7 @@ model_image = convolved_image_2d + mapped_reconstructed_image_2d
 
 residual_map = masked_dataset.data - model_image
 normalized_residual_map = residual_map / masked_dataset.noise_map
-chi_squared_map = normalized_residual_map ** 2.0
+chi_squared_map = normalized_residual_map**2.0
 
 chi_squared = np.sum(chi_squared_map)
 

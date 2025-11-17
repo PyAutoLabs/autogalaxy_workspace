@@ -254,7 +254,7 @@ __Analysis__
 The `AnalysisImaging` object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
 the `Imaging` dataset.
 """
-analysis = ag.AnalysisImaging(dataset=dataset)
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
 __Model-Fit__

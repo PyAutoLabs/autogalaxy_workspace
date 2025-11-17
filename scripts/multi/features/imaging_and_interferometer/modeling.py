@@ -100,8 +100,10 @@ __Analysis__
 
 We create analysis objects for both datasets.
 """
-analysis_imaging = ag.AnalysisImaging(dataset=imaging)
-analysis_interferometer = ag.AnalysisInterferometer(dataset=interferometer)
+analysis_imaging = ag.AnalysisImaging(dataset=imaging, use_jax=True)
+analysis_interferometer = ag.AnalysisInterferometer(
+    dataset=interferometer, use_jax=True
+)
 
 """
 We now combine them using the factor analysis class, which allows us to fit the two datasets simultaneously.

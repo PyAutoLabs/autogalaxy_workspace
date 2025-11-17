@@ -134,7 +134,7 @@ search_1 = af.Nautilus(
     n_live=100,
 )
 
-analysis_1 = ag.AnalysisImaging(dataset=dataset)
+analysis_1 = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 result_1 = search_1.fit(model=model_1, analysis=analysis_1)
 
@@ -168,7 +168,9 @@ non-linear search. We pass the `lens` as a `model`, so that we can use the mass 
 does not use any priors from the result of search 1.
 """
 pixelization = af.Model(
-    ag.Pixelization, mesh=ag.mesh.RectangularMagnification, regularization=ag.reg.Constant
+    ag.Pixelization,
+    mesh=ag.mesh.RectangularMagnification,
+    regularization=ag.reg.Constant,
 )
 
 galaxy = af.Model(
@@ -192,7 +194,9 @@ __Analysis + Search + Model-Fit (Search 2)__
 We now create the non-linear search and perform the model-fit using this model.
 """
 analysis_2 = ag.AnalysisImaging(
-    dataset=dataset, settings_inversion=ag.SettingsInversion(use_border_relocator=True)
+    dataset=dataset,
+    settings_inversion=ag.SettingsInversion(use_border_relocator=True),
+    use_jax=True,
 )
 
 search_2 = af.Nautilus(
@@ -238,7 +242,9 @@ disk.ell_comps = result_1.model.galaxies.galaxy.disk.ell_comps
 disk.effective_radius = result_1.model.galaxies.galaxy.disk.effective_radius
 
 pixelization = af.Model(
-    ag.Pixelization, mesh=ag.mesh.RectangularMagnification, regularization=ag.reg.Constant
+    ag.Pixelization,
+    mesh=ag.mesh.RectangularMagnification,
+    regularization=ag.reg.Constant,
 )
 
 galaxy = af.Model(
@@ -264,7 +270,7 @@ search_3 = af.Nautilus(
     n_live=100,
 )
 
-analysis_3 = ag.AnalysisImaging(dataset=dataset)
+analysis_3 = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 result_3 = search_3.fit(model=model_3, analysis=analysis_3)
 

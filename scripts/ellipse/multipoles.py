@@ -245,7 +245,7 @@ __Analysis__
 
 Create the `AnalysisEllipse` object.
 """
-analysis = ag.AnalysisEllipse(dataset=dataset)
+analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
 """
 __Run Times__
@@ -367,7 +367,7 @@ for i in range(len(major_axis_list)):
         iterations_per_quick_update=10000,
     )
 
-    analysis = ag.AnalysisEllipse(dataset=dataset)
+    analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
     result = search.fit(model=model, analysis=analysis)
 
@@ -457,7 +457,7 @@ for i in range(len(major_axis_list)):
         iterations_per_quick_update=10000,
     )
 
-    analysis = ag.AnalysisEllipse(dataset=dataset)
+    analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
     result = search.fit(model=model, analysis=analysis)
 

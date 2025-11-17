@@ -289,8 +289,13 @@ the `Imaging` dataset.
 It is not vital that you as a user understand the details of how the `log_likelihood_function` fits a model to 
 data, but interested readers can find a step-by-step guide of the likelihood 
 function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
+
+__JAX__
+
+PyAutoLens uses JAX under the hood for fast GPU/CPU acceleration. However, ellipse fitting does not support JAX
+acceleration, so we disable it here by passing `use_jax=False`.
 """
-analysis = ag.AnalysisEllipse(dataset=dataset)
+analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
 """
 __Run Times__
@@ -449,7 +454,7 @@ for i in range(len(major_axis_list)):
         iterations_per_quick_update=10000,
     )
 
-    analysis = ag.AnalysisEllipse(dataset=dataset)
+    analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
     result = search.fit(model=model, analysis=analysis)
 
@@ -518,7 +523,7 @@ for i in range(len(major_axis_list)):
         iterations_per_quick_update=10000,
     )
 
-    analysis = ag.AnalysisEllipse(dataset=dataset)
+    analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
 
     result = search.fit(model=model, analysis=analysis)
 
