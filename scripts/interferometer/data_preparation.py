@@ -86,8 +86,8 @@ uv_wavelengths = ag.ndarray_via_fits_from(
 )
 
 uv_wavelengths = ag.Grid2DIrregular.from_yx_1d(
-    y=uv_wavelengths[:, 1] / 10 ** 3.0,
-    x=uv_wavelengths[:, 0] / 10 ** 3.0,
+    y=uv_wavelengths[:, 1] / 10**3.0,
+    x=uv_wavelengths[:, 0] / 10**3.0,
 )
 
 grid_plotter = aplt.Grid2DPlotter(grid=uv_wavelengths)

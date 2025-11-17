@@ -243,7 +243,9 @@ __Analysis__
 Create the `AnalysisImaging` object defining how the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
-    dataset=dataset, settings_inversion=ag.SettingsInversion(use_w_tilde=False)
+    dataset=dataset,
+    settings_inversion=ag.SettingsInversion(use_w_tilde=False),
+    use_jax=True,
 )
 
 """

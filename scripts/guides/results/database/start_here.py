@@ -152,7 +152,7 @@ for dataset_name in dataset_names:
         n_live=100,
     )
 
-    analysis = ag.AnalysisImaging(dataset=dataset)
+    analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
     search.fit(analysis=analysis, model=model, info=info)
 

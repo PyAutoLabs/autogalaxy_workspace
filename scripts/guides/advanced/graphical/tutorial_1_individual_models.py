@@ -164,7 +164,7 @@ for dataset_index, masked_dataset in enumerate(masked_imaging_list):
         n_live=100,
     )
 
-    analysis = ag.AnalysisImaging(dataset=masked_dataset)
+    analysis = ag.AnalysisImaging(dataset=masked_dataset, use_jax=True)
 
     result = search.fit(model=model, analysis=analysis)
     result_list.append(result)

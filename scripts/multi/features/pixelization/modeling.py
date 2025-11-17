@@ -98,7 +98,9 @@ __Analysis__
 
 We create an `Analysis` object for every dataset.
 """
-analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
+analysis_list = [
+    ag.AnalysisImaging(dataset=dataset, use_jax=True) for dataset in dataset_list
+]
 
 """
 __Model__
@@ -114,7 +116,9 @@ example we fit a galaxy model where:
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=4.
 """
 pixelization = af.Model(
-    ag.Pixelization, mesh=ag.mesh.RectangularMagnification, regularization=ag.reg.Constant
+    ag.Pixelization,
+    mesh=ag.mesh.RectangularMagnification,
+    regularization=ag.reg.Constant,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)

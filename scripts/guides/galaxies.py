@@ -339,10 +339,13 @@ radial grid as follows which has shape [Number_of_1d_coordinates, 2] and where a
 A simple example of such a grid is as follows with 4 1D coordinates is:
 """
 grid_2d_projected = ag.Grid2DIrregular(
-       [[1.000000e-06, 1.000000e-06],
-       [1.000000e-06, 1.000001e+00],
-       [1.000000e-06, 2.000001e+00],
-       [1.000000e-06, 3.000001e+00]])
+    [
+        [1.000000e-06, 1.000000e-06],
+        [1.000000e-06, 1.000001e00],
+        [1.000000e-06, 2.000001e00],
+        [1.000000e-06, 3.000001e00],
+    ]
+)
 
 """
 As in this example, we often already have a 2D grid we are using to calculate images of a ligth profile
@@ -358,8 +361,7 @@ grid with the first galaxy. The centres are aligned, but if they were not that w
 issues.
 """
 grid_2d_projected = grid.grid_2d_radial_projected_from(
-    centre=galaxy_0.bulge.centre,
-    angle=galaxy_0.bulge.angle()
+    centre=galaxy_0.bulge.centre, angle=galaxy_0.bulge.angle()
 )
 
 """
@@ -419,14 +421,12 @@ Every profile on a decomposed plot is computed using a radial grid centred on it
 its major-axis. Therefore 2D offsets between the components are not portray in such a figure.
 """
 grid_2d_projected = grid.grid_2d_radial_projected_from(
-    centre=galaxy_0.bulge.centre,
-    angle=galaxy_0.bulge.angle()
+    centre=galaxy_0.bulge.centre, angle=galaxy_0.bulge.angle()
 )
 bulge_image_1d = galaxy_0.bulge.image_2d_from(grid=grid_2d_projected)
 
 grid_2d_projected = grid.grid_2d_radial_projected_from(
-    centre=galaxy_0.disk.centre,
-    angle=galaxy_0.disk.angle()
+    centre=galaxy_0.disk.centre, angle=galaxy_0.disk.angle()
 )
 disk_image_1d = galaxy_0.disk.image_2d_from(grid=grid_2d_projected)
 

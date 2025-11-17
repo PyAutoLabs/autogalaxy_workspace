@@ -119,7 +119,9 @@ It is worth noting the `Pixelization`  use significantly fewer parameters (3 par
 fitting this complex galaxy using parametric light profiles would (20+ parameters). 
 """
 pixelization = af.Model(
-    ag.Pixelization, mesh=ag.mesh.RectangularMagnification, regularization=ag.reg.Constant
+    ag.Pixelization,
+    mesh=ag.mesh.RectangularMagnification,
+    regularization=ag.reg.Constant,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
@@ -151,7 +153,7 @@ __Analysis__
 
 Create the `AnalysisImaging` object defining how the model is fitted to the data. 
 """
-analysis = ag.AnalysisImaging(dataset=dataset)
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
 __Model-Fit__

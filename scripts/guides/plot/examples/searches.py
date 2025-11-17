@@ -57,7 +57,7 @@ dataset = dataset.apply_mask(mask=mask)
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=ag.lp.Sersic)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-analysis = ag.AnalysisImaging(dataset=dataset)
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
 __Notation__
