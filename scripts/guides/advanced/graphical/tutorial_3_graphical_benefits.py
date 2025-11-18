@@ -355,7 +355,7 @@ __Factor Graph__
 
 The analysis factors are then used to create the factor graph.
 """
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 """
 The factor graph model can again be printed via the `info` attribute, which shows that there are two shared

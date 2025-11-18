@@ -212,7 +212,10 @@ for model in model_list:
 We again combine our `AnalysisFactors` into one, to compose the factor graph.
 """
 factor_graph = af.FactorGraphModel(
-    *analysis_factor_list, hierarchical_factor_bulge, hierarchical_factor_disk
+    *analysis_factor_list,
+    hierarchical_factor_bulge,
+    hierarchical_factor_disk,
+    use_jax=True,
 )
 
 """

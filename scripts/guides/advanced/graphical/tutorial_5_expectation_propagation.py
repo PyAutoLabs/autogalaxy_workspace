@@ -188,7 +188,7 @@ for model, analysis in zip(model_list, analysis_list):
 """
 We again combine our `AnalysisFactors` into one, to compose the factor graph.
 """
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 """
 The factor graph model `info` attribute shows the model which we fit via expectaton propagation (note that we do

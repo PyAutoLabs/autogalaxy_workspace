@@ -210,13 +210,13 @@ The key outcomes of this setup are:
 This is a basic use of **PyAutoFit**'s graphical modeling capabilities, which support advanced hierarchical 
 and probabilistic modeling for large, multi-dataset analyses.
 """
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 """
 To inspect this new model, with extra parameters for each dataset created, we 
 print `factor_graph.global_prior_model.info`.
 """
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 print(factor_graph.global_prior_model.info)
 
@@ -239,6 +239,9 @@ Unlike single-dataset fitting, we now pass the `factor_graph.global_prior_model`
 the `factor_graph` itself as the analysis object.
 
 This structure enables simultaneous fitting of multiple datasets in a consistent and scalable way.
+
+**Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce 
+an error. If this occurs, see the `autolens_workspace/guides/modeling/bug_fix` example for a fix.
 """
 result_list = search.fit(model=factor_graph.global_prior_model, analysis=factor_graph)
 

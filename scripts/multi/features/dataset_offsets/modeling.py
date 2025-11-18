@@ -197,7 +197,7 @@ for i, analysis in enumerate(analysis_list):
 
     analysis_factor_list.append(analysis_factor)
 
-factor_graph = af.FactorGraphModel(*analysis_factor_list)
+factor_graph = af.FactorGraphModel(*analysis_factor_list, use_jax=True)
 
 """
 The `info` of the model shows us that the dataset shifts have been applied correctly, with only the shift
