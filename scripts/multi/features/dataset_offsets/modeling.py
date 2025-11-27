@@ -209,7 +209,7 @@ print(factor_graph.global_prior_model.info)
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=Path("multi") / "modeling",
+    path_prefix=Path("multi") / "features",
     name="dataset_offsets",
     unique_tag=dataset_name,
     n_live=100,

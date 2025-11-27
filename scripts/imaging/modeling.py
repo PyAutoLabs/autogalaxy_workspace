@@ -243,7 +243,7 @@ output results and visualization frequently to hard-disk. If your fit is consist
 is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="start_here",
     unique_tag=dataset_name,
     n_live=200,

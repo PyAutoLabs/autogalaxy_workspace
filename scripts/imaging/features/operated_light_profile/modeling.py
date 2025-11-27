@@ -152,7 +152,7 @@ Nautilus (https://nautilus.readthedocs.io/en/latest/).
 A full description of the settings below is given in the beginner modeling scripts, if anything is unclear.
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="light[bulge_psf]",
     unique_tag=dataset_name,
     n_live=150,

@@ -146,6 +146,43 @@ The results which are used for prior passing are summarised in the `info` attrib
 print(result_1.info)
 
 """
+__JAX & Preloads__
+
+In JAX, calculations must use static shaped arrays with known and fixed indexes. For certain calculations in the
+pixelization, this information has to be passed in before the pixelization is performed. Below, we do this for 3
+inputs:
+
+- `total_linear_light_profiles`: The number of linear light profiles in the model. This is 0 because we are not
+  fitting any linear light profiles to the data, primarily because the lens light is omitted.
+
+- `total_mapper_pixels`: The number of source pixels in the rectangular pixelization mesh. This is required to set up 
+  the arrays that perform the linear algebra of the pixelization.
+
+- `source_pixel_zeroed_indices`: The indices of source pixels on its edge, which when the source is reconstructed 
+  are forced to values of zero, a technique tests have shown are required to give accruate lens models.
+
+The `image_mesh` can be ignored, it is legacy API from previous versions which may or may not be reintegrated in future
+versions.
+"""
+image_mesh = None
+mesh_shape = (20, 20)
+total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
+
+total_linear_light_profiles = 2
+
+preloads = ag.Preloads(
+    mapper_indices=ag.mapper_indices_from(
+        total_linear_light_profiles=total_linear_light_profiles,
+        total_mapper_pixels=total_mapper_pixels,
+    ),
+    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
+        total_linear_light_profiles=total_linear_light_profiles,
+        shape_native=mesh_shape,
+    ),
+)
+
+
+"""
 __Model (Search 2)__
 
 We use the results of search 1 to create the model fitted in search 2, where:
@@ -169,8 +206,8 @@ does not use any priors from the result of search 1.
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularMagnification,
-    regularization=ag.reg.Constant,
+    mesh=ag.mesh.RectangularMagnification(shape=mesh_shape),
+    regularization=ag.reg.GaussianKernel,
 )
 
 galaxy = af.Model(
@@ -196,6 +233,7 @@ We now create the non-linear search and perform the model-fit using this model.
 analysis_2 = ag.AnalysisImaging(
     dataset=dataset,
     settings_inversion=ag.SettingsInversion(use_border_relocator=True),
+    preloads=preloads,
     use_jax=True,
 )
 
@@ -243,8 +281,8 @@ disk.effective_radius = result_1.model.galaxies.galaxy.disk.effective_radius
 
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularMagnification,
-    regularization=ag.reg.Constant,
+    mesh=ag.mesh.RectangularMagnification(shape=mesh_shape),
+    regularization=ag.reg.GaussianKernel,
 )
 
 galaxy = af.Model(

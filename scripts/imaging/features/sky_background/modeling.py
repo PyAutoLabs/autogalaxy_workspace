@@ -187,7 +187,7 @@ The model is fitted to the data using the nested sampling algorithm Nautilus (se
 full description).
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="sky_background",
     unique_tag=dataset_name,
     n_live=75,

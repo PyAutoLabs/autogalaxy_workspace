@@ -156,7 +156,7 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=Path("multi") / "modeling",
+    path_prefix=Path("multi") / "features",
     name="one_by_one__main_dataset",
     unique_tag=dataset_name,
     n_live=100,
@@ -197,7 +197,7 @@ are varied.
 This is a bit of a strange model to fit, and is done for illustrative purposes. 
 
 The code below uses the search chaining API to link the priors between model parameters, if you are not
-familiar with this feature, checkout the `imaging/advanced/chaining` package.
+familiar with this feature, checkout the `guides/modeling/chaining` package.
 """
 model = af.Collection(
     galaxies=af.Collection(
@@ -213,7 +213,7 @@ model = af.Collection(
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=Path("multi") / "modeling",
+    path_prefix=Path("multi") / "features",
     name="one_by_one__second_bulge_fixed",
     unique_tag=dataset_name,
     n_live=100,
@@ -255,7 +255,7 @@ model = af.Collection(
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=Path("multi") / "modeling",
+    path_prefix=Path("multi") / "features",
     name="one_by_one__dataset_offset",
     unique_tag=dataset_name,
     n_live=100,

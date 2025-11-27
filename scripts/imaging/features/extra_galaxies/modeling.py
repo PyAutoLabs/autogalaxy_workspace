@@ -220,7 +220,7 @@ dataset_plotter.subplot_dataset()
 We do not perform a model-fit using this dataset, as using a mask like this requires that we use a pixelization
 to fit the galaxy, which you may not be familiar with yet.
 
-In the `features/pixelization.ipynb` example we perform a fit using this noise scaling scheme and a pixelization,
+In the `features/pixelization` example we perform a fit using this noise scaling scheme and a pixelization,
 so check this out if you are interested in how to do this.
 
 __Extra Galaxies Dataset__
