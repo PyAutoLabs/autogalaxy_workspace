@@ -215,7 +215,7 @@ with the same model and search results are output to a different folder. We achi
 the `dataset_name` to the search's `unique_tag`.
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="light[shapelets]_polar_5_ell",
     unique_tag=dataset_name,
     n_live=150,
@@ -228,7 +228,6 @@ Create the `AnalysisImaging` object defining how the model is fitted to the data
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    settings_inversion=ag.SettingsInversion(use_w_tilde=False),
     use_jax=True,
 )
 
@@ -301,7 +300,7 @@ The `info` attribute shows the model, which has addition priors now associated w
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,

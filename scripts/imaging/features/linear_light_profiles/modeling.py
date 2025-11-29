@@ -154,7 +154,7 @@ light profiles this is reduced to 75, as the simpler parameter space means we ne
 accurately. This will lead to faster run times.
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="linear_light_profiles",
     unique_tag=dataset_name,
     n_live=300,
@@ -167,7 +167,6 @@ Create the `AnalysisImaging` object defining how the model is fitted to the data
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    settings_inversion=ag.SettingsInversion(use_w_tilde=False),
     use_jax=True,
 )
 

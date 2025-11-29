@@ -1,8 +1,8 @@
 """
-Chaining: API
-=============
+Modeling: Chaining
+==================
 
-Non-linear search chaining is an advanced model-fitting approach in **PyAutoGalaxy** which breaks the model-fitting
+Non-linear search chaining is an advanced model-fitting approach which breaks the model-fitting
 procedure down into multiple non-linear searches, using the results of the initial searches to initialization parameter
 sampling in subsequent searches. This contrasts the `modeling` examples which each compose and fit a single lens
 model-fit using one non-linear search.

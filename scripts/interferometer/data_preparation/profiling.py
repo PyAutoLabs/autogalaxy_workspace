@@ -54,9 +54,7 @@ This function is used throughout this script to time how long a fit takes for ea
 """
 
 
-def print_fit_time_from(
-    interferometer, transformer_class, use_w_tilde, use_linear_operators, repeats=1
-):
+def print_fit_time_from(interferometer, transformer_class, repeats=1):
     """
     __Numba Caching__
 
@@ -65,9 +63,6 @@ def print_fit_time_from(
     fit = ag.FitInterferometer(
         dataset=dataset,
         tracer=tracer,
-        settings_inversion=ag.SettingsInversion(
-            use_w_tilde=use_w_tilde, use_linear_operators=use_linear_operators
-        ),
     )
     print(fit.figure_of_merit)
 
@@ -81,9 +76,6 @@ def print_fit_time_from(
         fit = ag.FitInterferometer(
             dataset=dataset,
             tracer=tracer,
-            settings_inversion=ag.SettingsInversion(
-                use_w_tilde=use_w_tilde, use_linear_operators=use_linear_operators
-            ),
         )
         fit.figure_of_merit
 
@@ -165,8 +157,6 @@ dataset = ag.Interferometer.from_fits(
 print_fit_time_from(
     dataset=dataset,
     transformer_class=ag.TransformerDFT,
-    use_w_tilde=False,
-    use_linear_operators=False,
 )
 
 """
@@ -193,8 +183,6 @@ dataset = ag.Interferometer.from_fits(
 print_fit_time_from(
     dataset=dataset,
     transformer_class=ag.TransformerNUFFT,
-    use_w_tilde=False,
-    use_linear_operators=False,
 )
 
 """
@@ -213,6 +201,4 @@ They scale poorly to datasets with < 10000 visibilities.
 # print_fit_time_from(
 #     dataset=interferometer,
 #     transformer_class=ag.TransformerNUFFT,
-#     use_w_tilde=False,
-#     use_linear_operators=True
 # )

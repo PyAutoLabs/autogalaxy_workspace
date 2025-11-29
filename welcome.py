@@ -65,35 +65,6 @@ input(
     """
 )
 
-try:
-    import numba
-except ModuleNotFoundError:
-    input(
-        "##################\n"
-        "##### NUMBA ######\n"
-        "##################\n\n"
-        """
-        Numba is not currently installed.
-        
-        Numba is a library which makes PyAutoGalaxy run a lot faster. Certain functionality is disabled without numba
-        and will raise an exception if it is used.
-        
-        If you have not tried installing numba, I recommend you try and do so now by running the following 
-        commands in your command line / bash terminal now:
-        
-        pip install --upgrade pip
-        pip install numba
-        
-        If your numba installation raises an error and fails, you should go ahead and use PyAutoGalaxy without numba to 
-        decide if it is the right software for you. If it is, you should then commit time to bug-fixing the numba
-        installation. Feel free to raise an issue on GitHub for support with installing numba.
-
-        A warning will crop up throughout your *PyAutoGalaxy** use until you install numba, to remind you to do so.
-        
-        [Press Enter to continue]
-        """
-    )
-
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -130,30 +101,15 @@ input(
     "##### WORKSPACE TOUR ######\n"
     "###########################\n\n"
     """
-    PyAutoGalaxy is now set up and you can begin exploring the workspace. New users should follow the
-    'start_here.ipynb' notebook, which gives an overview of **PyAutoGalaxy** and the workspace.
+    PyAutoGalaxy is now set up and you can begin exploring the workspace. 
     
-    Examples are provided as both Jupyter notebooks in the 'notebooks' folder and Python scripts in the 'scripts'
-    folder. It is up to you how you would prefer to use PyAutoGalaxy. With these folders, you can find the following
-    packages:
+    We recommend new users begin by following the 'start_here.ipynb' notebook, which gives an overview 
+    of **PyAutoGalaxy** and the workspace. 
     
-    - howtogalaxy: Jupyter notebook lectures introducing beginners to strong gravitational galaxying, describing how to
-     perform scientific analysis of galaxy data and detailing the PyAutoGalaxy API. A great starting point for new users!
+    This will also guide you through where to go next in the workspace depending on your scientific interests.
     
-    - overview: An overview of all PyAutoGalaxy's main features.
-    
-    - imaging: Examples for analysing and simulating CCD imaging data of a strong galaxy.
-
-    - interferometer: Examples for analysing and simulating interferometer data of a strong galaxy.
-     
-     - plot: An API reference guide of all of PyAutoGalaxy's plotting and visualization tools.
-     
-     - results: Tutorials on how to use PyAutoGalaxy's results after fitting a galaxy.
-     
-     - misc: Miscellaneous scripts for specific galaxy analysis.
-     
-    The `chaining` folders are for experienced users. The example scripts and HowToGalaxy lectures will guide new users 
-    to these modules when they have sufficient experience and familiarity with PyAutoGalaxy.
+    A full description of the workspace can be found in the `autogalaxy_workspace/README.rst` file and on the 
+    PyAutoGalaxy readthedocs website.
     
     [Press Enter to continue]
     """

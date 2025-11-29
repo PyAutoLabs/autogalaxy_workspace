@@ -136,12 +136,6 @@ We compose our model where in this example:
  - The `sigma` size of the Gaussians increases in log10 increments.
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=6.
-
-__Model Cookbook__
-
-A full description of model composition is provided by the model cookbook: 
-
-https://pyautolens.readthedocs.io/en/latest/general/model_cookbook.html
 """
 total_gaussians = 30
 gaussian_per_basis = 2
@@ -209,7 +203,7 @@ Owing to the simplicity of fitting an MGE we an use even fewer live points than 
 75 live points, speeding up convergence of the non-linear search.
 """
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="light[basis]",
     unique_tag=dataset_name,
     n_live=75,
@@ -222,7 +216,6 @@ Create the `AnalysisImaging` object defining how the model is fitted to the data
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    settings_inversion=ag.SettingsInversion(use_w_tilde=False),
     use_jax=True,
 )
 
@@ -333,7 +326,7 @@ The `info` attribute shows the model, which has addition priors now associated w
 print(model.info)
 
 search = af.Nautilus(
-    path_prefix=Path("imaging") / "modeling",
+    path_prefix=Path("imaging") / "features",
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,

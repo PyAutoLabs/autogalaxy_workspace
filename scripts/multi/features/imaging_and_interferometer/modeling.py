@@ -51,7 +51,7 @@ interferometer = ag.Interferometer.from_fits(
     noise_map_path=dataset_path / "noise_map.fits",
     uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
     real_space_mask=real_space_mask,
-    transformer_class=ag.TransformerNUFFT,
+    transformer_class=ag.TransformerDFT,
 )
 
 interferometer_plotter = aplt.InterferometerPlotter(dataset=interferometer)
@@ -146,7 +146,7 @@ print(factor_graph.global_prior_model.info)
 __Search__
 """
 search = af.Nautilus(
-    path_prefix=Path("multi") / "modeling",
+    path_prefix=Path("multi") / "features",
     name="imaging_and_interferometer",
     unique_tag=dataset_name,
     n_live=100,

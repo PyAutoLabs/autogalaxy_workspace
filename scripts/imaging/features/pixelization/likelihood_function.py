@@ -299,7 +299,7 @@ dimensions `(total_image_pixels, total_rectangular_pixels)`. It turns the values
 non-integer values which have been blurred by the PSF.
 """
 blurred_mapping_matrix = masked_dataset.psf.convolved_mapping_matrix_from(
-    mapping_matrix=mapping_matrix
+    mapping_matrix=mapping_matrix, mask=masked_dataset.mask
 )
 
 """
@@ -725,9 +725,7 @@ galaxies = ag.Galaxies(galaxies=[galaxy])
 fit = ag.FitImaging(
     dataset=masked_dataset,
     galaxies=galaxies,
-    settings_inversion=ag.SettingsInversion(
-        use_w_tilde=False, use_border_relocator=True
-    ),
+    settings_inversion=ag.SettingsInversion(use_border_relocator=True),
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)
@@ -909,7 +907,7 @@ mapping_matrix = ag.util.mapper.mapping_matrix_from(
 )
 
 blurred_mapping_matrix = masked_dataset.psf.convolved_mapping_matrix_from(
-    mapping_matrix=mapping_matrix
+    mapping_matrix=mapping_matrix, mask=masked_dataset.mask
 )
 
 """
