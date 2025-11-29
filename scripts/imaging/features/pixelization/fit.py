@@ -120,11 +120,7 @@ inputs:
 
 - `source_pixel_zeroed_indices`: The indices of source pixels on its edge, which when the source is reconstructed 
   are forced to values of zero, a technique tests have shown are required to give accruate lens models.
-
-The `image_mesh` can be ignored, it is legacy API from previous versions which may or may not be reintegrated in future
-versions.
 """
-image_mesh = None
 mesh_shape = (20, 20)
 total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
 
@@ -135,7 +131,7 @@ preloads = ag.Preloads(
         total_linear_light_profiles=total_linear_light_profiles,
         total_mapper_pixels=total_mapper_pixels,
     ),
-    source_pixel_zeroed_indices=al.util.mesh.rectangular_edge_pixel_list_from(
+    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
         total_linear_light_profiles=total_linear_light_profiles,
         shape_native=mesh_shape,
     ),
@@ -147,14 +143,8 @@ __Pixelization__
 We create a `Pixelization` object to perform the pixelized source reconstruction, which is made up of three
 components:
 
-- `image_mesh:`The coordinates of the mesh used for the pixelization need to be defined. The way this is performed
-depends on pixelization used. In this example, we define the source pixel centers by overlaying a uniform regular grid
-in the image-plane and ray-tracing these coordinates to the source-plane. Where they land then make up the coordinates
-used by the mesh.
-
 - `mesh:` Different types of mesh can be used to perform the source reconstruction, where the mesh changes the
-details of how the source is reconstructed (e.g. interpolation weights). In this exmaple, we use a `Voronoi` mesh,
-where the centres computed via the `image_mesh` are the vertexes of every `Voronoi` triangle.
+details of how the source is reconstructed (e.g. interpolation weights). In this exmaple, we use a `Rectangular` mesh.
 
 - `regularization:` A pixelization uses many pixels to reconstructed the source, which will often lead to over fitting
 of the noise in the data and an unrealistically complex and strucutred source. Regularization smooths the source
@@ -164,9 +154,7 @@ large flux differences.
 mesh = ag.mesh.RectangularMagnification(shape=mesh_shape)
 regularization = ag.reg.Constant(coefficient=1.0)
 
-pixelization = ag.Pixelization(
-    image_mesh=image_mesh, mesh=mesh, regularization=regularization
-)
+pixelization = ag.Pixelization(mesh=mesh, regularization=regularization)
 
 """
 __Fit__
@@ -176,23 +164,18 @@ the `Galaxy`, `Tracer` and `FitImaging`
 
 We simply create a `Pixelization` and pass it to the source galaxy, which then gets input into the tracer.
 """
-lens = ag.Galaxy(
-    redshift=0.5,
-    mass=ag.mp.Isothermal(
-        centre=(0.0, 0.0),
-        einstein_radius=1.6,
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-    ),
-    shear=ag.mp.ExternalShear(gamma_1=0.05, gamma_2=0.05),
+pixelization = ag.Pixelization(
+    mesh=ag.mesh.RectangularMagnification(shape=(30, 30)),
+    regularization=ag.reg.Constant(coefficient=1.0),
 )
 
-source = ag.Galaxy(redshift=1.0, pixelization=pixelization)
+galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
 
-tracer = ag.Tracer(galaxies=[lens, source])
+galaxies = ag.Galaxies([galaxy])
 
 fit = ag.FitImaging(
     dataset=dataset,
-    tracer=tracer,
+    galaxies=galaxies,
     preloads=preloads,
 )
 
@@ -214,7 +197,7 @@ The `subplot_mappings` overlays colored circles in the image and source planes t
 allowing one to assess how the mass model ray-traces image-pixels and therefore to assess how the source reconstruction
 maps to the image.
 """
-inversion_plotter = fit_plotter.inversion_plotter_of_plane(plane_index=1)
+inversion_plotter = fit_plotter.inversion_plotter
 inversion_plotter.subplot_of_mapper(mapper_index=0)
 inversion_plotter.subplot_mappings(pixelization_index=0)
 

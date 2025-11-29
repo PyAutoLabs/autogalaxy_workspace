@@ -83,7 +83,17 @@ to the source emission than the annular masks above.
 To create the .fits file of a mask, we use a GUI tool which is described in the following script:
 
  `autolens_workspace/*/data_preparation/imaging/gui/mask.py`
+ 
+We reload the data to restore it to its original shape, as the previous cell applied a mask to it which changed its
+shape to prepare for the fast Fourier transforms.
 """
+dataset = ag.Imaging.from_fits(
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    pixel_scales=0.1,
+)
+
 mask = ag.Mask2D.from_fits(
     file_path=Path(dataset_path, "mask_gui.fits"),
     hdu=0,
