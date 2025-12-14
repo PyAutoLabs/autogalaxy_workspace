@@ -179,6 +179,7 @@ search = af.Nautilus(
     name="pixelization",
     unique_tag=dataset_name,
     n_live=100,
+    n_like_max=200,
 )
 
 """
@@ -255,28 +256,33 @@ installed.
 
 First, lets load `source_plane_reconstruction_0.csv` as a dictionary, using basic `csv` functionality in Python.
 """
-import csv
+try:
+    import csv
 
-with open(
-    search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
-) as file:
-    reader = csv.reader(file)
-    header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
+    with open(
+        search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
+    ) as file:
+        reader = csv.reader(file)
+        header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
 
-    reconstruction_dict = {header: [] for header in header_list}
+        reconstruction_dict = {header: [] for header in header_list}
 
-    for row in reader:
-        for key, value in zip(header_list, row):
-            reconstruction_dict[key].append(float(value))
+        for row in reader:
+            for key, value in zip(header_list, row):
+                reconstruction_dict[key].append(float(value))
 
-    # Convert lists to NumPy arrays
-    for key in reconstruction_dict:
-        reconstruction_dict[key] = np.array(reconstruction_dict[key])
+        # Convert lists to NumPy arrays
+        for key in reconstruction_dict:
+            reconstruction_dict[key] = np.array(reconstruction_dict[key])
 
-print(reconstruction_dict["y"])
-print(reconstruction_dict["x"])
-print(reconstruction_dict["reconstruction"])
-print(reconstruction_dict["noise_map"])
+    print(reconstruction_dict["y"])
+    print(reconstruction_dict["x"])
+    print(reconstruction_dict["reconstruction"])
+    print(reconstruction_dict["noise_map"])
+except FileNotFoundError:
+    print(
+        "CSV file not found. Please ensure the model-fit has been run and the file exists."
+    )
 
 """
 __Future Ideas / Contributions__
