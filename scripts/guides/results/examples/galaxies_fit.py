@@ -95,6 +95,7 @@ search = af.Nautilus(
     path_prefix=Path("results_folder"),
     name="results",
     unique_tag=dataset_name,
+    n_batch=50,
     n_live=100,
 )
 

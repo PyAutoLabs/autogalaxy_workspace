@@ -366,12 +366,22 @@ search = af.Nautilus(
     name="extra_galaxies_model",
     unique_tag=dataset_name,
     n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
     iterations_per_quick_update=20000,
 )
 
 analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
+__VRAM__
+
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM 
+required by a model.
+
+Adding extra galaxies increases VRAM usage because each additional component adds calculations that JAX stores 
+in GPU memory. If you see VRAM warnings or errors, or if model fitting is slower than expected, you should 
+print the estimated VRAM usage and compare 
+
 __Run Time__
 
 Adding extra galaxies to the model increases the likelihood evaluation times, because their light profiles need 

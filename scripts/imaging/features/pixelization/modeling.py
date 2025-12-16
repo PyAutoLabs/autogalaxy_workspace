@@ -179,7 +179,7 @@ search = af.Nautilus(
     name="pixelization",
     unique_tag=dataset_name,
     n_live=100,
-    n_like_max=200,
+    n_batch=20,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -189,7 +189,39 @@ Create the `AnalysisImaging` object defining how the model is fitted to the data
 """
 analysis = ag.AnalysisImaging(dataset=dataset, preloads=preloads, use_jax=True)
 
+
 """
+__VRAM__
+
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM 
+required by a model.
+
+Pixelizations use a lot more VRAM than light profile-only models, with the amount required depending on the size of
+dataset and the number of source pixels in the pixelization's mesh. For 400 source pixels, around 0.05 GB per batched
+likelihood of VRAM is used. 
+
+This is why the `batch_size` above is 20, lower than other examples, because reducing the batch size ensures a more 
+modest amount of VRAM is used. If you have a GPU with more VRAM, increasing the batch size will lead to faster run times.
+
+Given VRAM use is an important consideration, we print out the estimated VRAM required for this 
+model-fit and advise you do this for your own pixelization model-fits.
+"""
+analysis.print_vram_use(model=model, batch_size=search.batch_size)
+
+"""
+__Run Time__
+
+The run time of a pixelization are fast provided that the GPU VRAM exceeds the amount of memory required to perform
+a likelihood evaluation.
+
+Assuming the use of a 20 x 20 mesh grid above means this is the case, the run times of this model-fit on a GPU
+should take under 10 minutes. If VRAM is exceeded, the run time will be significantly longer (3+ hours). CPU run
+times are also of order hours, but can be sped up using the `numba` library (see the `pixelization/cpu` example).
+
+The run times of pixelizations slow down as the data becomes higher resolution. In this example, data with a pixel
+scale of 0.1" gives of order 10 minute run times (when VRAM is under control), for a pixel scale of 0.05" this
+becomes around 30 minutes, and an hour for 0.03".
+
 __Model-Fit__
 
 We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder

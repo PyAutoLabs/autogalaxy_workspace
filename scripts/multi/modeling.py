@@ -228,6 +228,23 @@ search = af.Nautilus(
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+)
+
+"""
+__VRAM Use__
+
+The `modeling` examples of individual dataset types explain how VRAM is used during GPU-based fitting and how to 
+print the estimated VRAM required by a model.
+
+When multiple datasets are fitted simultaneously, as in this example, VRAM usage increases with each
+dataset, as their data structures must all be stored in VRAM.
+
+Given VRAM use is an important consideration, we print out the estimated VRAM required for this 
+model-fit and advise you do this for your own pixelization model-fits.
+"""
+factor_graph.print_vram_use(
+    model=factor_graph.global_prior_model, batch_size=search.batch_size
 )
 
 """

@@ -132,6 +132,7 @@ search_1 = af.Nautilus(
     name="search[1]__parametric",
     unique_tag=dataset_name,
     n_live=100,
+    n_batch=50,
 )
 
 analysis_1 = ag.AnalysisImaging(dataset=dataset, use_jax=True)
@@ -238,6 +239,7 @@ search_2 = af.Nautilus(
     name="search[2]__pixelization_fixed_parametric",
     unique_tag=dataset_name,
     n_live=80,
+    n_batch=20,
 )
 
 result_2 = search_2.fit(model=model_2, analysis=analysis_2)
@@ -302,6 +304,7 @@ search_3 = af.Nautilus(
     name="search[3]__parametric_and_pixelization",
     unique_tag=dataset_name,
     n_live=100,
+    n_batch=20,
 )
 
 analysis_3 = ag.AnalysisImaging(dataset=dataset, use_jax=True)

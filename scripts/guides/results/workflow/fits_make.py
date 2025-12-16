@@ -112,7 +112,7 @@ for i in range(2):
         name="results",
         unique_tag=f"simple_{i}",
         n_live=100,
-        number_of_cores=1,
+        n_batch=50,
     )
 
     class AnalysisLatent(ag.AnalysisImaging):

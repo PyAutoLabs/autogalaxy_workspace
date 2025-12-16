@@ -219,6 +219,7 @@ search = af.Nautilus(
     name="light[shapelets]_polar_5_ell",
     unique_tag=dataset_name,
     n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -232,6 +233,34 @@ analysis = ag.AnalysisImaging(
 )
 
 """
+__VRAM__
+
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM 
+required by a model.
+
+For each shapelet, extra VRAM is used. For around 60 shapelets this typically requires  a modest amount of 
+VRAM (e.g. 10–50 MB per batched likelihood). Models that use hundreds of shapelets, especially in  combination with a 
+large batch size, may therefore exceed GBs of VRAM and require you to adjust the batch size to fit within your GPU's VRAM.
+
+__Run Time__
+
+The likelihood evaluation time for a shapelets is significantly slower than standard light profiles.
+This is because the image of every shapelets must be computed and evaluated, and each must be blurred with the PSF.
+In this example, the evaluation time is ~0.37s, compared to ~0.01 seconds for standard light profiles.
+
+Gains in the overall run-time however are made thanks to the models reduced complexity and lower
+number of free parameters. The source is modeled with 3 free parameters, compared to 6+ for a linear light profile 
+Sersic.
+
+However, the multi-gaussian expansion (MGE) approach is even faster than shapelets. It uses fewer Gaussian basis
+functions (speed up the likelihood evaluation) and has fewer free parameters (speeding up the non-linear search).
+Furthermore, non of the free parameters scale the size of the source galaxy, which means the non-linear search
+can converge faster.
+
+I recommend you try using an MGE approach alongside shapelets. For many science cases, the MGE approach will be
+faster and give higher quality results. Shapelets may perform better for irregular sources, but this is not
+guaranteed.
+
 __Model-Fit__
 
 We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
@@ -304,6 +333,7 @@ search = af.Nautilus(
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result = search.fit(model=model, analysis=analysis)

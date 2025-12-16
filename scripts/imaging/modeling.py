@@ -247,6 +247,7 @@ search = af.Nautilus(
     name="start_here",
     unique_tag=dataset_name,
     n_live=200,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
     iterations_per_quick_update=10000,
 )
 
@@ -265,13 +266,40 @@ function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
 
 __JAX__
 
-PyAutoLens uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
+Analysis uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
 support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
 JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
 
 If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
 """
 analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+
+"""
+__VRAM Use__
+
+When running with JAX on a GPU, the analysis must fit within the GPU’s
+available VRAM. If insufficient VRAM is available, the analysis will fail with an
+out-of-memory error, typically during JIT compilation or the first likelihood call.
+
+Two factors dictate the VRAM usage of an analysis:
+
+- The number of arrays and other data structures JAX must store in VRAM to fit the model
+  to the data in the likelihood function. This is dictated by the model complexity and dataset size.
+
+- The `batch_size` sets how many likelihood evaluations are performed simultaneously.
+  Increasing the batch size increases VRAM usage but can reduce overall run time,
+  while decreasing it lowers VRAM usage at the cost of slower execution.
+
+Before running an analysis, users should check that the estimated VRAM usage for the
+chosen batch size is comfortably below their GPU’s total VRAM.
+
+The method below prints the VRAM usage estimate for the analysis and model with the specified batch size,
+it takes about 20-30 seconds to run so you may want to comment it out once you are familiar with your GPU's VRAM limits.
+
+For a MGE model with the low resolution dataset fitted in this example VRAM use is relatively low (~0.027GB) For other 
+models (e.g. pixelized sources) and higher resolution datasets it can be much higher (> 1GB going beyond 10GB).
+"""
+analysis.print_vram_use(model=model, batch_size=search.batch_size)
 
 """
 __Run Times__

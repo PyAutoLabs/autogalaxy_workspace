@@ -156,6 +156,7 @@ search = af.Nautilus(
     name="light[bulge_psf]",
     unique_tag=dataset_name,
     n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -166,6 +167,23 @@ Create the `AnalysisImaging` object defining how the model is fitted to the data
 analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 """
+__VRAM__
+
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to
+print the estimated VRAM required by a model.
+
+For each operated light profile in the model extra is used VRAM. For 3-10 linear Sersic light profiles this is a tiny 
+amount of VRAM (e.g. < 10MB  per batched likelihood). Even for large batch sizes (e.g. over 100) you probably 
+will not use enough VRAM to require monitoring.
+
+__Run Time__
+
+The likelihood evaluation time for operated light profiles are faster than all other light profiles. This is because
+the computationally expensive PSF convolution step is omitted.
+
+The overall run-time may be a little slower than other models though, because the `psf` component adds a few
+extra parameters.
+
 __Model-Fit__
 
 We begin the model-fit by passing the model and analysis object to the non-linear search (checkout the output folder
