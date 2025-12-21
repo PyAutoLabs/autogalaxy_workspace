@@ -64,7 +64,7 @@ dataset_path = Path("dataset") / "interferometer" / dataset_name
 dataset = ag.Interferometer.from_fits(
     data_path=dataset_path / "data.fits",
     noise_map_path=dataset_path / "noise_map.fits",
-    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )
@@ -876,7 +876,7 @@ dataset_path = Path("dataset") / "interferometer" / dataset_name
 dataset = ag.Interferometer.from_fits(
     data_path=dataset_path / "data.fits",
     noise_map_path=dataset_path / "noise_map.fits",
-    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )
@@ -1044,7 +1044,7 @@ dataset_path = Path("dataset") / "interferometer" / dataset_name
 dataset = ag.Interferometer.from_fits(
     data_path=dataset_path / "data.fits",
     noise_map_path=dataset_path / "noise_map.fits",
-    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )

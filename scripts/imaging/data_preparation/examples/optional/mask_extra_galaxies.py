@@ -29,7 +29,7 @@ __Links / Resources__
 The script `data_preparation/gui/extra_galaxies_mask.ipynb` shows how to use a Graphical User Interface (GUI) to create
 the extra galaxies mask.
 
-The script `modeling/features/extra_galaxies.py` shows how to use this mask in different ways in a model-fit.
+The script `features/extra_galaxies/modeling` shows how to use this mask in different ways in a model-fit.
 
 __Start Here Notebook__
 

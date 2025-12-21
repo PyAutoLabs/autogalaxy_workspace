@@ -207,6 +207,7 @@ search = af.Nautilus(
     name="light[basis]",
     unique_tag=dataset_name,
     n_live=75,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -220,6 +221,16 @@ analysis = ag.AnalysisImaging(
 )
 
 """
+__VRAM__
+
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM 
+required by a model.
+
+For each linear Gaussian light profile, extra VRAM is used. For around 60 linear Gaussians this  typically requires 
+a modest amount of VRAM (e.g. 10–50 MB per batched likelihood). Models that use hundreds of Gaussians, especially in 
+combination with a large batch size, may therefore exceed GBs of VRAM and require you to adjust the batch size to fit 
+within your GPU's VRAM.
+
 __Run Time__
 
 The likelihood evaluation time for a multi-Gaussian expansion is significantly slower than standard / linear 
@@ -255,7 +266,7 @@ print(result.info)
 """
 We plot the maximum likelihood fit, tracer images and posteriors inferred via Nautilus.
 
-Checkout `autolens_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autolens_workspace/*/guides/results` for a full description of analysing results in **PyAutoGalaxy**.
 
 In particular, checkout the results example `linear.py` which details how to extract all information about linear
 light profiles from a fit.
@@ -330,6 +341,7 @@ search = af.Nautilus(
     name="light[basis_regularized]",
     unique_tag=dataset_name,
     n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result = search.fit(model=model, analysis=analysis)

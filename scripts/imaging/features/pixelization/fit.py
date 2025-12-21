@@ -144,11 +144,11 @@ We create a `Pixelization` object to perform the pixelized source reconstruction
 components:
 
 - `mesh:` Different types of mesh can be used to perform the source reconstruction, where the mesh changes the
-details of how the source is reconstructed (e.g. interpolation weights). In this exmaple, we use a `Rectangular` mesh.
+details of how the source is reconstructed (e.g. interpolation weights). In this example, we use a rectangular mesh.
 
 - `regularization:` A pixelization uses many pixels to reconstructed the source, which will often lead to over fitting
-of the noise in the data and an unrealistically complex and strucutred source. Regularization smooths the source
-reconstruction solution by penalizing solutions where neighboring pixels (Voronoi triangles in this example) have
+of the noise in the data and an unrealistically complex and structured source. Regularization smooths the source
+reconstruction solution by penalizing solutions where neighboring pixels have
 large flux differences.
 """
 mesh = ag.mesh.RectangularMagnification(shape=mesh_shape)
@@ -187,7 +187,7 @@ fit_plotter = aplt.FitImagingPlotter(fit=fit)
 fit_plotter.subplot_fit()
 
 """
-Pixelizations have bespoke visualizations which show more details about the source-reconstruction, image-mesh
+pixelizations have bespoke visualizations which show more details about the source-reconstruction, image-mesh
 and other quantities.
 
 These plots use an `InversionPlotter`, which gets its name from the internals of how pixelizations are performed in

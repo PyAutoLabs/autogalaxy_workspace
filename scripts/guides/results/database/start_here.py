@@ -149,6 +149,7 @@ for dataset_name in dataset_names:
         name="database_example",
         unique_tag=dataset_name,  # This makes the unique identifier use the dataset name
         session=session,  # This can instruct the search to write to the .sqlite database.
+        n_batch=50,
         n_live=100,
     )
 
@@ -200,6 +201,7 @@ to large samples by writing directly to the database.
 #     name="database_example",
 #     unique_tag=dataset_name,  # This makes the unique identifier use the dataset name
 #     session=session,  # This can instruct the search to write to the .sqlite database.
+#     n_batch=50,
 #     n_live=100,
 # )
 

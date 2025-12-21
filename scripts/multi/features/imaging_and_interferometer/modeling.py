@@ -49,7 +49,7 @@ dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 interferometer = ag.Interferometer.from_fits(
     data_path=dataset_path / "data.fits",
     noise_map_path=dataset_path / "noise_map.fits",
-    uv_wavelengths_path=Path(dataset_path, "uv_wavelengths.fits"),
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
     transformer_class=ag.TransformerDFT,
 )
@@ -150,6 +150,7 @@ search = af.Nautilus(
     name="imaging_and_interferometer",
     unique_tag=dataset_name,
     n_live=100,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
