@@ -266,7 +266,7 @@ print(result.info)
 """
 We plot the maximum likelihood fit, tracer images and posteriors inferred via Nautilus.
 
-Checkout `autolens_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autolens_workspace/*/guides/results` for a full description of analysing results in **PyAutoGalaxy**.
 
 In particular, checkout the results example `linear.py` which details how to extract all information about linear
 light profiles from a fit.

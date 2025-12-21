@@ -82,7 +82,7 @@ The uv-wavelengths define the baselines of the interferometer. They are used to 
 uv-plane, which is where the model is evaluated.
 """
 uv_wavelengths = ag.ndarray_via_fits_from(
-    file_path=Path(dataset_path, "uv_wavelengths.fits"), hdu=0
+    file_path=dataset_path / "uv_wavelengths.fits", hdu=0
 )
 
 uv_wavelengths = ag.Grid2DIrregular.from_yx_1d(

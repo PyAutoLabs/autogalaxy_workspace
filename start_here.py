@@ -522,7 +522,7 @@ links to the relevant workspace examples.
 **Shapelets**: Decomposing a galaxy into a set of shapelet orthogonal basis functions, capturing more complex structures than simple light profiles.
 **Sky Background**: Including the background sky in the model to ensure robust fits to the outskirts of galaxies.
 **Operated Light Profiles**: Assuming a light profile has already been convolved with the PSF, for when the PSF is a significant effect.
-**Pixelizations**: Reconstructing a galaxy's on a mesh of pixels, to capture extremely irregular structures like spiral arms.
+**pixelizations**: Reconstructing a galaxy's on a mesh of pixels, to capture extremely irregular structures like spiral arms.
 
 
 __Interferometry__
