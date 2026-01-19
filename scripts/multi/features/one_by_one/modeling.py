@@ -160,7 +160,7 @@ search = af.Nautilus(
     name="one_by_one__main_dataset",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -218,7 +218,7 @@ search = af.Nautilus(
     name="one_by_one__second_bulge_fixed",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result_bulge_fixed = search.fit(model=model, analysis=analysis_list[0])
@@ -261,7 +261,7 @@ search = af.Nautilus(
     name="one_by_one__dataset_offset",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result = search.fit(model=model, analysis=analysis_list[0])
