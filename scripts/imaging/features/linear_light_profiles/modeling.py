@@ -10,6 +10,21 @@ given the light profile's other parameters.
 Based on the advantages below, we recommended you always use linear light profiles to fit models over standard
 light profiles!
 
+__Contents__
+
+**Advantages & Disadvatanges:** Benefits and drawbacks of linear light profiles.
+**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+**Fit:** Perform a fit to a dataset using linear light profile with inputs for other light profile parameters.
+**Intensities:** Access the solved for intensities of light profiles from the fit.
+**Model:** Composing a model using linear light profiles and how it changes the number of free parameters.
+**Search & Analysis:** Standard set up of non-linear search and analysis.
+**Run Time:** Profiling of linear light profile run times and discussion of how they compare to standard light profiles.
+**Model-Fit:** Performs the model fit using standard API.
+**Result & Intensities:** Linear light profiles results, including how to access light profiles with solved for intensity values.
+**Visualization:** Plotting images of model-fits using linear light profiles.
+**Linear Objects (Source Code)**: Internal source code implementation of linear light profiles (for contributors).
+
 __Advantages__
 
 Each light profile's `intensity` parameter is therefore not a free parameter in the model-fit, reducing the
@@ -67,7 +82,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Load and plot the galaxy dataset `simple` via .fits files, which we will fit with the model.
+Load and plot the galaxy dataset `simple` via .fits files.
 """
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
@@ -125,7 +140,8 @@ We compose our model where in this example:
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=9.
 
 Note how both light profiles use linear light profiles, meaning that the `intensity` parameter of both is no longer a 
-free parameter in the fit.
+free parameter in the fit. This means the overall number of free parameters is reduced by two compared to if 
+standard light profiles were used.
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -164,7 +180,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
@@ -273,6 +289,15 @@ galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
 galaxy_plotter.figures_2d(image=True)
 
 """
+__Wrap Up__
+
+Checkout `autoogalaxy_workspace/*/guides/results` for a full description of analysing results.
+
+__Result (Advanced)__
+
+The code belows shows all additional results that can be computed from a `Result` object following a fit with a
+linear light profile.
+
 __Max Likelihood Inversion__
 
 As seen elsewhere in the workspace, the result contains a `max_log_likelihood_fit`, which contains the
@@ -284,47 +309,6 @@ inversion = result.max_log_likelihood_fit.inversion
 This `Inversion` can be used to plot the reconstructed image of specifically all linear light profiles.
 """
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
-# inversion_plotter.figures_2d(reconstructed_image=True)
-
-"""
-__Intensities__
-
-The intensities of linear light profiles are not a part of the model parameterization and therefore are not displayed
-in the `model.results` file.
-
-To extract the `intensity` values of a specific component in the model, we use the `max_log_likelihood_galaxies`,
-which has already performed the inversion and therefore the galaxy light profiles have their solved for
-`intensity`'s associated with them.
-"""
-galaxies = result.max_log_likelihood_galaxies
-
-print(galaxies[0].bulge.intensity)
-
-"""
-The `Galaxies` contained in the `max_log_likelihood_fit` also has the solved for `intensity` values:
-"""
-fit = result.max_log_likelihood_fit
-
-galaxies = fit.galaxies
-
-print(galaxies[0].bulge.intensity)
-
-"""
-__Visualization__
-
-Linear light profiles and objects containing them (e.g. galaxies) cannot be plotted because they do not 
-have an `intensity` value.
-
-Therefore, the objects created above which replaces all linear light profiles with ordinary light profiles must be
-used for visualization:
-"""
-galaxies = result.max_log_likelihood_galaxies
-
-galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=dataset.grid)
-galaxies_plotter.figures_2d(image=True)
-
-galaxy_plotter = aplt.GalaxyPlotter(galaxy=galaxies[0], grid=dataset.grid)
-galaxy_plotter.figures_2d(image=True)
 
 """
 __Linear Objects (Internal Source Code)__
@@ -338,7 +322,7 @@ This list may include the following objects:
  (e.g. `lp_linear.Sersic`) or many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
 
 - `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper` 
-is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularMagnification` mesh).
+is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularAdaptDensity` mesh).
 
 In this example, two linear objects were used to fit the data:
  

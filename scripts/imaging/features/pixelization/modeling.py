@@ -122,7 +122,7 @@ __Model__
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy’s surface brightness is reconstructed using a pixelization.
- - A `RectangularMagnification` mesh and `Constant` regularization scheme are used.
+ - A `RectangularAdaptDensity` mesh and `Constant` regularization scheme are used.
 
 __Start Here Notebook__
 
@@ -233,7 +233,7 @@ __Model__
 We compose our model using `Model` objects, which represent the galaxies we fit to our data.  In this 
 example we fit a model where:
 
- - The galaxy's light uses a 20 x 20 `RectangularMagnification` mesh [0 parameters]. 
+ - The galaxy's light uses a 20 x 20 `RectangularAdaptDensity` mesh [0 parameters]. 
  
  - This pixelization is regularized using a `GaussianKernel` scheme which smooths every source [2 parameter]. 
 
@@ -244,7 +244,7 @@ fitting this complex galaxy using parametric light profiles would (20+ parameter
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularMagnification(shape=mesh_shape),
+    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 
@@ -276,7 +276,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data. 
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
 """
 analysis = ag.AnalysisImaging(dataset=dataset, preloads=preloads, use_jax=True)
 
@@ -366,7 +366,7 @@ pixelization = af.Model(
     ag.Pixelization,
     bulge=ag.lp_linear.Sersic,
     disk=ag.lp_linear.Exponential,
-    mesh=ag.mesh.RectangularMagnification(shape=mesh_shape),
+    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 

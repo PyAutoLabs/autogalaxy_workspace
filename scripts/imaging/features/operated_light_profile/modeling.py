@@ -2,11 +2,6 @@
 Modeling: Light Parametric Operated
 ===================================
 
-This script fits an `Imaging` dataset of a galaxy with a model where:
-
- - The galaxy's light is a linear parametric `Sersic` bulge.
- - The galaxy includes a linear parametric `Gaussian` psf.
-
  __Operated Fitting__
 
 It is common for galaxies to have point-source emission, for example bright emission right at their centre due to
@@ -24,6 +19,25 @@ compact model emission lands in.
 Operated light profiles offer an alternative approach, whereby the light profile is assumed to have already been
 convolved with the PSF. This operated light profile is then fitted directly to the point-source emission, which as
 discussed above shows the PSF features.
+
+Operated light profiles bypass the convolution step entirely, and therefore if you had a use-case which
+required fitting other components of a galaxy without convolution they could be used for this purpose too.
+
+__Model__
+
+This script fits an `Imaging` dataset of a galaxy with a model where:
+
+ - The galaxy's light is a linear parametric `Sersic` bulge.
+ - The galaxy includes a linear parametric `Gaussian` psf.
+
+__Fit__
+
+For operated light profiles, there is no `fit.py` example found for standard light profiles, linear light profiles
+and other examples.
+
+This is done purely to keep the number of examples in the workspace manageable. to perform a fit with operated light
+profiles, simply follow one of the other `modeling/imaging/fit.py` examples and replace the light profiles
+with operated light profiles using the API described below.
 
 __Start Here Notebook__
 
@@ -44,8 +58,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Load and plot the galaxy dataset `operated` via .fits files, which we will fit with 
-the model.
+Load and plot the galaxy dataset `operated` via .fits files.
 """
 dataset_name = "operated"
 dataset_path = Path("dataset") / "imaging" / dataset_name
@@ -120,7 +133,7 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, psf=psf)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-There is also a linear variant of every operated light profile (see `light_parametric_linear.py`).
+There is also a linear variant of every operated light profile (see `linear_light_profiles.py`).
 
 We will use this, as it simplifies parameter space, which is particularly important for operated light profiles 
 which can prove quite difficult to sample robustly.
@@ -153,7 +166,7 @@ A full description of the settings below is given in the beginner modeling scrip
 """
 search = af.Nautilus(
     path_prefix=Path("imaging") / "features",
-    name="light[bulge_psf]",
+    name="operated_light_profiles",
     unique_tag=dataset_name,
     n_live=150,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
@@ -162,7 +175,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data. 
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
 """
 analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 

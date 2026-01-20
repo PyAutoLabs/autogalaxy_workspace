@@ -100,47 +100,6 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
-__Fit__
-
-We first show how to use a `DatasetModel` object to fit the sky background in the data.
-
-This illustrates the API for performing a sky background fit using standard objects like a `Galaxy` and `FitImaging` .
-
-This does not perform a model-fit via a non-linear search, and therefore requires us to manually specify and guess
-suitable parameter values for the sky. We will use the true value of 5.0 electrons per second.
-
-For the galaxy, we will use the true parameters used to simulate the data, for illustrative purposes.
-"""
-galaxy = ag.Galaxy(
-    redshift=0.5,
-    bulge=ag.lp_linear.Sersic(
-        centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
-        effective_radius=0.6,
-        sersic_index=3.0,
-    ),
-    disk=ag.lp_linear.Exponential(
-        centre=(0.0, 0.0),
-        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
-        effective_radius=1.6,
-    ),
-)
-
-galaxies = ag.Galaxies(galaxies=[galaxy])
-
-dataset_model = ag.DatasetModel(background_sky_level=5.0)
-
-fit = ag.FitImaging(dataset=dataset, galaxies=galaxies, dataset_model=dataset_model)
-
-"""
-By plotting the fit, we see that the sky is subtracted from the data such that the outskirts are zero.
-
-There are few residuals, except for perhaps some central regions where the light profile is not perfectly fitted.
-"""
-fit_plotter = aplt.FitImagingPlotter(fit=fit)
-fit_plotter.subplot_fit()
-
-"""
 __Model__
 
 We compose our model where in this example:
@@ -197,7 +156,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
@@ -237,10 +196,15 @@ This confirms that a `background_sky_level` of approximately 5.0 electrons per s
 print(result.info)
 
 """
-To print the exact value, the `sky` attribute of the result contains the `intensity` of the sky.
+To print the exact value, the `background_sky_level` attribute of the result contains the `intensity` of the sky.
 """
 print(result.instance.dataset_model.background_sky_level)
 
 """
-Checkout `autogalaxy_workspace/*/modeling/imaging/results.py` for a full description of the result object.
+__Wrap Up__
+
+This example shows how to include the sky background as part of a fit using a `DatasetModel` object.
+
+It is useful for ensuring uncertainties on lens galaxy light profile parameters fully account for uncertainties
+in the sky background subtraction, especially for low surface brightness features in the outskirts of the galaxy.
 """

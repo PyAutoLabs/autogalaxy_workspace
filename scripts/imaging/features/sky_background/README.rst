@@ -10,7 +10,6 @@ The following example scripts illustrating galaxy modeling where:
 - ``simulator``: Simulating galaxy data where the sky background has not been subtracted.
 - ``fit``: Fit data with the sky background included and compute quantities like the residuals, chi squared and likelihood.
 
-
 Results
 -------
 

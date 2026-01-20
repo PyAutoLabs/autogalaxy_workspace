@@ -74,7 +74,7 @@ preloads = ag.Preloads(
 
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularMagnification(shape=mesh_shape),
+    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 
@@ -134,7 +134,7 @@ print(reconstruction_dict["noise_map"])
 You can now use standard libraries to performed calculations with the reconstruction on the mesh, again avoiding
 the need to use autolens.
 
-For example, we can create a RectangularMagnification mesh using the scipy.spatial library, which is a triangulation
+For example, we can create a RectangularAdaptDensity mesh using the scipy.spatial library, which is a triangulation
 of the y and x coordinates of the pixelization mesh. This is useful for visualizing the pixelization
 and performing calculations on the mesh.
 """
@@ -152,7 +152,7 @@ Below, we interpolate the result onto a 201 x 201 grid of pixels with the extent
 capture the majority of the source reconstruction without being too high resolution.
 
 It should be noted this inteprolation may not be as optimal as the interpolation perforemd above using `MapperValued`, 
-which uses specifc interpolation methods for a RectangularMagnification mesh which are more accurate, but it should be sufficent for
+which uses specifc interpolation methods for a RectangularAdaptDensity mesh which are more accurate, but it should be sufficent for
 most use-cases.
 """
 from scipy.interpolate import griddata

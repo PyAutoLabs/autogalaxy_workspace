@@ -2,7 +2,7 @@
 __Log Likelihood Function: Pixelization__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with a pixelization (specifically a `RectangularMagnification` mesh and `Constant` regularization scheme`).
+`Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization scheme`).
 
 This example combines does not include a light profile or linear light profiles, which can be combined with a
 pixelization to fit an image. The inclusion of these components is described in the notebook
@@ -15,22 +15,6 @@ This script has the following aims:
  write large quantities of text and equations.
 
  - To make pixelized reconstructions less of a "black-box" to users.
-
-__Simplifications__
-
-This example uses two simplifications which if you are familiar with pixelizations you will notice are used
-in other examples, but not here:
-
-- A `RectangularUniform` mesh is used, whereas other examples use a `RectangularMagnification` mesh.
-  The `RectangularMagnification` mesh uses an interpolation mapping scheme whereby each image pixels is paired
-  with four source pixels, which complicates the explanation of the likelihood function. Interpolation is key
-  to accurate pixelizations, but is disabled in this example for simplicity.
-
-- The over sampling of the pixelization and light profiles is disabled (set to `sub_size=1`), meaning that each
- image-pixel is mapped to each source pixel once with a weight of 1.0. In other examples, an over sampling of
- 4 is typically used, meaning each image-pixel is mapped to each source pixel 16 times with different weights.
-
-The end of this example describes how the likelihood function changes when these two features are included.
 
 __Prerequisites__
 
@@ -94,7 +78,7 @@ dataset = ag.Imaging.from_fits(
 )
 
 """
-Throughout this guide, I will use **PyAutoGalaxy**'s in-built visualization tools for plotting. 
+I will use in-built visualization tools for plotting. 
 
 For example, using the `ImagingPlotter` I can plot the imaging dataset we performed a likelihood evaluation on.
 """
@@ -165,7 +149,7 @@ The galaxy includes the rectangular mesh and constant regularization scheme, whi
 to reconstruct its star forming clumps.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.RectangularMagnification(shape=(30, 30)),
+    mesh=ag.mesh.RectangularAdaptDensity(shape=(30, 30)),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 
@@ -179,7 +163,7 @@ irregularities and asymmetries in the source's surface brightness.
 
 A constant regularization scheme is applied which applies a smoothness prior on the reconstruction. 
 """
-grid_rectangular = ag.Mesh2DRectangular.overlay_grid(
+mesh_grid = ag.Mesh2DRectangularUniform.overlay_grid(
     shape_native=galaxy.pixelization.mesh.shape, grid=masked_dataset.grids.pixelization
 )
 
@@ -198,7 +182,7 @@ to show how each set of image-pixels fall within a rectangular pixel.
 mapper_grids = ag.MapperGrids(
     mask=mask,
     source_plane_data_grid=masked_dataset.grids.pixelization,
-    source_plane_mesh_grid=grid_rectangular,
+    source_plane_mesh_grid=mesh_grid,
 )
 
 mapper = ag.Mapper(
@@ -226,7 +210,7 @@ There are two steps in this calculation, which we show individually below.
 mapper_grids = ag.MapperGrids(
     mask=mask,
     source_plane_data_grid=masked_dataset.grids.pixelization,
-    source_plane_mesh_grid=grid_rectangular,
+    source_plane_mesh_grid=mesh_grid,
 )
 
 mapper = ag.Mapper(
@@ -238,7 +222,7 @@ mapper = ag.Mapper(
 The `Mapper` contains:
 
  1) `source_plane_data_grid`: the grid of masked (y,x) image-pixel coordinate centres (`masked_dataset.grids.pixelization`).
- 2) `source_plane_mesh_grid`: The rectangular mesh of (y,x) pixelization pixel coordinates (`grid_rectangular`).
+ 2) `source_plane_mesh_grid`: The rectangular mesh of (y,x) pixelization pixel coordinates (`mesh_grid`).
 
 We have therefore discretized the source-plane into a rectangular mesh, and can pair every image-pixel coordinate
 with the corresponding rectangular pixel it lands in.
@@ -291,14 +275,62 @@ mapper_plotter.subplot_image_and_mapper(
 )
 
 """
+__Interpolation__
+
+The right hand plot shows more laying over source pixel 200 than its retangular black lines. Pixels further 
+out than the pixel appear to be mapped to this source pixel. 
+
+This is because the mesh uses an interpolation mapping scheme whereby each image pixels is paired with four source 
+pixels. For a rectangular mesh, this scheme is called bilinear interpolation, and it means that every pixel maps
+not only to the rectangular source pixel it lands in, but also the three neighbouring source pixels. Interpolation is 
+key to ensuring that the pixelization can reconstruct smooth source morphologies.
+
+We can confirm that every image pixel maps to four source pixels by printing 
+the `pix_sizes_for_sub_slim_index`, which gives the number of mapped source pixels for every image pixel.
+
+We can also confirm that the interpolation introduces weights to each mapping by printing the 
+`pix_weights_for_sub_slim_index`, which gives the weight of each mapping for every image pixel.
+"""
+print(mapper.pix_sizes_for_sub_slim_index[0:9])
+print(mapper.pix_weights_for_sub_slim_index[0:9])
+
+"""
+__Over Sampling__
+
+Lets quickly think about what happens when we use over sampling in the pixelization (e.g. `sub_size>1`). For
+the `sub_size=1` case above, each image pixel maps to 4 source pixels (due to bilinear interpolation)
+with a weight determined from the bilinear interpolation scheme.
+
+However, the default over sampling for a pixelization is `sub_size=4`, meaning each image pixel is divided
+into a 4x4 grid of sub-pixels (16 sub-pixels in total). Each of these sub-pixels maps to 4 source pixels
+(due to bilinear interpolation), where the weight of each mapping is determined by the bilinear interpolation
+scheme divided by 16 (because there are 16 sub-pixels).
+
+This example therefore used a `sub_size=1` to keep the explanation of the likelihood, visualization of the
+arrays above and understanding of the mapping scheme as simple as possible. You can manually increase the
+`sub_size` above and re-run the notebook to see how this changes the mapping scheme.
+
+__Alternative Meshes__
+
+We can briefly consider how this step differs for other mesh types. Above, we simply overlaid a uniform rectangular
+grid to define the source pixel centres and then mapped image pixels to these source pixels.
+
+The `RectangularAdaptDensity` mesh pretty much works exactly the same, its just that a calculation (which we don't
+describe here) works out how to make a grid of rectangular pixels that adapt to the source-plane density and thus
+vary in size. 
+
+There is also a `RectangularAdaptImage` mesh which uses the image of the galaxy to adapt
+the rectangular pixel sizes. This often puts even smaller pixels in the brightest regions of the galaxy,
+even if it lies offset or away from the caustic.
+
+There is also a `Delaunay` mesh which uses a Delaunay triangulation to define an irregular grid of source pixels.
+This is described fully in the `delaunay` example including a likelihood function guide.
+
 __Mapping Matrix__
 
 The `mapping_matrix` represents the image-pixel to source-pixel mappings above in a 2D matrix. 
 
 It has dimensions `(total_image_pixels, total_rectangular_pixels)`.
-
-(A number of inputs are not used for the `RectangularMagnification` mesh and are expanded upon in the `with_interpolation.ipynb`
-log likelihood guide notebook).
 """
 mapping_matrix = ag.util.mapper.mapping_matrix_from(
     pix_indexes_for_sub_slim_index=pix_indexes_for_sub_slim_index,
@@ -307,7 +339,7 @@ mapping_matrix = ag.util.mapper.mapping_matrix_from(
     pixels=mapper.pixels,
     total_mask_pixels=mapper.source_plane_data_grid.mask.pixels_in_mask,
     slim_index_for_sub_slim_index=mapper.slim_index_for_sub_slim_index,
-    sub_fraction=np.array(mapper.over_sampler.sub_fraction),
+    sub_fraction=mapper.over_sampler.sub_fraction,
 )
 
 """
@@ -794,7 +826,7 @@ To fit a galaxy model to data, the likelihood function illustrated in this tutor
 non-linear search algorithm.
 
 The default sampler is the nested sampling algorithm `nautilus` (https://github.com/joshspeagle/nautilus)
-but **PyAutoGalaxy** supports multiple MCMC and optimization algorithms. 
+multiple MCMC and optimization algorithms are supported.
 
 __Log Likelihood Function: Pixelization With Light Profile__
 

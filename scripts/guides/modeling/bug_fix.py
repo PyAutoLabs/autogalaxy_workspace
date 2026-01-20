@@ -139,16 +139,13 @@ def fit():
 
     print(result.max_log_likelihood_instance)
 
-    tracer_plotter = aplt.TracerPlotter(
-        tracer=result.max_log_likelihood_tracer, grid=result.grids.lp
+    galaxies_plotter = aplt.GalaxiesPlotter(
+        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp
     )
-    tracer_plotter.subplot_tracer()
+    galaxies_plotter.subplot()
 
     fit_plotter = aplt.FitImagingPlotter(fit=result.max_log_likelihood_fit)
     fit_plotter.subplot_fit()
-
-    plotter = aplt.NestPlotter(samples=result.samples)
-    plotter.corner_anesthetic()
 
 
 """

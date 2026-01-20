@@ -14,7 +14,6 @@ computationally fast and accurate solutions.
 
 Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
 
-
 __JAX GPU Run Times__
 
 Pixelizations run time depends on how modern GPU hardware is. GPU acceleration only provides fast run times on
@@ -196,7 +195,7 @@ of the noise in the data and an unrealistically complex and structured source. R
 reconstruction solution by penalizing solutions where neighboring pixels have
 large flux differences.
 """
-mesh = ag.mesh.RectangularMagnification(shape=mesh_shape)
+mesh = ag.mesh.RectangularAdaptDensity(shape=mesh_shape)
 regularization = ag.reg.Constant(coefficient=1.0)
 
 pixelization = ag.Pixelization(mesh=mesh, regularization=regularization)
@@ -210,7 +209,7 @@ the `Galaxy`, `Tracer` and `FitImaging`
 We simply create a `Pixelization` and pass it to the source galaxy, which then gets input into the tracer.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.RectangularMagnification(shape=(30, 30)),
+    mesh=ag.mesh.RectangularAdaptDensity(shape=(30, 30)),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 
@@ -431,7 +430,7 @@ This list may include the following objects:
  (e.g. `lp_linear.Sersic`) or many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
 
 - `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper` 
-is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularMagnification` mesh).
+is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularAdaptDensity` mesh).
 
 In this example, the only linear object used to fit the data was a `Pixelization`, thus the `linear_obj_list`
 contains just one entry corresponding to a `Mapper`:

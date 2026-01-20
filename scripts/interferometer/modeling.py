@@ -1,6 +1,30 @@
 """
-Modeling: Light Parametric
-==========================
+Modeling: Start Here
+====================
+
+This script is the starting point for modeling of interferometer datasets with less than 1000
+visibilities (e.g. SMA, ALMA) and it provides an overview of the modeling API.
+
+__Number of Visibilities__
+
+This example fits a **low-resolution interferometric dataset** with a small number of visibilities (273). The
+dataset is intentionally minimal so that the example runs quickly and allows you to become familiar with the API
+and modeling workflow. The code demonstrated in this example can feasible fit datasets with up to around 10000
+visibilities, above which computational time and VRAM use become significant for this modeling approach.
+
+High-resolution datasets with many visibilities (e.g. high-quality ALMA observations
+with **millions hundreds of millions of visibilities**) can be modeled efficiently. However, this requires
+using the more advanced **pixelized source reconstructions** modeling approach. These large datasets fully
+exploit **JAX acceleration**, enable modeling to run in **hours on a modern GPU**.
+
+If your dataset contains many visibilities, you should start by working through this example and the other examples
+in the `interferometer` folder. Once you are comfortable with the API, the `feature/pixelization` package provides a
+guided path toward efficiently modeling large interferometric datasets.
+
+The threshold between a dataset having many visibilities and therefore requiring pixelized source reconstructions, or
+being small enough to be modeled with light profiles, is around **10,000 visibilities**.
+
+__Model__
 
 This script fits `Interferometer` dataset of a galaxy with a model where:
 
@@ -24,8 +48,12 @@ __Mask__
 
 We define the ‘real_space_mask’ which defines the grid the image the galaxy is evaluated using.
 """
+mask_radius = 4.0
+
 real_space_mask = ag.Mask2D.circular(
-    shape_native=(800, 800), pixel_scales=0.05, radius=4.0
+    shape_native=(256, 256),
+    pixel_scales=0.1,
+    radius=mask_radius,
 )
 
 """
@@ -146,7 +174,7 @@ search = af.Nautilus(
     name="start_here",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -157,7 +185,7 @@ model to the `Interferometer`dataset.
 
 __JAX__
 
-PyAutoLens uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
+PyAutouses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
 support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
 JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
 
@@ -168,7 +196,7 @@ analysis = ag.AnalysisInterferometer(dataset=dataset, use_jax=True)
 """
 __VRAM Use__
 
-When running AutoLens with JAX on a GPU, the analysis must fit within the GPU’s available VRAM. If insufficient 
+When running Autowith JAX on a GPU, the analysis must fit within the GPU’s available VRAM. If insufficient 
 VRAM is available, the analysis will fail with an out-of-memory error, typically during JIT compilation or the 
 first likelihood call.
 
@@ -200,14 +228,14 @@ run times can be of order hours, days, weeks or even months.
 
 Run times are dictated by two factors:
 
- - The log likelihood evaluation time: the time it takes for a single `instance` of the lens model to be fitted to 
+ - The log likelihood evaluation time: the time it takes for a single `instance` of the model to be fitted to 
    the dataset such that a log likelihood is returned.
  
  - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex lens
    models require more iterations to converge to a solution.
    
 For this analysis, the log likelihood evaluation time is ~0.01 seconds on CPU, < 0.001 seconds on GPU, which is 
-extremely fast for lens modeling. 
+extremely fast for modeling. 
 
 To estimate the expected overall run time of the model-fit we multiply the log likelihood evaluation time by an 
 estimate of the number of iterations the non-linear search will perform. For this model, this is typically around
@@ -280,7 +308,7 @@ fit_plotter.subplot_fit_dirty_images()
 
 """
 The result contains the full posterior information of our non-linear search, including all parameter samples, 
-log likelihood values and tools to compute the errors on the lens model. 
+log likelihood values and tools to compute the errors on the model. 
 
 There are built in visualization tools for plotting this.
 
@@ -294,5 +322,53 @@ plotter = aplt.NestPlotter(samples=result.samples)
 plotter.corner_cornerpy()
 
 """
-Checkout `autogalaxy_workspace/*/interferometer/modeling/results.py` for a full description of the result object.
+This script gives a concise overview of the basic modeling API, fitting one of the simplest galaxy models possible.
+
+Let’s now consider what features you should read about to improve your galaxy modeling, especially if you are aiming
+to fit more complex models to your data.
+
+__Features__
+
+The examples in the `autogalaxy_workspace/*/interferometer/features` package illustrate other galaxy modeling
+features.
+
+We recommend you check out just one feature next, because it makes galaxy modeling of interferometer datasets
+more reliable and efficient, and will then allow you to model high-resolution datasets with many visibilities:
+
+- ``pixelization``: The galaxy’s light is reconstructed using an adaptive Rectangular mesh or Delaunay mesh.
+
+The files `autogalaxy_workspace/*/guides/modeling/searches` and
+`autogalaxy_workspace/*/guides/modeling/customize` provide guides on how to customize many other aspects of the
+model-fit. Check them out to see if anything sounds useful, but for most users you can get by without using these
+forms of customization!
+
+__Data Preparation__
+
+If you are looking to fit your own interferometer data of a galaxy, check out
+the `autogalaxy_workspace/*/interferometer/data_preparation/start_here.ipynb` script for an overview of how data
+should be prepared before being modeled.
+
+__HowToGalaxy__
+
+This `start_here.py` script, and the features examples above, do not explain many details of how galaxy modeling is
+performed, for example:
+
+- How does PyAutoGalaxy evaluate galaxy light profiles and perform image-plane calculations?
+- How is a galaxy model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed)?
+- How does Nautilus find the highest likelihood galaxy models? What exactly is a “non-linear search”?
+
+You do not need to be able to answer these questions in order to fit galaxy models with PyAutoGalaxy and do science.
+However, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist.
+
+This deeper insight is offered by the **HowToGalaxy** Jupyter notebook lectures, found
+at `autogalaxy_workspace/*/howtogalaxy`.
+
+I recommend that you check them out if you are interested in more details!
+
+__Modeling Customization__
+
+The folders `autogalaxy_workspace/*/guides/modeling/searches` give an overview of alternative non-linear searches,
+other than Nautilus, that can be used to fit galaxy models.
+
+They also provide details on how to customize the model-fit, for example the priors.
 """

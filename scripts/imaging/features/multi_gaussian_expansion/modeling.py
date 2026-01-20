@@ -4,7 +4,7 @@ Modeling Features: Multi Gaussian Expansion
 
 A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where
 the `intensity` of every Gaussian is solved for via a linear algebra using a process called an "inversion"
-(see the `light_parametric_linear.py` feature for a full description of this).
+(see the `linear_light_profiles.py` feature for a full description of this).
 
 This script fits a light model which uses an MGE consisting of 60 Gaussians. It is fitted to simulated data
 where the galaxy's light has asymmetric and irregular features, which fitted poorly by symmetric light
@@ -226,7 +226,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
