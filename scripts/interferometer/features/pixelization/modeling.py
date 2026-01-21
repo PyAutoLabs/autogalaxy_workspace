@@ -272,7 +272,7 @@ pixelization.
 """
 # Galaxy:
 mesh = af.Model(ag.mesh.RectangularUniform, shape=mesh_shape)
-regularization = af.Model(ag.reg.Constant)
+regularization = af.Model(ag.reg.GaussianKernel)
 
 pixelization = af.Model(ag.Pixelization, mesh=mesh, regularization=regularization)
 
