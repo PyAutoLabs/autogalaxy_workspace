@@ -18,13 +18,41 @@ This notebook is the starting point for all new **PyAutoGalaxy** users!
 
 This notebook gives an overview of **PyAutoGalaxy**'s API, core features and details of the autogalaxy_workspace.
 
+__Google Colab Setup__
+
+The introduction `start_here` examples are available on Google Colab, which allows you to run them in a web browser
+without manual local PyAutoLens installation.
+
+The code below sets up your environment if you are using Google Colab, including installing autolens and downloading
+files required to run the notebook. If you are running this script not in Colab (e.g. locally on your own computer),
+running the code will still check correctly that your environment is set up and ready to go.
+"""
+
+import subprocess
+import sys
+
+try:
+    import google.colab
+
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "autoconf", "--no-deps"]
+    )
+except ImportError:
+    pass
+
+from autoconf import setup_colab
+
+setup_colab.for_autogalaxy(
+    raise_error_if_not_gpu=False  # Switch to False for CPU Google Colab
+)
+
+"""
 __Imports__
 
-Lets first import autogalaxy, its plotting module and the other libraries we'll need.
+Lets first import autolens, its plotting module and the other libraries we'll need.
 
 You'll see these imports in the majority of workspace examples.
 """
-
 # %matplotlib inline
 
 import autogalaxy as ag
@@ -82,7 +110,7 @@ plt.imshow(image.native)  # Dont worry about the use of .native for now.
 """
 __Plotting__
 
-The **PyAutoGalaxy** in-built plot module provides methods for plotting objects and their properties, like the image of
+In-built plotting methods are provided for plotting objects and their properties, like the image of
 a light profile we just created.
 
 By using a `LightProfilePlotter` to plot the light profile's image, the figured is improved. 
@@ -152,6 +180,19 @@ galaxies_plotter = aplt.GalaxiesPlotter(galaxies=galaxies, grid=grid)
 galaxies_plotter.figures_2d(image=True)
 
 """
+__Units__
+
+The units used throughout the galaxy structure literature vary, therefore lets quickly describe the units used in
+**PyAutoLens**.
+
+Most distance quantities, like an `effective_radius` are quantities in terms of angles, which are defined in units
+of arc-seconds. To convert these to physical units (e.g. kiloparsecs), we use the redshift of the galaxy and an 
+input cosmology. A run through of all normal unit conversions is given in guides in the workspace outlined below.
+
+The use of angles in arc-seconds has an important property, it means that calculations are independent of
+the galaxy's redshifts and the input cosmology. This has a number of benefits, for example it makes it straight
+forward to compare the properties of different galaxies even when the redshifts of the galaxies are unknown.
+
 __Extensibility__
 
 All of the objects we've introduced so far are highly extensible, for example a galaxy can be made up of any number of
