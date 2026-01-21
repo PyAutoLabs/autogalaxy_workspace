@@ -61,7 +61,7 @@ The colors of the multi-wavelength image, which in this case are green (g-band) 
 
 The strings are used for load each dataset.
 """
-color_list = ["g", "r"]
+waveband_list = ["g", "r"]
 
 """
 __Pixel Scales__
@@ -86,12 +86,12 @@ dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 dataset_list = [
     ag.Imaging.from_fits(
-        data_path=Path(dataset_path) / f"{color}_data.fits",
-        psf_path=Path(dataset_path) / f"{color}_psf.fits",
-        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
+        data_path=Path(dataset_path) / f"{waveband}_data.fits",
+        psf_path=Path(dataset_path) / f"{waveband}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{waveband}_noise_map.fits",
         pixel_scales=pixel_scales,
     )
-    for color, pixel_scales in zip(color_list, pixel_scales_list)
+    for waveband, pixel_scales in zip(waveband_list, pixel_scales_list)
 ]
 
 for dataset in dataset_list:
@@ -160,7 +160,7 @@ search = af.Nautilus(
     name="one_by_one__main_dataset",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -218,7 +218,7 @@ search = af.Nautilus(
     name="one_by_one__second_bulge_fixed",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result_bulge_fixed = search.fit(model=model, analysis=analysis_list[0])
@@ -261,7 +261,7 @@ search = af.Nautilus(
     name="one_by_one__dataset_offset",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=batch_size,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
 )
 
 result = search.fit(model=model, analysis=analysis_list[0])

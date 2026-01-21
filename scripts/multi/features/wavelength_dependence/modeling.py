@@ -43,7 +43,7 @@ near infrared (I-band).
 
 The strings are used for load each dataset.
 """
-color_list = ["g", "r", "I"]
+waveband_list = ["g", "r", "I"]
 
 """
 __Wavelengths__
@@ -74,12 +74,12 @@ dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 dataset_list = [
     ag.Imaging.from_fits(
-        data_path=Path(dataset_path) / f"{color}_data.fits",
-        psf_path=Path(dataset_path) / f"{color}_psf.fits",
-        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
+        data_path=Path(dataset_path) / f"{waveband}_data.fits",
+        psf_path=Path(dataset_path) / f"{waveband}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{waveband}_noise_map.fits",
         pixel_scales=pixel_scales,
     )
-    for color, pixel_scales in zip(color_list, pixel_scales_list)
+    for waveband, pixel_scales in zip(waveband_list, pixel_scales_list)
 ]
 
 for dataset in dataset_list:

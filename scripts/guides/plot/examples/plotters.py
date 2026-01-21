@@ -321,12 +321,12 @@ profile individually.
 grid_2d_projected = grid.grid_2d_radial_projected_from(
     centre=galaxy_0.bulge.centre, angle=galaxy_0.bulge.angle()
 )
-bulge_image_1d = galaxy_0.bulge.image_2d_from(grid=grid_2d_projected)
+bulge_image_1d = galaxy.bulge.image_2d_from(grid=grid_2d_projected)
 
 grid_2d_projected = grid.grid_2d_radial_projected_from(
     centre=galaxy_1.bulge.centre, angle=galaxy_1.bulge.angle()
 )
-disk_image_1d = galaxy_0.disk.image_2d_from(grid=grid_2d_projected)
+disk_image_1d = galaxy.disk.image_2d_from(grid=grid_2d_projected)
 
 plt.plot(grid_2d_projected[:, 1], bulge_image_1d, label="Bulge")
 plt.plot(grid_2d_projected[:, 1], disk_image_1d, label="Disk")

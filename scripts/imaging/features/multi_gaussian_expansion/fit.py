@@ -4,11 +4,23 @@ Modeling Features: Multi Gaussian Expansion
 
 A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where
 the `intensity` of every Gaussian is solved for via a linear algebra using a process called an "inversion"
-(see the `light_parametric_linear.py` feature for a full description of this).
+(see the `linear_light_profiles.py` feature for a full description of this).
 
 This script fits a light model which uses an MGE consisting of 60 Gaussians. It is fitted to simulated data
 where the galaxy's light has asymmetric and irregular features, which fitted poorly by symmetric light
 profiles like the `Sersic`.
+
+__Contents__
+
+**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
+**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+**MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
+**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+**Basis:** How to create a basis of multiple light profiles, in this example Gaussians.
+**Gaussians:** A visualization of the Gaussians in the Basis that make up the MGE.
+**Linear Light Profiles:** How to create a basis of linear light profiles to perform the MGE.
+**Fit:** Perform a fit to a dataset using linear light profile MGE.
+**Intensities:** Access the solved for intensities of linear light profiles from the fit.
 
 __Advantages__
 
@@ -77,8 +89,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Load and plot the galaxy dataset `light_basis` via .fits files, which we will fit with 
-the model.
+Load and plot the galaxy dataset `light_basis` via .fits files.
 """
 dataset_name = "asymmetric"
 dataset_path = Path("dataset") / "imaging" / dataset_name
@@ -127,31 +138,82 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
-__Fit__
-
-We first show how to compose a basis of multiple Gaussians and use them to fit a galaxy's light in data.
-
-This is to illustrate the API for performing an MGE using standard autogalaxy objects like the `Galaxy` 
-and `FitImaging` 
-
-This does not perform a model-fit via a non-linear search, and therefore requires us to manually specify and guess
-suitable parameter values for the Gaussians. However, an MGE can do a reasonable job even before we just guess sensible 
-parameter values.
-
 __Basis__
 
-We first build a `Basis`, which is built from multiple linear light profiles (in this case, Gaussians). 
+We first build a `Basis`, which is built from multiple light profiles (in this case, Gaussians). 
 
-Below, we make a `Basis` out of 30 elliptical Gaussian linear light profiles which: 
+Below, we make a `Basis` out of 30 elliptical Gaussian light profiles which: 
 
  - All share the same centre and elliptical components.
  - The `sigma` size of the Gaussians increases in log10 increments.
- 
-Note that any linear light profile can be used to compose a Basis. This includes shapelets, which are a set of functions
-closely related to the Exponential function and are often used to represent the light of disk 
-galaxies (see `modeling/features/advanced/shapelets.py`).
+
+Note that any light profile can be used to compose a Basis, but Gaussians are a good choice for lens galaxies
+because they can capture the structure of elliptical galaxies.
 """
 total_gaussians = 30
+
+# The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius, 3.0".
+
+mask_radius = 3.0
+log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
+
+# A list of linear light profile Gaussians will be input here, which will then be used to fit the data.
+
+bulge_gaussian_list = []
+
+# Iterate over every Gaussian and create it, with it centered at (0.0", 0.0") and assuming spherical symmetry.
+
+for i in range(total_gaussians):
+    gaussian = ag.lp.Gaussian(
+        centre=(0.0, 0.0),
+        ell_comps=(0.0, 0.0),
+        intensity=1.0,
+        sigma=10 ** log10_sigma_list[i],
+    )
+
+    bulge_gaussian_list.append(gaussian)
+
+# The Basis object groups many light profiles together into a single model component and is used to fit the data.
+
+bulge = ag.lp_basis.Basis(profile_list=bulge_gaussian_list)
+
+"""
+__Gaussians__
+
+The `Basis` is composed of many Gaussians, each with different sizes (the `sigma` value) and therefore capturing
+emission on different scales.
+
+These Gaussians are visualized below using a `BasisPlotter`, which shows that the Gaussians expand in size as the
+sigma value increases, in log10 increments.
+"""
+grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
+
+basis_plotter = aplt.BasisPlotter(basis=bulge, grid=grid)
+basis_plotter.subplot_image()
+
+
+"""
+__Linear Light Profiles__
+
+We now show Composing a basis of multiple Gaussians and use them to fit the lens galaxy's light in data.
+
+This does not perform a model-fit via a non-linear search, and therefore requires us to manually specify and guess
+suitable parameter values for the shapelets (e.g. the `centre`, `ell_comps`). However, Gaussians are
+very flexible and will give us a decent looking lens fit even if we just guess sensible values
+for each parameter. 
+
+The one parameter that is tricky to guess is the `intensity` of each Gaussian. A wide range of positive `intensity` 
+values are required to decompose the lens galaxy's light accurately. We certainly cannot obtain a good solution by 
+guessing the `intensity` values by eye.
+
+We therefore use linear light profile Gaussians, which determine the optimal value for each Gaussian's `intensity` 
+via linear algebra. Linear light profiles are described in the `linear_light_profiles.py` example and you should
+familiarize yourself with this example before using the multi-Gaussian expansion.
+
+We therefore again setup a `Basis` in an analogous fashion to the previous example, but this time we use linear
+Gaussians (via the `lp_linear.linear` module).
+"""
+total_gaussians = 60
 
 # The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius, 3.0".
 
@@ -178,8 +240,13 @@ for i in range(total_gaussians):
 bulge = ag.lp_basis.Basis(profile_list=bulge_gaussian_list)
 
 """
-Once we have a `Basis`, we can treat it like any other light profile in order to create a `Galaxy` and use it to fit 
-data.
+__Fit__
+
+We now illustrate the API for performing an MGE using standard objects like the `Galaxy`, `Galaxies`
+and `FitImaging` 
+
+Once we have a `Basis`, we can treat it like any other light profile in order to create a `Galaxy` and `Galaxies` and 
+use it to fit data.
 """
 galaxy = ag.Galaxy(redshift=0.5, bulge=bulge)
 
@@ -188,14 +255,54 @@ galaxies = ag.Galaxies(galaxies=[galaxy])
 fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 
 """
-By plotting the fit, we see that the `Basis` does a reasonable job at capturing the appearance of the galaxy.
+By plotting the fit, we see that the MGE does a reasonable job at capturing the appearance of the galaxy.
 
-There are few residuals, except for perhaps some central regions where the light profile is not perfectly fitted.
-
-Given that there was no non-linear search to determine the optimal values of the Gaussians, this is a pretty good fit!
+Given that there was no non-linear search to determine the optimal values of the Gaussians this is a pretty good fit!
 """
 fit_plotter = aplt.FitImagingPlotter(fit=fit)
 fit_plotter.subplot_fit()
+
+"""
+We can use the `BasisPlotter` to plot each individual Gaussian in the reconstructed basis.
+
+This plot shows each Gaussian has a unique positive `intensity` that was solved for via linear algebra.
+"""
+galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
+
+basis_plotter = aplt.BasisPlotter(basis=galaxies[0].bulge, grid=grid)
+basis_plotter.subplot_image()
+
+"""
+__Intensities__
+
+The fit contains the solved for intensity values.
+
+These are computed using a fit's `linear_light_profile_intensity_dict`, which maps each linear light profile 
+in the model parameterization above to its `intensity`.
+
+The code below shows how to use this dictionary, as an alternative to using the max_log_likelihood quantities above.
+"""
+lens_bulge = fit.galaxies[0].bulge
+
+print(
+    f"\n Intensity of lens galaxy's first Gaussian in bulge = {fit.linear_light_profile_intensity_dict[lens_bulge.profile_list[0]]}"
+)
+
+"""
+A `Galaxies` where all linear light profile objects are replaced with ordinary light profiles using the solved 
+for `intensity` values is also accessible from a fit.
+
+For example, the first linear light profile of the MGE `bulge` component above printed it solved for intensity value,
+but it was still represented as a linear light profile. 
+
+The galaxies created below instead has a standard light profile with an `intensity` actually set.
+
+The benefit of using galaxies with standard light profiles is it can be visualized, as performed above (linear 
+light profiles cannot by default because they do not have `intensity` values).
+"""
+galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
+
+print(galaxies[0].bulge.profile_list[0].intensity)
 
 """
 __Wrap Up__

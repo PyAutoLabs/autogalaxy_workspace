@@ -14,8 +14,26 @@ Shapelets are described in full in the following paper:
  https://arxiv.org/abs/astro-ph/0105178
 
 This script performs a model-fit using shapelet, where it decomposes the galaxy light into ~20
-Shapelets. The `intensity` of every Shapelet is solved for via linear algebra (see the `light_parametric_linear.py`
+Shapelets. The `intensity` of every Shapelet is solved for via linear algebra (see the `linear_light_profiles.py`
 feature).
+
+__Contents__
+
+**Advantages & Disadvantages:** Benefits and drawbacks of using shapelets.
+**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+**Basis:** How to create a basis of multiple light profiles, in this example shapelets.
+**Coefficients:** A visualization of the real and imaginary shapelet coefficients in the Basis.
+**Linear Light Profiles:** How to create a basis of linear light profiles to perform the shapelet decomposition.
+**Fit:** Perform a fit to a dataset using linear light profile MGE.
+**Intensities:** Access the solved for intensities of linear light profiles from the fit.
+**Model:** Composing a model using shapelets and how it changes the number of free parameters.
+**Search & Analysis:** Standard set up of non-linear search and analysis.
+**Run Time:** Profiling of shapelet run times and discussion of how they compare to standard light profiles.
+**Model-Fit:** Performs the model fit using standard API.
+**Result:** Shaeplet results, including accessing light profiles with solved for intensity values.
+**Cartesian Shapelets:** Using shapelets definedon a Cartesian coordinate system instead of polar coordinates.
+**Lens Shapelets:** Using shapelets to decompose the lens galaxy instead of the source galaxy.
+**Regularization:** API for applying regularization to shapelets, which is not recommend but included for illustration.
 
 __Advantages__
 
@@ -117,6 +135,21 @@ dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
 """
+__Positive Negative Solver__
+
+In other examples which use linear algebra to fit the data, for example linear light profiles, the Multi Gaussian
+Expansion (MGE) and pixelization, we use a `positive_only` solver, which forces all solved for intensities to be
+positive. This is a physical and sensible approach, because the surface brightnesses of a galaxy cannot be negative.
+
+Shapelets cannot be solved for using a `positive_only` solver, because the shapelets ability to decompose the
+light of a galaxy relies on the ability to use negative intensities. This is because the shapelets are not
+physically motivated light profiles, but instead a mathematical basis that can represent any light profile.
+
+This means shapelets may include negative flux in the reconstructed source galaxy, which is unphysical, and
+a disadvantage of using shapelets.
+
+The `SettingsInversion` object below uses a `use_positive_only_solver=False` to allow for negative intensities.
+
 __Model__
 
 We compose our model where in this example:
@@ -163,60 +196,22 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 """
-The `info` attribute shows the model in a readable format, which has a lot more parameters than other examples
-as it shows the parameters of every individual Shapelet.
+The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
+`start_here.ipynb` for a description of how to fix this).
 
-[The `info` below may not display optimally on your computer screen, for example the whitespace between parameter
-names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
-common issue in Jupyter notebooks.
-
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
-increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
-appear in a notebook).]
+This confirms that the source galaxy is made of many `ShapeletPolar` profiles.
 """
 print(model.info)
 
 """
 __Search__
 
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
-Nautilus (https://nautilus.readthedocs.io/en/latest/). We make the following changes to the Nautilus settings:
-
- - Increase the number of live points, `n_live`, from the default value of 50 to 100. `n_live`
-
-These changes are motivated by the higher dimensionality non-linear parameter space that including the galaxy light 
-creates, which requires more thorough sampling by the non-linear search.
-
-The folders: 
-
- - `autogalaxy_workspace/*/modeling/imaging/searches`.
- - `autogalaxy_workspace/*/modeling/imaging/customize`
-
-Give overviews of the non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
-model-fit, including the priors on the model. 
-
-If you are unclear of what a non-linear search is, checkout chapter 2 of the **HowToGalaxy** lectures.
-
-The `name` and `path_prefix` below specify the path where results ae stored in the output folder:  
-
- `/autogalaxy_workspace/output/imaging/simple__sersic/mass[sie]/unique_identifier`.
-
-__Unique Identifier__
-
-In the path above, the `unique_identifier` appears as a collection of characters, where this identifier is generated 
-based on the model, search and dataset that are used in the fit.
-
-An identical combination of model and search generates the same identifier, meaning that rerunning the script will use 
-the existing results to resume the model-fit. In contrast, if you change the model or search, a new unique identifier 
-will be generated, ensuring that the model-fit results are output into a separate folder.
-
-We additionally want the unique identifier to be specific to the dataset fitted, so that if we fit different datasets
-with the same model and search results are output to a different folder. We achieve this below by passing 
-the `dataset_name` to the search's `unique_tag`.
+The model is fitted to the data using the nested sampling algorithm Nautilus (see `start.here.py` for a 
+full description).
 """
 search = af.Nautilus(
     path_prefix=Path("imaging") / "features",
-    name="light[shapelets]_polar_5_ell",
+    name="shapelets",
     unique_tag=dataset_name,
     n_live=150,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
@@ -225,7 +220,7 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
@@ -338,10 +333,131 @@ search = af.Nautilus(
 
 result = search.fit(model=model, analysis=analysis)
 
-"""
-To learn more about Basis functions, regularization and when you should use them, checkout the 
-following **HowToGalaxy** tutorials:
 
- - `howtogalaxy/chapter_2_lens_modeling/tutorial_5_linear_profiles.ipynb`.
- - `howtogalaxy/chapter_4_pixelizations/tutorial_4_bayesian_regularization.ipynb.
+"""
+__Shapelet Cartesian__
+
+The shapelets above were defined on a polar grid, which is suitable for modeling radially symmetric sources like
+most galaxies.
+
+An alternative approach is to define the shapelets on a Cartesian grid, which we plot the basis of below
+and show an example fit.
+
+These are generally not recommended for modeling galaxies, but may be better in certain situations.
+"""
+total_xy = 5
+
+shapelets_bulge_list = []
+
+for x in range(total_xy):
+    for y in range(total_xy):
+        shapelet = ag.lp.ShapeletCartesian(
+            n_y=y,
+            n_x=x,
+            centre=(0.0, 0.0),
+            ell_comps=(0.0, 0.0),
+            intensity=1.0,
+            beta=1.0,
+        )
+
+        shapelets_bulge_list.append(shapelet)
+
+bulge = ag.lp_basis.Basis(profile_list=shapelets_bulge_list)
+
+grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
+
+basis_plotter = aplt.BasisPlotter(basis=bulge, grid=grid)
+basis_plotter.subplot_image()
+
+"""
+__Cartesian Shapelets__
+"""
+total_xy = 5
+
+shapelets_bulge_list = []
+
+for x in range(total_xy):
+    for y in range(total_xy):
+        shapelet = ag.lp_linear.ShapeletCartesian(
+            n_y=y, n_x=x, centre=(0.0, 0.0), ell_comps=(0.0, 0.0), beta=1.0
+        )
+
+        shapelets_bulge_list.append(shapelet)
+
+bulge = ag.lp_basis.Basis(profile_list=shapelets_bulge_list)
+
+"""
+__Fit__
+"""
+galaxy = ag.Galaxy(redshift=0.5, bulge=bulge)
+
+galaxies = ag.Galaxies(galaxies=[galaxy])
+
+fit = ag.FitImaging(
+    dataset=dataset,
+    galaxies=galaxies,
+    settings_inversion=ag.SettingsInversion(use_positive_only_solver=False),
+)
+fit_plotter = aplt.FitImagingPlotter(fit=fit)
+fit_plotter.subplot_fit()
+
+galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
+
+basis_plotter = aplt.BasisPlotter(basis=galaxies[0].bulge, grid=grid)
+basis_plotter.subplot_image()
+
+"""
+__Model__
+
+Here is how we compose a model using Cartesian shapelets.
+"""
+total_xy = 5
+
+shapelets_bulge_list = af.Collection(
+    af.Model(ag.lp_linear.ShapeletCartesian) for _ in range(total_xy**2)
+)
+
+for x in range(total_xy):
+    for y in range(total_xy):
+        shapelet.n_y = y
+        shapelet.n_x = x
+
+        shapelet.centre = shapelets_bulge_list[0].centre
+        shapelet.ell_comps = shapelets_bulge_list[0].ell_comps
+        shapelet.beta = shapelets_bulge_list[0].beta
+
+bulge = af.Model(
+    ag.lp_basis.Basis,
+    profile_list=shapelets_bulge_list,
+)
+
+galaxy = af.Model(ag.Galaxy, redshift=1.0, bulge=bulge)
+
+# Overall Lens Model:
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+print(model.info)
+
+search = af.Nautilus(
+    path_prefix=Path("imaging") / "features",
+    name="shapelets_cartesian",
+    unique_tag=dataset_name,
+    n_live=150,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+)
+
+result = search.fit(model=model, analysis=analysis)
+
+"""
+__Wrap Up__
+
+This script has illustrated how to use shapelets to model the light of galaxies.
+
+Shapelets are a powerful basis function for capturing complex morphological features of galaxies that standard
+light profiles struggle to represent. However, they do have drawbacks, such as the need to allow for negative
+intensities in the solution, which is unphysical. 
+
+As a rule of thumb, modeling is generally better if a pixelization is used to reconstruct the source galaxy's light,
+but shapelets can be a useful middle-ground between standard light profiles and a pixelization.
 """

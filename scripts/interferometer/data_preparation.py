@@ -58,7 +58,7 @@ array_plotter.figure_2d()
 These visibilities conforms to **PyAutoGalaxy** standards, because they come from a standard CASA data reduction
 procedure. 
 
-More details of this procedure are given in the `examples/case_to_autogalaxy.ipynb` notebook.
+More details of this procedure are given in the `examples/casa_reduction.ipynb` notebook.
 
 __Noise-Map__
 
@@ -97,7 +97,7 @@ grid_plotter.figure_2d()
 These uv wavelengths conform to **PyAutoGalaxy** standards, because they come from a standard CASA data reduction
 procedure. 
 
-More details of this procedure are given in the `examples/case_to_autogalaxy.ipynb` notebook.
+More details of this procedure are given in the `examples/casa_reduction.ipynb` notebook.
 
 __Real Space Mask__
 
@@ -108,14 +108,6 @@ You must double check that the real-space mask you use:
 
  - Spatially covers the lensed source galaxy, such that the source is not truncated by the mask.
  - Is high enough resolution that the lensed source galaxy is not smeared via the Fourier transform.
-
-__Profiling__
-
-If you are analysing an interfeometer dataset with many visibilities (e.g. 1 million and above) and a high 
-resolution real-space mask (e.g. 0.01" / pixel), the analysis can take a long time to run. 
-
-The `examples/profiling.ipynb` script shows how to profile and setup your analysis to ensure it have fast enough
-run times.
 
 __Data Processing Complete__
 
@@ -135,33 +127,6 @@ Therefore, they are not located in the `interferometer/data_preparation` package
 
 Note that in order to perform some tasks (e.g. mark on the image where the source is), you will need to use an image
 of the interferometer data even though visibilities are used for the analysis.
-
-__Positions (Optional)__
-
-The script allows you to mark the (y,x) arc-second positions of the multiply imaged lensed source galaxy in 
-the image-plane, under the assumption that they originate from the same location in the source-plane.
-
-A non-linear search (e.g. nautilus) can then use these positions to preferentially choose mass models where these 
-positions trace close to one another in the source-plane. This speeding up the initial fitting of models and 
-removes unwanted solutions from parameter space which have too much or too little mass in the galaxy.
-
-If you create positions for your dataset, you must also update your modeling script to use them by loading them 
-and passing them to the `Analysis` object via a `PositionsLH` object. 
-
-If your **PyAutoGalaxy** analysis is struggling to converge to a good model, you should consider using positions
-to help the non-linear search find a good model.
-
-Links / Resources:
-
-Position-based model resampling is particularly important for fitting pixelized source models, for the
-reasons disucssed in the following readthedocs 
-webapge  https://pyautogalaxy.readthedocs.io/en/latest/general/demagnified_solutions.html
-
-The script `data_preparation/gui/positions.ipynb` shows how to use a Graphical User Interface (GUI) to mask the 
-positions on the lensed source.
-
-See `autogalaxy_workspace/*/interferometer/modeling/customize/positions.py` for an example.of how to use positions in a 
-`modeling` script.
 
 
 __Light Centre (Optional)__

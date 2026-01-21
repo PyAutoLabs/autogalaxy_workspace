@@ -31,7 +31,7 @@ The colors of the multi-wavelength image, which in this case are green (g-band) 
 
 The strings are used for load each dataset.
 """
-color_list = ["g", "r"]
+waveband_list = ["g", "r"]
 
 """
 __Pixel Scales__
@@ -56,12 +56,12 @@ dataset_path = Path("dataset") / dataset_type / dataset_label / dataset_name
 
 dataset_list = [
     ag.Imaging.from_fits(
-        data_path=Path(dataset_path) / f"{color}_data.fits",
-        psf_path=Path(dataset_path) / f"{color}_psf.fits",
-        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
+        data_path=Path(dataset_path) / f"{waveband}_data.fits",
+        psf_path=Path(dataset_path) / f"{waveband}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{waveband}_noise_map.fits",
         pixel_scales=pixel_scales,
     )
-    for color, pixel_scales in zip(color_list, pixel_scales_list)
+    for waveband, pixel_scales in zip(waveband_list, pixel_scales_list)
 ]
 
 for dataset in dataset_list:
@@ -132,7 +132,7 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's light uses a `RectangularMagnification` meshwhose resolution is free to vary [2 parameters]. 
+ - The galaxy's light uses a `RectangularAdaptDensity` meshwhose resolution is free to vary [2 parameters]. 
 
  - This pixelization is regularized using a `Constant` scheme which smooths every pixel 
  equally, where its `regularization_coefficient` varies across the datasets [2 parameter]. 
@@ -141,7 +141,7 @@ The number of free parameters and therefore the dimensionality of non-linear par
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=af.Model(ag.mesh.RectangularMagnification, shape=mesh_shape),
+    mesh=af.Model(ag.mesh.RectangularAdaptDensity, shape=mesh_shape),
     regularization=ag.reg.Constant,
 )
 

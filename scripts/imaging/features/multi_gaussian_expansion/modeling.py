@@ -4,11 +4,25 @@ Modeling Features: Multi Gaussian Expansion
 
 A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where
 the `intensity` of every Gaussian is solved for via a linear algebra using a process called an "inversion"
-(see the `light_parametric_linear.py` feature for a full description of this).
+(see the `linear_light_profiles.py` feature for a full description of this).
 
 This script fits a light model which uses an MGE consisting of 60 Gaussians. It is fitted to simulated data
 where the galaxy's light has asymmetric and irregular features, which fitted poorly by symmetric light
 profiles like the `Sersic`.
+
+__Contents__
+
+**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
+**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+**MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
+**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+**Model:** Composing a model using an MGE and how it changes the number of free parameters.
+**Search & Analysis:** Standard set up of non-linear search and analysis.
+**Run Time:** Profiling of MGE run times and discussion of how they compare to standard light profiles.
+**Model-Fit:** Performs the model fit using standard API.
+**Result:** MGE results, including accessing light profiles with solved for intensity values.
+**MGE Source:** Detailed illustration of using MGE source.
+**Regularization:** API for applying regularization to MGE, which is not recommend but included for illustration.
 
 __Advantages__
 
@@ -77,8 +91,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Load and plot the galaxy dataset `light_basis` via .fits files, which we will fit with 
-the model.
+Load and plot the galaxy dataset `asymetric` via .fits files.
 """
 dataset_name = "asymmetric"
 dataset_path = Path("dataset") / "imaging" / dataset_name
@@ -204,7 +217,7 @@ Owing to the simplicity of fitting an MGE we an use even fewer live points than 
 """
 search = af.Nautilus(
     path_prefix=Path("imaging") / "features",
-    name="light[basis]",
+    name="mge",
     unique_tag=dataset_name,
     n_live=75,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
@@ -213,11 +226,10 @@ search = af.Nautilus(
 """
 __Analysis__
 
-Create the `AnalysisImaging` object defining how the model is fitted to the data.
+Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    use_jax=True,
 )
 
 """
@@ -266,7 +278,7 @@ print(result.info)
 """
 We plot the maximum likelihood fit, tracer images and posteriors inferred via Nautilus.
 
-Checkout `autolens_workspace/*/guides/results` for a full description of analysing results in **PyAutoGalaxy**.
+Checkout `autogalaxy_workspace/*/guides/results` for a full description of analysing results in **PyAutoGalaxy**.
 
 In particular, checkout the results example `linear.py` which details how to extract all information about linear
 light profiles from a fit.

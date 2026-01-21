@@ -46,7 +46,7 @@ The colors of the multi-wavelength image, which in this case are green (g-band) 
 
 The strings are used for naming the datasets on output.
 """
-color_list = ["g", "r"]
+waveband_list = ["g", "r"]
 
 """
 __Dataset Paths__
@@ -184,11 +184,11 @@ __Output__
 
 Output each simulated dataset to the dataset path as .fits files, with a tag describing its color.
 """
-for color, dataset in zip(color_list, dataset_list):
+for waveband, dataset in zip(waveband_list, dataset_list):
     dataset.output_to_fits(
-        data_path=Path(dataset_path) / f"{color}_data.fits",
-        psf_path=Path(dataset_path) / f"{color}_psf.fits",
-        noise_map_path=Path(dataset_path) / f"{color}_noise_map.fits",
+        data_path=Path(dataset_path) / f"{waveband}_data.fits",
+        psf_path=Path(dataset_path) / f"{waveband}_psf.fits",
+        noise_map_path=Path(dataset_path) / f"{waveband}_noise_map.fits",
         overwrite=True,
     )
 
@@ -197,18 +197,18 @@ __Visualize__
 
 Output a subplot of the simulated dataset, the image and the tracer's quantities to the dataset path as .png files.
 """
-for color, dataset in zip(color_list, dataset_list):
+for waveband, dataset in zip(waveband_list, dataset_list):
     mat_plot = aplt.MatPlot2D(
-        output=aplt.Output(path=dataset_path, prefix=f"{color}_", format="png")
+        output=aplt.Output(path=dataset_path, prefix=f"{waveband}_", format="png")
     )
 
     dataset_plotter = aplt.ImagingPlotter(dataset=dataset, mat_plot_2d=mat_plot)
     dataset_plotter.subplot_dataset()
     dataset_plotter.figures_2d(data=True)
 
-for color, grid, galaxies in zip(color_list, grid_list, galaxies_list):
+for waveband, grid, galaxies in zip(waveband_list, grid_list, galaxies_list):
     mat_plot = aplt.MatPlot2D(
-        output=aplt.Output(path=dataset_path, prefix=f"{color}_", format="png")
+        output=aplt.Output(path=dataset_path, prefix=f"{waveband}_", format="png")
     )
 
     galaxies_plotter = aplt.GalaxiesPlotter(
@@ -227,9 +227,9 @@ This can be loaded via the method `galaxies = ag.from_json()`.
 """
 [
     ag.output_to_json(
-        obj=galaxies, file_path=Path(dataset_path, f"{color}_galaxies.json")
+        obj=galaxies, file_path=Path(dataset_path, f"{waveband}_galaxies.json")
     )
-    for color, galaxies in zip(color_list, galaxies_list)
+    for waveband, galaxies in zip(waveband_list, galaxies_list)
 ]
 
 """
