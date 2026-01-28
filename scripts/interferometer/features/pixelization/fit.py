@@ -293,81 +293,6 @@ inversion_plotter = aplt.InversionPlotter(inversion=inversion)
 inversion_plotter.subplot_of_mapper(mapper_index=0)
 
 """
-__Pixelization / Mapper Calculations__
-
-The pixelized reconstruction output by an `Inversion` is often on an irregular grid (e.g. a
-Delaunay triangulation), making it difficult to manipulate and inspect after the galaxy modeling has
-completed.
-
-Internally, the inversion stores a `Mapper` object to perform these calculations, which effectively maps pixels
-between the image-plane and reconstruction-plane.
-
-After an inversion is complete, it has computed values which can be paired with the `Mapper` to perform calculations,
-most notably the `reconstruction`, which is the reconstructed pixel values.
-
-By inputting the inversions's mapper and a set of values (e.g. the `reconstruction`) into a `MapperValued` object, we
-are provided with all the functionality we need to perform calculations on the reconstruction.
-
-We set up the `MapperValued` object below, and illustrate how we can use it to interpolate the reconstruction
-to a uniform grid of values and perform calculations.
-"""
-mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[0]
-
-mapper_valued = ag.MapperValued(
-    mapper=mapper, values=inversion.reconstruction_dict[mapper]
-)
-
-"""
-__Interpolated Source__
-
-A simple way to inspect the reconstruction is to interpolate its values from the irregular
-pixelization to a uniform 2D grid of pixels.
-
-(if you do not know what the `slim` and `native` properties below refer too, it
-is described in the `results/examples/data_structures.py` example.)
-
-We interpolate the Delaunay triangulation this reconstruction is computed on to a 2D grid of 401 x 401 square pixels.
-"""
-interpolated_reconstruction = mapper_valued.interpolated_array_from(
-    shape_native=(401, 401)
-)
-
-"""
-If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
-"""
-print(interpolated_reconstruction.slim)
-
-plotter = aplt.Array2DPlotter(
-    array=interpolated_reconstruction,
-)
-plotter.figure_2d()
-
-"""
-By inputting the arc-second `extent` of the reconstruction, the interpolated array will zoom in on only these
-regions. The extent is input via the notation (xmin, xmax, ymin, ymax), therefore unlike the standard
-API it does not follow the (y,x) convention.
-"""
-interpolated_reconstruction = mapper_valued.interpolated_array_from(
-    shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
-)
-
-print(interpolated_reconstruction.slim)
-
-"""
-The interpolated errors on the reconstruction can also be computed, in case you are planning to perform
-model-fitting of the reconstruction.
-"""
-mapper_valued_errors = ag.MapperValued(
-    mapper=mapper, values=inversion.reconstruction_noise_map_dict[mapper]
-)
-
-interpolated_errors = mapper_valued_errors.interpolated_array_from(
-    shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
-)
-
-print(interpolated_errors.slim)
-
-"""
 __Wrap Up__
 
 Pixelizations are the most complex but also most powerful way to model a galaxy.
@@ -497,15 +422,25 @@ Since irregular meshes cannot be directly used to simulate images, we interpolat
 grid with shape `interpolated_pixelized_shape`. This grid should have a high resolution (e.g., 1000 × 1000) to preserve
 all resolved structure from the original mesh.
 """
-mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[0]
+from scipy.interpolate import griddata
 
-mapper_valued = ag.MapperValued(
-    mapper=mapper,
-    values=inversion.reconstruction_dict[mapper],
+interpolation_grid = ag.Grid2D.uniform(shape_native=(200, 200), pixel_scales=0.05)
+
+reconstruction = inversion.reconstruction
+source_plane_mesh_grid = mapper.mapper_grids.source_plane_mesh_grid
+
+interpolated_reconstruction = griddata(
+    points=source_plane_mesh_grid, values=reconstruction, xi=interpolation_grid
 )
 
-source_image = mapper_valued.interpolated_array_from(
-    shape_native=(1000, 1000),
+# As a pure 2D numpy array in case its useful for calculations
+interpolated_reconstruction_ndarray = interpolated_reconstruction.reshape(
+    interpolation_grid.shape_native
+)
+
+interpolated_reconstruction = ag.Array2D.no_mask(
+    values=interpolated_reconstruction_ndarray,
+    pixel_scales=interpolation_grid.pixel_scales,
 )
 
 """
@@ -533,7 +468,7 @@ galaxies = ag.Galaxies(
 
 """
 Using the galaxies, we generate the galaxy image on the image-plane grid. This process incorporates
-the `source_image`, preserving the irregular and asymmetric morphological features captured by the reconstruction.
+the `interpolated_reconstruction`, preserving the irregular and asymmetric morphological features captured by the reconstruction.
 
 Next, we configure the grid and simulator settings to match the signal-to-noise ratio (S/N) and noise properties
 of the observed data.
@@ -547,11 +482,11 @@ simulator = ag.SimulatorInterferometer(
     transformer_class=ag.TransformerDFT,
 )
 
-dataset = simulator.via_image_from(image=source_image)
+dataset = simulator.via_image_from(image=interpolated_reconstruction)
 
 plotter = aplt.InterferometerPlotter(dataset=dataset)
 
-output = aplt.Output(path=".", filename="source_image", format="png")
+output = aplt.Output(path=".", filename="interpolated_reconstruction", format="png")
 
 plotter = aplt.InterferometerPlotter(
     dataset=dataset, mat_plot_2d=aplt.MatPlot2D(output=output)

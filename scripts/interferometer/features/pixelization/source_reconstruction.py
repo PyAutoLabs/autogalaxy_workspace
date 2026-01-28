@@ -156,10 +156,6 @@ can be turned into a uniform 2D image which can be useful to analyse the galaxy 
 
 Below, we interpolate the result onto a 201 x 201 grid of pixels with the extent spanning -1.0" to 1.0", which
 capture the majority of the reconstruction without being too high resolution.
-
-It should be noted this inteprolation may not be as optimal as the interpolation perforemd above using `MapperValued`,
-which uses specifc interpolation methods for a RectangularUniform mesh which are more accurate, but it should be sufficent for
-most use-cases.
 """
 from scipy.interpolate import griddata
 
