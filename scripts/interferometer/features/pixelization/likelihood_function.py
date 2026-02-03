@@ -374,8 +374,7 @@ This operation changes the dimensions of the mapping matrix, meaning the `transf
 dimensions `(total_image_pixels, total_visibilities)`. 
 
 If the number of visibilities is large (e.g. 10^6) this matrix becomes extremely large and computationally expensive to 
-store memory, meaning the `w_tilde` likelihood function, described in 
-the `/log_likelihood_function/interferometer/`w_tilde.ipynb` notebook must be used instead.
+store memory, meaning the sparse operator matrices must be used instead.
 
 The `transformed_mapping_matrix` is also complex, storing all entries of the visibilities after the NUFFT as real
 and complex values.
@@ -896,9 +895,6 @@ visibilities or more can be extremely computationally expensive.
 This can make the likelihood function significantly faster, for example with speed ups of hundreds of times or more
 for tens or millions of visibilities. In fact, the run time does not scale with the number of visibilities at all,
 meaning datasets of any size can be fitted in seconds.
-
-It directly follows on from the `pixelization/log_likelihood_function.py` and ``pixelization/w_tilde.py` notebooks and
-you should read through those examples before reading this script.
 
 __Wrap Up__
 
