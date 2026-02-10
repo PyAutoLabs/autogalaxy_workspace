@@ -109,7 +109,7 @@ and properties in a similar way to the `FitImagingPlotter`.
 inversion = fit.inversion
 
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
-inversion_plotter.figures_2d(reconstructed_image=True)
+inversion_plotter.figures_2d(reconstructed_operated_data=True)
 
 """
 Converting a `Galaxies` to an `Inversion` performs a number of steps, which are handled by the `GalaxiesToInversion` 
@@ -128,7 +128,7 @@ inversion = galaxies_to_inversion.inversion
 We now pass the inversion to a `InversionPlotter` and call various `figure_*` methods to plot different attributes.
 """
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
-inversion_plotter.figures_2d(reconstructed_image=True)
+inversion_plotter.figures_2d(reconstructed_operated_data=True)
 
 """
 An `Inversion` can have multiple mappers, which reconstruct multiple source galaxies at different redshifts and
@@ -138,7 +138,7 @@ To plot an individual source we must therefore specify the mapper index of the s
 """
 inversion_plotter.figures_2d_of_pixelization(
     pixelization_index=0,
-    reconstructed_image=True,
+    reconstructed_operated_data=True,
     reconstruction=True,
     reconstruction_noise_map=True,
     regularization_weights=True,

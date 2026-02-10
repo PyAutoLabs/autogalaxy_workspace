@@ -383,7 +383,7 @@ The reconstruction(s) are mapped to the image-plane in order to fit the model.
 
 These mapped reconstructed images are also accessible via the `Inversion`.
 """
-print(inversion.mapped_reconstructed_image.native)
+print(inversion.mapped_reconstructed_operated_data.native)
 
 """
 __Linear Algebra Matrices (Advanced)__

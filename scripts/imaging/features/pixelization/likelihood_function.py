@@ -652,17 +652,17 @@ __Image Reconstruction__
 Using the reconstructed pixel fluxes we can map the reconstruction back to the image plane (via 
 the `blurred mapping_matrix`) and produce a reconstruction of the image data.
 """
-mapped_reconstructed_image_2d = (
+mapped_reconstructed_operated_data = (
     ag.util.inversion.mapped_reconstructed_data_via_mapping_matrix_from(
         mapping_matrix=blurred_mapping_matrix, reconstruction=reconstruction
     )
 )
 
-mapped_reconstructed_image_2d = ag.Array2D(
-    values=mapped_reconstructed_image_2d, mask=mask
+mapped_reconstructed_operated_data = ag.Array2D(
+    values=mapped_reconstructed_operated_data, mask=mask
 )
 
-array_2d_plotter = aplt.Array2DPlotter(array=mapped_reconstructed_image_2d)
+array_2d_plotter = aplt.Array2DPlotter(array=mapped_reconstructed_operated_data)
 array_2d_plotter.figure_2d()
 
 """
@@ -685,7 +685,7 @@ __Chi Squared__
 
 The first term is a $\chi^2$ statistic, which is defined above in our merit function as and is computed as follows:
 
- - `model_data` = `mapped_reconstructed_image_2d`
+ - `model_data` = `mapped_reconstructed_operated_data`
  - `residual_map` = (`data` - `model_data`)
  - `normalized_residual_map` = (`data` - `model_data`) / `noise_map`
  - `chi_squared_map` = (`normalized_residuals`) ** 2.0 = ((`data` - `model_data`)**2.0)/(`variances`)
@@ -696,7 +696,7 @@ The chi-squared therefore quantifies if our fit to the data is accurate or not.
 High values of chi-squared indicate that there are many image pixels our model did not produce a good fit to the image 
 for, corresponding to a fit with a lower likelihood.
 """
-model_image = mapped_reconstructed_image_2d
+model_image = mapped_reconstructed_operated_data
 
 residual_map = masked_dataset.data - model_image
 normalized_residual_map = residual_map / masked_dataset.noise_map
