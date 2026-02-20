@@ -54,7 +54,7 @@ preloads = ag.Preloads(
         total_linear_light_profiles=total_linear_light_profiles,
         total_mapper_pixels=total_mapper_pixels,
     ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
+    source_pixel_zeroed_indices=ag.rectangular_edge_pixel_list_from(
         total_linear_light_profiles=total_linear_light_profiles,
         shape_native=mesh_shape,
     ),
@@ -163,60 +163,62 @@ irregularities and asymmetries in the source's surface brightness.
 
 A constant regularization scheme is applied which applies a smoothness prior on the reconstruction. 
 """
-mesh_grid = ag.Mesh2DRectangularUniform.overlay_grid(
+from autoarray.inversion.mesh.mesh.rectangular_adapt_density import (
+    overlay_grid_from,
+)
+
+mesh_grid = overlay_grid_from(
     shape_native=galaxy.pixelization.mesh.shape, grid=masked_dataset.grids.pixelization
 )
 
 """
+__Interpolation__
+
+We now combine grids computed above to create an `Interpolator`, which describes how image grid pixel maps to
+every rectangular mesh pixel. 
+"""
+interpolator = pixelization.mesh.interpolator_from(
+    source_plane_data_grid=masked_dataset.grids.pixelization,
+    source_plane_mesh_grid=mesh_grid,
+)
+
+"""
+For the rectangular mesh, the interpolation scheme is called bilinear interpolation, which means that every image 
+pixel maps to the rectangular pixel it lands in and the three neighboring rectangular pixels. 
+
+The weight of each mapping is determined by the bilinear interpolation scheme, which is a function of how close the 
+image pixel is to the centre of the rectangular pixel it lands in and the three neighboring rectangular pixels.
+
+We can print the mappings and weights, for example of the first image pixel, to confirm this.
+"""
+print(interpolator.mappings[0])
+print(interpolator.weights[0])
+
+"""
+__Mapper__
+
 The rectangular mesh will now be referred to interchangeably as the `source-plane`, to represent that it is a 
-pixelization which will reconstruct a source of light,
+pixelization which will reconstruct a source galaxy.
 
+We now use the interpolator to create a `Mapper`, which describes the mapping between every image pixel and every 
+rectangular pixel, based on the interpolation scheme above.
+"""
+mapper = ag.Mapper(interpolator=interpolator, preloads=preloads)
+
+"""
 Plotting the rectangular mesh shows that the source-plane has been discretized into a grid of rectangular pixels.
-
-(To plot the rectangular mesh, we have to convert it to a `Mapper` object, which is described in the next likelihood 
-step).
 
 Below, we plot the rectangular mesh without the image-grid pixels (for clarity) and with them as black dots in order
 to show how each set of image-pixels fall within a rectangular pixel.
 """
-mapper_grids = ag.MapperGrids(
-    mask=mask,
-    source_plane_data_grid=masked_dataset.grids.pixelization,
-    source_plane_mesh_grid=mesh_grid,
-)
-
-mapper = ag.Mapper(
-    mapper_grids=mapper_grids,
-    regularization=None,
-)
-
 mapper_plotter = aplt.MapperPlotter(mapper=mapper)
-mapper_plotter.figure_2d(interpolate_to_uniform=False)
+mapper_plotter.figure_2d()
 
 visuals = aplt.Visuals2D(
-    grid=mapper_grids.source_plane_data_grid,
+    grid=mapper.source_plane_data_grid,
 )
 mapper_plotter = aplt.MapperPlotter(mapper=mapper, visuals_2d=visuals)
-mapper_plotter.figure_2d(interpolate_to_uniform=False)
-
-"""
-__Image-Source Mapping__
-
-We now combine grids computed above to create a `Mapper`, which describes how every masked image grid pixel maps to
-every rectangular pixelization pixel. 
-
-There are two steps in this calculation, which we show individually below.
-"""
-mapper_grids = ag.MapperGrids(
-    mask=mask,
-    source_plane_data_grid=masked_dataset.grids.pixelization,
-    source_plane_mesh_grid=mesh_grid,
-)
-
-mapper = ag.Mapper(
-    mapper_grids=mapper_grids,
-    regularization=None,
-)
+mapper_plotter.figure_2d()
 
 """
 The `Mapper` contains:
@@ -227,13 +229,14 @@ The `Mapper` contains:
 We have therefore discretized the source-plane into a rectangular mesh, and can pair every image-pixel coordinate
 with the corresponding rectangular pixel it lands in.
 
-This pairing is contained in the ndarray `pix_indexes_for_sub_slim_index` which maps every image-pixel index to 
+These quantities are both in the source-plane, and do not by themselves describe the mapping between the image and 
+source planes. The mapping is described by the `pix_indexes_for_sub_slim_index`, which maps every image-pixel index to 
 every pixelization pixel index.
 
-In the API, the `pix_indexes` refers to the pixelization pixel indexes (e.g. rectangular pixel 0, 1, 2 etc.) 
-and `sub_slim_index`  refers to the index of an image pixel (e.g. image-pixel 0, 1, 2 etc.). 
+`pix_indexes` refers to the pixelization pixel indexes (e.g. rectangular pixel 0, 1, 2 etc.) and `sub_slim_index`  
+refers to the index of an image pixel (e.g. image-pixel 0, 1, 2 etc.). 
 
-For example, printing the first ten entries of `pix_indexes_for_sub_slim_index` shows the first ten rectanfgular 
+For example, printing the first ten entries of `pix_indexes_for_sub_slim_index` shows the first ten rectangular
 pixelization pixel indexes these image sub-pixels map too.
 """
 pix_indexes_for_sub_slim_index = mapper.pix_indexes_for_sub_slim_index
@@ -252,9 +255,7 @@ mapper_plotter = aplt.MapperPlotter(
     mapper=mapper,
     visuals_2d=visuals,
 )
-mapper_plotter.subplot_image_and_mapper(
-    image=masked_dataset.data, interpolate_to_uniform=False
-)
+mapper_plotter.subplot_image_and_mapper(image=masked_dataset.data)
 
 """
 The reverse mappings of pixelization pixels to image-pixels can also be used.
@@ -270,9 +271,7 @@ mapper_plotter = aplt.MapperPlotter(
     visuals_2d=visuals,
 )
 
-mapper_plotter.subplot_image_and_mapper(
-    image=masked_dataset.data, interpolate_to_uniform=False
-)
+mapper_plotter.subplot_image_and_mapper(image=masked_dataset.data)
 
 """
 __Interpolation__
@@ -280,10 +279,8 @@ __Interpolation__
 The right hand plot shows more laying over source pixel 200 than its retangular black lines. Pixels further 
 out than the pixel appear to be mapped to this source pixel. 
 
-This is because the mesh uses an interpolation mapping scheme whereby each image pixels is paired with four source 
-pixels. For a rectangular mesh, this scheme is called bilinear interpolation, and it means that every pixel maps
-not only to the rectangular source pixel it lands in, but also the three neighbouring source pixels. Interpolation is 
-key to ensuring that the pixelization can reconstruct smooth source morphologies.
+This is because of the interpolation mapping scheme whereby each image pixels is paired with four source 
+pixels.
 
 We can confirm that every image pixel maps to four source pixels by printing 
 the `pix_sizes_for_sub_slim_index`, which gives the number of mapped source pixels for every image pixel.
@@ -562,7 +559,7 @@ ill-posed. We need to apply some form of smoothing on the reconstruction to avoi
 """
 mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 
-mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
+mapper_plotter.figure_2d(solution_vector=reconstruction)
 
 """
 __Regularization Matrix (H)__
@@ -599,8 +596,8 @@ is accounted for.
 """
 regularization_matrix = ag.util.regularization.constant_regularization_matrix_from(
     coefficient=galaxy.pixelization.regularization.coefficient,
-    neighbors=mapper.source_plane_mesh_grid.neighbors,
-    neighbors_sizes=mapper.source_plane_mesh_grid.neighbors.sizes,
+    neighbors=mapper.neighbors,
+    neighbors_sizes=mapper.neighbors.sizes,
 )
 
 """
@@ -644,7 +641,7 @@ This also implies we are not over-fitting the noise.
 """
 mapper_plotter = aplt.MapperPlotter(mapper=mapper)
 
-mapper_plotter.figure_2d(solution_vector=reconstruction, interpolate_to_uniform=False)
+mapper_plotter.figure_2d(solution_vector=reconstruction)
 
 """
 __Image Reconstruction__
@@ -811,7 +808,7 @@ galaxies = ag.Galaxies(galaxies=[galaxy])
 fit = ag.FitImaging(
     dataset=masked_dataset,
     galaxies=galaxies,
-    settings_inversion=ag.SettingsInversion(use_border_relocator=True),
+    settings=ag.Settings(use_border_relocator=True),
 )
 fit_log_evidence = fit.log_evidence
 print(fit_log_evidence)

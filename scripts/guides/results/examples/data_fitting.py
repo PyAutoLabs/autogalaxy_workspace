@@ -125,7 +125,7 @@ for fit_list in fit_gen:
 """
 __Modification__
 
-The `FitImagingAgg` allow us to modify the fit settings. By default, it uses the `SettingsInversion` that were used 
+The `FitImagingAgg` allow us to modify the fit settings. By default, it uses the `Settings` that were used 
 during the model-fit. 
 
 However, we can change these settings such that the fit is performed differently. For example, what if I wanted to see 
@@ -135,7 +135,7 @@ You can do this by passing the settings objects, which overwrite the ones used b
 """
 fit_agg = ag.agg.FitImagingAgg(
     aggregator=agg,
-    settings_inversion=ag.SettingsInversion(use_border_relocator=False),
+    settings=ag.Settings(use_border_relocator=False),
 )
 fit_gen = fit_agg.max_log_likelihood_gen_from()
 

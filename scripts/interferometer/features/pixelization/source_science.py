@@ -53,7 +53,7 @@ dataset = ag.Interferometer.from_fits(
 
 dataset = dataset.apply_sparse_operator(use_jax=True, show_progress=True)
 
-settings_inversion = ag.SettingsInversion(use_positive_only_solver=False)
+settings = ag.Settings(use_positive_only_solver=False)
 
 mesh_shape = (20, 20)
 total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
@@ -65,7 +65,7 @@ preloads = ag.Preloads(
         total_linear_light_profiles=total_linear_light_profiles,
         total_mapper_pixels=total_mapper_pixels,
     ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
+    source_pixel_zeroed_indices=ag.rectangular_edge_pixel_list_from(
         total_linear_light_profiles=total_linear_light_profiles,
         shape_native=mesh_shape,
     ),
@@ -95,7 +95,7 @@ search = af.Nautilus(
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
     preloads=preloads,
-    settings_inversion=settings_inversion,
+    settings=settings,
     use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
 

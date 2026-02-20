@@ -155,7 +155,7 @@ __Mesh Grids__
 
 The image plane mesh grid, showing the centre of every pixel in the image-plane can be computed and plotted.
 """
-mapper = fit.inversion.cls_list_from(cls=ag.AbstractMapper)[0]
+mapper = fit.inversion.cls_list_from(cls=ag.Mapper)[0]
 
 image_plane_mesh_grid = mapper.image_plane_mesh_grid
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
