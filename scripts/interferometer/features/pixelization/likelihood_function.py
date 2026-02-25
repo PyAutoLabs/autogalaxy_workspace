@@ -40,26 +40,12 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-__JAX & Preloads__
+__Mesh Shape__
 
-The `autogalaxy_workspace/*/imaging/features/pixelization/modeling` example describes how JAX required preloads in
-advance so it knows the shape of arrays it must compile functions for.
+As discussed in the `features/pixelization/modeling` example, the mesh shape is fixed before modeling.
 """
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 """
 __Mask__
@@ -199,7 +185,7 @@ pixelization which will reconstruct a source galaxy.
 We now use the interpolator to create a `Mapper`, which describes the mapping between every image pixel and every 
 rectangular pixel, based on the interpolation scheme above.
 """
-mapper = ag.Mapper(interpolator=interpolator, preloads=preloads)
+mapper = ag.Mapper(interpolator=interpolator)
 
 """
 Plotting the rectangular mesh shows that the source-plane has been discretized into a grid of rectangular pixels.

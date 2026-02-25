@@ -241,7 +241,7 @@ galaxy_plotter.figures_2d(image=True)
 """
 __Convolution__
 
-Convolve the 2D image of the galaxy above with the PSF in real-space (as opposed to via an FFT) using a `Kernel2D`.
+Convolve the 2D image of the galaxy above with the PSF using a `Convolver`.
 """
 convolved_image_2d = masked_dataset.psf.convolved_image_from(
     image=galaxy_image_2d, blurring_image=galaxy_blurring_image_2d

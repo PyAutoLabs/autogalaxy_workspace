@@ -19,18 +19,6 @@ The benefits of non-linear search chaining are:
  time. These may impact the quality of the model-fit overall, but they can be reverted to the more accurate but more
  computationally expense setting in the final searches.
 
-__Preloading__
-
-When certain components of a model are fixed its associated quantities do not change during a model-fit. For
-example, for a model where all light profiles are fixed, the PSF blurred model-image of those light profiles
-is also fixed.
-
-**PyAutoGalaxy** uses _implicit preloading_ to inspect the model and determine what quantities are fixed. It then stores
-these in memory before the non-linear search begins such that they are not recomputed for every likelihood evaluation.
-
-This offers huge speed ups for model-fits using an inversion (e.g. pixelized source reconstructions) because large
-chunks of the linear algebra calculation can typically be preloaded beforehand.
-
 __This Example__
 
 This script gives an overview of the API for search chaining, a description of how the priors on parameters are used

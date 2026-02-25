@@ -121,7 +121,7 @@ for Hubble).
 
 Lets inspect a PSF which conforms to **PyAutoGalaxy** standards:
 """
-psf = ag.Kernel2D.from_fits(
+psf = ag.Convolver.from_fits(
     file_path=dataset_path / "psf.fits", hdu=0, pixel_scales=0.1
 )
 

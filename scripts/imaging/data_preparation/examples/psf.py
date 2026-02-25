@@ -53,7 +53,7 @@ Load a PSF from .fits files (a format commonly used by Astronomers) via the `Arr
 
 This image represents a good data-reduction that conforms **PyAutoGalaxy** formatting standards!
 """
-psf = ag.Kernel2D.from_fits(
+psf = ag.Convolver.from_fits(
     file_path=dataset_path / "psf.fits", hdu=0, pixel_scales=0.1
 )
 
@@ -96,7 +96,7 @@ this convolution will take to run. Large PSFs (e.g. > 51 x 51) could have signif
 In general we recommend the PSF size is 21 x 21. The example below is 11 x 11, which for this simulated data is just 
 about acceptable but would be on the small side for many real telescopes.
 """
-psf = ag.Kernel2D.from_fits(
+psf = ag.Convolver.from_fits(
     file_path=dataset_path / "psf.fits", hdu=0, pixel_scales=0.1
 )
 
@@ -141,7 +141,7 @@ do not actually need to normalize your PSF. However, it is better to do it now, 
 Below, we show how to normalize a PSF when it is loaded from a .fits file, by simply including the `normalize=True`
 argument (the default value is `False`).
 """
-psf = ag.Kernel2D.from_fits(
+psf = ag.Convolver.from_fits(
     file_path=dataset_path / "psf.fits",
     hdu=0,
     pixel_scales=0.1,

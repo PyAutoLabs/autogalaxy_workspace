@@ -63,7 +63,7 @@ Simulate a simple Gaussian PSF for the image.
 We use a PSF with a sigma value of 0.05, which is smaller than other examples and chosen to ensure the PSF 
 does not impact the results of the ellipse fitting example, as ellipse fitting does not account for the PSF convolution.
 """
-psf = ag.Kernel2D.from_gaussian(
+psf = ag.Convolver.from_gaussian(
     shape_native=(11, 11), sigma=0.05, pixel_scales=grid.pixel_scales
 )
 

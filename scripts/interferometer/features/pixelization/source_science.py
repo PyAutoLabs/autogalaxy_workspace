@@ -55,21 +55,8 @@ dataset = dataset.apply_sparse_operator(use_jax=True, show_progress=True)
 
 settings = ag.Settings(use_positive_only_solver=False)
 
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 galaxy = af.Model(
     ag.Galaxy,
@@ -94,7 +81,6 @@ search = af.Nautilus(
 
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
-    preloads=preloads,
     settings=settings,
     use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
