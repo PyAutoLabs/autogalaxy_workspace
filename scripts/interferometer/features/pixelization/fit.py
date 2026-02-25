@@ -327,16 +327,16 @@ All grids are available in a mapper via its `mapper` property.
 mapper = inversion.linear_obj_list[0]
 
 # Centre of each masked image pixel in the image-plane.
-print(mapper.mapper.image_plane_data_grid)
+print(mapper.image_plane_data_grid)
 
 # Centre of each reconstruction pixel.
-print(mapper.mapper.source_plane_data_grid)
+print(mapper.source_plane_data_grid)
 
 # Centre of each pixelization pixel in the image-plane.
-print(mapper.mapper.image_plane_mesh_grid)
+print(mapper.image_plane_mesh_grid)
 
 # Centre of each pixelization pixel.
-print(mapper.mapper.source_plane_mesh_grid)
+print(mapper.source_plane_mesh_grid)
 
 """
 __Reconstruction__
@@ -407,7 +407,7 @@ from scipy.interpolate import griddata
 interpolation_grid = ag.Grid2D.uniform(shape_native=(200, 200), pixel_scales=0.05)
 
 reconstruction = inversion.reconstruction
-source_plane_mesh_grid = mapper.mapper.source_plane_mesh_grid
+source_plane_mesh_grid = mapper.source_plane_mesh_grid
 
 interpolated_reconstruction = griddata(
     points=source_plane_mesh_grid, values=reconstruction, xi=interpolation_grid

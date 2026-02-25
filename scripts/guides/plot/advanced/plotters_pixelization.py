@@ -157,7 +157,7 @@ The image plane mesh grid, showing the centre of every pixel in the image-plane 
 """
 mapper = fit.inversion.cls_list_from(cls=ag.Mapper)[0]
 
-image_plane_mesh_grid = mapper.image_plane_mesh_grid
+image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals_2d=visuals_2d)
 fit_plotter.figures_2d_of_galaxies(galaxy_index=0, model_image=True)
@@ -208,7 +208,7 @@ __Mesh Grids__
 The image and source plane mesh grids, showing the centre of every source pixel in the image-plane and source-plane, 
 can be computed and plotted.
 """
-image_plane_mesh_grid = mapper.image_plane_mesh_grid
+image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 
