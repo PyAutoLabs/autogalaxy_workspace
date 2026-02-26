@@ -87,19 +87,19 @@ The ``guides`` package contains important subpackages, including:
 
 The files ``README.rst`` distributed throughout the workspace describe what is in each folder.
 
+Community & Support
+-------------------
+
+Support for **PyAutoGalaxy** is available via our Slack workspace, where the community shares updates, discusses
+galaxy modeling and analysis, and helps troubleshoot problems.
+
+Slack is invitation-only. If you’d like to join, please send an email requesting an invite.
+
+For installation issues, bug reports, or feature requests, please raise an issue on the [GitHub issues page](https://github.com/Jammy2211/PyAutoGalaxy/issues).
+
 Contribution
 ------------
 
 To make changes in the tutorial notebooks, please make changes in the corresponding Python files (``.py``)
 present in the ``scripts`` folder of each chapter. The marker ``# %%`` alternates between code cells and
 markdown cells.
-
-Support
--------
-
-Support for installation issues, help with galaxy modeling, and using **PyAutoGalaxy** is available by
-`raising an issue on the autogalaxy_workspace GitHub page <https://github.com/Jammy2211/autogalaxy_workspace/issues>`_
-or by joining the **PyAutoGalaxy** Slack channel, where we also provide the latest updates.
-
-Slack is invitation-only, so if you'd like to join send an email via
-`GitHub <https://github.com/Jammy2211>`_ requesting an invite.

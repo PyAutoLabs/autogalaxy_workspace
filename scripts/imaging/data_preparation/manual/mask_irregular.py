@@ -52,7 +52,7 @@ noise_map = ag.Array2D.from_fits(
 Returns the 2D Gaussian that the image is blurred with. This blurring smooths over noise in the image, which will 
 otherwise lead unmasked values with in individual pixels if not smoothed over correctly.
 """
-blurring_gaussian = ag.Kernel2D.from_gaussian(
+blurring_gaussian = ag.Convolver.from_gaussian(
     shape_native=(31, 31),
     pixel_scales=data.pixel_scales,
     sigma=blurring_gaussian_sigma,

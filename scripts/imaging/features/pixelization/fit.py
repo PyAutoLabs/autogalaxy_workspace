@@ -37,7 +37,7 @@ __Contents__
 **Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
 **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
 **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-**JAX & Preloads**: Preloading certain arrays for the pixelization's linear algebra, such that JAX knows their shapes in advance.
+**Mesh Shape**: Defining the shape of the mesh that reconstructs the source in advance, such that JAX knows static array shapes.
 **Pixelization:** How to create a pixelization, including a description of its inputs.
 **Fit:** Perform a fit to a dataset using a pixelization, and visualize its results.
 **Interpolated Source:** Interpolate the source reconstruction from an irregular Voronoi mesh to a uniform square grid and output to a .fits file.
@@ -148,38 +148,18 @@ dataset = dataset.apply_over_sampling(
 dataset_plotter = aplt.ImagingPlotter(dataset=dataset)
 dataset_plotter.subplot_dataset()
 
-
 """
-__JAX & Preloads__
+__Mesh Shape__
 
-In JAX, calculations must use static shaped arrays with known and fixed indexes. For certain calculations in the
-pixelization, this information has to be passed in before the pixelization is performed. Below, we do this for 3
-inputs:
+The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
+set below to 28 x 28. 
 
-- `total_linear_light_profiles`: The number of linear light profiles in the model. This is 0 because we are not
-  fitting any linear light profiles to the data, primarily because the lens light is omitted.
-
-- `total_mapper_pixels`: The number of source pixels in the rectangular pixelization mesh. This is required to set up 
-  the arrays that perform the linear algebra of the pixelization.
-
-- `source_pixel_zeroed_indices`: The indices of source pixels on its edge, which when the source is reconstructed 
-  are forced to values of zero, a technique tests have shown are required to give accruate lens models.
+The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
+mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh, the same number of pixels must be used in the y and x directions.
 """
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 """
 __Pixelization__
@@ -220,7 +200,6 @@ galaxies = ag.Galaxies([galaxy])
 fit = ag.FitImaging(
     dataset=dataset,
     galaxies=galaxies,
-    preloads=preloads,
 )
 
 """
@@ -301,113 +280,6 @@ dataset_plotter.subplot_dataset()
 We do not explictly fit this data, for the sake of brevity, however if your data has these nearby galaxies you should
 apply the mask as above before fitting the data.
 
-__Pixelization / Mapper Calculations__
-
-The pixelized source reconstruction output by an `Inversion` is often on an irregular grid (e.g. a
-Delaunay triangulation), making it difficult to manipulate and inspect after the lens modeling has
-completed.
-
-Internally, the inversion stores a `Mapper` object to perform these calculations, which effectively maps pixels
-between the image-plane and source-plane.
-
-After an inversion is complete, it has computed values which can be paired with the `Mapper` to perform calculations,
-most notably the `reconstruction`, which is the reconstructed source pixel values.
-
-By inputting the inversions's mapper and a set of values (e.g. the `reconstruction`) into a `MapperValued` object, we
-are provided with all the functionality we need to perform calculations on the source reconstruction.
-
-We set up the `MapperValued` object below, and illustrate how we can use it to interpolate the source reconstruction
-to a uniform grid of values, perform magnification calculations and other tasks.
-"""
-mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[
-    0
-]  # Only one source-plane so only one mapper, would be a list if multiple source planes
-
-mapper_valued = ag.MapperValued(
-    mapper=mapper, values=inversion.reconstruction_dict[mapper]
-)
-
-"""
-__Pixelization / Mapper Calculations__
-
-The pixelized galaxy reconstruction output by an `Inversion` is often on an irregular grid (e.g. a 
-Delaunay triangulation), making it difficult to manipulate and inspect after the lens modeling has 
-completed.
-
-Internally, the inversion stores a `Mapper` object to perform these calculations, which effectively maps pixels
-between the image-plane and source-plane. 
-
-After an inversion is complete, it has computed values which can be paired with the `Mapper` to perform calculations,
-most notably the `reconstruction`, which is the reconstructed source pixel values.
-
-By inputting the inversions's mapper and a set of values (e.g. the `reconstruction`) into a `MapperValued` object, we
-are provided with all the functionality we need to perform calculations on the reconstruction.
-
-We set up the `MapperValued` object below, and illustrate how we can use it to interpolate the source reconstruction
-to a uniform grid of values, perform magnification calculations and other tasks.
-"""
-mapper = inversion.cls_list_from(cls=ag.AbstractMapper)[
-    0
-]  # Only one source-plane so only one mapper, would be a list if multiple source planes
-
-mapper_valued = ag.MapperValued(
-    mapper=mapper, values=inversion.reconstruction_dict[mapper]
-)
-
-"""
-__Interpolated Source__
-
-A simple way to inspect the reconstruction is to interpolate its values from the irregular
-pixelization o a uniform 2D grid of pixels.
-
-(if you do not know what the `slim` and `native` properties below refer too, it 
-is described in the `results/examples/data_structures.py` example.)
-
-We interpolate the Delaunay triangulation this source is reconstructed on to a 2D grid of 401 x 401 square pixels. 
-"""
-interpolated_reconstruction = mapper_valued.interpolated_array_from(
-    shape_native=(401, 401)
-)
-
-"""
-If you are unclear on what `slim` means, refer to the section `Data Structure` at the top of this example.
-"""
-print(interpolated_reconstruction.slim)
-
-plotter = aplt.Array2DPlotter(
-    array=interpolated_reconstruction,
-)
-plotter.figure_2d()
-
-"""
-By inputting the arc-second `extent` of the reconstruction, the interpolated array will zoom in on only these regions 
-of the reconstruction. The extent is input via the notation (xmin, xmax, ymin, ymax), therefore  unlike the standard 
-API it does not follow the (y,x) convention. 
-
-Note that the output interpolated array will likely therefore be rectangular, with rectangular pixels, unless 
-symmetric y and x arc-second extents are input.
-"""
-interpolated_reconstruction = mapper_valued.interpolated_array_from(
-    shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
-)
-
-print(interpolated_reconstruction.slim)
-
-"""
-The interpolated errors on the reconstruction can also be computed, in case you are planning to perform 
-model-fitting of the reconstruction.
-"""
-mapper_valued_errors = ag.MapperValued(
-    mapper=mapper, values=inversion.reconstruction_noise_map_dict[mapper]
-)
-
-interpolated_errors = mapper_valued_errors.interpolated_array_from(
-    shape_native=(401, 401), extent=(-1.0, 1.0, -1.0, 1.0)
-)
-
-print(interpolated_errors.slim)
-
-"""
 __Wrap Up__
 
 Pixelizations are the most complex but also most powerful way to model a galaxy.
@@ -455,22 +327,22 @@ This includes mapping grids corresponding to the data grid (e.g. the centers of 
 source plane) and the pixelization grid (e.g. the centre of the Delaunay triangulation in the image-plane and 
 source-plane).
 
-All grids are available in a mapper via its `mapper_grids` property.
+All grids are available in a mapper via its `mapper` property.
 """
 mapper = inversion.linear_obj_list[0]
 
 # Centre of each masked image pixel in the image-plane.
-print(mapper.mapper_grids.image_plane_data_grid)
+print(mapper.image_plane_data_grid)
 
 # Centre of each source pixel in the source-plane.
-print(mapper.mapper_grids.source_plane_data_grid)
+print(mapper.source_plane_data_grid)
 
 # Centre of each pixelization pixel in the image-plane (the `Overlay` image_mesh computes these in the image-plane
 # and maps to the source-plane).
-print(mapper.mapper_grids.image_plane_mesh_grid)
+print(mapper.image_plane_mesh_grid)
 
 # Centre of each pixelization pixel in the source-plane.
-print(mapper.mapper_grids.source_plane_mesh_grid)
+print(mapper.source_plane_mesh_grid)
 
 """
 __Reconstruction__
@@ -504,7 +376,7 @@ These mapped reconstructed images are also accessible via the `Inversion`.
 Note that any parametric light profiles in the model (e.g. the `bulge` and `disk` of a galaxy) are not 
 included in this image -- it only contains the source.
 """
-print(inversion.mapped_reconstructed_image.native)
+print(inversion.mapped_reconstructed_operated_data.native)
 
 """
 __Linear Algebra Matrices (Advanced)__

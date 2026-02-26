@@ -63,7 +63,7 @@ grid = ag.Grid2D.uniform(shape_native=(150, 150), pixel_scales=0.1)
 """
 Simulate a simple Gaussian PSF for the image.
 """
-psf = ag.Kernel2D.from_gaussian(
+psf = ag.Convolver.from_gaussian(
     shape_native=(11, 11), sigma=0.1, pixel_scales=grid.pixel_scales
 )
 

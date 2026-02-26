@@ -95,26 +95,12 @@ for dataset in dataset_list:
 
 
 """
-__JAX & Preloads__
+__Mesh Shape__
 
-The `autolens_workspace/*/imaging/features/pixelization/modeling` example describes how JAX required preloads in
-advance so it knows the shape of arrays it must compile functions for.
+As discussed in the `features/pixelization/modeling` example, the mesh shape is fixed before modeling.
 """
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 """
 __Analysis__
@@ -122,8 +108,7 @@ __Analysis__
 We create an `Analysis` object for every dataset.
 """
 analysis_list = [
-    ag.AnalysisImaging(dataset=dataset, preloads=preloads, use_jax=True)
-    for dataset in dataset_list
+    ag.AnalysisImaging(dataset=dataset, use_jax=True) for dataset in dataset_list
 ]
 
 """

@@ -56,26 +56,13 @@ dataset = dataset.apply_over_sampling(
     over_sample_size_pixelization=4,
 )
 
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 pixelization = af.Model(
     ag.Pixelization,
     mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
-    regularization=ag.reg.GaussianKernel,
+    regularization=ag.reg.MaternKernel,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
@@ -91,7 +78,7 @@ search = af.Nautilus(
     iterations_per_quick_update=50000,
 )
 
-analysis = ag.AnalysisImaging(dataset=dataset, preloads=preloads)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 result = search.fit(model=model, analysis=analysis)
 
@@ -106,24 +93,45 @@ and therefore be easily loaded to create images of the source or shared collabor
 installed.
 
 First, lets load `source_plane_reconstruction_0.csv` as a dictionary, using basic `csv` functionality in Python.
+
+NOTE: If the .csv file does not exist, we create a dictionary with the same format but with dummy values so the rest of
+the script can be run.
 """
 import csv
 
-with open(
-    search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
-) as file:
-    reader = csv.reader(file)
-    header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
+try:
 
-    reconstruction_dict = {header: [] for header in header_list}
+    with open(
+        search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
+    ) as file:
+        reader = csv.reader(file)
+        header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
 
-    for row in reader:
-        for key, value in zip(header_list, row):
-            reconstruction_dict[key].append(float(value))
+        reconstruction_dict = {header: [] for header in header_list}
 
-    # Convert lists to NumPy arrays
-    for key in reconstruction_dict:
-        reconstruction_dict[key] = np.array(reconstruction_dict[key])
+        for row in reader:
+            for key, value in zip(header_list, row):
+                reconstruction_dict[key].append(float(value))
+
+        # Convert lists to NumPy arrays
+        for key in reconstruction_dict:
+            reconstruction_dict[key] = np.array(reconstruction_dict[key])
+
+except FileNotFoundError:
+
+    print("`source_plane_reconstruction_0.csv` not found. Using dummy data instead.")
+
+    x = np.array([-1.0, 0.0, 1.0, -1.0, 0.0, 1.0, -1.0, 0.0, 1.0])
+    y = np.array([1.0, 1.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0])
+    reconstruction = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
+    noise_map = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+
+    reconstruction_dict = {
+        "x": x,
+        "y": y,
+        "reconstruction": reconstruction,
+        "noise_map": noise_map,
+    }
 
 print(reconstruction_dict["y"])
 print(reconstruction_dict["x"])
@@ -142,7 +150,7 @@ import scipy
 
 points = np.stack(arrays=(reconstruction_dict["x"], reconstruction_dict["y"]), axis=-1)
 
-mesh = scipy.spatiag.Delaunay(points)
+mesh = scipy.spatial.Delaunay(points)
 
 """
 Interpolating the result to a uniform grid is also possible using the scipy.interpolate library, which means the result
@@ -150,10 +158,6 @@ can be turned into a uniform 2D image which can be useful to analyse the source 
 
 Below, we interpolate the result onto a 201 x 201 grid of pixels with the extent spanning -1.0" to 1.0", which
 capture the majority of the source reconstruction without being too high resolution.
-
-It should be noted this inteprolation may not be as optimal as the interpolation perforemd above using `MapperValued`, 
-which uses specifc interpolation methods for a RectangularAdaptDensity mesh which are more accurate, but it should be sufficent for
-most use-cases.
 """
 from scipy.interpolate import griddata
 

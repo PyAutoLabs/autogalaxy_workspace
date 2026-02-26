@@ -109,7 +109,7 @@ and properties in a similar way to the `FitImagingPlotter`.
 inversion = fit.inversion
 
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
-inversion_plotter.figures_2d(reconstructed_image=True)
+inversion_plotter.figures_2d(reconstructed_operated_data=True)
 
 """
 Converting a `Galaxies` to an `Inversion` performs a number of steps, which are handled by the `GalaxiesToInversion` 
@@ -128,7 +128,7 @@ inversion = galaxies_to_inversion.inversion
 We now pass the inversion to a `InversionPlotter` and call various `figure_*` methods to plot different attributes.
 """
 inversion_plotter = aplt.InversionPlotter(inversion=inversion)
-inversion_plotter.figures_2d(reconstructed_image=True)
+inversion_plotter.figures_2d(reconstructed_operated_data=True)
 
 """
 An `Inversion` can have multiple mappers, which reconstruct multiple source galaxies at different redshifts and
@@ -138,7 +138,7 @@ To plot an individual source we must therefore specify the mapper index of the s
 """
 inversion_plotter.figures_2d_of_pixelization(
     pixelization_index=0,
-    reconstructed_image=True,
+    reconstructed_operated_data=True,
     reconstruction=True,
     reconstruction_noise_map=True,
     regularization_weights=True,
@@ -155,9 +155,9 @@ __Mesh Grids__
 
 The image plane mesh grid, showing the centre of every pixel in the image-plane can be computed and plotted.
 """
-mapper = fit.inversion.cls_list_from(cls=ag.AbstractMapper)[0]
+mapper = fit.inversion.cls_list_from(cls=ag.Mapper)[0]
 
-image_plane_mesh_grid = mapper.image_plane_mesh_grid
+image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 fit_plotter = aplt.FitImagingPlotter(fit=fit, visuals_2d=visuals_2d)
 fit_plotter.figures_2d_of_galaxies(galaxy_index=0, model_image=True)
@@ -208,7 +208,7 @@ __Mesh Grids__
 The image and source plane mesh grids, showing the centre of every source pixel in the image-plane and source-plane, 
 can be computed and plotted.
 """
-image_plane_mesh_grid = mapper.image_plane_mesh_grid
+image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 
 visuals_2d = aplt.Visuals2D(mesh_grid=image_plane_mesh_grid)
 

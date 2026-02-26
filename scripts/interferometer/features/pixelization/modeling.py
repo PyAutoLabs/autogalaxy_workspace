@@ -178,18 +178,18 @@ dataset_plotter.subplot_dataset()
 dataset_plotter.subplot_dirty_images()
 
 """
-__W_Tilde__
+__Sparse Operators__
 
-Pixelized modeling requires heavy linear algebra operations. These calculations are greatly accelerated
-using an alternative mathematical approach called the **w_tilde formalism**.
+Pixelized modeling requires dense linear algebra operations. These calculations are greatly accelerated
+using an alternative mathematical approach called the **sparse linear algebra formalism**.
 
 You do not need to understand the full details of the method, but the key point is:
 
-- `w_tilde` exploits the **sparsity** of the matrices used in pixelized reconstruction.
+- It exploits the **sparsity** of the matrices used in pixelized source reconstruction.
 - This leads to a **significant speed-up on GPU or CPU**, using JAX to perform the linear algebra calculations.
 
-To enable this feature, we call `apply_w_tilde()` on the dataset. This computes and stores a `w_tilde_preload` matrix,
-which reused in all subsequent pixelized fits.
+To enable this feature, we call `apply_sparse_operator()` on the dataset. This computes and stores a NUFFT operator 
+matrix.
 
 On GPU via JAX, this computation is fast even for large datasets with many visibilities, with profiling
 of high resolution datasets with over 1 million visibilities showing that computation takes under 20 seconds. For
@@ -202,7 +202,7 @@ a progress bar to the terminal so you can monitor the computation, which is usef
 When computing it is slow, it is recommend you compute it once, save it to hard-disk, and load it
 before modeling. The example `pixelization/many_visibilities_preparation.py` illustrates how to do this.
 """
-dataset = dataset.apply_w_tilde(use_jax=True, show_progress=True)
+dataset = dataset.apply_sparse_operator(use_jax=True, show_progress=True)
 
 """
 __Settings__
@@ -210,7 +210,7 @@ __Settings__
 As discussed above, disable the default position only linear algebra solver so the
 reconstruction can have negative pixel values.
 """
-settings_inversion = ag.SettingsInversion(use_positive_only_solver=False)
+settings = ag.Settings(use_positive_only_solver=False)
 
 """
 __Over Sampling__
@@ -221,36 +221,17 @@ which evaluates light profiles on a higher resolution grid than the image data t
 Interferometer does not observe galaxies in a way where over sampling is necessary, therefore all interferometer
 calculations are performed without over sampling.
 
-__JAX & Preloads__
+__Mesh Shape__
 
-In JAX, calculations must use static shaped arrays with known and fixed indexes. For certain calculations in the
-pixelization, this information has to be passed in before the pixelization is performed. Below, we do this for 3
-inputs:
+The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
+set below to 28 x 28. 
 
-- `total_linear_light_profiles`: The number of linear light profiles in the model. This is 0 because we are not
-  fitting any linear light profiles to the data.
-
-- `total_mapper_pixels`: The number of pixels in the rectangular pixelization mesh. This is required to set up
-  the arrays that perform the linear algebra of the pixelization.
-
-- `source_pixel_zeroed_indices`: The indices of pixels on its edge, which when the reconstruction is computed
-  are forced to values of zero.
+The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
+mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh, the same number of pixels must be used in the y and x directions.
 """
-mesh_shape = (20, 20)
-total_mapper_pixels = mesh_shape[0] * mesh_shape[1]
-
-total_linear_light_profiles = 0
-
-preloads = ag.Preloads(
-    mapper_indices=ag.mapper_indices_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        total_mapper_pixels=total_mapper_pixels,
-    ),
-    source_pixel_zeroed_indices=ag.util.mesh.rectangular_edge_pixel_list_from(
-        total_linear_light_profiles=total_linear_light_profiles,
-        shape_native=mesh_shape,
-    ),
-)
+mesh_pixels_yx = 28
+mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 """
 __Model__
@@ -308,14 +289,10 @@ search = af.Nautilus(
 __Analysis__
 
 Create the `AnalysisInterferometer` object defining how via Nautilus the model is fitted to the data.
-
-The `preloads` are passed to the analysis, which contain the static array information JAX needs to perform
-the pixelization calculations.
 """
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
-    preloads=preloads,
-    settings_inversion=settings_inversion,
+    settings=settings,
     use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
 
@@ -325,13 +302,13 @@ __VRAM__
 The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM
 required by a model.
 
-Pixelizations use a lot less VRAM than light profile-only models, provided the w-tilde sparsity-exploiting
+Pixelizations use a lot less VRAM than light profile-only models, provided the sparse operator
 formalism is used (as it is above). In this mode, datasets with tens of millions of visibilities and real space
 masks with pixel scales below 0.05" can be stored in just GB's of VRAM, which is remarkable given how much
 data they contain.
 
-In w-tilde mode, the **amount of VRAM used is independent of the number of visibilities in the dataset**.
-This is because the w-tilde method compresses all the visibility information into the `w_tilde_preload` matrix,
+In sparse operator mode, the **amount of VRAM used is independent of the number of visibilities in the dataset**.
+This is because the sparse operator method compresses all the visibility information into sparse operator matrices,
 whose size depends only on the number of pixels in the real-space mask. VRAM use is therefore mostly driven by
 how many pixels are in the real space mask.
 
@@ -347,8 +324,8 @@ The run time of a pixelization are fast provided that the GPU VRAM exceeds the a
 a likelihood evaluation.
 
 The **run times of a pixelization are independent of the number of visibilities in the dataset**. This is again
-because the w-tilde method compresses all the visibility information into the `curvature_preload` matrix, whose size
-depends only on the number of pixels in the real-space mask.
+because the sparse operator method compresses all the visibility information into the `nufft_precision_operator` matrix, 
+whose size depends only on the number of pixels in the real-space mask.
 
 Therefore, like VRAM, the main driver of run time is the number of pixels in the real-space mask,
 not the number of visibilities in the dataset. The calculation also runs the same speed irrespective of whether
