@@ -62,7 +62,7 @@ mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 pixelization = af.Model(
     ag.Pixelization,
     mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
-    regularization=ag.reg.GaussianKernel,
+    regularization=ag.reg.MaternKernel,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
@@ -93,24 +93,45 @@ and therefore be easily loaded to create images of the source or shared collabor
 installed.
 
 First, lets load `source_plane_reconstruction_0.csv` as a dictionary, using basic `csv` functionality in Python.
+
+NOTE: If the .csv file does not exist, we create a dictionary with the same format but with dummy values so the rest of
+the script can be run.
 """
 import csv
 
-with open(
-    search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
-) as file:
-    reader = csv.reader(file)
-    header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
+try:
 
-    reconstruction_dict = {header: [] for header in header_list}
+    with open(
+        search.paths.image_path / "source_plane_reconstruction_0.csv", mode="r"
+    ) as file:
+        reader = csv.reader(file)
+        header_list = next(reader)  # ['y', 'x', 'reconstruction', 'noise_map']
 
-    for row in reader:
-        for key, value in zip(header_list, row):
-            reconstruction_dict[key].append(float(value))
+        reconstruction_dict = {header: [] for header in header_list}
 
-    # Convert lists to NumPy arrays
-    for key in reconstruction_dict:
-        reconstruction_dict[key] = np.array(reconstruction_dict[key])
+        for row in reader:
+            for key, value in zip(header_list, row):
+                reconstruction_dict[key].append(float(value))
+
+        # Convert lists to NumPy arrays
+        for key in reconstruction_dict:
+            reconstruction_dict[key] = np.array(reconstruction_dict[key])
+
+except FileNotFoundError:
+
+    print("`source_plane_reconstruction_0.csv` not found. Using dummy data instead.")
+
+    x = np.array([-1.0, 0.0, 1.0, -1.0, 0.0, 1.0, -1.0, 0.0, 1.0])
+    y = np.array([1.0, 1.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0])
+    reconstruction = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
+    noise_map = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+
+    reconstruction_dict = {
+        "x": x,
+        "y": y,
+        "reconstruction": reconstruction,
+        "noise_map": noise_map,
+    }
 
 print(reconstruction_dict["y"])
 print(reconstruction_dict["x"])
@@ -129,7 +150,7 @@ import scipy
 
 points = np.stack(arrays=(reconstruction_dict["x"], reconstruction_dict["y"]), axis=-1)
 
-mesh = scipy.spatiag.Delaunay(points)
+mesh = scipy.spatial.Delaunay(points)
 
 """
 Interpolating the result to a uniform grid is also possible using the scipy.interpolate library, which means the result

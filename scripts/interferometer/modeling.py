@@ -293,7 +293,7 @@ print(result.info)
 The `Result` object also contains:
 
  - The model corresponding to the maximum log likelihood solution in parameter space.
- - The corresponding maximum log likelihood `Galaxies` and `FitImaging` objects.
+ - The corresponding maximum log likelihood `Galaxies` and `FitInterferometer` objects.
 """
 print(result.max_log_likelihood_instance)
 
