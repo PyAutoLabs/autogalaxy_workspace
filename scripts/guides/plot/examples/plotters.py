@@ -513,7 +513,7 @@ image_1d_list = [image_1d[0:min_index] for image_1d in image_1d_list]
 (
     median_image_1d,
     errors_image_1d,
-) = ag.util.error_util.profile_1d_median_and_error_region_via_quantile(
+) = ag.util.error.profile_1d_median_and_error_region_via_quantile(
     profile_1d_list=image_1d_list, low_limit=low_limit
 )
 
