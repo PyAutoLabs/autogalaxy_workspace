@@ -32,6 +32,21 @@ First, load example imaging of a galaxy and create a `FitImaging` object.
 dataset_name = "simple__sersic"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
+"""
+__Dataset Auto-Simulation__
+
+If the dataset does not already exist on your system, it will be created by running the corresponding
+simulator script. This ensures that all example scripts can be run without manually simulating data first.
+"""
+if not dataset_path.exists():
+    import subprocess
+    import sys
+    subprocess.run(
+        [sys.executable, "scripts/howtogalaxy/simulators/sersic.py"],
+        check=True,
+    )
+
+
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
     psf_path=dataset_path / "psf.fits",

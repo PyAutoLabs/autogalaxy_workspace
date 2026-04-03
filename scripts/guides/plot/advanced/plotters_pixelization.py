@@ -39,6 +39,21 @@ grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
 dataset_name = "sersic_x2"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
+"""
+__Dataset Auto-Simulation__
+
+If the dataset does not already exist on your system, it will be created by running the corresponding
+simulator script. This ensures that all example scripts can be run without manually simulating data first.
+"""
+if not dataset_path.exists():
+    import subprocess
+    import sys
+    subprocess.run(
+        [sys.executable, "scripts/guides/plot/simulator.py"],
+        check=True,
+    )
+
+
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
     psf_path=dataset_path / "psf.fits",
