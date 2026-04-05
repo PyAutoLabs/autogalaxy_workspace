@@ -8,6 +8,14 @@ fits to the data.
 We show how to use these tools to inspect the maximum log likelihood model of a fit to the data, customize things
 like its visualization and also inspect fits randomly drawm from the PDF.
 
+__Contents__
+
+**Aggregator:** Load results using the Aggregator.
+**Fits via Aggregator:** Load datasets and maximum log likelihood fits using ImagingAgg and FitImagingAgg.
+**Modification:** Modify fit settings (e.g. over-sampling) when loading fits from the aggregator.
+**Visualization Customization:** Customize plot appearance when inspecting fits via the aggregator.
+**Errors (Random draws from PDF):** Inspect how fits vary within the PDF errors.
+
 __Interferometer__
 
 This script can easily be adapted to analyse the results of charge injection imaging model-fits.

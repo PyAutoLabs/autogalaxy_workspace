@@ -6,6 +6,19 @@ This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 
+__Contents__
+
+**Benefits:** Advantages of combining imaging and interferometer datasets.
+**Interferometer Masking:** Defining the real-space mask for the interferometer data.
+**Interferometer Dataset:** Loading the interferometer dataset from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Imaging Dataset:** Loading the imaging dataset from FITS files.
+**Imaging Masking:** Applying a circular mask to the imaging dataset.
+**Analysis:** Creating analysis objects for both imaging and interferometer data.
+**Search:** Configuring the Nautilus nested sampling non-linear search.
+**Model-Fit:** Running the non-linear search to fit both datasets simultaneously.
+**Result:** Inspecting the results of the combined imaging and interferometer fit.
+
 __Benefits__
 
 A number of benefits are apparent if we combine the analysis of both datasets at both wavelengths:

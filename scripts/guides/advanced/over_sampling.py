@@ -17,6 +17,17 @@ evaluate it using a sub-grid of coordinates within every pixel and take the aver
 Provided the sub-grid is high enough resolution that it "over-samples" the light profile within the pixel enough, this
 will give an accurate estimate of the total intensity within the pixel.
 
+__Contents__
+
+**Illustration:** Visualize how over-sampling splits pixels into sub-grids of coordinates.
+**Numerics:** Inspect the numerical values of sub-pixel coordinates in the over-sampled grid.
+**Images:** Compute Sersic profile images with different over-sampling levels and compare residuals.
+**Adaptive Over Sampling:** Use radial bins to apply high over-sampling only where needed.
+**Default Over-Sampling:** The default over-sampling scheme used by PyAutoGalaxy.
+**Multiple Galaxies:** Apply adaptive over-sampling with multiple galaxy centres.
+**Dataset & Modeling:** Apply over-sampling to imaging datasets for model fitting.
+**Pixelization:** Apply over-sampling to pixelized source reconstructions.
+
 __Default Over-Sampling__
 
 Examples throughout the workspace use a default over-sampling set up that should ensure accurate results for any

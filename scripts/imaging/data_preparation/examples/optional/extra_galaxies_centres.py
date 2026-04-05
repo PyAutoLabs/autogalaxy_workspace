@@ -36,6 +36,12 @@ extra galaxy centres created by this script.
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `data_preparation/start_here.ipynb` notebook.
+
+__Contents__
+
+**Masking Extra Galaxies:** Overview of the alternative masking approach for extra galaxy emission.
+**Links / Resources:** Links to GUI tools and modeling scripts for extra galaxies.
+**Output:** Saving extra galaxy centres as a PNG and JSON file.
 """
 
 # %matplotlib inline

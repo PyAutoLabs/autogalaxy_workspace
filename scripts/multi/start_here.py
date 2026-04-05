@@ -30,6 +30,23 @@ If you don’t have a GPU locally, consider Google Colab which provides free GPU
 We also show how to simulate galaxy imaging. This is useful for building machine learning training datasets,
 or for investigating imaging effects in a controlled way.
 
+__Contents__
+
+**JAX:** Overview of JAX GPU/CPU acceleration for fast model fitting.
+**Google Colab Setup:** Setting up the environment for Google Colab.
+**Imports:** Standard imports used across workspace examples.
+**Dataset:** Loading multi-wavelength imaging data from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Extra Galaxy Removal:** Scaling noise to remove signal from nearby extra galaxies.
+**Masking:** Defining a circular mask and applying adaptive over-sampling.
+**Model:** Composing a Multi Gaussian Expansion galaxy model for multi-wavelength data.
+**Analysis:** Creating analysis objects for each wavelength dataset with JAX acceleration.
+**Model Fit:** Fitting the model to data using Nautilus nested sampling with a factor graph.
+**Result:** Inspecting the results of the multi-wavelength model fit.
+**Model Your Own Galaxy:** Tips for applying this workflow to your own multi-wavelength data.
+**Simulator:** Pointers to the multi-wavelength simulation API.
+**Wrap Up:** Summary and pointers to further resources.
+
 __Google Colab Setup__
 
 The introduction `start_here` examples are available on Google Colab, which allows you to run them in a web browser

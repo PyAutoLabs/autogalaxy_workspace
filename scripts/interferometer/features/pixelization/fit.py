@@ -39,16 +39,27 @@ CPU run times are also fast using the sparse operator formalism.
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
-**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
-**Dataset & Mask:** Standard set up of interferometer dataset that is fitted.
-**Mesh Shape**: Defining the shape of the mesh that reconstructs the source in advance, such that JAX knows static array shapes.
-**Pixelization:** How to create a pixelization, including a description of its inputs.
-**Fit:** Perform a fit to a dataset using a pixelization, and visualize its results.
-**Interpolated Source:** Interpolate the reconstruction from an irregular Voronoi mesh to a uniform square grid and output to a .fits file.
-**Reconstruction CSV:** Output the reconstruction to a .csv file, which can be used to perform calculations on the reconstruction.
-**Result (Advanced):** API for various pixelization outputs which requires some polishing.
-**Simulate (Advanced):** Simulating an interferometer dataset with the inferred pixelized galaxy.
+**Advantages:** Benefits of using pixelizations to model galaxy light.
+**Disadvantages:** Drawbacks and additional complexity of pixelized galaxy modeling.
+**Positive Only Solver:** How a positive solution to pixel fluxes is ensured, and why it is often disabled for interferometer data.
+**Mask:** Defining the real-space mask for the interferometer grid.
+**Dataset:** Loading the interferometer dataset from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Sparse Operators:** Computing the sparse NUFFT operator matrix for fast linear algebra.
+**Settings:** Disabling the positive-only solver for interferometer data.
+**Over Sampling:** Why over sampling is not needed for interferometer data.
+**Mesh Shape:** Defining the number of pixels used by the rectangular mesh.
+**Pixelization:** Creating the pixelization with a mesh and regularization scheme.
+**Fit:** Performing a fit to a dataset using a pixelization and visualizing results.
+**Wrap Up:** Summary of when pixelizations are most useful.
+**Linear Objects:** Inspecting the linear objects used in the inversion.
+**Grids:** Accessing image-plane and reconstruction-plane grids from the mapper.
+**Reconstruction:** Accessing the reconstructed pixel values as a 1D array.
+**Mapped Reconstructed Images:** Accessing the reconstruction mapped back to the image plane.
+**Linear Algebra Matrices (Advanced):** Accessing the curvature, regularization and combined matrices.
+**Evidence Terms (Advanced):** Accessing individual Bayesian evidence terms from the inversion.
+**Simulated Interferometer:** Simulating an interferometer dataset from the pixelized reconstruction.
+**Future Ideas / Contributions:** Potential future additions to this tutorial.
 
 __Advantages__
 

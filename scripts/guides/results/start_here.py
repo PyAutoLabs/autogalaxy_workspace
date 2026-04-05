@@ -8,6 +8,23 @@ an overview of the modeling API.
 After reading this script, the `examples` folder provides more detailed examples for analysing the different aspects of
 performing modeling results outlined here.
 
+__Contents__
+
+**Model Fit:** Perform a quick model-fit to create a Result object for illustration.
+**Info:** Print the result in a readable format.
+**Loading From Hard-disk:** Load results from hard-disk using the Aggregator.
+**Generators:** How Python generators are used by the aggregator for memory efficiency.
+**Database File:** Load results from a .sqlite database file for large samples.
+**Workflow Examples:** Scripts for building scientific workflows (CSV, PNG, FITS makers).
+**Result:** Access the Result object returned by a search.
+**Samples:** Inspect the non-linear search samples, including median PDF and error estimates.
+**Linear Light Profiles:** Handle intensity values solved via linear algebra.
+**Galaxies:** Access the maximum likelihood Galaxies object and compute images.
+**Fits:** Inspect the maximum likelihood FitImaging object and its chi-squared and log likelihood.
+**Units and Cosmological Quantities:** Convert quantities to physical units using cosmology.
+**Linear Light Profiles / Basis Objects:** Specific functionality for linear light profiles and basis functions.
+**Pixelization:** Access pixelized source reconstruction results.
+
 __Model__
 
 We begin by fitting a quick model to a simple dataset, which we will use to illustrate the modeling

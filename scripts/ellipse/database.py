@@ -17,6 +17,15 @@ because it is optimized for fast querying of results.
 
 See the package `results/database` for a full description of how to set up the database and the benefits it provides,
 especially if loading results from hard-disk is slow.
+
+__Contents__
+
+**Aggregator:** Setting up the SQLite database and aggregator for ellipse results.
+**Ellipses via Aggregator:** Loading maximum log likelihood ellipse objects from the database.
+**Fits via Aggregator:** Loading imaging datasets and FitEllipse objects from the database.
+**Visualization Customization:** Customizing plots of ellipse fits loaded via the aggregator.
+**Errors (Random draws from PDF):** Drawing random fits from the posterior to quantify errors.
+**Multipoles:** Loading and inspecting multipole model-fit results from the database.
 """
 
 # %matplotlib inline

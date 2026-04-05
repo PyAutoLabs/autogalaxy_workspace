@@ -13,6 +13,13 @@ The galaxies and fit API is described fully in the guides:
 This result example only explains specific functionality for using a `Result` object to inspect galaxies or a fit
 and therefore you should read these guides in detail first.
 
+__Contents__
+
+**Model Fit:** Perform a model-fit to create a Result object for inspecting galaxies and fits.
+**Max Likelihood Galaxies:** Visualize the maximum likelihood galaxies from the result.
+**Samples:** Extract individual galaxy components from the samples and plot their images.
+**Refitting:** Refit the data using different samples to inspect how the fit varies.
+
 __Units__
 
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in

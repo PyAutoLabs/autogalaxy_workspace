@@ -33,6 +33,15 @@ This script simulates `Imaging` of a galaxy where:
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
+
+__Contents__
+
+**Dataset Paths:** Defining the output path for the simulated dataset.
+**Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
+**Galaxies:** Defining two galaxies using signal-to-noise ratio based Sersic light profiles.
+**Output:** Saving the simulated dataset to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # %matplotlib inline

@@ -12,6 +12,13 @@ using this script.
 
 This script uses a GUI to mark the regions of the image where these extra galaxies are located, in contrast to the
 example above which requires you to input these values manually.
+
+__Contents__
+
+**Dataset:** Loading the imaging dataset for extra galaxy mask creation.
+**Mask:** Creating a circular mask overlay to guide the spray painting.
+**Scribbler:** Using the interactive GUI to spray paint extra galaxy regions.
+**Output:** Saving the extra galaxies mask as a FITS file and PNG visualization.
 """
 
 # %matplotlib inline

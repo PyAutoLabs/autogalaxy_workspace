@@ -33,6 +33,24 @@ The `Imaging` dataset fitted in this example confirms to a number of standard th
 
 If you are intending to fit your own data, you will need to ensure it conforms to these standards, which are
 described in the script `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb`.
+
+__Contents__
+
+**Dataset:** Loading the imaging dataset from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+**Mask:** Defining a 2D mask for the region of interest around the galaxy.
+**Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+**Model:** Composing the galaxy model with linear Sersic bulge and Exponential disk.
+**Search:** Configuring the Nautilus nested sampling non-linear search.
+**Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
+**VRAM Use:** Estimating GPU VRAM usage for JAX-accelerated fitting.
+**Run Times:** Discussion of computational run times and how to estimate them.
+**Model-Fit:** Running the model-fit and monitoring output.
+**Output Folder:** Description of the results written to the output folder.
+**Result:** Inspecting the result object, maximum likelihood model and posteriors.
+**Features:** Links to advanced modeling features in the workspace.
+**Data Preparation:** Links to data preparation resources.
+**HowToGalaxy:** Links to the HowToGalaxy tutorial lectures.
 """
 
 # %matplotlib inline

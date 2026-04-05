@@ -12,6 +12,20 @@ to be performed internally by **PyAutoGalaxy**.
 These data structures use the `slim` and `native` data representations API to make it simple to map quantities from
 1D dimensions to their native dimensions.
 
+__Contents__
+
+**Units:** The internal unit system used throughout this example.
+**API:** Create the three main data structures (Array2D, Grid2D, VectorYX2D) without a mask.
+**Grids:** Create and plot a uniform Grid2D of (y,x) coordinates.
+**Native:** Access the grid in its native 2D representation.
+**Slim:** Access the grid in its slimmed-down 1D representation.
+**Masked Data Structures:** How masking changes the slim and native representations.
+**Data:** Using Array2D objects to store 2D data like images and noise maps.
+**Dataset Auto-Simulation:** Auto-simulate the dataset if it does not exist.
+**Galaxies:** Computing galaxy images and inspecting their data structures.
+**Irregular Structures:** Evaluating light profiles on irregular grids of coordinates.
+**Vector Quantities:** Working with vector (y,x) quantities like deflection angles using VectorYX2D.
+
 __Units__
 
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in

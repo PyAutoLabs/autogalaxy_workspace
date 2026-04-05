@@ -10,6 +10,12 @@ the source can be performed separately.
 
 This script illustrates how modeling outputs source reconstructions to a .csv file, and how this can be easily
 loaded to perform analysis without the need for PyAutoLens.
+
+__Contents__
+
+**Model Fit:** Running a pixelization model-fit which outputs the source reconstruction to a CSV file.
+**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+**Reconstruction CSV:** Loading the source reconstruction from the output CSV file and performing analysis.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports

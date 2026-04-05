@@ -24,6 +24,19 @@ shape [total_unmasked_pixels]. This is a slimmed-down representation of the data
 unmasked data points
 
 These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
+
+__Contents__
+
+**Loading Data:** Loading the imaging dataset from FITS files for ellipse fitting.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Mask:** Applying a circular mask to the dataset.
+**Ellipse Interpolation:** Interpolating data and noise-map values onto ellipse coordinates.
+**Ellipse Fitting:** Computing model data, residuals and chi-squared for an ellipse fit.
+**FitEllipse:** Using the FitEllipse object to perform and inspect the ellipse fit.
+**Multiple Ellipses:** Fitting multiple ellipses of increasing size to trace the galaxy.
+**Bad Fit:** Demonstrating how a poor ellipse model produces residuals.
+**Fit Quantities:** Inspecting model data, residual maps and chi-squared maps.
+**Figures of Merit:** Computing chi-squared and log likelihood values.
 """
 
 # %matplotlib inline

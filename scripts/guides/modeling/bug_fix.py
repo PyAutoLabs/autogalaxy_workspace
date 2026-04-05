@@ -11,6 +11,11 @@ particular format, which this script illustrates.
 The code in this script is identical to the `autogalaxy_workspace/scripts/imaging/modeling.py` script.
 Comments have therefore been removed to avoid repetition and make the script more concise.
 
+__Contents__
+
+**The Fix:** The code pattern that fixes parallelization issues on certain operating systems.
+**Trouble Shooting:** What to do if parallelization still does not work after applying the fix.
+
 __The Fix__
 
 The fix which makes parallelization work is at the end of the script, where we use the following code:

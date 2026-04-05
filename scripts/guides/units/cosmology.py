@@ -7,6 +7,13 @@ electrons per second, dimensionless mass units) to physical units (e.g. kilopars
 
 This is used on a variety of important cosmological quantities for example the effective radii of galaxies.
 
+__Contents__
+
+**Errors:** How to produce errors on unit-converted quantities via marginalization.
+**Galaxy:** Set up a galaxy and grid to illustrate unit conversions.
+**Arcsec to Kiloparsec:** Convert angular distances to physical distances using a cosmological model.
+**Brightness Units / Luminosity:** Convert image units and compute the total luminosity of a galaxy.
+
 __Errors__
 
 To produce errors on unit converted quantities, you`ll may need to perform marginalization over samples of these

@@ -47,6 +47,16 @@ simulators not in the `advanced` folder for more detailed comments.
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
+
+__Contents__
+
+**Dataset Paths:** Defining the output path for the simulated dataset.
+**Grid:** Setting up the 2D grid with adaptive over-sampling for all galaxy centres.
+**Galaxies:** Defining the main galaxy with Sersic bulge and Exponential disk light profiles.
+**Extra Galaxies:** Defining two extra galaxies with spherical Exponential light profiles.
+**Output:** Saving the simulated dataset to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # %matplotlib inline

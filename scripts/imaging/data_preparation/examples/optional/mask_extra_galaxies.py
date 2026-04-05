@@ -34,6 +34,11 @@ The script `features/extra_galaxies/modeling` shows how to use this mask in diff
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `data_preparation/start_here.ipynb` notebook.
+
+__Contents__
+
+**Links / Resources:** Links to GUI tools and modeling scripts for extra galaxies masks.
+**Output:** Saving the extra galaxies mask as a FITS file.
 """
 
 # %matplotlib inline

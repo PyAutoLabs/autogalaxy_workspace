@@ -10,6 +10,14 @@ This dataset is paired with the script `multi/simulators/simple.py` and therefor
 provides interferometer observations of the same galaxy.
 
 It is used to demonstrate the combination of imaging and interferometer datasets.
+
+__Contents__
+
+**Simulate:** Creating the grid and uv-wavelengths for interferometer simulation.
+**Galaxies:** Setting up the galaxy with bulge and disk light profiles.
+**Output:** Saving the simulated interferometer dataset to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Galaxies json:** Saving the galaxy model as a JSON file for future reference.
 """
 
 # %matplotlib inline

@@ -28,6 +28,12 @@ It is absolutely vital you use the correct pixel scale, so double check this val
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `data_preparation/start_here.ipynb` notebook.
+
+__Contents__
+
+**Loading Data From Individual Fits Files:** Loading a noise-map from FITS files and inspecting its standards.
+**1) Tools Illustrated In Image:** Overview of unit conversion and resizing tools from the image preparation script.
+**Noise Conversions:** Functions for computing noise-maps from various input formats.
 """
 
 # %matplotlib inline

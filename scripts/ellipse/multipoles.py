@@ -13,6 +13,24 @@ To ensure this is the case, make sure you've complted the examples `fit.py` and 
 
 For brevity, this example does not repeat the description of the API used to perform the fit and how the model is
 composed. It only discusses new aspects of the API that are used to perform multipoles modeling.
+
+__Contents__
+
+**Loading Data:** Loading the imaging dataset from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Mask:** Applying a circular mask to the dataset.
+**Multipole Fit:** Fitting an ellipse with a fourth-order multipole perturbation.
+**Multipole Order:** Combining multipoles of different orders for complex shapes.
+**Multiple Perturbed Ellipses:** Fitting many ellipses with multipoles to trace the full galaxy.
+**Modeling:** Performing model-fitting via a non-linear search with multipole components.
+**Search:** Configuring the Dynesty non-linear search for multipole fitting.
+**Analysis:** Setting up the AnalysisEllipse object for the model fit.
+**Run Times:** Estimating the computational cost of multipole model fits.
+**Model-Fit:** Running the non-linear search to fit ellipses with multipoles.
+**Result:** Inspecting the result and inferred multipole parameters.
+**Multiple Ellipses:** Fitting many ellipses with multipoles across the full galaxy.
+**Final Fit:** Combining all ellipses and multipoles into a single final fit.
+**Masking:** Applying an extra galaxies mask and repeating the multipole fitting.
 """
 
 # %matplotlib inline

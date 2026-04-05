@@ -7,6 +7,12 @@ can then be loaded before a pipeline is run and passed to that pipeline so as to
 search (if a mask function is not passed to that search).
 
 This GUI is adapted from the following code: https://gist.github.com/brikeats/4f63f867fd8ea0f196c78e9b835150ab
+
+__Contents__
+
+**Dataset:** Loading the imaging dataset for mask creation.
+**Scribbler:** Using the interactive GUI to draw the mask.
+**Output:** Saving the mask as a FITS file and PNG visualization.
 """
 
 # %matplotlib inline

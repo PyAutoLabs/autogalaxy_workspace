@@ -16,6 +16,15 @@ An example use case might be analysing undithered HST images before they are com
 to remove correlated noise in the data.
 
 TODO: NEED TO INCLUDE DIFFERENT POINTING / CENTERINGS.
+
+__Contents__
+
+**Dataset Paths:** Setting the output path for simulated data.
+**Simulate:** Creating grids with matching pixel scales for same-wavelength observations.
+**Galaxies:** Setting up the galaxy with bulge and disk light profiles at one wavelength.
+**Output:** Saving the simulated datasets to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Galaxies json:** Saving the galaxy model as a JSON file for future reference.
 """
 
 # %matplotlib inline

@@ -24,6 +24,27 @@ guided path toward efficiently modeling large interferometric datasets.
 The threshold between a dataset having many visibilities and therefore requiring pixelized source reconstructions, or
 being small enough to be modeled with light profiles, is around **10,000 visibilities**.
 
+__Contents__
+
+**Number of Visibilities:** Discussion of dataset size and when to use pixelized source reconstructions.
+**Model:** Description of the galaxy model fitted in this example.
+**Mask:** Defining the real-space mask for the interferometer grid.
+**Dataset:** Loading the interferometer dataset from FITS files.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Over Sampling:** Why over sampling is not needed for interferometer data.
+**Model:** Composing a Sersic bulge and Exponential disk galaxy model using linear light profiles.
+**Search:** Configuring the Nautilus nested sampling non-linear search.
+**Analysis:** Setting up the AnalysisInterferometer object with JAX acceleration.
+**VRAM Use:** Estimating GPU VRAM requirements for the model fit.
+**Run Times:** Estimating the computational cost of the model fit.
+**Model-Fit:** Running the non-linear search to fit the model to data.
+**Output Folder:** Description of the results written to hard-disk during and after the fit.
+**Result:** Inspecting the result object and maximum likelihood model.
+**Features:** Overview of advanced interferometer modeling features like pixelizations.
+**Data Preparation:** Pointers to data preparation scripts for your own data.
+**HowToGalaxy:** Pointers to the HowToGalaxy lecture series for deeper understanding.
+**Modeling Customization:** Overview of alternative non-linear searches and model customization.
+
 __Model__
 
 This script fits `Interferometer` dataset of a galaxy with a model where:

@@ -16,6 +16,16 @@ is visible in each image.
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
+
+__Contents__
+
+**Dataset Paths:** Defining the output path for the simulated sample.
+**Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
+**Sample Model Distributions:** Defining prior distributions for the galaxy light profile parameters.
+**Sample Instances:** Generating random galaxy instances and simulating imaging datasets in a loop.
+**Output:** Saving each simulated dataset to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Plane Output:** Saving each Galaxies object as a JSON file.
 """
 
 # %matplotlib inline

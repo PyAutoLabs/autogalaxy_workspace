@@ -9,6 +9,14 @@ interested in.
 This includes support for advanced querying, so that specific model-fits (e.g., which fit a certain model or dataset)
 can be loaded.
 
+__Contents__
+
+**Aggregator:** Load results using the Aggregator.
+**Galaxies via Aggregator:** Load maximum log likelihood Galaxies objects using GalaxiesAgg.
+**Luminosity Example:** Compute the luminosity of each galaxy from aggregated results.
+**Errors (PDF from samples):** Compute errors on derived quantities like axis ratio from the full PDF.
+**Errors (Random draws from PDF):** Estimate errors using random draws from the PDF.
+
 __Database File__
 
 The aggregator can also load results from a `.sqlite` database file.

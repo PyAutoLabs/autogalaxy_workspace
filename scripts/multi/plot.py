@@ -11,6 +11,14 @@ open/close subplot figures, or chain plotters together.
 
 To show multiple subplots for a given dataset and fit, simply call each function in sequence.
 
+__Contents__
+
+**Imaging Dataset Subplot:** Plotting a subplot of the imaging dataset.
+**Fit Imaging Subplot:** Plotting a subplot of the fit to the imaging dataset.
+**Galaxies Subplot:** Plotting a subplot of the galaxy images.
+**Output:** Saving each subplot to disk as PNG files.
+**Wrap Up:** Summary of the function-based subplot plotting API.
+
 __Start Here Notebook__
 
 If any code in this script is unclear, refer to the `plot/start_here.ipynb` notebook.

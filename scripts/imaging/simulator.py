@@ -6,6 +6,16 @@ This script simulates `Imaging` of a galaxy using light profiles where:
 
  - The galaxy's bulge is an `Sersic`.
  - The galaxy's disk is an `Exponential`.
+
+__Contents__
+
+**Dataset Paths:** Defining the output path for the simulated dataset.
+**Grid:** Setting up the 2D grid of coordinates for image evaluation.
+**Over Sampling:** Applying adaptive over-sampling for accurate image simulation.
+**Galaxies:** Defining the galaxy with Sersic bulge and Exponential disk light profiles.
+**Output:** Saving the simulated dataset to FITS files.
+**Visualize:** Outputting subplot and image visualizations as PNG files.
+**Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # %matplotlib inline

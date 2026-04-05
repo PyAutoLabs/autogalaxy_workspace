@@ -21,6 +21,21 @@ of datasets. For datasets with multi-wavelength images (e.g. 5 or more) this all
 of parameters across the datasets in a way that does not lead to a very complex parameter space.
 
 If a free `effective radius` is created for every dataset, this would add 5+ free parameters to the model for 5+ datasets.
+
+__Contents__
+
+**Colors:** Defining the multi-wavelength color bands (g, r, I).
+**Wavelengths:** Defining the wavelength of each color band for parameterization.
+**Pixel Scales:** Setting per-wavelength pixel scales.
+**Dataset:** Loading and plotting each multi-wavelength dataset.
+**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+**Mask:** Applying a circular mask to each dataset.
+**Analysis:** Creating analysis objects for each dataset with JAX acceleration.
+**Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
+**Model + Analysis:** Parameterizing effective radius as a linear function of wavelength using prior arithmetic.
+**Search:** Configuring the Nautilus nested sampling non-linear search.
+**Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
+**Result:** Inspecting the per-wavelength results of the model fit.
 """
 
 # %matplotlib inline

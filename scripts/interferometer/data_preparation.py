@@ -6,6 +6,20 @@ When an interferometer dataset is analysed, it must conform to certain standards
 the analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts
 which will help you prepare your dataset to adhere to them if it does not already.
 
+__Contents__
+
+**SLACK:** Contact information for help with interferometer data preparation.
+**Pixel Scale:** Choosing the correct pixel scale for interferometer datasets.
+**Visibilities:** Loading and inspecting visibility data from FITS files.
+**Noise-Map:** Loading and inspecting the noise map for the interferometer dataset.
+**UV Wavelengths:** Loading and inspecting the uv-wavelength baselines.
+**Real Space Mask:** Setting up the real-space mask for Fourier transform evaluation.
+**Data Processing Complete:** Summary of required data standards and overview of optional steps.
+**Light Centre (Optional):** Marking the galaxy light centre to fix or constrain model parameters.
+**Extra Galaxies (Optional):** Marking centres of nearby extra galaxies for inclusion in the model.
+**Mask Extra Galaxies (Optional):** Creating masks to remove signal from nearby extra galaxies.
+**Info (Optional):** Storing auxiliary information like redshifts as a JSON file.
+
 __SLACK__
 
 The interferometer data preparation scripts are currently being developed and are not yet complete. If you are
