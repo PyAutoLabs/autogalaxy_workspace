@@ -410,12 +410,7 @@ result = search.fit(model=model, analysis=analysis)
 """
 __Masking__
 """
-mask_extra_galaxies = ag.Mask2D.from_fits(
-    file_path=Path(dataset_path, "mask_extra_galaxies.fits"),
-    pixel_scales=dataset.pixel_scales,
-)
-
-dataset = dataset.apply_mask(mask=mask + mask_extra_galaxies)
+dataset = dataset.apply_mask(mask=mask)
 
 
 number_of_ellipses = 10

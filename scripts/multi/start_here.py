@@ -37,7 +37,6 @@ __Contents__
 **Imports:** Standard imports used across workspace examples.
 **Dataset:** Loading multi-wavelength imaging data from FITS files.
 **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Extra Galaxy Removal:** Scaling noise to remove signal from nearby extra galaxies.
 **Masking:** Defining a circular mask and applying adaptive over-sampling.
 **Model:** Composing a Multi Gaussian Expansion galaxy model for multi-wavelength data.
 **Analysis:** Creating analysis objects for each wavelength dataset with JAX acceleration.
@@ -161,45 +160,6 @@ for dataset_waveband in waveband_list:
     dataset_list.append(dataset)
 
 """
-__Extra Galaxy Removal__
-
-There may be regions of an image that have signal near the galaxy that is from other galaxies not associated
-with the galaxy we are studying. The emission from these objects will impact our model fitting and needs to be
-removed from the analysis.
-
-This `mask_extra_galaxies` is used to prevent them from impacting a fit by scaling the RMS noise map values to
-large values. This mask may also include emission from objects which are not technically galaxies,
-but blend with the galaxy we are studying in a similar way. Common examples of such objects are foreground stars
-or emission due to the data reduction process.
-
-In this example, the noise is scaled over all regions of the image, even those quite far away from the galaxy
-in the centre. We are next going to apply a 2.5" circular mask which means we only analyse the central region of
-the image. It is only in these central regions where for the actual analysis it matters that we scaled the noise.
-
-After performing galaxy modeling, the script further down provides a GUI to create such a mask
-for your own data, if necessary.
-
-**Multi-wavelength Specific**: The RMS noise map scaling is applied to all datasets one-by-one.
-"""
-dataset_scaled_list = []
-
-for dataset, dataset_waveband in zip(dataset_list, waveband_list):
-
-    dataset_waveband_path = dataset_path
-
-    mask_extra_galaxies = ag.Mask2D.from_fits(
-        file_path=dataset_waveband_path / "mask_extra_galaxies.fits",
-        pixel_scales=dataset.pixel_scales,
-        invert=True,
-    )
-
-    dataset = dataset.apply_noise_scaling(mask=mask_extra_galaxies)
-
-    aplt.subplot_imaging_dataset(dataset=dataset)
-
-    dataset_scaled_list.append(dataset)
-
-"""
 __Masking__
 
 Galaxy modeling does not need to fit the entire image, only the region containing the galaxy light.
@@ -217,7 +177,7 @@ mask_radius = 2.5
 
 dataset_masked_list = []
 
-for dataset in dataset_scaled_list:
+for dataset in dataset_list:
 
     mask = ag.Mask2D.circular(
         shape_native=dataset.shape_native,
