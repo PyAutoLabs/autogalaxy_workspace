@@ -80,6 +80,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/multi/simulator.py"],
         check=True,
@@ -309,7 +310,9 @@ print(result_list[1].max_log_likelihood_instance)
 Plotting each result's galaxies shows that the galaxy appears different, owning to its different intensities.
 """
 for result in result_list:
-    aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp)
+    aplt.subplot_galaxies(
+        galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp
+    )
     aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
 """

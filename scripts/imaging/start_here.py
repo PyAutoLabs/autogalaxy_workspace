@@ -118,6 +118,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/imaging/features/extra_galaxies/simulator.py"],
         check=True,
@@ -126,8 +127,12 @@ if not dataset_path.exists():
 if not (dataset_path / "mask_extra_galaxies.fits").exists():
     import subprocess
     import sys
+
     subprocess.run(
-        [sys.executable, "scripts/imaging/data_preparation/examples/optional/mask_extra_galaxies.py"],
+        [
+            sys.executable,
+            "scripts/imaging/data_preparation/examples/optional/mask_extra_galaxies.py",
+        ],
         check=True,
     )
 
@@ -472,8 +477,12 @@ We can now inspect the simulated dataset: image, noise-map, and PSF. These can a
 written to FITS files and visualized as PNGs. This is exactly the same format as real data,
 so you can immediately try fitting the simulated dataset with the modeling workflow above.
 """
-aplt.subplot_imaging_dataset(dataset=dataset, output_path=dataset_path, output_format="png")
-aplt.plot_array(array=dataset.data, title="Data", output_path=dataset_path, output_format="png")
+aplt.subplot_imaging_dataset(
+    dataset=dataset, output_path=dataset_path, output_format="png"
+)
+aplt.plot_array(
+    array=dataset.data, title="Data", output_path=dataset_path, output_format="png"
+)
 
 """
 __Sample__

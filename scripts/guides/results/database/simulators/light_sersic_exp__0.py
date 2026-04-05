@@ -165,9 +165,15 @@ __Visualize__
 
 Output a subplot of the simulated dataset, the image and the galaxies's quantities to the dataset path as .png files.
 """
-aplt.subplot_imaging_dataset(dataset=dataset, output_path=dataset_path, output_format="png")
-aplt.plot_array(array=dataset.data, title="Data", output_path=dataset_path, output_format="png")
-aplt.subplot_galaxies(galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png")
+aplt.subplot_imaging_dataset(
+    dataset=dataset, output_path=dataset_path, output_format="png"
+)
+aplt.plot_array(
+    array=dataset.data, title="Data", output_path=dataset_path, output_format="png"
+)
+aplt.subplot_galaxies(
+    galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png"
+)
 
 """
 __Plane Output__

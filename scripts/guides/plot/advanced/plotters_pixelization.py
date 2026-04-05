@@ -51,6 +51,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/guides/plot/simulator.py"],
         check=True,
@@ -97,9 +98,7 @@ mapped back to the native image frame.
 """
 inversion = fit.inversion
 
-aplt.plot_array(
-    array=fit.model_data, title="Reconstruction"
-)
+aplt.plot_array(array=fit.model_data, title="Reconstruction")
 
 """
 __Inversion Plots__
@@ -146,7 +145,9 @@ The image and source plane mesh grids, showing the centre of every source pixel,
 """
 image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 
-subplot_image_and_mapper(mapper=mapper, image=dataset.data, mesh_grid=image_plane_mesh_grid)
+subplot_image_and_mapper(
+    mapper=mapper, image=dataset.data, mesh_grid=image_plane_mesh_grid
+)
 
 """
 __Delaunay__

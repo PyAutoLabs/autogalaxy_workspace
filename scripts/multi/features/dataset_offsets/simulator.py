@@ -208,11 +208,17 @@ __Visualize__
 Output a subplot of the simulated dataset, the image and the tracer's quantities to the dataset path as .png files.
 """
 for waveband, dataset in zip(waveband_list, dataset_list):
-    aplt.subplot_imaging_dataset(dataset=dataset, output_path=dataset_path, output_format="png")
-    aplt.plot_array(array=dataset.data, title="Data", output_path=dataset_path, output_format="png")
+    aplt.subplot_imaging_dataset(
+        dataset=dataset, output_path=dataset_path, output_format="png"
+    )
+    aplt.plot_array(
+        array=dataset.data, title="Data", output_path=dataset_path, output_format="png"
+    )
 
 for waveband, grid, galaxies in zip(waveband_list, grid_list, galaxies_list):
-    aplt.subplot_galaxies(galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png")
+    aplt.subplot_galaxies(
+        galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png"
+    )
 
 """
 __Galaxies json__

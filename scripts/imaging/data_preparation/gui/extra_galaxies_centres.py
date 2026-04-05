@@ -1,4 +1,5 @@
 import numpy as np
+
 """
 GUI Preprocessing: Extra Galaxies
 =================================

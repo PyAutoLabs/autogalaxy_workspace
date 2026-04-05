@@ -65,6 +65,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/imaging/simulator.py"],
         check=True,
@@ -262,7 +263,9 @@ actual mask whose light blurs into the image:
 """
 galaxy_blurring_image_2d = galaxy.image_2d_from(grid=masked_dataset.grids.blurring)
 
-aplt.plot_array(array=galaxy.image_2d_from(grid=masked_dataset.grids.blurring), title="Image")
+aplt.plot_array(
+    array=galaxy.image_2d_from(grid=masked_dataset.grids.blurring), title="Image"
+)
 
 """
 __Convolution__

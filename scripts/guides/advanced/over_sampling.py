@@ -69,7 +69,9 @@ grid_sub_1 = ag.Grid2D.uniform(
 We now plot the grid, over laying a uniform grid of pixels to illustrate the area of each pixel within which we
 want light profile intensities to be computed.
 """
-aplt.plot_grid(grid=grid_sub_1, title="Grid Without Over-Sampling", plot_grid_lines=True)
+aplt.plot_grid(
+    grid=grid_sub_1, title="Grid Without Over-Sampling", plot_grid_lines=True
+)
 
 """
 We now create and plot a uniform grid which does over-sample the pixels, by inputting `over_sample_size=2`.
@@ -110,7 +112,12 @@ intensity within each pixel if there is a significant gradient in intensity with
 
 In the code below, it is the input `plot_over_sampled_grid=True` which ensures we plot the over sampled grid.
 """
-aplt.plot_grid(grid=grid_sub_2, title="Grid With 2x2 Over-Sampling", plot_grid_lines=True, plot_over_sampled_grid=True)
+aplt.plot_grid(
+    grid=grid_sub_2,
+    title="Grid With 2x2 Over-Sampling",
+    plot_grid_lines=True,
+    plot_over_sampled_grid=True,
+)
 
 """
 __Numerics__
@@ -260,7 +267,12 @@ grid_adaptive = ag.Grid2D.no_mask(
     over_sample_size=over_sample_size,
 )
 
-aplt.plot_grid(grid=grid_adaptive, title="Adaptive Over-Sampling", plot_grid_lines=True, plot_over_sampled_grid=True)
+aplt.plot_grid(
+    grid=grid_adaptive,
+    title="Adaptive Over-Sampling",
+    plot_grid_lines=True,
+    plot_over_sampled_grid=True,
+)
 
 print(over_sample_size)
 
@@ -282,7 +294,12 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
 
 grid_adaptive = ag.Grid2D(values=grid, mask=mask, over_sample_size=over_sample_size)
 
-aplt.plot_grid(grid=grid_adaptive, title="Adaptive Over-Sampling", plot_grid_lines=True, plot_over_sampled_grid=True)
+aplt.plot_grid(
+    grid=grid_adaptive,
+    title="Adaptive Over-Sampling",
+    plot_grid_lines=True,
+    plot_over_sampled_grid=True,
+)
 
 """
 We can compare this adaptive grid to the grid with over sampling of 32 x 32 to confine it produces low amounts
@@ -353,6 +370,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/howtogalaxy/simulators/sersic.py"],
         check=True,

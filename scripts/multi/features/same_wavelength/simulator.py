@@ -181,11 +181,17 @@ Output a subplot of the simulated dataset, the image and the galaxies quantities
 For a faster run time, the galaxies visualization uses the binned grid instead of the iterative grid.
 """
 for i, dataset in enumerate(dataset_list):
-    aplt.subplot_imaging_dataset(dataset=dataset, output_path=dataset_path, output_format="png")
-    aplt.plot_array(array=dataset.data, title="Data", output_path=dataset_path, output_format="png")
+    aplt.subplot_imaging_dataset(
+        dataset=dataset, output_path=dataset_path, output_format="png"
+    )
+    aplt.plot_array(
+        array=dataset.data, title="Data", output_path=dataset_path, output_format="png"
+    )
 
 for i, grid in enumerate(grid_list):
-    aplt.subplot_galaxies(galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png")
+    aplt.subplot_galaxies(
+        galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png"
+    )
 
 """
 __Galaxies json__

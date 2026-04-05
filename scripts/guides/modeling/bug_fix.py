@@ -72,11 +72,11 @@ def fit():
     if not Path(dataset_path).exists():
         import subprocess
         import sys
+
         subprocess.run(
             [sys.executable, "scripts/imaging/simulator.py"],
             check=True,
         )
-
 
     dataset = ag.Imaging.from_fits(
         data_path=path.join(dataset_path, "data.fits"),

@@ -157,6 +157,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/interferometer/simulator.py"],
         check=True,
@@ -271,7 +272,9 @@ print(result.info)
 The result also contains the maximum likelihood galaxy model which can be used to plot the best-fit information
 and fit to the data.
 """
-aplt.subplot_fit_dirty_images(fit=result.max_log_likelihood_fit)  # residuals, chi^2, dirty image, etc.
+aplt.subplot_fit_dirty_images(
+    fit=result.max_log_likelihood_fit
+)  # residuals, chi^2, dirty image, etc.
 
 """
 The result object contains pretty much everything you need to do science with your own galaxy, but details

@@ -50,6 +50,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/howtogalaxy/simulators/sersic.py"],
         check=True,
@@ -119,7 +120,6 @@ we:
 There are other `_kwargs` inputs we pass as None, you should check out the Dynesty docs if you need to customize your
 figure.
 """
-
 
 
 """
@@ -383,7 +383,9 @@ if search_internal is not None:
     """
     This method shows the parameter values of every walker at every step.
     """
-    fig, axes = plt.subplots(result.samples.model.prior_count, figsize=(10, 7), sharex=True)
+    fig, axes = plt.subplots(
+        result.samples.model.prior_count, figsize=(10, 7), sharex=True
+    )
 
     for i in range(result.samples.model.prior_count):
         ax = axes[i]
@@ -439,7 +441,9 @@ if search_internal is not None:
     """
     This method shows the parameter values of every walker at every step.
     """
-    fig, axes = plt.subplots(result.samples.model.prior_count, figsize=(10, 7), sharex=True)
+    fig, axes = plt.subplots(
+        result.samples.model.prior_count, figsize=(10, 7), sharex=True
+    )
 
     for i in range(result.samples.model.prior_count):
         ax = axes[i]
@@ -583,7 +587,10 @@ try:
     gd_plotter.rectangle_plot(
         roots=gd_samples,
         yparams=["galaxies_galaxy_bulge_effective_radius"],
-        xparams=["galaxies_galaxy_bulge_intensity", "galaxies_galaxy_bulge_sersic_index"],
+        xparams=[
+            "galaxies_galaxy_bulge_intensity",
+            "galaxies_galaxy_bulge_sersic_index",
+        ],
     )
 
     plt.show()

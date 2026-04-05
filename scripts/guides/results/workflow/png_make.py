@@ -112,11 +112,11 @@ for i in range(2):
     if not dataset_path.exists():
         import subprocess
         import sys
+
         subprocess.run(
             [sys.executable, "scripts/imaging/simulator.py"],
             check=True,
         )
-
 
     dataset = ag.Imaging.from_fits(
         data_path=dataset_path / "data.fits",

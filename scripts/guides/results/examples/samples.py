@@ -73,6 +73,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/imaging/simulator.py"],
         check=True,
@@ -130,7 +131,9 @@ the results of the fit.
 The `Result` object has already perform the linear algebra calculation which sets the `intensity` values of
 the line profiles.
 """
-aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false)
+aplt.subplot_galaxies(
+    galaxies=result.max_log_likelihood_galaxies, grid=mask.derive_grid.all_false
+)
 aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
 """

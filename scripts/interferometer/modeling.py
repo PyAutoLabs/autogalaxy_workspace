@@ -99,6 +99,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/interferometer/simulator.py"],
         check=True,
@@ -331,7 +332,10 @@ The `Result` object also contains:
 """
 print(result.max_log_likelihood_instance)
 
-aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=real_space_mask.derive_grid.unmasked)
+aplt.subplot_galaxies(
+    galaxies=result.max_log_likelihood_galaxies,
+    grid=real_space_mask.derive_grid.unmasked,
+)
 aplt.subplot_fit_dirty_images(fit=result.max_log_likelihood_fit)
 
 """

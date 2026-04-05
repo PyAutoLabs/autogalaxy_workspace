@@ -114,6 +114,7 @@ simulator script. This ensures that all example scripts can be run without manua
 if not dataset_path.exists():
     import subprocess
     import sys
+
     subprocess.run(
         [sys.executable, "scripts/interferometer/simulator.py"],
         check=True,
@@ -687,7 +688,10 @@ mapped_reconstructed_visibilities = ag.Visibilities(
     visibilities=mapped_reconstructed_visibilities
 )
 
-aplt.plot_grid(grid=mapped_reconstructed_visibilities.in_grid, title="Mapped Reconstructed Visibilities")
+aplt.plot_grid(
+    grid=mapped_reconstructed_visibilities.in_grid,
+    title="Mapped Reconstructed Visibilities",
+)
 
 
 """
