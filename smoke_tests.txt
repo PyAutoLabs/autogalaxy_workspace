@@ -1,6 +1,6 @@
 imaging/start_here.py
 imaging/fit.py
-imaging/modeling.py
+# imaging/modeling.py  # disabled: result.max_log_likelihood_instance fails in PYAUTOFIT_TEST_MODE=2 (rhayes777/PyAutoFit#1179)
 interferometer/start_here.py
 multi/start_here.py
 # ellipse/modeling.py  # disabled: bypass mode tuple-path KeyError on ellipse models (rhayes777/PyAutoFit#1179)
