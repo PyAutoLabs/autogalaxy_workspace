@@ -31,7 +31,7 @@ __Dataset__
 
 First, lets load an example image of a galaxy as an `Array2D`.
 """
-dataset_path = Path("dataset") / "imaging" / "complex"
+dataset_path = Path("dataset") / "imaging" / "simple"
 
 """
 __Dataset Auto-Simulation__

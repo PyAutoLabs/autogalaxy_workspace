@@ -53,7 +53,7 @@ galaxy = ag.Galaxy(
 
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
-dataset_path = Path("dataset") / "imaging" / "complex"
+dataset_path = Path("dataset") / "imaging" / "simple"
 
 """
 __Dataset Auto-Simulation__

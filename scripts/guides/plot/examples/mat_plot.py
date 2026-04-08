@@ -36,7 +36,7 @@ from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
-dataset_path = Path("dataset") / "imaging" / "complex"
+dataset_path = Path("dataset") / "imaging" / "simple"
 
 """
 __Dataset Auto-Simulation__

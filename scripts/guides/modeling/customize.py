@@ -107,11 +107,19 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 
-mask = ag.Mask2D.from_fits(
-    file_path=Path(dataset_path, "mask_gui.fits"),
-    hdu=0,
-    pixel_scales=dataset.pixel_scales,
-)
+try:
+    mask = ag.Mask2D.from_fits(
+        file_path=Path(dataset_path, "mask_gui.fits"),
+        hdu=0,
+        pixel_scales=dataset.pixel_scales,
+    )
+except FileNotFoundError:
+    mask = ag.Mask2D.circular_annular(
+        shape_native=dataset.shape_native,
+        pixel_scales=dataset.pixel_scales,
+        inner_radius=0.5,
+        outer_radius=2.5,
+    )
 
 dataset = dataset.apply_mask(mask=mask)  # <----- The custom mask is used here!
 

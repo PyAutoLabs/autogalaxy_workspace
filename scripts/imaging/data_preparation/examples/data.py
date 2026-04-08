@@ -168,9 +168,10 @@ The bigger the postage stamp cut-out of the image the more memory it requires to
 ideal too, as the galaxy will be a small blob in the centre relative to the large surrounding edges of the image. Why 
 keep the edges surrounding the galaxy if they are masked out anyway?
 
-Lets look at an example of a very large postage stamp - we can barely even see the galaxy!
+Below we demonstrate how to resize an image. Even though this dataset is not a large postage stamp, the
+`array_with_new_shape` function shown here can be used to trim any oversized image to a more manageable size.
 """
-dataset_path = Path("dataset", "imaging", "simple__big_stamp")
+dataset_path = Path("dataset", "imaging", "simple")
 
 data_large_stamp = ag.Array2D.from_fits(
     file_path=dataset_path / "data.fits", pixel_scales=0.1
