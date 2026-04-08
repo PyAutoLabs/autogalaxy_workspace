@@ -2,3 +2,5 @@ root.log
 .idea/
 dataset/
 output/
+test_report.md
+test_results/

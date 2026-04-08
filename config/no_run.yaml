@@ -1,0 +1,16 @@
+# Scripts to skip during automated runs (smoke tests, pre-release checks, CI).
+# Each entry is matched against script paths:
+#   - Entries with '/' do a substring match against the file path
+#   - Entries without '/' match the file stem exactly
+# Add an inline # comment to document the reason for skipping.
+
+- tutorial_searches
+- gui/light_centre # GUI scripts cannot be run
+- gui/mask_extra_galaxies # GUI scripts cannot be run
+- gui/mask # GUI scripts cannot be run
+- gui/extra_galaxies_centres # GUI scripts cannot be run
+- fits_make # Test mode does not output .fits images.
+- png_make # Test mode does not output .png images.
+- examples/searches # Test mode breaks search visualization.
+- data_fitting # Test mode breaks .fits file output
+- ellipse/database # Ellipse model needs refactor and JAX support
