@@ -14,7 +14,6 @@ __Contents__
 - **Setup:** Sets up a dataset and model which we will perform quick model-fits to for illustration.
 - **Dynesty:**: Plots results of the nested sampling method Dynesty.
 - **Emcee:**: Plots results of an Emcee fit (e.g. cornerplot).
-- **PySwarms:**: Plots results of a PySwarms fit (e.g. contour).
 - **Zeus:**: Plots results of a Zeus fit (e.g. cornerplot).
 - **GetDist:**: Plot results of any MCMC / nested sampler non-linear search using the library GetDist.
 
@@ -453,39 +452,6 @@ if search_internal is not None:
     axes[-1].set_xlabel("step number")
 
     plt.show()
-
-"""
-__PySwarms__
-
-For PySwarms MLE searches, the `search_internal` attribute contains the pyswarms optimizer object
-which can be used for search-specific visualization.
-"""
-search_internal = result.search_internal
-
-if search_internal is not None:
-    try:
-        from pyswarms.utils import plotters
-
-        plotters.plot_contour(
-            pos_history=search_internal.pos_history,
-            canvas=None,
-            title="Trajectories",
-            mark=None,
-            designer=None,
-            mesher=None,
-            animator=None,
-        )
-        plt.show()
-
-        plotters.plot_cost_history(
-            cost_history=search_internal.cost_history,
-            ax=None,
-            title="Cost History",
-            designer=None,
-        )
-        plt.show()
-    except Exception:
-        pass
 
 """
 __GetDist__
