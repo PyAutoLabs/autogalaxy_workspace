@@ -26,7 +26,7 @@ __Contents__
 **Dynesty**: A nested sampling algorithm that is effective for modeling, with a lot of customization.
 **Emcee**: An ensemble MCMC sampler that is commonly used in Astronomy and Astrophysics.
 **Zeus**: An ensemble MCMC slice sampler that is the most effective MCMC method for modeling.
-**PySwarms**: A particle swarm optimization (PSO) algorithm that is a maximum likelihood estimator (MLE) method.
+**LBFGS**: A quasi-Newton optimization algorithm that is a maximum likelihood estimator (MLE) method.
 **Start Point**: An API that allows the user to specify the start-point of a model-fit, which is useful for MCMC and MLE methods.
 **Search Cookbook**: A cookbook that documents all searches available in **PyAutoFit**, including those not documented here.
 
@@ -41,7 +41,6 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
-import numpy as np
 from pathlib import Path
 import autofit as af
 import autogalaxy as ag
@@ -172,34 +171,21 @@ search = af.Zeus(
 )
 
 """
-__PySwarms__
+__LBFGS__
 
-PySwarms is a particle swarm optimization (PSO) algorithm.
+LBFGS is a quasi-Newton optimization algorithm from scipy.
 
-Information about PySwarms can be found at the following links:
+An optimizer only seeks to find the maximum likelihood model, unlike MCMC or nested sampling algorithms
+like Zeus and Nautilus, which aim to map out parameter space and infer errors on the parameters. Therefore, in
+principle, an optimizer like LBFGS should fit a model very fast.
 
- - https://github.com/ljvmiranda921/pyswarms
- - https://pyswarms.readthedocs.io/en/latest/index.html
- - https://pyswarms.readthedocs.io/en/latest/api/pyswarms.single.html#module-pyswarms.single.global_best
-
-An PSO algorithm only seeks to only find the maximum likelihood model, unlike MCMC or nested sampling algorithms
-like Zzeus and Nautilus, which aims to map-out parameter space and infer errors on the parameters.Therefore, in
-principle, a PSO like PySwarm should fit a model very fast.
-
-In our experience, the parameter spaces fitted by models are too complex for `PySwarms` to be used without a lot
-of user attention and care.  
+In our experience, the parameter spaces fitted by models are often too complex for optimizers to be used without
+careful initialization.
 """
-search = af.PySwarmsGlobal(
+search = af.LBFGS(
     path_prefix=Path("imaging", "searches"),
-    name="PySwarmsGlobal",
+    name="LBFGS",
     unique_tag="example",
-    n_particles=30,
-    iters=300,
-    cognitive=0.5,
-    social=0.3,
-    inertia=0.9,
-    ftol=-np.inf,
-    iterations_per_quick_update=1000,
 )
 
 """
@@ -296,8 +282,8 @@ search = af.Emcee(
 """
 __Search Cookbook__
 
-There are a number of other searches supported by **PyAutoFit** and therefore which can be used, which are not 
-explictly documented here. These include Ultranest and LBFGS. 
+There are a number of other searches supported by **PyAutoFit** and therefore which can be used, which are not
+explictly documented here.
 
 The **PyAutoFit** search cookbook documents all searches that are available, including those not documented here,
 and provides the code you can easily copy and paste to use these methods.
