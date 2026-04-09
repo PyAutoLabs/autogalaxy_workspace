@@ -4,3 +4,7 @@ dataset/
 output/
 test_report.md
 test_results/
+__pycache__/
+*.pyc
+*.nbc
+*.nbi
