@@ -18,4 +18,7 @@ defaults:
   NUMBA_CACHE_DIR: "/tmp/numba_cache"   # Writable cache dir for numba
   MPLCONFIGDIR: "/tmp/matplotlib"       # Writable config dir for matplotlib
 
-overrides: []
+overrides:
+  # Tutorial loads FITS data at full resolution
+  - pattern: "howtogalaxy/chapter_1_introduction/tutorial_3_fitting"
+    unset: [PYAUTO_WORKSPACE_SMALL_DATASETS]
