@@ -173,19 +173,6 @@ The fit does a lot more than just Fourier transform the galaxy image it also cre
  - The `normalized_residual_map`: The `residual_map `divided by the observed dataset's `noise_map`.
  - The `chi_squared_map`: The `normalized_residual_map` squared.
 
-For a good galaxy model where the model and galaxies are representative of the dataset
-residuals, normalized residuals and chi-squareds are minimized:
-"""
-aplt.plot_array(array=fit.residual_map.real, title="Residual Map (Real)")
-fit_plotter.figures_2d(
-    residual_map_imag=True,
-    normalized_residual_map_real=True,
-    normalized_residual_map_imag=True,
-    chi_squared_map_real=True,
-    chi_squared_map_imag=True,
-)
-
-"""
 A subplot can be plotted which contains all of the above quantities, as well as other information contained in the
 galaxies such as the image and a normalized residual map where the colorbar
 goes from 1.0 sigma to -1.0 sigma, to highlight regions where the fit is poor.
