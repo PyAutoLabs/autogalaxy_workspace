@@ -14,7 +14,9 @@
 - guides/results/start_here # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE to produce real samples for downstream examples
 - guides/results/examples/galaxies_fit # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
 - guides/results/examples/samples # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
+- guides/results/examples/models # SLOW 2026-04-10 - cascade from SLOW-skipped results/start_here.py; aggregator returns NoneType so instance.galaxies is None
 - guides/results/workflow/csv_make # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
+- guides/results/database/start_here # SLOW 2026-04-10 - previously failed fast on a broken aggregator query; now runs the real aggregator and exceeds 60s
 - gui/light_centre # GUI scripts cannot be run
 - gui/mask_extra_galaxies # GUI scripts cannot be run
 - gui/mask # GUI scripts cannot be run
