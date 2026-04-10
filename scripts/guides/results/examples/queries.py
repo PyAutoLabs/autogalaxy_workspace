@@ -46,6 +46,16 @@ what the `Aggregator` does if you have not seen it!).
 """
 from autofit.aggregator.aggregator import Aggregator
 
+results_path = Path("output") / "results_folder"
+if not results_path.exists():
+    import subprocess
+    import sys
+
+    subprocess.run(
+        [sys.executable, "scripts/guides/results/start_here.py"],
+        check=True,
+    )
+
 agg = Aggregator.from_directory(
     directory=Path("output") / "results_folder",
 )
