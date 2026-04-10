@@ -300,8 +300,10 @@ For example, one could output the galaxy model image to a .fits file such that
 we could fit this image again with an independent pipeline.
 """
 galaxy_model_image = fit.galaxy_image_dict[galaxy]
-galaxy_model_image.output_to_fits(
-    file_path=dataset_path / "galaxy_model_image.fits", overwrite=True
+aplt.fits_array(
+    array=galaxy_model_image,
+    file_path=dataset_path / "galaxy_model_image.fits",
+    overwrite=True,
 )
 
 """
