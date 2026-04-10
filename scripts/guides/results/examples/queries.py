@@ -132,17 +132,6 @@ agg_query = agg.query(galaxy.bulge == ag.lp_linear.Sersic)
 print("Total Samples Objects via `Sersic` model query = ", len(agg_query), "\n")
 
 """
-We can also query the model on whether a component is None, which is not the case for model we created in tutorial 1
-but can be useful for more complex model fitting. 
-
-When performing model comparison with search-chaining pipelines, it is common for certain components to be included or 
-omitted via a `None`. Querying via `None` therefore allows us to load the results of different model-fits.
-"""
-source = agg.model.galaxies.galaxy
-agg_query = agg.query(galaxy.disk == None)
-print("Total Samples Objects via `Sersic` model query = ", len(agg_query), "\n")
-
-"""
 Queries using the results of model-fitting are also supported. Below, we query to find all fits where the 
 inferred value of `sersic_index` for the `Sersic` of the source's bulge is less than 3.0 (which returns only 
 the first of the three model-fits).
