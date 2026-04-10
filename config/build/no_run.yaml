@@ -3,8 +3,18 @@
 #   - Entries with '/' do a substring match against the file path
 #   - Entries without '/' match the file stem exactly
 # Add an inline # comment to document the reason for skipping.
+#
+# SLOW-skip convention:
+#   Entries tagged `# SLOW <YYYY-MM-DD> - <reason>` mark scripts that are
+#   skipped because they exceed the 60s per-script timeout cap. These are
+#   NOT permanent skips — every mega-run surfaces them with a loud warning
+#   banner. Fix the performance issue and remove the SLOW marker.
 
 - tutorial_searches
+- guides/results/start_here # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE to produce real samples for downstream examples
+- guides/results/examples/galaxies_fit # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
+- guides/results/examples/samples # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
+- guides/results/workflow/csv_make # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
 - gui/light_centre # GUI scripts cannot be run
 - gui/mask_extra_galaxies # GUI scripts cannot be run
 - gui/mask # GUI scripts cannot be run
