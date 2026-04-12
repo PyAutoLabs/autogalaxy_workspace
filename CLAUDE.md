@@ -22,19 +22,19 @@ python scripts/interferometer/modeling.py
 
 Jupyter notebooks mirror the scripts in `notebooks/` and use `# %%` markers to separate cells.
 
-**Integration testing / fast mode**: Set `PYAUTOFIT_TEST_MODE=1` to run any example script without performing full non-linear search sampling. The search is skipped and a mock result is returned immediately, making this ideal for high-level integration testing of scripts end-to-end:
+**Integration testing / fast mode**: Set `PYAUTO_TEST_MODE=1` to run any example script without performing full non-linear search sampling. The search is skipped and a mock result is returned immediately, making this ideal for high-level integration testing of scripts end-to-end:
 
 ```bash
-PYAUTOFIT_TEST_MODE=1 python scripts/imaging/modeling.py
+PYAUTO_TEST_MODE=1 python scripts/imaging/modeling.py
 ```
 
-**Fast smoke tests**: For maximum speed, combine test mode with small datasets and fast plots:
+**Fast smoke tests**: For maximum speed, combine test mode with all skip flags and small datasets:
 
 ```bash
-PYAUTOFIT_TEST_MODE=2 PYAUTO_WORKSPACE_SMALL_DATASETS=1 PYAUTO_FAST_PLOTS=1 python scripts/imaging/modeling.py
+PYAUTO_TEST_MODE=2 PYAUTO_SKIP_FIT_OUTPUT=1 PYAUTO_SKIP_VISUALIZATION=1 PYAUTO_SKIP_CHECKS=1 PYAUTO_SMALL_DATASETS=1 PYAUTO_FAST_PLOTS=1 python scripts/imaging/modeling.py
 ```
 
-- `PYAUTO_WORKSPACE_SMALL_DATASETS=1` — caps all grids/masks to 15x15 pixels at 0.6"/px, making simulators and all downstream computations dramatically faster. Delete `dataset/` when toggling this variable.
+- `PYAUTO_SMALL_DATASETS=1` — caps all grids/masks to 15x15 pixels at 0.6"/px, making simulators and all downstream computations dramatically faster. Delete `dataset/` when toggling this variable.
 - `PYAUTO_FAST_PLOTS=1` — skips `plt.tight_layout()` and critical curve/caustic overlay computation in subplot functions.
 
 **Codex / sandboxed runs**: when running from Codex or any restricted environment, set writable cache directories so `numba` and `matplotlib` do not fail on unwritable home or source-tree paths:
@@ -55,14 +55,14 @@ Run all scripts end-to-end using the provided runner:
 bash run_all_scripts.sh
 ```
 
-- Sets `PYAUTOFIT_TEST_MODE=1` automatically (skips non-linear sampling)
+- Sets `PYAUTO_TEST_MODE=1` automatically (skips non-linear sampling)
 - Failure logs written to `failed/<relative_path>.log`; execution continues after each failure
 - Final summary shows pass/fail/skipped counts
 
 To run a single script in test mode:
 
 ```bash
-PYAUTOFIT_TEST_MODE=1 python3 scripts/imaging/modeling.py
+PYAUTO_TEST_MODE=1 python3 scripts/imaging/modeling.py
 ```
 
 ### Script ordering rules

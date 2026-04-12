@@ -93,9 +93,9 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
-test_mode_was_on = os.environ.get("PYAUTOFIT_TEST_MODE") == "1"
+test_mode_was_on = os.environ.get("PYAUTO_TEST_MODE") == "1"
 if test_mode_was_on:
-    os.environ.pop("PYAUTOFIT_TEST_MODE", None)
+    os.environ.pop("PYAUTO_TEST_MODE", None)
 
 search = af.Nautilus(
     path_prefix=Path("results_folder"),
@@ -111,7 +111,7 @@ analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 result = search.fit(model=model, analysis=analysis)
 
 if test_mode_was_on:
-    os.environ["PYAUTOFIT_TEST_MODE"] = "1"
+    os.environ["PYAUTO_TEST_MODE"] = "1"
 
 """
 __Info__
