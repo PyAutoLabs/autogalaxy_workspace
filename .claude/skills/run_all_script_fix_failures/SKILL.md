@@ -20,7 +20,7 @@ Match PyAutoBuild behavior instead of inventing a separate policy:
 3. Use test mode by default:
 
 ```bash
-PYAUTOFIT_TEST_MODE=1 python <script.py>
+PYAUTO_TEST_MODE=1 python <script.py>
 ```
 
 4. Build the script list using the PyAutoBuild skip policy and the workspace ordering above. Do not use `run_all_scripts.sh`, because that workflow is designed around continuing after failures and writing failure logs under `failed/`.
