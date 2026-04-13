@@ -46,6 +46,7 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 # from autoconf import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
+import numpy as np
 from pathlib import Path
 import autofit as af
 import autogalaxy as ag
@@ -387,13 +388,14 @@ plt.show()
 plt.close()
 
 """
-If we want a specific 1D grid of a certain length over a certain range of coordinates, we can manually input a `Grid1D`
-object.
+If we want a specific 1D radial profile over a certain range of coordinates, we create a `Grid2DIrregular` of
+(y,x) coordinates along the x-axis and evaluate the image on it.
 """
-grid_1d = ag.Grid1D.uniform_from_zero(shape_native=(10000,), pixel_scales=0.01)
-image_1d = galaxy_0.image_2d_from(grid=grid_1d)
+radii = np.arange(10000) * 0.01
+grid_radial = ag.Grid2DIrregular(values=[(0.0, r) for r in radii])
+image_1d = galaxy_0.image_2d_from(grid=grid_radial)
 
-plt.plot(grid_1d, image_1d)
+plt.plot(radii, image_1d)
 plt.xlabel("Radius (arcseconds)")
 plt.ylabel("Luminosity")
 plt.show()
