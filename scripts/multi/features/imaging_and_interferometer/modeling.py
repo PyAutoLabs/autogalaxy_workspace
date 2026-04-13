@@ -27,11 +27,7 @@ A number of benefits are apparent if we combine the analysis of both datasets at
  more information with which to constrain the galaxy structure.
 """
 
-# %matplotlib inline
-# from pyprojroot import here
-# workspace_path = str(here())
-# %cd $workspace_path
-# print(f"Working Directory has been set to `{workspace_path}`")
+# from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

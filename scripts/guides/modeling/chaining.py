@@ -41,11 +41,7 @@ to pass information between searches as well as tools for customizing prior pass
 More details on search chaining can be found in Chapter 3 of the HowToGalaxy lectures.
 """
 
-# %matplotlib inline
-# from pyprojroot import here
-# workspace_path = str(here())
-# %cd $workspace_path
-# print(f"Working Directory has been set to `{workspace_path}`")
+# from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

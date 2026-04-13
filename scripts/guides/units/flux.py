@@ -40,11 +40,7 @@ The conversions below all require a zero point, which is typically provided in t
 instrument that was used to observe the data.
 """
 
-# %matplotlib inline
-# from pyprojroot import here
-# workspace_path = str(here())
-# %cd $workspace_path
-# print(f"Working Directory has been set to `{workspace_path}`")
+# from autoconf import setup_notebook; setup_notebook()
 
 import numpy as np
 import autogalaxy as ag

@@ -51,11 +51,7 @@ __Contents__
 **Wrap Up:** Summary of the FitImaging object and next steps.
 """
 
-# %matplotlib inline
-# from pyprojroot import here
-# workspace_path = str(here())
-# %cd $workspace_path
-# print(f"Working Directory has been set to `{workspace_path}`")
+# from autoconf import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

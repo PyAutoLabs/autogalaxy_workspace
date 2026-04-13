@@ -39,11 +39,7 @@ in the central regions of the image, 4x4 further out and 1x1 beyond that.
 This guide will explain why these choices were made for the default over-sampling behaviour.
 """
 
-# %matplotlib inline
-# from pyprojroot import here
-# workspace_path = str(here())
-# %cd $workspace_path
-# print(f"Working Directory has been set to `{workspace_path}`")
+# from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag
