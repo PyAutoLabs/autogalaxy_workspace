@@ -37,6 +37,7 @@ To illustrate plotting, we require standard objects like a grid, dataset and fit
 
 import matplotlib.pyplot as plt
 import math
+import numpy as np
 
 from pathlib import Path
 import autogalaxy as ag
@@ -217,13 +218,13 @@ plt.show()
 plt.close()
 
 """
-Using a `Grid1D` which does not start from 0.0" plots the 1D quantity with both negative and positive radial
-coordinates.
+Using a radial grid of (y,x) coordinates along the x-axis plots the 1D radial profile.
 """
-grid_1d = ag.Grid1D.uniform_from_zero(shape_native=(10000,), pixel_scales=0.01)
-image_1d = galaxy_0.image_2d_from(grid=grid_1d)
+radii = np.arange(10000) * 0.01
+grid_radial = ag.Grid2DIrregular(values=[(0.0, r) for r in radii])
+image_1d = galaxy_0.image_2d_from(grid=grid_radial)
 
-plt.plot(grid_1d, image_1d)
+plt.plot(radii, image_1d)
 plt.xlabel("Radius (arcseconds)")
 plt.ylabel("Luminosity")
 plt.show()
