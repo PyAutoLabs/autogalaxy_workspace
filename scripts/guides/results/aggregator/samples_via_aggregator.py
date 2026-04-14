@@ -2,7 +2,7 @@
 Database: Samples
 =================
 
-In the script `autogalaxy_workspace/*/results/examples/samples.py` we show how to inspect the non-linear
+In the script `autogalaxy_workspace/*/results/aggregator/samples.py` we show how to inspect the non-linear
 search samples from a result.
 
 We have also shown how to use the `Aggregator` to load the samples of a non-linear search from hard-disk or a
@@ -38,7 +38,7 @@ __Contents__
 __Samples via Result__
 
 A fraction of this example repeats the API for manipulating samples given in the
-`autogalaxy_workspace/*/results/examples/samples.py` example.
+`autogalaxy_workspace/*/results/aggregator/samples.py` example.
 
 This is done so users can directly copy and paste Python code which loads results from the database and manipulates
 the samples.

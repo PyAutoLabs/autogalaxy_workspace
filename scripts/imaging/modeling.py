@@ -437,6 +437,36 @@ mass its name `mass` defined when making the `Model` above is used).
 """
 aplt.corner_cornerpy(samples=result.samples)
 
+"""
+__Loading From Output Folder__
+
+Everything the `Result` object contains has also been written to hard-disk, inside the fit's output folder. Each
+file loads back into a full Python object with a single line — much faster and simpler than re-running the fit.
+
+For example, the maximum log likelihood `Galaxies` is saved as a `.json` file and the per-galaxy model images as
+a `.fits` file:
+"""
+from autoconf.dictable import from_json
+
+result_path = search.paths.output_path  # Points at the fit's unique output folder.
+
+if (result_path / "files" / "galaxies.json").exists():
+    galaxies = from_json(file_path=result_path / "files" / "galaxies.json")
+
+    galaxy_images = ag.Array2D.from_fits(
+        file_path=result_path / "image" / "galaxy_images.fits", hdu=0, pixel_scales=0.1
+    )
+
+"""
+The output folder also contains `model.json`, `samples.csv`, `dataset.fits`, `fit.fits` and more. A full walkthrough
+of loading results from the output folder is given in:
+
+  `autogalaxy_workspace/*/guides/results/start_here.py`
+
+For multi-fit, memory-efficient workflows using the aggregator instead, see:
+
+  `autogalaxy_workspace/*/guides/results/aggregator/start_here.py`
+"""
 
 """
 This script gives a concise overview of the PyAutoGalaxy modeling API, fitting one the simplest models possible.

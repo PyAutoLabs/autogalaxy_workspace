@@ -17,7 +17,7 @@ __Contents__
 __Errors__
 
 To produce errors on unit converted quantities, you`ll may need to perform marginalization over samples of these
-converted quantities (see `results/examples/samples.ipynb`).
+converted quantities (see `results/aggregator/samples.ipynb`).
 """
 
 # from autoconf import setup_notebook; setup_notebook()
