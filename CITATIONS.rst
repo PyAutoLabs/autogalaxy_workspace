@@ -14,7 +14,7 @@ our GitHub page!
 **PyAutoGalaxy** is published in the `Journal of Open Source Software <https://joss.theoj.org/papers/10.21105/joss.02825#>`_ and its
 entry in the above .bib file is under the citation key ``pyautogalaxy``.
 
-You should also specify the non-linear search(es) you use in your analysis (e.g. Dynesty, Emcee, PySwarms, etc) in
+You should also specify the non-linear search(es) you use in your analysis (e.g. Dynesty, Emcee, etc) in
 the main body of text, and delete as appropriate any packages your analysis did not use. The citations.bib file includes
 the citation key for all of these projects.
 
