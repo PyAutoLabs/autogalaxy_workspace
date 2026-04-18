@@ -1,3 +1,8 @@
+import autogalaxy as ag
+from autoconf import check_version
+
+check_version(ag.__version__)
+
 input(
     "############################################\n"
     "### WELCOME TO THE AUTOGALAXY WORKSPACE ###\n"
