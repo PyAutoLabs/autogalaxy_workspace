@@ -23,8 +23,6 @@ defaults:
 overrides:
   # Non-simulator scripts that load committed FITS data need full-size
   # datasets to avoid shape mismatch with pre-existing 100x100 data.
-  - pattern: "howtogalaxy/"
-    unset: [PYAUTO_SMALL_DATASETS]
   - pattern: "guides/"
     unset: [PYAUTO_SMALL_DATASETS]
   # guides/results/start_here.py must produce real samples so the example

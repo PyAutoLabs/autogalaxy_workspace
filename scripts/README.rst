@@ -15,4 +15,6 @@ Folders
 - ``interferometer``: Examples for galaxies observed with an interferometer (e.g. ALMA, JVLA).
 - ``ellipse``: Examples for perform ellipse isophote fitting on galaxy images.
 - ``multi``: Examples for multiple datasets simultaneously (E.g. multi-wavelength imaging, imaging and interferometry).
-- ``howtogalaxy``: The **HowToGalaxy** lectures which teach inexperienced scientists what galaxy fitting is and how to use **PyAutoGalaxy**.
+
+The **HowToGalaxy** lecture series, which teaches inexperienced scientists what galaxy fitting is and how to use
+**PyAutoGalaxy**, now lives in its own repository: https://github.com/PyAutoLabs/HowToGalaxy

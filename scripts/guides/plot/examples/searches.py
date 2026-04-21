@@ -47,7 +47,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/howtogalaxy/simulators/sersic.py"],
+        [sys.executable, "scripts/imaging/simulator_sersic.py"],
         check=True,
     )
 

@@ -553,7 +553,7 @@ __HowToGalaxy__
 This example script above explains ellipse fitting, but there are many other ways to model a galaxy, using
 light profiles which represent its surface brightness. 
 
-This is explained in the **HowToGalaxy** Jupyter notebook lectures, found at `autogalaxy_workspace/*/howtogalaxy`. 
+This is explained in the **HowToGalaxy** Jupyter notebook lectures at https://github.com/PyAutoLabs/HowToGalaxy.
 
 I recommend that you check them out if you are interested in more details!
 """

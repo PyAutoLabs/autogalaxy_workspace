@@ -96,8 +96,10 @@ Sub-packages within `scripts/` and `notebooks/`:
 - `interferometer/` — ALMA/JVLA uv-plane modeling
 - `multi/` — Multi-wavelength simultaneous modeling
 - `guides/` — API guides: modeling, results, plotting, over-sampling, HPC
-- `howtogalaxy/` — Tutorial lecture series
 - `ellipse/` — Ellipse fitting (non-parametric morphology)
+
+The tutorial lecture series now lives in its own repository at
+`https://github.com/PyAutoLabs/HowToGalaxy`.
 
 Each data-type package contains: `modeling.py`, `simulator.py`, `fit.py`, `features/`, `data_preparation/`, `likelihood_function.py`.
 

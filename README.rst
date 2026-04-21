@@ -8,8 +8,8 @@ PyAutoGalaxy Workspace
 
 `Installation Guide <https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html>`_ |
 `readthedocs <https://pyautogalaxy.readthedocs.io/en/latest/index.html>`_ |
-`Introduction on Colab <https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.4.13.6/start_here.ipynb>`_
-`HowToGalaxy <https://pyautogalaxy.readthedocs.io/en/latest/howtogalaxy/howtogalaxy.html>`_
+`Introduction on Colab <https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.4.13.6/start_here.ipynb>`_ |
+`HowToGalaxy <https://github.com/PyAutoLabs/HowToGalaxy>`_
 
 Welcome to the **PyAutoGalaxy** Workspace!
 
@@ -38,18 +38,10 @@ to navigate the workspace for your science case.
 HowToGalaxy
 -----------
 
-For experienced scientists, the run through above will have been a breeze. Concepts surrounding galaxy structure and
-morphology were already familiar and the statistical techniques used for fitting and modeling already understood.
+If you are new to galaxy modeling or the statistical techniques it relies on, the **HowToGalaxy** lecture series
+takes you from first principles through to modeling real galaxy imaging data. It now lives in its own repository:
 
-For those less familiar with these concepts (e.g. undergraduate students, new PhD students or interested members of the
-public), things may have been less clear and a slower more detailed explanation of each concept would be beneficial.
-
-The **HowToGalaxy** Jupyter Notebook lectures are provide exactly this They are a 3+ chapter guide which thoroughly
-take you through the core concepts of galaxy light profiles, teach you the principles ofthe  statistical techniques
-used in modeling and ultimately will allow you to undertake scientific research like a professional astronomer.
-
-If this sounds like it suits you, checkout the `autogalaxy_workspace/notebooks/howtogalaxy` package now, its it
-recommended you go here before anywhere else!
+https://github.com/PyAutoLabs/HowToGalaxy
 
 Workspace Structure
 -------------------
@@ -68,7 +60,6 @@ The examples in the ``notebooks`` and ``scripts`` folders are structured as foll
 - ``imaging``: Examples for galaxy modeling using CCD imaging (e.g. Hubble, James Webb, Euclid).
 - ``interferometer``: Examples for galaxies observed with an interferometer (e.g. ALMA, JVLA).
 - ``multi``: Examples for modeling galaxies observed in multiple wavebands.
-- ``howtogalaxy``: Conceptual tutorials introducing galaxy modeling and inference with **PyAutoGalaxy**.
 
 The dataset packages (e.g. ``imaging``, ``interferometer`` and ``multi``) include the following types of examples:
 
