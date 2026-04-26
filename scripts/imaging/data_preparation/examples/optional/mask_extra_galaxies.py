@@ -43,3 +43,93 @@ __Contents__
 
 # from autoconf import setup_notebook; setup_notebook()
 
+from pathlib import Path
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+
+import numpy as np
+
+"""
+The path where the extra galaxy mask is output, which is `dataset/imaging/simple`.
+"""
+dataset_type = "imaging"
+dataset_name = "simple"
+dataset_path = Path("dataset", dataset_type, dataset_name)
+
+"""
+__Dataset Auto-Simulation__
+
+If the dataset does not already exist on your system, it will be created by running the corresponding
+simulator script. This ensures that all example scripts can be run without manually simulating data first.
+"""
+if ag.util.dataset.should_simulate(str(dataset_path)):
+    import subprocess
+    import sys
+
+    subprocess.run(
+        [sys.executable, "scripts/imaging/simulator.py"],
+        check=True,
+    )
+
+"""
+The pixel scale of the imaging dataset.
+"""
+pixel_scales = 0.1
+
+"""
+Load the dataset image, so that the location of galaxies is clear when scaling the noise-map.
+"""
+data = ag.Array2D.from_fits(
+    file_path=dataset_path / "data.fits", pixel_scales=pixel_scales
+)
+
+aplt.plot_array(array=data, title="Data")
+
+"""
+Manually define the extra galaxies mask corresponding to the regions of the image where extra galaxies are located
+whose emission needs to be omitted from the model-fit.
+"""
+mask = ag.Mask2D.all_false(
+    shape_native=data.shape_native, pixel_scales=data.pixel_scales
+)
+mask[80:120, 21:58] = True
+mask[50:80, 100:125] = True
+
+"""
+Apply the extra galaxies mask to the image, which will remove them from visualization.
+"""
+data = data.apply_mask(mask=mask)
+
+"""
+Plot the data with the new mask, in order to check that the mask removes the regions of the image corresponding to the
+extra galaxies.
+"""
+aplt.plot_array(array=data, title="Data")
+
+"""
+__Output__
+
+Output to a .png file for easy inspection.
+"""
+aplt.plot_array(
+    array=data,
+    title="Data",
+    output_path=dataset_path,
+    output_filename="data_mask_extra_galaxies",
+    output_format="png",
+)
+
+"""
+Output the extra galaxies mask, which will be load and used before a model fit.
+"""
+aplt.fits_array(
+    array=mask, file_path=Path(dataset_path, "mask_extra_galaxies.fits"), overwrite=True
+)
+
+"""
+The workspace also includes a GUI for image and noise-map scaling, which can be found at
+`autogalaxy_workspace/*/data_preparation/imaging/gui/mask_extra_galaxies.py`.
+
+This tools allows you `spray paint` on the image where an you want to scale, allow irregular patterns (i.e. not
+rectangles) to be scaled.
+"""
