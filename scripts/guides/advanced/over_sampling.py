@@ -66,7 +66,7 @@ We now plot the grid, over laying a uniform grid of pixels to illustrate the are
 want light profile intensities to be computed.
 """
 aplt.plot_grid(
-    grid=grid_sub_1, title="Grid Without Over-Sampling", plot_grid_lines=True
+    grid=grid_sub_1, title="Grid Without Over-Sampling"
 )
 
 """
@@ -111,7 +111,6 @@ In the code below, it is the input `plot_over_sampled_grid=True` which ensures w
 aplt.plot_grid(
     grid=grid_sub_2,
     title="Grid With 2x2 Over-Sampling",
-    plot_grid_lines=True,
     plot_over_sampled_grid=True,
 )
 
@@ -266,7 +265,6 @@ grid_adaptive = ag.Grid2D.no_mask(
 aplt.plot_grid(
     grid=grid_adaptive,
     title="Adaptive Over-Sampling",
-    plot_grid_lines=True,
     plot_over_sampled_grid=True,
 )
 
@@ -293,7 +291,6 @@ grid_adaptive = ag.Grid2D(values=grid, mask=mask, over_sample_size=over_sample_s
 aplt.plot_grid(
     grid=grid_adaptive,
     title="Adaptive Over-Sampling",
-    plot_grid_lines=True,
     plot_over_sampled_grid=True,
 )
 
