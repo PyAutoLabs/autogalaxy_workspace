@@ -51,10 +51,10 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
-The path where the extra galaxy centres are output, which is `dataset/imaging/simple`.
+The path where the extra galaxy centres are output, which is `dataset/imaging/extra_galaxies`.
 """
 dataset_type = "imaging"
-dataset_name = "simple"
+dataset_name = "extra_galaxies"
 dataset_path = Path("dataset", dataset_type, dataset_name)
 
 """
@@ -68,7 +68,7 @@ if ag.util.dataset.should_simulate(str(dataset_path)):
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator.py"],
+        [sys.executable, "scripts/imaging/features/extra_galaxies/simulator.py"],
         check=True,
     )
 

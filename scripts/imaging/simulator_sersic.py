@@ -13,6 +13,7 @@ __Contents__
 **Galaxies:** Define the galaxy Sersic light profile used for simulation.
 **Output:** Save the simulated dataset to FITS files.
 **Visualize:** Output subplot and image PNGs of the simulated dataset.
+**Mask Extra Galaxies:** Save an empty `mask_extra_galaxies.fits` so noise-scaling tutorials can load it.
 **Plane Output:** Save the Galaxies object as a JSON file.
 
 __Start Here__
@@ -135,10 +136,31 @@ aplt.subplot_galaxies(
 )
 
 """
+__Mask Extra Galaxies__
+
+This dataset has no extra galaxies, but pixelization tutorials that load it (e.g.
+`imaging/features/pixelization/modeling.py`, `imaging/features/pixelization/fit.py`) demonstrate the
+noise-scaling API by applying a `mask_extra_galaxies` mask to the dataset. Output an empty (all-False,
+no-pixels-masked) mask so those tutorials can call `apply_noise_scaling(mask=...)` without crashing on a
+missing FITS file. The mask shape tracks `dataset.shape_native`, so `PYAUTO_SMALL_DATASETS=1` is honoured
+automatically.
+"""
+mask_extra_galaxies = ag.Mask2D.all_false(
+    shape_native=dataset.shape_native,
+    pixel_scales=dataset.pixel_scales,
+)
+
+aplt.fits_array(
+    array=mask_extra_galaxies,
+    file_path=dataset_path / "mask_extra_galaxies.fits",
+    overwrite=True,
+)
+
+"""
 __Plane Output__
 
 Save the `Galaxies` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
-are safely stored and available to check how the dataset was simulated in the future. 
+are safely stored and available to check how the dataset was simulated in the future.
 
 This can be loaded via the method `galaxies = ag.from_json()`.
 """

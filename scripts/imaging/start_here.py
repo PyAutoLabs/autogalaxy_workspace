@@ -120,19 +120,6 @@ if ag.util.dataset.should_simulate(str(dataset_path)):
         check=True,
     )
 
-if not (dataset_path / "mask_extra_galaxies.fits").exists():
-    import subprocess
-    import sys
-
-    subprocess.run(
-        [
-            sys.executable,
-            "scripts/imaging/data_preparation/examples/optional/mask_extra_galaxies.py",
-        ],
-        check=True,
-    )
-
-
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
     psf_path=dataset_path / "psf.fits",

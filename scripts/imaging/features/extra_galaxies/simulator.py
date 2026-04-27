@@ -56,12 +56,16 @@ __Contents__
 **Extra Galaxies:** Defining two extra galaxies with spherical Exponential light profiles.
 **Output:** Saving the simulated dataset to FITS files.
 **Visualize:** Outputting subplot and image visualizations as PNG files.
+**Mask Extra Galaxies:** Building and saving `mask_extra_galaxies.fits` so consumers can load it directly.
 **Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
+
+import numpy as np
+
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -205,6 +209,46 @@ aplt.plot_array(
 )
 aplt.subplot_galaxies(
     galaxies=galaxies, grid=grid, output_path=dataset_path, output_format="png"
+)
+
+"""
+__Mask Extra Galaxies__
+
+Build and output a `mask_extra_galaxies.fits` covering the two extra galaxy regions, so that downstream tutorials
+which use this dataset (e.g. `imaging/start_here.py`, `imaging/features/extra_galaxies/modeling.py`,
+`imaging/features/pixelization/modeling.py`) can load the mask directly without a separate data-preparation step.
+
+Each circle is sized to ~3x the galaxy's `effective_radius`, which comfortably covers the light extent for the
+`ExponentialSph` profiles used above. The geometry is derived from the same centres + radii defined for the
+extra galaxies in this script, so it stays in sync with any future tweak to those values.
+
+`Mask2D.circular` honours the `PYAUTO_SMALL_DATASETS=1` env var (caps to 15x15 at 0.6"/px), so the mask
+automatically shrinks alongside the small-dataset image and never raises an out-of-bounds error.
+"""
+extra_galaxies_mask = np.zeros(dataset.shape_native, dtype=bool)
+
+for centre, radius in [
+    (extra_galaxy_0_centre, 3.0 * 0.5),
+    (extra_galaxy_1_centre, 3.0 * 0.8),
+]:
+    circle = ag.Mask2D.circular(
+        shape_native=dataset.shape_native,
+        pixel_scales=dataset.pixel_scales,
+        centre=centre,
+        radius=radius,
+        invert=True,  # True inside the circle (i.e. masked region)
+    )
+    extra_galaxies_mask = np.logical_or(extra_galaxies_mask, circle.native)
+
+mask_extra_galaxies = ag.Mask2D(
+    mask=extra_galaxies_mask,
+    pixel_scales=dataset.pixel_scales,
+)
+
+aplt.fits_array(
+    array=mask_extra_galaxies,
+    file_path=dataset_path / "mask_extra_galaxies.fits",
+    overwrite=True,
 )
 
 """
