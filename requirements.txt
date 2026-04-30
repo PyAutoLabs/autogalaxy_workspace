@@ -1,2 +1,2 @@
-autogalaxy
+autogalaxy[jax]
 numba
