@@ -1,0 +1,58 @@
+{
+    "type": "list",
+    "values": [
+        {
+            "type": "instance",
+            "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
+            "arguments": {
+                "label": null,
+                "redshift": 0.5,
+                "bulge": {
+                    "type": "instance",
+                    "class_path": "autogalaxy.profiles.light.standard.sersic.Sersic",
+                    "arguments": {
+                        "centre": {
+                            "type": "tuple",
+                            "values": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "effective_radius": 0.6,
+                        "ell_comps": {
+                            "type": "tuple",
+                            "values": [
+                                0.05263157894736841,
+                                3.2227547345982974e-18
+                            ]
+                        },
+                        "sersic_index": 3.0,
+                        "intensity": 9.58
+                    }
+                },
+                "disk": {
+                    "type": "instance",
+                    "class_path": "autogalaxy.profiles.light.standard.exponential.Exponential",
+                    "arguments": {
+                        "intensity": 2.104,
+                        "effective_radius": 1.6,
+                        "centre": {
+                            "type": "tuple",
+                            "values": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "ell_comps": {
+                            "type": "tuple",
+                            "values": [
+                                0.152828012432548,
+                                0.08823529411764709
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

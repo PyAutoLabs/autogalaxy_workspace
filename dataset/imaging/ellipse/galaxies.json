@@ -1,0 +1,36 @@
+{
+    "type": "list",
+    "values": [
+        {
+            "type": "instance",
+            "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
+            "arguments": {
+                "redshift": 0.5,
+                "label": null,
+                "bulge": {
+                    "type": "instance",
+                    "class_path": "autogalaxy.profiles.light.standard.sersic.Sersic",
+                    "arguments": {
+                        "ell_comps": {
+                            "type": "tuple",
+                            "values": [
+                                0.3333333333333333,
+                                2.041077998578922e-17
+                            ]
+                        },
+                        "intensity": 1.0,
+                        "effective_radius": 0.8,
+                        "centre": {
+                            "type": "tuple",
+                            "values": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "sersic_index": 4.0
+                    }
+                }
+            }
+        }
+    ]
+}

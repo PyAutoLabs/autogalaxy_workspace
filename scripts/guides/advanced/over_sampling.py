@@ -65,9 +65,7 @@ grid_sub_1 = ag.Grid2D.uniform(
 We now plot the grid, over laying a uniform grid of pixels to illustrate the area of each pixel within which we
 want light profile intensities to be computed.
 """
-aplt.plot_grid(
-    grid=grid_sub_1, title="Grid Without Over-Sampling"
-)
+aplt.plot_grid(grid=grid_sub_1, title="Grid Without Over-Sampling")
 
 """
 We now create and plot a uniform grid which does over-sample the pixels, by inputting `over_sample_size=2`.
