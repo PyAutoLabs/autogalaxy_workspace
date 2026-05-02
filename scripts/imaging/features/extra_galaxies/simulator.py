@@ -255,13 +255,29 @@ aplt.fits_array(
 __Plane Output__
 
 Save the `Galaxies` in the dataset folder as a .json file, ensuring the true light profiles and galaxies
-are safely stored and available to check how the dataset was simulated in the future. 
+are safely stored and available to check how the dataset was simulated in the future.
 
 This can be loaded via the method `galaxies = ag.from_json()`.
 """
 ag.output_to_json(
     obj=galaxies,
     file_path=Path(dataset_path, "galaxies.json"),
+)
+
+"""
+__Extra Galaxies Centres__
+
+Save the (y,x) centres of the two extra galaxies as a `Grid2DIrregular` JSON file. The modeling tutorial
+`features/extra_galaxies/modeling.py` loads this file to fix or initialise the extra-galaxy light-profile
+centres. The data-preparation tutorial `data_preparation/examples/optional/extra_galaxies_centres.py`
+demonstrates how a user would mark these centres themselves on real data.
+"""
+extra_galaxies_centres = ag.Grid2DIrregular(
+    values=[extra_galaxy_0_centre, extra_galaxy_1_centre]
+)
+ag.output_to_json(
+    obj=extra_galaxies_centres,
+    file_path=Path(dataset_path, "extra_galaxies_centres.json"),
 )
 
 """
