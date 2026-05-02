@@ -98,18 +98,17 @@ print(grid_sub_1.over_sampled.shape)
 print(grid_sub_2.over_sampled.shape)
 
 """
-We now plot the over sampled grid over the image, showing that each pixel is now split into a 2x2 sub-grid of 
-coordinates. 
+We now plot the over sampled grid, showing that each pixel is split into a 2x2 sub-grid of coordinates.
 
-These are used to compute the intensity of the light profile and therefore more accurately estimate the total 
+These are used to compute the intensity of the light profile and therefore more accurately estimate the total
 intensity within each pixel if there is a significant gradient in intensity within the pixel.
 
-In the code below, it is the input `plot_over_sampled_grid=True` which ensures we plot the over sampled grid.
+In the code below, we pass `grid_sub_2.over_sampled` directly to `aplt.plot_grid`, which scatters every
+sub-pixel coordinate so the 2x2 sub-grid pattern is visible.
 """
 aplt.plot_grid(
-    grid=grid_sub_2,
+    grid=grid_sub_2.over_sampled,
     title="Grid With 2x2 Over-Sampling",
-    plot_over_sampled_grid=True,
 )
 
 """
@@ -261,9 +260,8 @@ grid_adaptive = ag.Grid2D.no_mask(
 )
 
 aplt.plot_grid(
-    grid=grid_adaptive,
+    grid=grid_adaptive.over_sampled,
     title="Adaptive Over-Sampling",
-    plot_over_sampled_grid=True,
 )
 
 print(over_sample_size)
@@ -287,9 +285,8 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
 grid_adaptive = ag.Grid2D(values=grid, mask=mask, over_sample_size=over_sample_size)
 
 aplt.plot_grid(
-    grid=grid_adaptive,
+    grid=grid_adaptive.over_sampled,
     title="Adaptive Over-Sampling",
-    plot_over_sampled_grid=True,
 )
 
 """
