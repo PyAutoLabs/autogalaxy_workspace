@@ -17,10 +17,6 @@
 #   banner. Investigate the failure, fix the underlying bug, and remove
 #   the NEEDS_FIX marker.
 
-- guides/results/start_here # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE to produce real samples for downstream examples
-- guides/results/examples/galaxies_fit # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
-- guides/results/examples/samples # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
-- guides/results/examples/models # SLOW 2026-04-10 - cascade from SLOW-skipped results/start_here.py; aggregator returns NoneType so instance.galaxies is None
 - guides/results/workflow/csv_make # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
 - guides/results/database/start_here # SLOW 2026-04-10 - previously failed fast on a broken aggregator query; now runs the real aggregator and exceeds 60s
 - gui/light_centre # GUI scripts cannot be run
@@ -30,7 +26,6 @@
 - fits_make # Test mode does not output .fits images.
 - png_make # Test mode does not output .png images.
 - examples/searches # Test mode breaks search visualization.
-- data_fitting # Test mode breaks .fits file output
 - ellipse/simulator # NEEDS_FIX 2026-04-24 - all ellipse examples parked pending JAX refactor; see PyAutoPrompt/autogalaxy/ellipse_no_run.md
 - ellipse/fit # NEEDS_FIX 2026-04-24 - all ellipse examples parked pending JAX refactor; see PyAutoPrompt/autogalaxy/ellipse_no_run.md
 - ellipse/modeling # NEEDS_FIX 2026-04-24 - all ellipse examples parked pending JAX refactor; see PyAutoPrompt/autogalaxy/ellipse_no_run.md
