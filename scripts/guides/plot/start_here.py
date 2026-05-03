@@ -40,7 +40,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/guides/plot/simulator.py"],
+        [sys.executable, "scripts/imaging/simulator.py"],
         check=True,
     )
 
