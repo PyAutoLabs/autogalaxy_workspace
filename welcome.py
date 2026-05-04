@@ -107,7 +107,7 @@ input(
     
     This will also guide you through where to go next in the workspace depending on your scientific interests.
     
-    A full description of the workspace can be found in the `autogalaxy_workspace/README.rst` file and on the 
+    A full description of the workspace can be found in the `autogalaxy_workspace/README.md` file and on the
     PyAutoGalaxy readthedocs website.
     
     [Press Enter to continue]
