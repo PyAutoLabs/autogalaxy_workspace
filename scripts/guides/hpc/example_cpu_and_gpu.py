@@ -28,7 +28,7 @@ The SLURM batch scripts referenced throughout this example are in:
   scripts/guides/hpc/batch_cpu/submit   -- CPU array job (many datasets or parallel fit)
   scripts/guides/hpc/batch_gpu/submit   -- GPU array job (same pattern, GPU partition)
 
-See README.rst in this folder for the full setup guide, including how to transfer files
+See README.md in this folder for the full setup guide, including how to transfer files
 using the sync script.
 """
 
