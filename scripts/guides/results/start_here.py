@@ -17,10 +17,11 @@ This guide shows two complementary ways to get those results back into Python:
     `Model`, ...) via Python generators, so you can iterate over hundreds of fits without holding them all in
     memory at once. This is the right tool when you want to analyse a sample of galaxies together.
 
-Both sections appear below in that order. The aggregator section first runs a quick model-fit so a results
-directory exists, then walks through the deeper API (samples, fits, galaxies, units, pixelization). Where each
-aggregator section reaches a result that the simple-loading API also exposes, this is noted — both routes return
-the same PyAutoFit / PyAutoGalaxy objects, just sourced from disk in different ways.
+Both sections appear below in that order. To keep them runnable from a fresh checkout, this script first
+performs a quick model-fit so a results directory exists for both halves to read from. The aggregator
+section then walks through the deeper API (samples, fits, galaxies, units, pixelization). Where each
+aggregator section reaches a result that the simple-loading API also exposes, this is noted — both routes
+return the same PyAutoFit / PyAutoGalaxy objects, just sourced from disk in different ways.
 
 __Output Folder Layout__
 
@@ -50,6 +51,9 @@ Each completed fit lives at a path like::
 
 __Contents__
 
+**Model Fit:** Run a quick fit once so both halves of this guide have a real result on disk to read from.
+**Info:** Print the result in a readable format.
+
 **Simple Loading (one fit at a time):**
 
 **Galaxies:** Load the maximum log likelihood `Galaxies` from `galaxies.json`.
@@ -59,8 +63,6 @@ __Contents__
 
 **Aggregator (many fits, generator-based):**
 
-**Model Fit:** Run a quick fit so a results directory exists for the aggregator examples.
-**Info:** Print the result in a readable format.
 **Loading From Hard-disk:** Use `Aggregator.from_directory(...)` to scrape `output/`.
 **Generators:** How Python generators give the aggregator its memory efficiency.
 **Database File:** Loading from a `.sqlite` database for very large samples.
@@ -89,122 +91,41 @@ import autogalaxy.plot as aplt
 
 """
 ==============================================================================
-                              SIMPLE LOADING
+                                MODEL FIT
 ==============================================================================
 
-The first half of this guide loads a single fit directly from `output/`. This is the fastest way to inspect one
-fit — every file under `files/` and `image/` is a Python object away.
+Both halves of this guide — simple loading and the aggregator — need a real fit on disk to read from. We
+perform that fit once here. The rest of the file then uses the resulting `search` object (via
+`search.paths.output_path`) and the in-memory `result`.
 
-__Result Path__
+The model and search match `aggregator/samples.py` and `_quick_fit.py`, so re-running this tutorial resumes
+from the cached fit instead of redoing the search.
 
-Set the path to the folder of the fit you want to load. Replace the values below with the path to your own fit.
+__Quick Fit Auto-Trigger__
 
-The `<unique_hash>` placeholder is a 32-character identifier specific to the fit; each load below is guarded with
-`.exists()` so this script runs cleanly even before you replace it.
+If a previous fit has not been run yet, the shared helper ``_quick_fit.py`` is invoked to produce one.
+The helper writes a capped Nautilus fit to ``output/results_folder/`` so this tutorial has results to
+work with. When that folder already exists the helper exits immediately, so re-running this tutorial is
+cheap.
 """
-result_path = (
-    Path("output")
-    / "imaging"
-    / "features"
-    / "simple"
-    / "start_here"
-    / "<unique_hash>"  # The 32-character identifier for the specific fit.
-)
-
-files_path = result_path / "files"
-image_path = result_path / "image"
-
-"""
-__Galaxies__
-
-The maximum log likelihood `Galaxies` collection is saved to `files/galaxies.json` and can be loaded in one line.
-
-It contains every `Galaxy` at its max log likelihood values (light and mass profiles included), so it can be used
-directly to compute images, convergence maps and more — exactly as if it had been returned by `search.fit()`.
-"""
-if (files_path / "galaxies.json").exists():
-    galaxies = from_json(file_path=files_path / "galaxies.json")
-    print(galaxies)
-
-"""
-__Model__
-
-The fitted `af.Collection` model is saved to `files/model.json`. This is the *prior* model (with free parameters),
-not the max log likelihood instance — useful for inspecting the structure of what was fitted.
-"""
-if (files_path / "model.json").exists():
-    model = from_json(file_path=files_path / "model.json")
-    print(model.info)
-
-"""
-__Samples__
-
-The full set of non-linear search samples is saved to `files/samples.csv` and its summary to
-`files/samples_summary.json`. Both can be loaded without re-running the search.
-"""
-if (files_path / "samples.csv").exists() and (files_path / "model.json").exists():
-    model = from_json(file_path=files_path / "model.json")
-    samples = af.SamplesNest.from_csv(file_path=files_path / "samples.csv", model=model)
-    print(samples.max_log_likelihood())
-
-"""
-__FITS Files__
-
-The `image/` folder contains the imaging products of the fit as `.fits` files. These load with the standard
-`ag.Imaging` / `aa.Array2D` APIs and can be plotted with `aplt`.
-"""
-if (image_path / "dataset.fits").exists():
-    dataset = ag.Imaging.from_fits(
-        data_path=image_path / "dataset.fits",
-        noise_map_path=image_path / "dataset.fits",
-        psf_path=image_path / "dataset.fits",
-        data_hdu=0,
-        noise_map_hdu=1,
-        psf_hdu=2,
-        pixel_scales=0.1,
-    )
-
-if (image_path / "galaxy_images.fits").exists():
-    galaxy_images = ag.Array2D.from_fits(
-        file_path=image_path / "galaxy_images.fits", hdu=0, pixel_scales=0.1
-    )
-
-"""
-==============================================================================
-                                AGGREGATOR
-==============================================================================
-
-Everything above loaded one fit at a time, by pointing at a specific output directory. To analyse many fits — for
-example a sample of hundreds of galaxies — use the **aggregator** instead. It scrapes a directory of fits and yields
-the same objects (`Galaxies`, `Samples`, `Model`, ...) via Python generators, keeping memory use low.
-
-The remainder of this file is the aggregator entry point. After reading it, the sibling files in `aggregator/`
-provide more detailed examples for analysing different aspects of the results.
-
-To make the examples below runnable from a fresh checkout, we first perform a quick model-fit so the aggregator
-has a results directory to scrape. Anything `from_json(...)` reaches in the simple-loading section above can also
-be reached through the aggregator below — both APIs return the same Python objects.
-
-If you are not familiar with the modeling API, see `autogalaxy_workspace/*/examples/modeling/` first.
-"""
-dataset_name = "simple"
-dataset_path = Path("dataset") / "imaging" / dataset_name
-
-"""
-__Dataset Auto-Simulation__
-
-If the dataset does not already exist on your system, it will be created by running the corresponding
-simulator script. This ensures that all example scripts can be run without manually simulating data first.
-"""
-if not dataset_path.exists():
+results_path = Path("output") / "results_folder"
+if not results_path.exists():
     import subprocess
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator.py"],
+        [sys.executable, "scripts/guides/results/_quick_fit.py"],
         check=True,
     )
 
+"""
+__Dataset and Model__
+
+Set up the same dataset and model as `_quick_fit.py`, then call `search.fit(...)`. Because the search has
+already run, this resumes from the checkpoint and returns the in-memory `Result` object instantly.
+"""
+dataset_name = "simple"
+dataset_path = Path("dataset") / "imaging" / dataset_name
 
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
@@ -248,6 +169,104 @@ As seen throughout the workspace, the `info` attribute shows the result in a rea
 print(result.info)
 
 """
+==============================================================================
+                              SIMPLE LOADING
+==============================================================================
+
+The first half of this guide loads a single fit directly from `output/`. This is the fastest way to inspect
+one fit — every file under `files/` and `image/` is a Python object away.
+
+__Result Path__
+
+Point at the fit's output folder. Because the fit ran above, ``search.paths.output_path`` already points at
+the right location — there is no need to construct the path manually or know the unique hash.
+"""
+result_path = search.paths.output_path
+
+files_path = result_path / "files"
+image_path = result_path / "image"
+
+"""
+__Galaxies__
+
+The maximum log likelihood `Galaxies` collection is saved to `files/galaxies.json` and can be loaded in one line.
+
+It contains every `Galaxy` at its max log likelihood values (light and mass profiles included), so it can be used
+directly to compute images, convergence maps and more — exactly as if it had been returned by `search.fit()`.
+"""
+if (files_path / "galaxies.json").exists():
+    galaxies = from_json(file_path=files_path / "galaxies.json")
+    print(galaxies)
+
+"""
+__Model__
+
+The fitted `af.Collection` model is saved to `files/model.json`. This is the *prior* model (with free parameters),
+not the max log likelihood instance — useful for inspecting the structure of what was fitted.
+"""
+if (files_path / "model.json").exists():
+    model = from_json(file_path=files_path / "model.json")
+    print(model.info)
+
+"""
+__Samples__
+
+The full set of non-linear search samples is saved to `files/samples.csv` and its summary to
+`files/samples_summary.json`. Both can be loaded without re-running the search.
+"""
+if (files_path / "samples.csv").exists() and (files_path / "model.json").exists():
+    model = from_json(file_path=files_path / "model.json")
+    samples = af.SamplesNest.from_table(filename=files_path / "samples.csv", model=model)
+    print(samples.max_log_likelihood())
+
+"""
+__FITS Files__
+
+The `image/` folder contains the imaging products of the fit as `.fits` files. These load with the standard
+`ag.Imaging` / `aa.Array2D` APIs and can be plotted with `aplt`.
+"""
+if (image_path / "dataset.fits").exists():
+    dataset = ag.Imaging.from_fits(
+        data_path=image_path / "dataset.fits",
+        noise_map_path=image_path / "dataset.fits",
+        psf_path=image_path / "dataset.fits",
+        data_hdu=0,
+        noise_map_hdu=1,
+        psf_hdu=2,
+        pixel_scales=0.1,
+    )
+
+if (image_path / "galaxy_images.fits").exists():
+    galaxy_images = ag.Array2D.from_fits(
+        file_path=image_path / "galaxy_images.fits", hdu=0, pixel_scales=0.1
+    )
+
+"""
+==============================================================================
+                                AGGREGATOR
+==============================================================================
+
+Simple loading is the right tool when you have a single fit and you want to pull a specific object off
+disk. The **aggregator** is a different tool — it scrapes a directory of fits and yields the same objects
+(`Galaxies`, `Samples`, `Model`, ...) via **Python generators**, so memory use stays bounded no matter how
+many fits the directory contains. That generator-based design is its core feature, and it's what lets the
+aggregator scale from one fit to hundreds.
+
+The two routes are complementary, not a hierarchy:
+
+  - **Simple loading** is the most direct way to inspect one fit you already have a path to — one Python
+    object per call, all in memory.
+  - **Aggregator** is the right tool when you want to *iterate* over fits — even a single fit — and rely
+    on lazy evaluation, query filtering across many runs, or a `.sqlite` database back-end for very large
+    samples. It is also the API used by the workflow tools (`csv_maker.py`, `png_maker.py`, `fits_maker.py`)
+    that build scientific summaries of large fit samples.
+
+Anything reached via `from_json(...)` in the simple-loading section above can also be reached through the
+aggregator below — both APIs return the same PyAutoFit / PyAutoGalaxy objects. After reading this section,
+the sibling files in `aggregator/` provide deeper examples for samples, fits, queries and database use.
+
+If you are not familiar with the modeling API, see `autogalaxy_workspace/*/examples/modeling/` first.
+
 __Loading From Hard-disk__
 
 When performing fits which output results to hard-disk, a `files` folder is created containing .json / .csv files of
