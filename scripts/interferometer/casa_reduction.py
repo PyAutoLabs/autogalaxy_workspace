@@ -64,7 +64,7 @@ them in a .fits format):
 #
 # def getcol_wrapper(ms, table, colname):
 #
-#     if os.path.isdir(ms):
+#     if Path(ms).is_dir():
 #         tb.open(
 #             "{}/{}".format(ms, table)
 #         )
@@ -83,7 +83,7 @@ them in a .fits format):
 #
 # def get_visibilities(ms):
 #
-#     if os.path.isdir(ms):
+#     if Path(ms).is_dir():
 #         data = getcol_wrapper(
 #             ms=ms,
 #             table="",
@@ -118,7 +118,7 @@ them in a .fits format):
 #
 #         return array_converted
 #
-#     if os.path.isdir(ms):
+#     if Path(ms).is_dir():
 #         uvw = getcol_wrapper(
 #             ms=ms,
 #             table="",
