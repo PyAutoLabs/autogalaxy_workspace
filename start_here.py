@@ -60,7 +60,7 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 import matplotlib.pyplot as plt
-from os import path
+from pathlib import Path
 
 """
 Lets illustrate a simple galaxy structure calculations creating an an image of a galaxy using a light profile.

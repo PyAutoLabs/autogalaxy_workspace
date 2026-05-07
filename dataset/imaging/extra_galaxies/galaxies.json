@@ -11,6 +11,14 @@
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.sersic.Sersic",
                     "arguments": {
+                        "intensity": 1.0,
+                        "ell_comps": {
+                            "type": "tuple",
+                            "values": [
+                                0.05263157894736841,
+                                3.2227547345982974e-18
+                            ]
+                        },
                         "sersic_index": 3.0,
                         "centre": {
                             "type": "tuple",
@@ -19,14 +27,6 @@
                                 0.0
                             ]
                         },
-                        "ell_comps": {
-                            "type": "tuple",
-                            "values": [
-                                0.05263157894736841,
-                                3.2227547345982974e-18
-                            ]
-                        },
-                        "intensity": 1.0,
                         "effective_radius": 0.6
                     }
                 },
@@ -34,7 +34,6 @@
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.exponential.Exponential",
                     "arguments": {
-                        "effective_radius": 1.6,
                         "centre": {
                             "type": "tuple",
                             "values": [
@@ -42,14 +41,15 @@
                                 0.0
                             ]
                         },
-                        "intensity": 0.5,
                         "ell_comps": {
                             "type": "tuple",
                             "values": [
                                 0.152828012432548,
                                 0.08823529411764709
                             ]
-                        }
+                        },
+                        "intensity": 0.5,
+                        "effective_radius": 1.6
                     }
                 }
             }
@@ -64,7 +64,6 @@
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.exponential.ExponentialSph",
                     "arguments": {
-                        "effective_radius": 0.5,
                         "centre": {
                             "type": "tuple",
                             "values": [
@@ -72,6 +71,7 @@
                                 3.5
                             ]
                         },
+                        "effective_radius": 0.5,
                         "intensity": 2.0
                     }
                 }
@@ -87,7 +87,6 @@
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.exponential.ExponentialSph",
                     "arguments": {
-                        "effective_radius": 0.8,
                         "centre": {
                             "type": "tuple",
                             "values": [
@@ -95,6 +94,7 @@
                                 -3.5
                             ]
                         },
+                        "effective_radius": 0.8,
                         "intensity": 2.0
                     }
                 }
