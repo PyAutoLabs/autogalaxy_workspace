@@ -31,7 +31,6 @@ __Contents__
 # from autoconf import setup_notebook; setup_notebook()
 
 import os
-from os import path
 from pathlib import Path
 
 import autofit as af

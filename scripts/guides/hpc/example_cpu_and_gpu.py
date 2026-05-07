@@ -59,7 +59,6 @@ This example assumes results are output to the directory, where `hpc_username` i
 
 You will need to update `hpc_username` to your hpc username below.
 """
-from os import path
 from pathlib import Path
 
 hpc_output_path = Path(path.sep) / "hpc" / "data" / "hpc_username" / "output"
@@ -205,7 +204,7 @@ We now create the path to the dataset this specific job fits, for example:
 """
 dataset_path = Path(hpc_dataset_path, dataset_type, dataset_name)
 
-if not dataset_path.exists():
+if not dataset_Path().exists():
     local_dataset_path = Path.cwd()
     dataset_type = "imaging"
     dataset_path = Path(local_dataset_path, "dataset", dataset_type, dataset_name)
@@ -240,7 +239,7 @@ dataset_name = "simple"
 
 dataset_path = Path(hpc_dataset_path, dataset_folder, dataset_name)
 
-if not dataset_path.exists():
+if not dataset_Path().exists():
     local_dataset_path = Path.cwd()
     dataset_folder = "imaging"
     dataset_path = Path(local_dataset_path, "dataset", dataset_folder, dataset_name)
@@ -252,7 +251,7 @@ __Dataset Auto-Simulation__
 If the dataset does not already exist on your system, it will be created by running the corresponding
 simulator script. This ensures that all example scripts can be run without manually simulating data first.
 """
-if not dataset_path.exists():
+if not dataset_Path().exists():
     import subprocess
     import sys
 

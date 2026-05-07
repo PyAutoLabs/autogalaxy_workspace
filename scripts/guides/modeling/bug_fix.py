@@ -47,7 +47,6 @@ def fit():
 
     # from autoconf import setup_notebook; setup_notebook()
 
-    from os import path
     from pathlib import Path
     import autofit as af
     import autogalaxy as ag
@@ -57,7 +56,7 @@ def fit():
     __Dataset__
     """
     dataset_name = "simple"
-    dataset_path = path.join("dataset", "imaging", dataset_name)
+    dataset_path = Path("dataset") / "imaging" / dataset_name
 
     """
     __Dataset Auto-Simulation__
@@ -75,9 +74,9 @@ def fit():
         )
 
     dataset = ag.Imaging.from_fits(
-        data_path=path.join(dataset_path, "data.fits"),
-        psf_path=path.join(dataset_path, "psf.fits"),
-        noise_map_path=path.join(dataset_path, "noise_map.fits"),
+        data_path=Path(dataset_path) / "data.fits",
+        psf_path=Path(dataset_path) / "psf.fits",
+        noise_map_path=Path(dataset_path) / "noise_map.fits",
         pixel_scales=0.1,
     )
 
