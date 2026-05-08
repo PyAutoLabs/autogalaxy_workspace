@@ -26,36 +26,36 @@ linear light profiles, therefore you must read the following notebooks before th
 
 __Contents__
 
-**Mesh Shape:** Fixing the rectangular mesh shape before modeling.
-**Dataset:** Loading the imaging dataset for likelihood evaluation.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Defining and applying a circular mask to the data.
-**Over Sampling:** Setting up over-sampling for the pixelization.
-**Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
-**Galaxy:** Creating the galaxy object for the pixelized reconstruction.
-**Source Galaxy Pixelization and Regularization:** Defining the mesh and regularization for the pixelization.
-**Interpolation:** Interpolating image-pixel coordinates to source-pixel coordinates.
-**Mapper:** Creating the mapper object which maps between image and source planes.
-**Over Sampling:** Over-sampling applied to the pixelization grid.
-**Alternative Meshes:** Discussion of other mesh types available in PyAutoGalaxy.
-**Mapping Matrix:** Computing the mapping matrix from source pixels to image pixels.
-**Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
-**Data Vector (D):** Computing the data vector for the linear inversion.
-**Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
-**Regularization Matrix (H):** Computing the regularization matrix that enforces smoothness.
-**F + Lamdba H:** Combining the curvature and regularization matrices.
-**Galaxy Reconstruction (s):** Solving for the source pixel flux values.
-**Image Reconstruction:** Mapping the reconstruction back to the image plane.
-**Likelihood Function:** Overview of the log likelihood function terms for pixelizations.
-**Chi Squared:** Computing the chi-squared statistic for the fit.
-**Regularization Term:** Computing the regularization penalty term.
-**Complexity Terms:** Computing the Bayesian complexity terms for model comparison.
-**Noise Normalization Term:** Computing the noise normalization term of the likelihood.
-**Calculate The Log Likelihood:** Combining terms to compute the final log evidence value.
-**Fit:** Performing the same likelihood evaluation using the FitImaging object.
-**Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
-**Log Likelihood Function: Pixelization With Light Profile:** Discussion of combining pixelization with light profiles.
-**Wrap Up:** Summary and links to additional guides.
+- **Mesh Shape:** Fixing the rectangular mesh shape before modeling.
+- **Dataset:** Loading the imaging dataset for likelihood evaluation.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Defining and applying a circular mask to the data.
+- **Over Sampling:** Setting up over-sampling for the pixelization.
+- **Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
+- **Galaxy:** Creating the galaxy object for the pixelized reconstruction.
+- **Source Galaxy Pixelization and Regularization:** Defining the mesh and regularization for the pixelization.
+- **Interpolation:** Interpolating image-pixel coordinates to source-pixel coordinates.
+- **Mapper:** Creating the mapper object which maps between image and source planes.
+- **Over Sampling:** Over-sampling applied to the pixelization grid.
+- **Alternative Meshes:** Discussion of other mesh types available in PyAutoGalaxy.
+- **Mapping Matrix:** Computing the mapping matrix from source pixels to image pixels.
+- **Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
+- **Data Vector (D):** Computing the data vector for the linear inversion.
+- **Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
+- **Regularization Matrix (H):** Computing the regularization matrix that enforces smoothness.
+- **F + Lamdba H:** Combining the curvature and regularization matrices.
+- **Galaxy Reconstruction (s):** Solving for the source pixel flux values.
+- **Image Reconstruction:** Mapping the reconstruction back to the image plane.
+- **Likelihood Function:** Overview of the log likelihood function terms for pixelizations.
+- **Chi Squared:** Computing the chi-squared statistic for the fit.
+- **Regularization Term:** Computing the regularization penalty term.
+- **Complexity Terms:** Computing the Bayesian complexity terms for model comparison.
+- **Noise Normalization Term:** Computing the noise normalization term of the likelihood.
+- **Calculate The Log Likelihood:** Combining terms to compute the final log evidence value.
+- **Fit:** Performing the same likelihood evaluation using the FitImaging object.
+- **Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
+- **Log Likelihood Function: Pixelization With Light Profile:** Discussion of combining pixelization with light profiles.
+- **Wrap Up:** Summary and links to additional guides.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

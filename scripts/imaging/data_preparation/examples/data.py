@@ -27,10 +27,10 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 
 __Contents__
 
-**Loading Data From Individual Fits Files:** Loading an image from FITS files and inspecting its standards.
-**Converting Data To Electrons Per Second:** Converting image flux units between electrons per second, counts and ADUs.
-**Resizing Data:** Trimming or padding a large postage stamp to an appropriate size.
-**Background Subtraction:** Overview of background sky subtraction tools and modeling approaches.
+- **Loading Data From Individual Fits Files:** Loading an image from FITS files and inspecting its standards.
+- **Converting Data To Electrons Per Second:** Converting image flux units between electrons per second, counts and ADUs.
+- **Resizing Data:** Trimming or padding a large postage stamp to an appropriate size.
+- **Background Subtraction:** Overview of background sky subtraction tools and modeling approaches.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

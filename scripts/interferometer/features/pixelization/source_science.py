@@ -13,9 +13,9 @@ easily loaded to perform analysis without the need for PyAutoGalaxy.
 
 __Contents__
 
-**Model Fit:** Performing a pixelized galaxy model fit to interferometer data.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Reconstruction CSV:** Loading and using the pixelization reconstruction from a CSV file.
+- **Model Fit:** Performing a pixelized galaxy model fit to interferometer data.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Reconstruction CSV:** Loading and using the pixelization reconstruction from a CSV file.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports

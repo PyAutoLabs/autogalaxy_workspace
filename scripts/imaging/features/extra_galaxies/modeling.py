@@ -38,23 +38,23 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 
 __Contents__
 
-**Dataset:** Loading the extra galaxies imaging dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Defining a larger 6.0 arcsecond circular mask to include extra galaxy emission.
-**Extra Galaxies Over Sampling:** Applying adaptive over-sampling at the centres of all galaxies.
-**Extra Galaxies Noise Scaling:** Scaling noise to remove extra galaxy emission without masking pixels.
-**Extra Galaxies Dataset:** Reloading the dataset without noise scaling for the modeling approach.
-**Extra Galaxies Centres:** Loading the extra galaxy centre coordinates from a JSON file.
-**Model:** Composing the galaxy model with Sersic bulge and Exponential disk.
-**Extra Galaxies Model:** Adding extra galaxy light profiles with fixed centres to the model.
-**Search + Analysis:** Configuring the Nautilus search and analysis for the model-fit.
-**VRAM:** Discussion of GPU VRAM usage with extra galaxy components.
-**Run Time:** Discussion of computational run times with extra galaxies.
-**Model-Fit:** Running the model-fit with the extra galaxies included.
-**Result:** Inspecting the model-fit results and best-fit model.
-**Approaches to Extra Galaxies:** Summary of masking vs modeling approaches for extra galaxies.
-**Multi Gaussian Expansion:** Using MGE as an alternative to Sersic profiles for extra galaxies.
-**Wrap Up:** Summary and links to further resources.
+- **Dataset:** Loading the extra galaxies imaging dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Defining a larger 6.0 arcsecond circular mask to include extra galaxy emission.
+- **Extra Galaxies Over Sampling:** Applying adaptive over-sampling at the centres of all galaxies.
+- **Extra Galaxies Noise Scaling:** Scaling noise to remove extra galaxy emission without masking pixels.
+- **Extra Galaxies Dataset:** Reloading the dataset without noise scaling for the modeling approach.
+- **Extra Galaxies Centres:** Loading the extra galaxy centre coordinates from a JSON file.
+- **Model:** Composing the galaxy model with Sersic bulge and Exponential disk.
+- **Extra Galaxies Model:** Adding extra galaxy light profiles with fixed centres to the model.
+- **Search + Analysis:** Configuring the Nautilus search and analysis for the model-fit.
+- **VRAM:** Discussion of GPU VRAM usage with extra galaxy components.
+- **Run Time:** Discussion of computational run times with extra galaxies.
+- **Model-Fit:** Running the model-fit with the extra galaxies included.
+- **Result:** Inspecting the model-fit results and best-fit model.
+- **Approaches to Extra Galaxies:** Summary of masking vs modeling approaches for extra galaxies.
+- **Multi Gaussian Expansion:** Using MGE as an alternative to Sersic profiles for extra galaxies.
+- **Wrap Up:** Summary and links to further resources.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports

@@ -10,19 +10,19 @@ readable code for different use-cases.
 
 __Contents__
 
-**Simple Model:** Compose a model with a galaxy having a single Sersic light profile.
-**More Complex Models:** Compose models with multiple light profiles and multiple galaxies.
-**Concise API:** A shorthand API for composing models more concisely.
-**Prior Customization:** Customize the priors of individual model parameters.
-**Model Customization:** Pair, fix and offset model parameters to reduce complexity.
-**Available Model Components:** Links to API documentation for all available light and mass profiles.
-**JSon Outputs:** Save and load models as JSON files.
-**Many Profile Models (Advanced):** Compose models with many profiles using MGE or shapelets.
-**Model Linking (Advanced):** Link inferred models between searches in a chain.
-**Across Datasets (Advanced):** Compose models that share components across multiple datasets.
-**Relations (Advanced):** Compose models where parameters vary according to a user-specified function.
-**PyAutoFit API:** Links to the PyAutoFit model composition cookbooks for more advanced usage.
-**Wrap Up:** Summary of model composition tools.
+- **Simple Model:** Compose a model with a galaxy having a single Sersic light profile.
+- **More Complex Models:** Compose models with multiple light profiles and multiple galaxies.
+- **Concise API:** A shorthand API for composing models more concisely.
+- **Prior Customization:** Customize the priors of individual model parameters.
+- **Model Customization:** Pair, fix and offset model parameters to reduce complexity.
+- **Available Model Components:** Links to API documentation for all available light and mass profiles.
+- **JSon Outputs:** Save and load models as JSON files.
+- **Many Profile Models (Advanced):** Compose models with many profiles using MGE or shapelets.
+- **Model Linking (Advanced):** Link inferred models between searches in a chain.
+- **Across Datasets (Advanced):** Compose models that share components across multiple datasets.
+- **Relations (Advanced):** Compose models where parameters vary according to a user-specified function.
+- **PyAutoFit API:** Links to the PyAutoFit model composition cookbooks for more advanced usage.
+- **Wrap Up:** Summary of model composition tools.
 
 __Start Here Notebook__
 

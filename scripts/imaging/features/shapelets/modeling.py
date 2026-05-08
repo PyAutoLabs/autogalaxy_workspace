@@ -19,21 +19,21 @@ feature).
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using shapelets.
-**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-**Basis:** How to create a basis of multiple light profiles, in this example shapelets.
-**Coefficients:** A visualization of the real and imaginary shapelet coefficients in the Basis.
-**Linear Light Profiles:** How to create a basis of linear light profiles to perform the shapelet decomposition.
-**Fit:** Perform a fit to a dataset using linear light profile MGE.
-**Intensities:** Access the solved for intensities of linear light profiles from the fit.
-**Model:** Composing a model using shapelets and how it changes the number of free parameters.
-**Search & Analysis:** Standard set up of non-linear search and analysis.
-**Run Time:** Profiling of shapelet run times and discussion of how they compare to standard light profiles.
-**Model-Fit:** Performs the model fit using standard API.
-**Result:** Shaeplet results, including accessing light profiles with solved for intensity values.
-**Cartesian Shapelets:** Using shapelets definedon a Cartesian coordinate system instead of polar coordinates.
-**Lens Shapelets:** Using shapelets to decompose the lens galaxy instead of the source galaxy.
-**Regularization:** API for applying regularization to shapelets, which is not recommend but included for illustration.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using shapelets.
+- **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+- **Basis:** How to create a basis of multiple light profiles, in this example shapelets.
+- **Coefficients:** A visualization of the real and imaginary shapelet coefficients in the Basis.
+- **Linear Light Profiles:** How to create a basis of linear light profiles to perform the shapelet decomposition.
+- **Fit:** Perform a fit to a dataset using linear light profile MGE.
+- **Intensities:** Access the solved for intensities of linear light profiles from the fit.
+- **Model:** Composing a model using shapelets and how it changes the number of free parameters.
+- **Search & Analysis:** Standard set up of non-linear search and analysis.
+- **Run Time:** Profiling of shapelet run times and discussion of how they compare to standard light profiles.
+- **Model-Fit:** Performs the model fit using standard API.
+- **Result:** Shaeplet results, including accessing light profiles with solved for intensity values.
+- **Cartesian Shapelets:** Using shapelets definedon a Cartesian coordinate system instead of polar coordinates.
+- **Lens Shapelets:** Using shapelets to decompose the lens galaxy instead of the source galaxy.
+- **Regularization:** API for applying regularization to shapelets, which is not recommend but included for illustration.
 
 __Advantages__
 

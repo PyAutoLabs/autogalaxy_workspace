@@ -19,12 +19,12 @@ TODO: NEED TO INCLUDE DIFFERENT POINTING / CENTERINGS.
 
 __Contents__
 
-**Dataset Paths:** Setting the output path for simulated data.
-**Simulate:** Creating grids with matching pixel scales for same-wavelength observations.
-**Galaxies:** Setting up the galaxy with bulge and disk light profiles at one wavelength.
-**Output:** Saving the simulated datasets to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Galaxies json:** Saving the galaxy model as a JSON file for future reference.
+- **Dataset Paths:** Setting the output path for simulated data.
+- **Simulate:** Creating grids with matching pixel scales for same-wavelength observations.
+- **Galaxies:** Setting up the galaxy with bulge and disk light profiles at one wavelength.
+- **Output:** Saving the simulated datasets to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Galaxies json:** Saving the galaxy model as a JSON file for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

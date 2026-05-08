@@ -28,25 +28,25 @@ therefore you must read the following notebooks before this script:
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for likelihood evaluation.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
-**Linear Light Profiles:** Defining linear Sersic and Exponential light profiles without intensity parameters.
-**LightProfileLinearObjFuncList:** Creating the interface between linear light profiles and the linear algebra.
-**Mapping Matrix:** Computing the mapping matrix of light profile images.
-**Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
-**Data Vector (D):** Computing the data vector for the linear inversion.
-**Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
-**Reconstruction (Positive-Negative):** Solving the linear algebra allowing positive and negative intensity values.
-**Reconstruction (Positive Only):** Solving the linear algebra with a positive-only constraint.
-**Image Reconstruction:** Mapping the reconstruction back to the image plane.
-**Likelihood Function:** Overview of the log likelihood function terms.
-**Chi Squared:** Computing the chi-squared statistic for the fit.
-**Noise Normalization Term:** Computing the noise normalization term of the likelihood.
-**Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
-**Fit:** Performing the same likelihood evaluation using the FitImaging object.
-**Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
-**Wrap Up:** Summary and links to additional guides.
+- **Dataset:** Loading the imaging dataset for likelihood evaluation.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
+- **Linear Light Profiles:** Defining linear Sersic and Exponential light profiles without intensity parameters.
+- **LightProfileLinearObjFuncList:** Creating the interface between linear light profiles and the linear algebra.
+- **Mapping Matrix:** Computing the mapping matrix of light profile images.
+- **Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
+- **Data Vector (D):** Computing the data vector for the linear inversion.
+- **Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
+- **Reconstruction (Positive-Negative):** Solving the linear algebra allowing positive and negative intensity values.
+- **Reconstruction (Positive Only):** Solving the linear algebra with a positive-only constraint.
+- **Image Reconstruction:** Mapping the reconstruction back to the image plane.
+- **Likelihood Function:** Overview of the log likelihood function terms.
+- **Chi Squared:** Computing the chi-squared statistic for the fit.
+- **Noise Normalization Term:** Computing the noise normalization term of the likelihood.
+- **Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
+- **Fit:** Performing the same likelihood evaluation using the FitImaging object.
+- **Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
+- **Wrap Up:** Summary and links to additional guides.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

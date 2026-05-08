@@ -18,12 +18,12 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 
 __Contents__
 
-**Dataset Paths:** Defining the output path for the simulated dataset.
-**Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
-**Galaxies:** Defining the galaxy with a Sersic bulge and an operated Gaussian point source.
-**Output:** Saving the simulated dataset to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Plane Output:** Saving the Galaxies object as a JSON file for future reference.
+- **Dataset Paths:** Defining the output path for the simulated dataset.
+- **Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
+- **Galaxies:** Defining the galaxy with a Sersic bulge and an operated Gaussian point source.
+- **Output:** Saving the simulated dataset to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

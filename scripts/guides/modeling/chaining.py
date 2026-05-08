@@ -21,16 +21,16 @@ The benefits of non-linear search chaining are:
 
 __Contents__
 
-**Dataset + Masking:** Load, plot and mask the imaging data.
-**Paths:** Set the output path for chained search results.
-**Model (Search 1):** Compose the model for the first search in the chain.
-**Search + Analysis + Model-Fit (Search 1):** Run the first non-linear search.
-**Result (Search 1):** Inspect the results of the first search.
-**Model Chaining:** Pass results from search 1 to initialize the model of search 2.
-**Search + Analysis + Model-Fit (Search 2):** Run the second non-linear search with refined priors.
-**Result (Search 2):** Inspect the final results of the chained search.
-**Detailed Explanation Of Prior Passing:** In-depth explanation of how priors are passed between searches.
-**EXAMPLE:** A worked example of prior passing for a Sersic sersic_index parameter.
+- **Dataset + Masking:** Load, plot and mask the imaging data.
+- **Paths:** Set the output path for chained search results.
+- **Model (Search 1):** Compose the model for the first search in the chain.
+- **Search + Analysis + Model-Fit (Search 1):** Run the first non-linear search.
+- **Result (Search 1):** Inspect the results of the first search.
+- **Model Chaining:** Pass results from search 1 to initialize the model of search 2.
+- **Search + Analysis + Model-Fit (Search 2):** Run the second non-linear search with refined priors.
+- **Result (Search 2):** Inspect the final results of the chained search.
+- **Detailed Explanation Of Prior Passing:** In-depth explanation of how priors are passed between searches.
+- **EXAMPLE:** A worked example of prior passing for a Sersic sersic_index parameter.
 
 __This Example__
 

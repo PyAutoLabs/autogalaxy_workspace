@@ -9,14 +9,14 @@ This script simulates `Imaging` of a galaxy using light profiles where:
 
 __Contents__
 
-**Dataset Paths:** Set the output path for the simulated dataset.
-**Grid:** Create a 2D grid for simulation.
-**Over Sampling:** Apply adaptive over-sampling for accurate image evaluation.
-**Galaxies:** Define the galaxy light profiles used for simulation.
-**Output:** Save the simulated dataset to FITS files.
-**Visualize:** Output subplot and image PNGs of the simulated dataset.
-**Plane Output:** Save the Galaxies object as a JSON file.
-**Info:** Save metadata (redshift, velocity dispersion) as a JSON file.
+- **Dataset Paths:** Set the output path for the simulated dataset.
+- **Grid:** Create a 2D grid for simulation.
+- **Over Sampling:** Apply adaptive over-sampling for accurate image evaluation.
+- **Galaxies:** Define the galaxy light profiles used for simulation.
+- **Output:** Save the simulated dataset to FITS files.
+- **Visualize:** Output subplot and image PNGs of the simulated dataset.
+- **Plane Output:** Save the Galaxies object as a JSON file.
+- **Info:** Save metadata (redshift, velocity dispersion) as a JSON file.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

@@ -8,16 +8,16 @@ This script fits an `Imaging` dataset of a galaxy with a model where:
 
 __Contents__
 
-**Benefits:** Advantages of combining imaging and interferometer datasets.
-**Interferometer Masking:** Defining the real-space mask for the interferometer data.
-**Interferometer Dataset:** Loading the interferometer dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Imaging Dataset:** Loading the imaging dataset from FITS files.
-**Imaging Masking:** Applying a circular mask to the imaging dataset.
-**Analysis:** Creating analysis objects for both imaging and interferometer data.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Model-Fit:** Running the non-linear search to fit both datasets simultaneously.
-**Result:** Inspecting the results of the combined imaging and interferometer fit.
+- **Benefits:** Advantages of combining imaging and interferometer datasets.
+- **Interferometer Masking:** Defining the real-space mask for the interferometer data.
+- **Interferometer Dataset:** Loading the interferometer dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Imaging Dataset:** Loading the imaging dataset from FITS files.
+- **Imaging Masking:** Applying a circular mask to the imaging dataset.
+- **Analysis:** Creating analysis objects for both imaging and interferometer data.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Model-Fit:** Running the non-linear search to fit both datasets simultaneously.
+- **Result:** Inspecting the results of the combined imaging and interferometer fit.
 
 __Benefits__
 

@@ -8,11 +8,11 @@ This script simulates `Interferometer` data of a galaxy where:
 
 __Contents__
 
-**Grid:** Defining the 2D grid for evaluating galaxy images in real space.
-**Galaxies:** Setting up the galaxy with bulge and disk light profiles for simulation.
-**Output:** Saving the simulated dataset to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Plane Output:** Saving the galaxy model as a JSON file for future reference.
+- **Grid:** Defining the 2D grid for evaluating galaxy images in real space.
+- **Galaxies:** Setting up the galaxy with bulge and disk light profiles for simulation.
+- **Output:** Saving the simulated dataset to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Plane Output:** Saving the galaxy model as a JSON file for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

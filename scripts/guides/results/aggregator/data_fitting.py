@@ -10,11 +10,11 @@ like its visualization and also inspect fits randomly drawm from the PDF.
 
 __Contents__
 
-**Aggregator:** Load results using the Aggregator.
-**Fits via Aggregator:** Load datasets and maximum log likelihood fits using ImagingAgg and FitImagingAgg.
-**Modification:** Modify fit settings (e.g. over-sampling) when loading fits from the aggregator.
-**Visualization Customization:** Customize plot appearance when inspecting fits via the aggregator.
-**Errors (Random draws from PDF):** Inspect how fits vary within the PDF errors.
+- **Aggregator:** Load results using the Aggregator.
+- **Fits via Aggregator:** Load datasets and maximum log likelihood fits using ImagingAgg and FitImagingAgg.
+- **Modification:** Modify fit settings (e.g. over-sampling) when loading fits from the aggregator.
+- **Visualization Customization:** Customize plot appearance when inspecting fits via the aggregator.
+- **Errors (Random draws from PDF):** Inspect how fits vary within the PDF errors.
 
 __Interferometer__
 

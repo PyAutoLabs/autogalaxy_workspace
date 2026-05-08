@@ -44,20 +44,20 @@ being small enough to be modeled with light profiles, is around **10,000 visibil
 
 __Contents__
 
-**JAX:** Overview of JAX GPU/CPU acceleration for fast model fitting.
-**Number of Visibilities:** Discussion of dataset size and when to use pixelized reconstructions.
-**Google Colab Setup:** Setting up the environment for Google Colab.
-**Imports:** Standard imports used across workspace examples.
-**Mask (Real Space):** Defining the real-space mask for interferometer modeling.
-**Dataset:** Loading interferometer data from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Model:** Composing a Multi Gaussian Expansion galaxy model.
-**Model Fit:** Fitting the model to data using Nautilus nested sampling.
-**Result:** Inspecting the results of the model fit.
-**Model Your Own Galaxy:** Tips for applying this workflow to your own interferometer data.
-**Simulator:** Simulating interferometer datasets of galaxies.
-**Sample:** Simulating many galaxies from a model distribution.
-**Wrap Up:** Summary and pointers to further resources.
+- **JAX:** Overview of JAX GPU/CPU acceleration for fast model fitting.
+- **Number of Visibilities:** Discussion of dataset size and when to use pixelized reconstructions.
+- **Google Colab Setup:** Setting up the environment for Google Colab.
+- **Imports:** Standard imports used across workspace examples.
+- **Mask (Real Space):** Defining the real-space mask for interferometer modeling.
+- **Dataset:** Loading interferometer data from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Model:** Composing a Multi Gaussian Expansion galaxy model.
+- **Model Fit:** Fitting the model to data using Nautilus nested sampling.
+- **Result:** Inspecting the results of the model fit.
+- **Model Your Own Galaxy:** Tips for applying this workflow to your own interferometer data.
+- **Simulator:** Simulating interferometer datasets of galaxies.
+- **Sample:** Simulating many galaxies from a model distribution.
+- **Wrap Up:** Summary and pointers to further resources.
 
 __Google Colab Setup__
 

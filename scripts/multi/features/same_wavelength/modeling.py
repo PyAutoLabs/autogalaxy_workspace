@@ -21,15 +21,15 @@ certain parts of code are not documented to ensure the script is concise.
 
 __Contents__
 
-**Pixel Scales:** Setting pixel scales for same-wavelength datasets.
-**Dataset:** Loading and plotting each same-wavelength dataset.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to each dataset.
-**Analysis:** Creating analysis objects for each dataset with JAX acceleration.
-**Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
-**Result:** Inspecting the per-dataset results of the model fit.
+- **Pixel Scales:** Setting pixel scales for same-wavelength datasets.
+- **Dataset:** Loading and plotting each same-wavelength dataset.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to each dataset.
+- **Analysis:** Creating analysis objects for each dataset with JAX acceleration.
+- **Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
+- **Result:** Inspecting the per-dataset results of the model fit.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

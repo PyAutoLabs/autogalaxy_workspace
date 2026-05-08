@@ -13,13 +13,13 @@ certain parts of code are not documented to ensure the script is concise.
 
 __Contents__
 
-**Colors:** Defining the multi-wavelength color bands.
-**Dataset Paths:** Setting the output path for simulated data.
-**Simulate:** Creating grids with per-wavelength pixel scales and over-sampling.
-**Galaxies:** Setting up galaxy light profiles with wavelength-dependent intensities.
-**Output:** Saving the simulated datasets to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Galaxies json:** Saving the galaxy models as JSON files for future reference.
+- **Colors:** Defining the multi-wavelength color bands.
+- **Dataset Paths:** Setting the output path for simulated data.
+- **Simulate:** Creating grids with per-wavelength pixel scales and over-sampling.
+- **Galaxies:** Setting up galaxy light profiles with wavelength-dependent intensities.
+- **Output:** Saving the simulated datasets to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Galaxies json:** Saving the galaxy models as JSON files for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()
