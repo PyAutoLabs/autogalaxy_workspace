@@ -34,21 +34,21 @@ and `modeling/features/pixelizaiton.py`.
 
 __Contents__
 
-**Loading Data:** Loading the imaging dataset from FITS files for fitting.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Grid:** Setting up the over-sampled grid for light profile evaluation.
-**Mask:** Applying a circular mask to the dataset.
-**Fitting:** Creating galaxies from light profiles and fitting them to the data using FitImaging.
-**Bad Fit:** Demonstrating what a poor fit looks like with offset galaxy centres.
-**Fit Quantities:** Accessing model data, residuals and chi-squared arrays from the fit.
-**Figures of Merit:** Computing chi-squared, noise normalization and log likelihood scalar values.
-**Galaxy Quantities:** Extracting individual galaxy model images and subtracted images.
-**Unmasked Quantities:** Computing unmasked blurred images of the galaxies.
-**Mask:** Using a secondary mask to estimate fit quality in specific regions.
-**Pixel Counting:** Counting pixels with poor chi-squared values to quantify residual extent.
-**Outputting Results:** Saving fit quantities to FITS files for later analysis.
-**Modeling Results:** Links to modeling result analysis in the workspace.
-**Wrap Up:** Summary of the FitImaging object and next steps.
+- **Loading Data:** Loading the imaging dataset from FITS files for fitting.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Grid:** Setting up the over-sampled grid for light profile evaluation.
+- **Mask:** Applying a circular mask to the dataset.
+- **Fitting:** Creating galaxies from light profiles and fitting them to the data using FitImaging.
+- **Bad Fit:** Demonstrating what a poor fit looks like with offset galaxy centres.
+- **Fit Quantities:** Accessing model data, residuals and chi-squared arrays from the fit.
+- **Figures of Merit:** Computing chi-squared, noise normalization and log likelihood scalar values.
+- **Galaxy Quantities:** Extracting individual galaxy model images and subtracted images.
+- **Unmasked Quantities:** Computing unmasked blurred images of the galaxies.
+- **Mask:** Using a secondary mask to estimate fit quality in specific regions.
+- **Pixel Counting:** Counting pixels with poor chi-squared values to quantify residual extent.
+- **Outputting Results:** Saving fit quantities to FITS files for later analysis.
+- **Modeling Results:** Links to modeling result analysis in the workspace.
+- **Wrap Up:** Summary of the FitImaging object and next steps.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

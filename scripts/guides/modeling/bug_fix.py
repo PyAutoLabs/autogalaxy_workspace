@@ -13,8 +13,8 @@ Comments have therefore been removed to avoid repetition and make the script mor
 
 __Contents__
 
-**The Fix:** The code pattern that fixes parallelization issues on certain operating systems.
-**Trouble Shooting:** What to do if parallelization still does not work after applying the fix.
+- **The Fix:** The code pattern that fixes parallelization issues on certain operating systems.
+- **Trouble Shooting:** What to do if parallelization still does not work after applying the fix.
 
 __The Fix__
 

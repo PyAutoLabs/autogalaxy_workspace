@@ -35,21 +35,21 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 
 __Contents__
 
-**Loading Data:** Loading the imaging dataset from FITS files for ellipse fitting.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to the dataset.
-**Model Composition:** Composing an ellipse model with free centre and elliptical components.
-**Search:** Configuring the Dynesty non-linear search for ellipse fitting.
-**Analysis:** Setting up the AnalysisEllipse object for the model fit.
-**Run Times:** Estimating the computational cost of the ellipse model fit.
-**Model-Fit:** Running the non-linear search to fit the ellipse to data.
-**Output Folder Layout:** Description of the structure of the `output` folder where results are written.
-**Result:** Inspecting the result object and maximum likelihood ellipse parameters.
-**Multiple Ellipses:** Fitting many ellipses of increasing size to trace the full galaxy.
-**Final Fit:** Combining all ellipses into a single final fit.
-**Masking:** Applying an extra galaxies mask and repeating the ellipse fitting.
-**Data Preparation:** Pointers to data preparation scripts for your own data.
-**HowToGalaxy:** Pointers to the HowToGalaxy lecture series for light profile modeling.
+- **Loading Data:** Loading the imaging dataset from FITS files for ellipse fitting.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to the dataset.
+- **Model Composition:** Composing an ellipse model with free centre and elliptical components.
+- **Search:** Configuring the Dynesty non-linear search for ellipse fitting.
+- **Analysis:** Setting up the AnalysisEllipse object for the model fit.
+- **Run Times:** Estimating the computational cost of the ellipse model fit.
+- **Model-Fit:** Running the non-linear search to fit the ellipse to data.
+- **Output Folder Layout:** Description of the structure of the `output` folder where results are written.
+- **Result:** Inspecting the result object and maximum likelihood ellipse parameters.
+- **Multiple Ellipses:** Fitting many ellipses of increasing size to trace the full galaxy.
+- **Final Fit:** Combining all ellipses into a single final fit.
+- **Masking:** Applying an extra galaxies mask and repeating the ellipse fitting.
+- **Data Preparation:** Pointers to data preparation scripts for your own data.
+- **HowToGalaxy:** Pointers to the HowToGalaxy lecture series for light profile modeling.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

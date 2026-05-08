@@ -15,12 +15,12 @@ This script simulates `Imaging` of a galaxy using light profiles where:
 
 __Contents__
 
-**Dataset Paths:** Setting the output path for simulated data.
-**Grid:** Creating the 2D grid for evaluating galaxy images with adaptive over-sampling.
-**Galaxies:** Setting up the galaxy with an elliptical Sersic bulge.
-**Output:** Saving the simulated dataset to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Plane Output:** Saving the galaxy model as a JSON file for future reference.
+- **Dataset Paths:** Setting the output path for simulated data.
+- **Grid:** Creating the 2D grid for evaluating galaxy images with adaptive over-sampling.
+- **Galaxies:** Setting up the galaxy with an elliptical Sersic bulge.
+- **Output:** Saving the simulated dataset to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Plane Output:** Saving the galaxy model as a JSON file for future reference.
 
 __Start Here Notebook__
 

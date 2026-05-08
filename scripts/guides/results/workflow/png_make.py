@@ -26,17 +26,17 @@ capabilities.
 
 __Contents__
 
-**Model Fit:** Perform model-fits whose results are output for PNG extraction.
-**Workflow Paths:** Set the output path for workflow PNG files.
-**Aggregator:** Load results using the Aggregator.
-**Extract Images:** Extract specific images from subplot PNG files.
-**Output Single Png:** Save extracted images as a single combined PNG file.
-**Output to Folder:** Save individual PNG files for each model-fit to a folder.
-**Combine Images From Subplots:** Combine images from different subplots into one figure.
-**Add Extra Png:** Add additional PNG images (e.g. RGB) to a subplot.
-**Shape Customization:** Customize the size and layout of added images.
-**Zoom Png:** Zoom into a specific region of an image.
-**Custom Subplots in Analysis:** Extend the Analysis class to output custom subplot images.
+- **Model Fit:** Perform model-fits whose results are output for PNG extraction.
+- **Workflow Paths:** Set the output path for workflow PNG files.
+- **Aggregator:** Load results using the Aggregator.
+- **Extract Images:** Extract specific images from subplot PNG files.
+- **Output Single Png:** Save extracted images as a single combined PNG file.
+- **Output to Folder:** Save individual PNG files for each model-fit to a folder.
+- **Combine Images From Subplots:** Combine images from different subplots into one figure.
+- **Add Extra Png:** Add additional PNG images (e.g. RGB) to a subplot.
+- **Shape Customization:** Customize the size and layout of added images.
+- **Zoom Png:** Zoom into a specific region of an image.
+- **Custom Subplots in Analysis:** Extend the Analysis class to output custom subplot images.
 
 __CSV, Png and Fits__
 

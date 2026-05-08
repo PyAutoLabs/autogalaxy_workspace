@@ -27,37 +27,37 @@ learn about the linear light profile likelihood function without reading other l
 
 __Contents__
 
-**Mesh Shape:** Fixing the rectangular mesh shape before modeling.
-**Mask:** Defining the real-space mask for the interferometer grid.
-**Dataset:** Loading the interferometer dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Over Sampling:** Why over sampling is not needed for interferometer data.
-**Masked Image Grid:** Setting up the 2D coordinate grid for pixelization evaluation.
-**Galaxy:** Combining the pixelization into a Galaxy object.
-**Rectangular Mesh:** Creating the rectangular mesh overlaid on the masked image grid.
-**Interpolation:** Creating an interpolator describing how image pixels map to mesh pixels.
-**Mapper:** Creating the Mapper object that describes image-to-source pixel mappings.
-**Over Sampling:** How over sampling interacts with the pixelization mapping scheme.
-**Alternative Meshes:** Brief overview of other mesh types available.
-**Mapping Matrix:** Constructing the 2D mapping matrix from image pixels to source pixels.
-**Transformed Mapping Matrix ($f$):** Fourier transforming the mapping matrix to the uv-plane.
-**Data Vector (D):** Computing the data vector for the linear inversion.
-**Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
-**Regularization Matrix (H):** Constructing the regularization matrix to enforce smoothness.
-**F + Lamdba H:** Combining the curvature and regularization matrices.
-**Galaxy Reconstruction (s):** Solving the linear system to reconstruct the galaxy.
-**Visibilities Reconstruction:** Mapping the reconstruction back to the uv-plane.
-**Likelihood Function:** Defining the full Bayesian log likelihood for pixelized modeling.
-**Chi Squared:** Computing the chi-squared statistic from residuals and noise.
-**Regularization Term:** The regularization penalty term in the log likelihood.
-**Complexity Terms:** The log determinant terms that penalize overly complex reconstructions.
-**Noise Normalization Term:** The noise normalization constant in the log likelihood.
-**Calculate The Log Likelihood:** Combining all terms to compute the final log evidence.
-**Fit:** Performing the likelihood evaluation using the FitInterferometer object.
-**Galaxy Modeling:** Overview of how the likelihood function is sampled by a non-linear search.
-**Log Likelihood Function: Pixelization With Light Profile:** How the likelihood changes when parametric light profiles are included.
-**Log Likelihood Function: Fast Chi Squared:** Computing chi-squared without NUFFT for speed.
-**Wrap Up:** Summary and pointers to additional resources.
+- **Mesh Shape:** Fixing the rectangular mesh shape before modeling.
+- **Mask:** Defining the real-space mask for the interferometer grid.
+- **Dataset:** Loading the interferometer dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Over Sampling:** Why over sampling is not needed for interferometer data.
+- **Masked Image Grid:** Setting up the 2D coordinate grid for pixelization evaluation.
+- **Galaxy:** Combining the pixelization into a Galaxy object.
+- **Rectangular Mesh:** Creating the rectangular mesh overlaid on the masked image grid.
+- **Interpolation:** Creating an interpolator describing how image pixels map to mesh pixels.
+- **Mapper:** Creating the Mapper object that describes image-to-source pixel mappings.
+- **Over Sampling:** How over sampling interacts with the pixelization mapping scheme.
+- **Alternative Meshes:** Brief overview of other mesh types available.
+- **Mapping Matrix:** Constructing the 2D mapping matrix from image pixels to source pixels.
+- **Transformed Mapping Matrix ($f$):** Fourier transforming the mapping matrix to the uv-plane.
+- **Data Vector (D):** Computing the data vector for the linear inversion.
+- **Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
+- **Regularization Matrix (H):** Constructing the regularization matrix to enforce smoothness.
+- **F + Lamdba H:** Combining the curvature and regularization matrices.
+- **Galaxy Reconstruction (s):** Solving the linear system to reconstruct the galaxy.
+- **Visibilities Reconstruction:** Mapping the reconstruction back to the uv-plane.
+- **Likelihood Function:** Defining the full Bayesian log likelihood for pixelized modeling.
+- **Chi Squared:** Computing the chi-squared statistic from residuals and noise.
+- **Regularization Term:** The regularization penalty term in the log likelihood.
+- **Complexity Terms:** The log determinant terms that penalize overly complex reconstructions.
+- **Noise Normalization Term:** The noise normalization constant in the log likelihood.
+- **Calculate The Log Likelihood:** Combining all terms to compute the final log evidence.
+- **Fit:** Performing the likelihood evaluation using the FitInterferometer object.
+- **Galaxy Modeling:** Overview of how the likelihood function is sampled by a non-linear search.
+- **Log Likelihood Function: Pixelization With Light Profile:** How the likelihood changes when parametric light profiles are included.
+- **Log Likelihood Function: Fast Chi Squared:** Computing chi-squared without NUFFT for speed.
+- **Wrap Up:** Summary and pointers to additional resources.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

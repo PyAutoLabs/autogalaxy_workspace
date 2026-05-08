@@ -23,15 +23,15 @@ It is absolutely vital you use the correct pixel scale, so double check this val
 
 __Contents__
 
-**Image:** Standards for the galaxy image, including units, centering and stamp size.
-**Noise Map:** Standards for the RMS noise-map, including units and values.
-**PSF:** Standards for the Point Spread Function, including size, oddness, normalization and centering.
-**Data Processing Complete:** Summary of required standards and introduction to optional steps.
-**Mask (Optional):** Creating custom masks tailored to the galaxy emission.
-**Light Centre (Optional):** Marking the galaxy light centre for use as a fixed model parameter.
-**Extra Galaxies (Optional):** Marking centres of nearby extra galaxies for modeling or masking.
-**Mask Extra Galaxies (Optional):** Creating a mask to remove extra galaxy emission from the analysis.
-**Info (Optional):** Storing auxiliary information about the dataset as a JSON file.
+- **Image:** Standards for the galaxy image, including units, centering and stamp size.
+- **Noise Map:** Standards for the RMS noise-map, including units and values.
+- **PSF:** Standards for the Point Spread Function, including size, oddness, normalization and centering.
+- **Data Processing Complete:** Summary of required standards and introduction to optional steps.
+- **Mask (Optional):** Creating custom masks tailored to the galaxy emission.
+- **Light Centre (Optional):** Marking the galaxy light centre for use as a fixed model parameter.
+- **Extra Galaxies (Optional):** Marking centres of nearby extra galaxies for modeling or masking.
+- **Mask Extra Galaxies (Optional):** Creating a mask to remove extra galaxy emission from the analysis.
+- **Info (Optional):** Storing auxiliary information about the dataset as a JSON file.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

@@ -27,27 +27,27 @@ linear light profiles, therefore you must read the following notebooks before th
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for likelihood evaluation.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
-**Multiple Gaussians & Linear Light Profiles:** Creating 30 linear Gaussian light profiles for the MGE.
-**Basis:** Grouping the Gaussians into a Basis object for the multi-Gaussian expansion.
-**Comparison To Linear Light Profiles Example:** Key differences from the linear light profile likelihood function.
-**LightProfileLinearObjFuncList:** Creating the interface between the Basis and linear algebra.
-**Mapping Matrix:** Computing the mapping matrix of Gaussian light profile images.
-**Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
-**Data Vector (D):** Computing the data vector for the linear inversion.
-**Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
-**Reconstruction (Positive-Negative):** Solving the linear algebra allowing positive and negative intensity values.
-**Reconstruction (Positive Only):** Solving with a positive-only constraint and zeroth-order regularization.
-**Image Reconstruction:** Mapping the reconstruction back to the image plane.
-**Likelihood Function:** Overview of the log likelihood function terms.
-**Chi Squared:** Computing the chi-squared statistic for the fit.
-**Noise Normalization Term:** Computing the noise normalization term of the likelihood.
-**Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
-**Fit:** Performing the same likelihood evaluation using the FitImaging object.
-**Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
-**Wrap Up:** Summary and links to additional guides.
+- **Dataset:** Loading the imaging dataset for likelihood evaluation.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
+- **Multiple Gaussians & Linear Light Profiles:** Creating 30 linear Gaussian light profiles for the MGE.
+- **Basis:** Grouping the Gaussians into a Basis object for the multi-Gaussian expansion.
+- **Comparison To Linear Light Profiles Example:** Key differences from the linear light profile likelihood function.
+- **LightProfileLinearObjFuncList:** Creating the interface between the Basis and linear algebra.
+- **Mapping Matrix:** Computing the mapping matrix of Gaussian light profile images.
+- **Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
+- **Data Vector (D):** Computing the data vector for the linear inversion.
+- **Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
+- **Reconstruction (Positive-Negative):** Solving the linear algebra allowing positive and negative intensity values.
+- **Reconstruction (Positive Only):** Solving with a positive-only constraint and zeroth-order regularization.
+- **Image Reconstruction:** Mapping the reconstruction back to the image plane.
+- **Likelihood Function:** Overview of the log likelihood function terms.
+- **Chi Squared:** Computing the chi-squared statistic for the fit.
+- **Noise Normalization Term:** Computing the noise normalization term of the likelihood.
+- **Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
+- **Fit:** Performing the same likelihood evaluation using the FitImaging object.
+- **Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
+- **Wrap Up:** Summary and links to additional guides.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports

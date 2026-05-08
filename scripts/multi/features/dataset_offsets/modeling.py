@@ -46,19 +46,19 @@ Two images are fitted, corresponding to a greener ('g' band) and redder image (`
 
 __Contents__
 
-**Advantages:** Benefits of accounting for dataset offsets in multi-wavelength modeling.
-**Disadvantages:** Additional free parameters introduced by offset modeling.
-**Model:** Description of the galaxy model fitted in this example.
-**Colors:** Defining the multi-wavelength color bands.
-**Pixel Scales:** Setting per-wavelength pixel scales.
-**Dataset:** Loading and plotting each multi-wavelength dataset.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to each dataset.
-**Analysis:** Creating analysis objects for each dataset with JAX acceleration.
-**Model:** Composing a Sersic bulge and Exponential disk model with a DatasetModel for offsets.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
-**Result:** Inspecting the per-wavelength results and inferred dataset offsets.
+- **Advantages:** Benefits of accounting for dataset offsets in multi-wavelength modeling.
+- **Disadvantages:** Additional free parameters introduced by offset modeling.
+- **Model:** Description of the galaxy model fitted in this example.
+- **Colors:** Defining the multi-wavelength color bands.
+- **Pixel Scales:** Setting per-wavelength pixel scales.
+- **Dataset:** Loading and plotting each multi-wavelength dataset.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to each dataset.
+- **Analysis:** Creating analysis objects for each dataset with JAX acceleration.
+- **Model:** Composing a Sersic bulge and Exponential disk model with a DatasetModel for offsets.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
+- **Result:** Inspecting the per-wavelength results and inferred dataset offsets.
 
 __Start Here Notebook__
 

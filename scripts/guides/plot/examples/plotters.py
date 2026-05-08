@@ -15,18 +15,18 @@ behaviour of plotting visuals.
 
 __Contents__
 
-**Setup:** Set up all objects (e.g. grid, dataset, fit) used to illustrate plotting.
-**Array2D:** Plot a 2D array using `aplt.plot_array`.
-**Grid2D:** Plot a 2D grid of coordinates using `aplt.plot_grid`.
-**Light Profile:** Plot a light profile image using `aplt.plot_array`.
-**Galaxy:** Plot a galaxy's image using `aplt.plot_array`.
-**Galaxies:** Plot galaxies using `aplt.plot_array` and `aplt.subplot_galaxies`.
-**Imaging:** Plot an imaging dataset using `aplt.subplot_imaging_dataset`.
-**Fit Imaging:** Plot a fit to imaging data using `aplt.subplot_fit_imaging`.
-**Log10:** Plot galaxy images in log10 space for clearer visualization.
-**One Dimensional Plots:** Plot 1D radial profiles using standard matplotlib.
-**Output:** Save figures to disk using `output_path`, `output_filename`, `output_format` arguments.
-**Probability Density Function (PDF) Plots:** Plot 1D light profiles with error regions from model-fit PDFs.
+- **Setup:** Set up all objects (e.g. grid, dataset, fit) used to illustrate plotting.
+- **Array2D:** Plot a 2D array using `aplt.plot_array`.
+- **Grid2D:** Plot a 2D grid of coordinates using `aplt.plot_grid`.
+- **Light Profile:** Plot a light profile image using `aplt.plot_array`.
+- **Galaxy:** Plot a galaxy's image using `aplt.plot_array`.
+- **Galaxies:** Plot galaxies using `aplt.plot_array` and `aplt.subplot_galaxies`.
+- **Imaging:** Plot an imaging dataset using `aplt.subplot_imaging_dataset`.
+- **Fit Imaging:** Plot a fit to imaging data using `aplt.subplot_fit_imaging`.
+- **Log10:** Plot galaxy images in log10 space for clearer visualization.
+- **One Dimensional Plots:** Plot 1D radial profiles using standard matplotlib.
+- **Output:** Save figures to disk using `output_path`, `output_filename`, `output_format` arguments.
+- **Probability Density Function (PDF) Plots:** Plot 1D light profiles with error regions from model-fit PDFs.
 
 __Setup__
 

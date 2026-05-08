@@ -10,23 +10,23 @@ This script illustrates how to use the result to inspect the non-linear search s
 
 __Contents__
 
-**Model Fit:** Perform a model-fit to create a Result object containing samples.
-**Info:** Print the result in a readable format.
-**Plot:** Plot the maximum likelihood galaxies and fit.
-**Samples:** Access the Samples object containing all non-linear search samples.
-**Parameters:** Inspect the parameter lists of each sample.
-**Figures of Merit:** Access log likelihood, log prior, log posterior and weights of samples.
-**Instances:** Create model instances from samples (e.g. maximum log likelihood).
-**Posterior / PDF:** Estimate parameters via 1D marginalization of their PDFs.
-**Errors:** Compute error estimates at a given sigma confidence limit.
-**Sample Instance:** Create an instance from any specific sample.
-**Search Plots:** Plot PDFs using the non-linear search visualization tools.
-**Maximum Likelihood:** Extract the maximum log likelihood value for model comparison.
-**Bayesian Evidence:** Access the Bayesian evidence for model comparison via Occam's Razor.
-**Lists:** Return results as 1D lists instead of model instances.
-**Latex:** Generate LaTeX table code for parameter estimates.
-**Derived Errors (Advanced):** Compute errors on derived quantities not directly sampled.
-**Samples Filtering (Advanced):** Filter samples to inspect specific parameters.
+- **Model Fit:** Perform a model-fit to create a Result object containing samples.
+- **Info:** Print the result in a readable format.
+- **Plot:** Plot the maximum likelihood galaxies and fit.
+- **Samples:** Access the Samples object containing all non-linear search samples.
+- **Parameters:** Inspect the parameter lists of each sample.
+- **Figures of Merit:** Access log likelihood, log prior, log posterior and weights of samples.
+- **Instances:** Create model instances from samples (e.g. maximum log likelihood).
+- **Posterior / PDF:** Estimate parameters via 1D marginalization of their PDFs.
+- **Errors:** Compute error estimates at a given sigma confidence limit.
+- **Sample Instance:** Create an instance from any specific sample.
+- **Search Plots:** Plot PDFs using the non-linear search visualization tools.
+- **Maximum Likelihood:** Extract the maximum log likelihood value for model comparison.
+- **Bayesian Evidence:** Access the Bayesian evidence for model comparison via Occam's Razor.
+- **Lists:** Return results as 1D lists instead of model instances.
+- **Latex:** Generate LaTeX table code for parameter estimates.
+- **Derived Errors (Advanced):** Compute errors on derived quantities not directly sampled.
+- **Samples Filtering (Advanced):** Filter samples to inspect specific parameters.
 
 __Units__
 

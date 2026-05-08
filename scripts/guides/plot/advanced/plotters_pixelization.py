@@ -12,13 +12,13 @@ behaviour of plotting visuals.
 
 __Contents__
 
-**Setup:** Set up all objects (e.g. grid, dataset, fit) used to illustrate plotting.
-**Fit Imaging:** Plot the fit of a model to an imaging dataset that uses a pixelization.
-**Reconstruction:** Plot the reconstructed source galaxy mapped back to the image frame.
-**Inversion Plots:** Plot diagnostic subplots of the inversion properties using subplot_of_mapper.
-**Mapper:** Plot the mapper that maps image-plane pixels to the source-plane pixelization.
-**Mesh Grids:** Plot the image and source plane mesh grids.
-**Delaunay:** Customize the filling of Delaunay mesh plots.
+- **Setup:** Set up all objects (e.g. grid, dataset, fit) used to illustrate plotting.
+- **Fit Imaging:** Plot the fit of a model to an imaging dataset that uses a pixelization.
+- **Reconstruction:** Plot the reconstructed source galaxy mapped back to the image frame.
+- **Inversion Plots:** Plot diagnostic subplots of the inversion properties using subplot_of_mapper.
+- **Mapper:** Plot the mapper that maps image-plane pixels to the source-plane pixelization.
+- **Mesh Grids:** Plot the image and source plane mesh grids.
+- **Delaunay:** Customize the filling of Delaunay mesh plots.
 
 __Setup__
 

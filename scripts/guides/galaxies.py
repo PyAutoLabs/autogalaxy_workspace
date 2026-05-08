@@ -6,21 +6,21 @@ This tutorial shows how to use galaxies, including visualizing and extracting th
 
 __Contents__
 
-**Units:** The internal unit system used throughout this example.
-**Data Structures:** Overview of bespoke data structures and the slim/native API.
-**Grids:** Create a 2D grid of (y,x) coordinates for evaluating galaxy light.
-**Light Profiles:** Define Sersic and other light profiles to describe a galaxy's luminosity distribution.
-**Galaxies:** Create Galaxy objects from multiple light profiles and compute their images.
-**Galaxies (multiple):** Group multiple galaxies into a Galaxies object and compute combined images.
-**Log10:** Plot galaxy images in log10 space for clearer visualization of outskirts.
-**Extending Objects:** Create complex multi-galaxy systems with many light profiles.
-**Data Structures Slim / Native:** Access images in 1D slim or 2D native representations.
-**Individual Galaxy Components:** Extract and plot individual light profile components from galaxies.
-**Galaxies Composition:** Summarize the composition of galaxies and their profiles.
-**One Dimension Projection:** Create projected 2D radial grids for 1D profile calculations.
-**One Dimensional Quantities:** Compute and plot 1D radial profiles of galaxy light.
-**Decomposed 1D Plot:** Plot decomposed 1D profiles showing each light component separately.
-**Modeling Results:** Pointers to results-specific functionality for galaxy models.
+- **Units:** The internal unit system used throughout this example.
+- **Data Structures:** Overview of bespoke data structures and the slim/native API.
+- **Grids:** Create a 2D grid of (y,x) coordinates for evaluating galaxy light.
+- **Light Profiles:** Define Sersic and other light profiles to describe a galaxy's luminosity distribution.
+- **Galaxies:** Create Galaxy objects from multiple light profiles and compute their images.
+- **Galaxies (multiple):** Group multiple galaxies into a Galaxies object and compute combined images.
+- **Log10:** Plot galaxy images in log10 space for clearer visualization of outskirts.
+- **Extending Objects:** Create complex multi-galaxy systems with many light profiles.
+- **Data Structures Slim / Native:** Access images in 1D slim or 2D native representations.
+- **Individual Galaxy Components:** Extract and plot individual light profile components from galaxies.
+- **Galaxies Composition:** Summarize the composition of galaxies and their profiles.
+- **One Dimension Projection:** Create projected 2D radial grids for 1D profile calculations.
+- **One Dimensional Quantities:** Compute and plot 1D radial profiles of galaxy light.
+- **Decomposed 1D Plot:** Plot decomposed 1D profiles showing each light component separately.
+- **Modeling Results:** Pointers to results-specific functionality for galaxy models.
 
 __Units__
 

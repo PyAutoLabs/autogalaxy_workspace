@@ -12,17 +12,17 @@ profiles like the `Sersic`.
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
-**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
-**MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
-**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-**Model:** Composing a model using an MGE and how it changes the number of free parameters.
-**Search & Analysis:** Standard set up of non-linear search and analysis.
-**Run Time:** Profiling of MGE run times and discussion of how they compare to standard light profiles.
-**Model-Fit:** Performs the model fit using standard API.
-**Result:** MGE results, including accessing light profiles with solved for intensity values.
-**MGE Source:** Detailed illustration of using MGE source.
-**Regularization:** API for applying regularization to MGE, which is not recommend but included for illustration.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
+- **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+- **MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
+- **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+- **Model:** Composing a model using an MGE and how it changes the number of free parameters.
+- **Search & Analysis:** Standard set up of non-linear search and analysis.
+- **Run Time:** Profiling of MGE run times and discussion of how they compare to standard light profiles.
+- **Model-Fit:** Performs the model fit using standard API.
+- **Result:** MGE results, including accessing light profiles with solved for intensity values.
+- **MGE Source:** Detailed illustration of using MGE source.
+- **Regularization:** API for applying regularization to MGE, which is not recommend but included for illustration.
 
 __Advantages__
 

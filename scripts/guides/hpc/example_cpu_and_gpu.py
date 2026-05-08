@@ -36,15 +36,15 @@ using the sync script.
 """
 __Contents__
 
-**HPC Output Path:** Set the output path for results on the HPC.
-**HPC Dataset Path:** Set the path where datasets are stored on the HPC.
-**HPC Home Path:** Set the home directory path and config path on the HPC.
-**Batch Script: Many Datasets (Array Job):** Configure a SLURM array job to fit many datasets in parallel.
-**Batch Script: Single Dataset with Multiple CPUs:** Configure a parallelized single-dataset Nautilus fit.
-**Dataset:** Load the dataset for the HPC model-fit.
-**Nautilus CPUs:** Configure Nautilus to use multiple CPU cores for parallelized sampling.
-**Galaxy Modeling:** Perform a standard galaxy model-fit on the HPC.
-**GPU Jobs:** Run GPU-accelerated model-fits using the GPU batch script.
+- **HPC Output Path:** Set the output path for results on the HPC.
+- **HPC Dataset Path:** Set the path where datasets are stored on the HPC.
+- **HPC Home Path:** Set the home directory path and config path on the HPC.
+- **Batch Script: Many Datasets (Array Job):** Configure a SLURM array job to fit many datasets in parallel.
+- **Batch Script: Single Dataset with Multiple CPUs:** Configure a parallelized single-dataset Nautilus fit.
+- **Dataset:** Load the dataset for the HPC model-fit.
+- **Nautilus CPUs:** Configure Nautilus to use multiple CPU cores for parallelized sampling.
+- **Galaxy Modeling:** Perform a standard galaxy model-fit on the HPC.
+- **GPU Jobs:** Run GPU-accelerated model-fits using the GPU batch script.
 
 __HPC Output Path__
 

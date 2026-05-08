@@ -31,10 +31,10 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 
 __Contents__
 
-**Loading Data From Individual Fits Files:** Loading a PSF from FITS files and inspecting its standards.
-**1) PSF Size:** Resizing the PSF kernel to an appropriate size for efficient convolution.
-**PSF Dimensions:** Ensuring the PSF has odd dimensions to avoid half-pixel offsets.
-**PSF Normalization:** Normalizing the PSF kernel so all values sum to unity.
+- **Loading Data From Individual Fits Files:** Loading a PSF from FITS files and inspecting its standards.
+- **1) PSF Size:** Resizing the PSF kernel to an appropriate size for efficient convolution.
+- **PSF Dimensions:** Ensuring the PSF has odd dimensions to avoid half-pixel offsets.
+- **PSF Normalization:** Normalizing the PSF kernel so all values sum to unity.
 """
 
 # %matplotlib

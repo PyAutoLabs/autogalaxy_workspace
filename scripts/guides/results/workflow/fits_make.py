@@ -24,15 +24,15 @@ Internally, splicing uses standard Astorpy functions to open, edit and save .fit
 
 __Contents__
 
-**Model Fit:** Perform model-fits whose results are output for FITS extraction.
-**Workflow Paths:** Set the output path for workflow FITS files.
-**Aggregator:** Load results using the Aggregator.
-**Extract Images:** Extract specific HDU images from fit.fits files.
-**Output Single Fits:** Save extracted HDUs as a single combined FITS file.
-**Output to Folder:** Save individual FITS files for each model-fit to a folder.
-**CSV Files:** Extract data from CSV files (e.g. pixelization reconstructions) and interpolate to FITS.
-**Add Extra Fits:** Add additional FITS images to the extracted file.
-**Custom Fits Files in Analysis:** Extend the Analysis class to output custom FITS images.
+- **Model Fit:** Perform model-fits whose results are output for FITS extraction.
+- **Workflow Paths:** Set the output path for workflow FITS files.
+- **Aggregator:** Load results using the Aggregator.
+- **Extract Images:** Extract specific HDU images from fit.fits files.
+- **Output Single Fits:** Save extracted HDUs as a single combined FITS file.
+- **Output to Folder:** Save individual FITS files for each model-fit to a folder.
+- **CSV Files:** Extract data from CSV files (e.g. pixelization reconstructions) and interpolate to FITS.
+- **Add Extra Fits:** Add additional FITS images to the extracted file.
+- **Custom Fits Files in Analysis:** Extend the Analysis class to output custom FITS images.
 
 __CSV, Png and Fits__
 

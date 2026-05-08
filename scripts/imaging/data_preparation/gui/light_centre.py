@@ -9,10 +9,10 @@ value in pipelines.
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for light centre marking.
-**Search Box:** Configuring the pixel search area around each click.
-**Clicker:** Using the interactive GUI to click on galaxy light centres.
-**Output:** Saving the light centres as a JSON file and PNG visualization.
+- **Dataset:** Loading the imaging dataset for light centre marking.
+- **Search Box:** Configuring the pixel search area around each click.
+- **Clicker:** Using the interactive GUI to click on galaxy light centres.
+- **Output:** Saving the light centres as a JSON file and PNG visualization.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

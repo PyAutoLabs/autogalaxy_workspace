@@ -10,9 +10,9 @@ This GUI is adapted from the following code: https://gist.github.com/brikeats/4f
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for mask creation.
-**Scribbler:** Using the interactive GUI to draw the mask.
-**Output:** Saving the mask as a FITS file and PNG visualization.
+- **Dataset:** Loading the imaging dataset for mask creation.
+- **Scribbler:** Using the interactive GUI to draw the mask.
+- **Output:** Saving the mask as a FITS file and PNG visualization.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

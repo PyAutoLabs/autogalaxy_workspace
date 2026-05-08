@@ -37,8 +37,8 @@ If any code in this script is unclear, refer to the `data_preparation/start_here
 
 __Contents__
 
-**Links / Resources:** Links to GUI tools and modeling scripts for extra galaxies masks.
-**Output:** Saving the extra galaxies mask as a FITS file.
+- **Links / Resources:** Links to GUI tools and modeling scripts for extra galaxies masks.
+- **Output:** Saving the extra galaxies mask as a FITS file.
 """
 
 # from autoconf import setup_notebook; setup_notebook()
