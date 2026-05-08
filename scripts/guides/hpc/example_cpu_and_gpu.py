@@ -61,7 +61,7 @@ You will need to update `hpc_username` to your hpc username below.
 """
 from pathlib import Path
 
-hpc_output_path = Path(path.sep) / "hpc" / "data" / "hpc_username" / "output"
+hpc_output_path = Path("/") / "hpc" / "data" / "hpc_username" / "output"
 
 """
 __HPC Dataset Path__
@@ -79,7 +79,7 @@ dataset_folder = "example"
 dataset_name = "simple"
 
 hpc_dataset_path = (
-    Path(path.sep)
+    Path("/")
     / "hpc"
     / "data"
     / "hpc_username"
@@ -97,7 +97,7 @@ The home path often has signficant storage restrictions, so is not a good locati
 But may be where you store the python galaxy modeling scripts you run on the HPC, the config files, batch scripts
 and other files you use to set up galaxy modeling on the hpc.
 """
-home_path = Path(path.sep, "hpc", "home", "hpc_username")
+home_path = Path("/", "hpc", "home", "hpc_username")
 
 """
 On the HPC, most likely in your home directory, you should have a config folder which contains the config files used by
@@ -204,7 +204,7 @@ We now create the path to the dataset this specific job fits, for example:
 """
 dataset_path = Path(hpc_dataset_path, dataset_type, dataset_name)
 
-if not dataset_Path().exists():
+if not dataset_path.exists():
     local_dataset_path = Path.cwd()
     dataset_type = "imaging"
     dataset_path = Path(local_dataset_path, "dataset", dataset_type, dataset_name)
@@ -239,7 +239,7 @@ dataset_name = "simple"
 
 dataset_path = Path(hpc_dataset_path, dataset_folder, dataset_name)
 
-if not dataset_Path().exists():
+if not dataset_path.exists():
     local_dataset_path = Path.cwd()
     dataset_folder = "imaging"
     dataset_path = Path(local_dataset_path, "dataset", dataset_folder, dataset_name)
@@ -251,7 +251,7 @@ __Dataset Auto-Simulation__
 If the dataset does not already exist on your system, it will be created by running the corresponding
 simulator script. This ensures that all example scripts can be run without manually simulating data first.
 """
-if not dataset_Path().exists():
+if not dataset_path.exists():
     import subprocess
     import sys
 
