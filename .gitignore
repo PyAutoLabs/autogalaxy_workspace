@@ -1,6 +1,8 @@
 root.log
 .idea/
-dataset/
+dataset/**
+!dataset/.gitignore
+!dataset/interferometer/uv_wavelengths/**
 output/
 test_report.md
 test_results/
