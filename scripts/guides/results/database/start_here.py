@@ -18,17 +18,17 @@ to illustrate the database in the database tutorials that follow.
 
 __Contents__
 
-**Unique Identifiers:** How unique identifiers ensure separate results for each dataset.
-**Dataset:** Load datasets and fit them with a non-linear search.
-**Results From Hard Disk:** Output results to hard-disk and build the database from them.
-**Building a Database File From an Output Folder:** Create a .sqlite database from output folders.
-**Writing Directly To Database:** Write results directly to the database, skipping hard-disk output.
-**Files:** The output files stored in the database and accessible via the aggregator.
-**Generators:** How Python generators provide memory-efficient access to database results.
-**Model:** Load and inspect the model used for each fit.
-**Search:** Load and inspect the non-linear search settings.
-**Samples:** Access the full non-linear search samples from the database.
-**Wrap Up:** Summary of how to use the database for result analysis.
+- **Unique Identifiers:** How unique identifiers ensure separate results for each dataset.
+- **Dataset:** Load datasets and fit them with a non-linear search.
+- **Results From Hard Disk:** Output results to hard-disk and build the database from them.
+- **Building a Database File From an Output Folder:** Create a .sqlite database from output folders.
+- **Writing Directly To Database:** Write results directly to the database, skipping hard-disk output.
+- **Files:** The output files stored in the database and accessible via the aggregator.
+- **Generators:** How Python generators provide memory-efficient access to database results.
+- **Model:** Load and inspect the model used for each fit.
+- **Search:** Load and inspect the non-linear search settings.
+- **Samples:** Access the full non-linear search samples from the database.
+- **Wrap Up:** Summary of how to use the database for result analysis.
 
 __Model__
 

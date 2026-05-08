@@ -57,19 +57,19 @@ it is worth benchmarking both approaches (GPU+JAX vs CPU+numba) to determine whi
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using a pixelization to model galaxy light.
-**Positive Only Solver:** How a positive solution to the reconstructed pixel fluxes is ensured.
-**Dataset & Mask:** Standard setup of the imaging dataset that is fitted.
-**Pixelization:** How to create a pixelization, including a description of its inputs.
-**Model:** Composing a model using a pixelization and how it changes the number of free parameters.
-**Search & Analysis:** Standard setup of non-linear search and analysis.
-**Run Time:** Profiling of pixelization run times and discussion of how they compare to analytic light profiles.
-**Model-Fit:** Performs the model fit using the standard API.
-**Result:** Pixelization results and visualization.
-**Including Smooth Components:** How to combine a pixelization with parametric light profiles to model both smooth and complex galaxy structures.
-**Chaining:** How the advanced modeling feature, non-linear search chaining, can significantly improve lens modeling with pixelizaitons.
-**Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
-**Simulate (Advanced):** Simulating a strong lens dataset with the inferred pixelized source.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using a pixelization to model galaxy light.
+- **Positive Only Solver:** How a positive solution to the reconstructed pixel fluxes is ensured.
+- **Dataset & Mask:** Standard setup of the imaging dataset that is fitted.
+- **Pixelization:** How to create a pixelization, including a description of its inputs.
+- **Model:** Composing a model using a pixelization and how it changes the number of free parameters.
+- **Search & Analysis:** Standard setup of non-linear search and analysis.
+- **Run Time:** Profiling of pixelization run times and discussion of how they compare to analytic light profiles.
+- **Model-Fit:** Performs the model fit using the standard API.
+- **Result:** Pixelization results and visualization.
+- **Including Smooth Components:** How to combine a pixelization with parametric light profiles to model both smooth and complex galaxy structures.
+- **Chaining:** How the advanced modeling feature, non-linear search chaining, can significantly improve lens modeling with pixelizaitons.
+- **Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
+- **Simulate (Advanced):** Simulating a strong lens dataset with the inferred pixelized source.
 
 __Advantages__
 

@@ -32,12 +32,12 @@ and computes it from scratch if not.
 
 __Contents__
 
-**High Resolution Dataset:** Information on downloading high-resolution ALMA uv-wavelength data.
-**Dataset + Masking:** Loading the interferometer dataset and defining the real-space mask.
-**Profiling Dataset:** Profiling run times for different dataset sizes to plan computation.
-**Curvature Preload:** Computing the sparse NUFFT operator matrix for fast pixelized modeling.
-**Curvature Preload Output:** Saving and loading the precomputed matrix to and from hard-disk.
-**Wrap Up:** Summary of the preparation workflow for many-visibility datasets.
+- **High Resolution Dataset:** Information on downloading high-resolution ALMA uv-wavelength data.
+- **Dataset + Masking:** Loading the interferometer dataset and defining the real-space mask.
+- **Profiling Dataset:** Profiling run times for different dataset sizes to plan computation.
+- **Curvature Preload:** Computing the sparse NUFFT operator matrix for fast pixelized modeling.
+- **Curvature Preload Output:** Saving and loading the precomputed matrix to and from hard-disk.
+- **Wrap Up:** Summary of the preparation workflow for many-visibility datasets.
 
 __High Resolution Dataset__
 

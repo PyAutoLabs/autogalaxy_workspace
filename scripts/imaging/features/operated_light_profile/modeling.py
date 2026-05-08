@@ -45,17 +45,17 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 
 __Contents__
 
-**Dataset:** Loading the operated light profile imaging dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Applying a circular mask to the dataset.
-**Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
-**Model:** Composing the galaxy model with a linear Sersic bulge and operated Gaussian point source.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
-**VRAM:** Discussion of GPU VRAM usage for operated light profiles.
-**Run Time:** Discussion of computational run times for operated light profiles.
-**Model-Fit:** Running the model-fit and monitoring output.
-**Result:** Inspecting the result object and best-fit model.
+- **Dataset:** Loading the operated light profile imaging dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Applying a circular mask to the dataset.
+- **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+- **Model:** Composing the galaxy model with a linear Sersic bulge and operated Gaussian point source.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
+- **VRAM:** Discussion of GPU VRAM usage for operated light profiles.
+- **Run Time:** Discussion of computational run times for operated light profiles.
+- **Model-Fit:** Running the model-fit and monitoring output.
+- **Result:** Inspecting the result object and best-fit model.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

@@ -23,12 +23,12 @@ object and pass these to the search to perform the fit. We skip these steps for 
 
 __Contents__
 
-**Dynesty**: A nested sampling algorithm that is effective for modeling, with a lot of customization.
-**Emcee**: An ensemble MCMC sampler that is commonly used in Astronomy and Astrophysics.
-**Zeus**: An ensemble MCMC slice sampler that is the most effective MCMC method for modeling.
-**LBFGS**: A quasi-Newton optimization algorithm that is a maximum likelihood estimator (MLE) method.
-**Start Point**: An API that allows the user to specify the start-point of a model-fit, which is useful for MCMC and MLE methods.
-**Search Cookbook**: A cookbook that documents all searches available in **PyAutoFit**, including those not documented here.
+- **Dynesty**: A nested sampling algorithm that is effective for modeling, with a lot of customization.
+- **Emcee**: An ensemble MCMC sampler that is commonly used in Astronomy and Astrophysics.
+- **Zeus**: An ensemble MCMC slice sampler that is the most effective MCMC method for modeling.
+- **LBFGS**: A quasi-Newton optimization algorithm that is a maximum likelihood estimator (MLE) method.
+- **Start Point**: An API that allows the user to specify the start-point of a model-fit, which is useful for MCMC and MLE methods.
+- **Search Cookbook**: A cookbook that documents all searches available in **PyAutoFit**, including those not documented here.
 
 __Start Here Notebook__
 

@@ -40,19 +40,19 @@ Two images are fitted, corresponding to a greener ('g' band) and redder image (`
 
 __Contents__
 
-**Model:** Description of the galaxy model fitted in this example.
-**Colors:** Defining the multi-wavelength color bands.
-**Pixel Scales:** Setting per-wavelength pixel scales.
-**Dataset:** Loading and plotting each multi-wavelength dataset.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to each dataset.
-**Analysis:** Creating analysis objects for each dataset with JAX acceleration.
-**Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Model-Fit:** Fitting the first (highest quality) dataset.
-**Result:** Inspecting the result of the first dataset fit.
-**Second Dataset Bulge Model Fixed:** Fitting the second dataset with the bulge fixed from the first result.
-**Second Dataset Offset:** Fitting for the offset between datasets with all model parameters fixed.
+- **Model:** Description of the galaxy model fitted in this example.
+- **Colors:** Defining the multi-wavelength color bands.
+- **Pixel Scales:** Setting per-wavelength pixel scales.
+- **Dataset:** Loading and plotting each multi-wavelength dataset.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to each dataset.
+- **Analysis:** Creating analysis objects for each dataset with JAX acceleration.
+- **Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Model-Fit:** Fitting the first (highest quality) dataset.
+- **Result:** Inspecting the result of the first dataset fit.
+- **Second Dataset Bulge Model Fixed:** Fitting the second dataset with the bulge fixed from the first result.
+- **Second Dataset Offset:** Fitting for the offset between datasets with all model parameters fixed.
 
 __Start Here Notebook__
 

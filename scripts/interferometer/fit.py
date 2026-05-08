@@ -15,15 +15,15 @@ This example uses functionality described fully in other examples in the `guides
 
 __Contents__
 
-**Mask:** Defining the real-space mask for the interferometer grid.
-**Loading Data:** Loading the interferometer dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Fitting:** Creating a galaxy model and fitting it to the data using FitInterferometer.
-**Bad Fit:** Demonstrating how a poor galaxy model produces residuals.
-**Fit Quantities:** Inspecting model data, residual maps, and dirty image variants of the fit.
-**Figures of Merit:** Computing chi-squared, noise normalization, and log likelihood values.
-**Galaxy Quantities:** Accessing per-galaxy model visibilities and images from the fit.
-**Outputting Results:** Saving fit results to FITS files for later use.
+- **Mask:** Defining the real-space mask for the interferometer grid.
+- **Loading Data:** Loading the interferometer dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Fitting:** Creating a galaxy model and fitting it to the data using FitInterferometer.
+- **Bad Fit:** Demonstrating how a poor galaxy model produces residuals.
+- **Fit Quantities:** Inspecting model data, residual maps, and dirty image variants of the fit.
+- **Figures of Merit:** Computing chi-squared, noise normalization, and log likelihood values.
+- **Galaxy Quantities:** Accessing per-galaxy model visibilities and images from the fit.
+- **Outputting Results:** Saving fit results to FITS files for later use.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports

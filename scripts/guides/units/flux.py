@@ -23,8 +23,8 @@ unit, like a solar luminosity or AB magnitude, it becomes a lot more straightfor
 
 __Contents__
 
-**Zero Point:** Explanation of photometric zero points and their role in flux calibration.
-**Mega Janskys / steradian (MJy/sr): James Webb Space Telescope:** Convert JWST NIRCam light profile intensities to AB magnitudes.
+- **Zero Point:** Explanation of photometric zero points and their role in flux calibration.
+- **Mega Janskys / steradian (MJy/sr): James Webb Space Telescope:** Convert JWST NIRCam light profile intensities to AB magnitudes.
 
 __Zero Point__
 

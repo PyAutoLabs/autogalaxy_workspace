@@ -34,15 +34,15 @@ via the library `numba`.
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
-**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
-**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-**Mesh Shape**: Defining the shape of the mesh that reconstructs the source in advance, such that JAX knows static array shapes.
-**Pixelization:** How to create a pixelization, including a description of its inputs.
-**Fit:** Perform a fit to a dataset using a pixelization, and visualize its results.
-**Interpolated Source:** Interpolate the source reconstruction from an irregular Voronoi mesh to a uniform square grid and output to a .fits file.
-**Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
-**Simulate (Advanced):** Simulating a dataset with the inferred pixelized source.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
+- **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+- **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+- **Mesh Shape**: Defining the shape of the mesh that reconstructs the source in advance, such that JAX knows static array shapes.
+- **Pixelization:** How to create a pixelization, including a description of its inputs.
+- **Fit:** Perform a fit to a dataset using a pixelization, and visualize its results.
+- **Interpolated Source:** Interpolate the source reconstruction from an irregular Voronoi mesh to a uniform square grid and output to a .fits file.
+- **Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
+- **Simulate (Advanced):** Simulating a dataset with the inferred pixelized source.
 
 __Advantages__
 

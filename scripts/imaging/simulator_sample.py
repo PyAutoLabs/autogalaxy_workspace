@@ -19,13 +19,13 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 
 __Contents__
 
-**Dataset Paths:** Defining the output path for the simulated sample.
-**Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
-**Sample Model Distributions:** Defining prior distributions for the galaxy light profile parameters.
-**Sample Instances:** Generating random galaxy instances and simulating imaging datasets in a loop.
-**Output:** Saving each simulated dataset to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Plane Output:** Saving each Galaxies object as a JSON file.
+- **Dataset Paths:** Defining the output path for the simulated sample.
+- **Grid:** Setting up the 2D grid with adaptive over-sampling for simulation.
+- **Sample Model Distributions:** Defining prior distributions for the galaxy light profile parameters.
+- **Sample Instances:** Generating random galaxy instances and simulating imaging datasets in a loop.
+- **Output:** Saving each simulated dataset to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Plane Output:** Saving each Galaxies object as a JSON file.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

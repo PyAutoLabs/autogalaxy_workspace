@@ -12,17 +12,17 @@ can also be easily passed on to other collaborators.
 
 __Contents__
 
-**Model Fit:** Perform model-fits whose results are output for CSV extraction.
-**Workflow Paths:** Set the output path for workflow files.
-**Aggregator:** Load results using the Aggregator.
-**Adding CSV Columns:** Add columns to the CSV file for specific model parameters.
-**Saving the CSV:** Output the CSV file to disk.
-**Customizing CSV Headers:** Customize column headers for readability.
-**Maximum Likelihood Values:** Output maximum likelihood parameter values to the CSV.
-**Errors:** Output parameter error estimates at a given sigma confidence.
-**Column Label List:** Add a label column (e.g. dataset name) to the CSV.
-**Latent Variables:** Add latent (derived) variables to the CSV.
-**Computed Columns:** Add custom computed columns derived from the samples.
+- **Model Fit:** Perform model-fits whose results are output for CSV extraction.
+- **Workflow Paths:** Set the output path for workflow files.
+- **Aggregator:** Load results using the Aggregator.
+- **Adding CSV Columns:** Add columns to the CSV file for specific model parameters.
+- **Saving the CSV:** Output the CSV file to disk.
+- **Customizing CSV Headers:** Customize column headers for readability.
+- **Maximum Likelihood Values:** Output maximum likelihood parameter values to the CSV.
+- **Errors:** Output parameter error estimates at a given sigma confidence.
+- **Column Label List:** Add a label column (e.g. dataset name) to the CSV.
+- **Latent Variables:** Add latent (derived) variables to the CSV.
+- **Computed Columns:** Add custom computed columns derived from the samples.
 
 __CSV, Png and Fits__
 

@@ -24,18 +24,18 @@ If a free `effective radius` is created for every dataset, this would add 5+ fre
 
 __Contents__
 
-**Colors:** Defining the multi-wavelength color bands (g, r, I).
-**Wavelengths:** Defining the wavelength of each color band for parameterization.
-**Pixel Scales:** Setting per-wavelength pixel scales.
-**Dataset:** Loading and plotting each multi-wavelength dataset.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to each dataset.
-**Analysis:** Creating analysis objects for each dataset with JAX acceleration.
-**Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
-**Model + Analysis:** Parameterizing effective radius as a linear function of wavelength using prior arithmetic.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
-**Result:** Inspecting the per-wavelength results of the model fit.
+- **Colors:** Defining the multi-wavelength color bands (g, r, I).
+- **Wavelengths:** Defining the wavelength of each color band for parameterization.
+- **Pixel Scales:** Setting per-wavelength pixel scales.
+- **Dataset:** Loading and plotting each multi-wavelength dataset.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to each dataset.
+- **Analysis:** Creating analysis objects for each dataset with JAX acceleration.
+- **Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
+- **Model + Analysis:** Parameterizing effective radius as a linear function of wavelength using prior arithmetic.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
+- **Result:** Inspecting the per-wavelength results of the model fit.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

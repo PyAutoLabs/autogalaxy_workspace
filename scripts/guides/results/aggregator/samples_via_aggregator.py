@@ -16,24 +16,24 @@ can copy and paste the code to use in your own scripts!
 
 __Contents__
 
-**Files:** The output files that are loaded when accessing samples via the database.
-**Generators:** How Python generators are used for memory-efficient result loading.
-**Samples:** Access the Samples object from the aggregator.
-**Parameters:** Inspect the parameter lists of each sample.
-**Samples Info:** Access additional metadata about the samples (e.g. live points, steps).
-**Samples Summary:** Access a precomputed summary of key results for fast retrieval.
-**Figures of Merit:** Access log likelihood, log prior, log posterior and weights.
-**Instances:** Create model instances (e.g. maximum log likelihood) from aggregated samples.
-**Posterior / PDF:** Estimate parameters via 1D marginalization of their PDFs.
-**Errors:** Compute error estimates at a given sigma confidence limit.
-**Sample Instance:** Create an instance from any specific sample.
-**Search Plots:** Plot PDFs using the non-linear search visualization tools.
-**Maximum Likelihood:** Extract the maximum log likelihood value for model comparison.
-**Bayesian Evidence:** Access the Bayesian evidence for model comparison.
-**Lists:** Return results as 1D lists instead of model instances.
-**Latex:** Generate LaTeX table code for parameter estimates.
-**Ordering:** Control the ordering of aggregated results.
-**Samples Filtering:** Filter samples to inspect specific parameters.
+- **Files:** The output files that are loaded when accessing samples via the database.
+- **Generators:** How Python generators are used for memory-efficient result loading.
+- **Samples:** Access the Samples object from the aggregator.
+- **Parameters:** Inspect the parameter lists of each sample.
+- **Samples Info:** Access additional metadata about the samples (e.g. live points, steps).
+- **Samples Summary:** Access a precomputed summary of key results for fast retrieval.
+- **Figures of Merit:** Access log likelihood, log prior, log posterior and weights.
+- **Instances:** Create model instances (e.g. maximum log likelihood) from aggregated samples.
+- **Posterior / PDF:** Estimate parameters via 1D marginalization of their PDFs.
+- **Errors:** Compute error estimates at a given sigma confidence limit.
+- **Sample Instance:** Create an instance from any specific sample.
+- **Search Plots:** Plot PDFs using the non-linear search visualization tools.
+- **Maximum Likelihood:** Extract the maximum log likelihood value for model comparison.
+- **Bayesian Evidence:** Access the Bayesian evidence for model comparison.
+- **Lists:** Return results as 1D lists instead of model instances.
+- **Latex:** Generate LaTeX table code for parameter estimates.
+- **Ordering:** Control the ordering of aggregated results.
+- **Samples Filtering:** Filter samples to inspect specific parameters.
 
 __Samples via Result__
 

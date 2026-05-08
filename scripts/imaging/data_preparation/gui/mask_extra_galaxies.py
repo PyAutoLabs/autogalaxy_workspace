@@ -15,10 +15,10 @@ example above which requires you to input these values manually.
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for extra galaxy mask creation.
-**Mask:** Creating a circular mask overlay to guide the spray painting.
-**Scribbler:** Using the interactive GUI to spray paint extra galaxy regions.
-**Output:** Saving the extra galaxies mask as a FITS file and PNG visualization.
+- **Dataset:** Loading the imaging dataset for extra galaxy mask creation.
+- **Mask:** Creating a circular mask overlay to guide the spray painting.
+- **Scribbler:** Using the interactive GUI to spray paint extra galaxy regions.
+- **Output:** Saving the extra galaxies mask as a FITS file and PNG visualization.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

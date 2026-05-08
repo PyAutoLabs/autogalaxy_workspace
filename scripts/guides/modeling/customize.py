@@ -7,9 +7,9 @@ reasons explaining why each customization is useful.
 
 __Contents__
 
-**Dataset**: Load a dataset which is used to illustrate the customizations.
-**Mask:** Apply a custom mask to the dataset, which can be used to remove regions of the image that contain no emission.
-**Over Sampling:** Change the over sampling used to compute the surface brightness of every image-pixel.
+- **Dataset**: Load a dataset which is used to illustrate the customizations.
+- **Mask:** Apply a custom mask to the dataset, which can be used to remove regions of the image that contain no emission.
+- **Over Sampling:** Change the over sampling used to compute the surface brightness of every image-pixel.
 
 __Start Here Notebook__
 

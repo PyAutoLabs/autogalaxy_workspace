@@ -34,28 +34,28 @@ performed before galaxy modeling and saved to hard disk for fast loading before 
 
 __Contents__
 
-**Advantages:** Benefits of using pixelizations to model galaxy light.
-**Disadvantages:** Drawbacks and additional complexity of pixelized galaxy modeling.
-**Positive Only Solver:** How a positive solution to pixel fluxes is ensured, and why it is often disabled for interferometer data.
-**Model:** Description of the pixelized galaxy model fitted in this example.
-**Mask:** Defining the real-space mask for the interferometer grid.
-**Dataset:** Loading the interferometer dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Sparse Operators:** Computing the sparse NUFFT operator matrix for fast linear algebra.
-**Settings:** Disabling the positive-only solver for interferometer data.
-**Over Sampling:** Why over sampling is not needed for interferometer data.
-**Mesh Shape:** Defining the number of pixels used by the rectangular mesh.
-**Model:** Composing a pixelized galaxy model with a mesh and regularization scheme.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Analysis:** Setting up the AnalysisInterferometer object with JAX acceleration.
-**VRAM:** Estimating GPU VRAM requirements for pixelized modeling.
-**Run Time:** Profiling run times for pixelized modeling and how they scale.
-**Model-Fit:** Running the non-linear search to fit the model to data.
-**Result:** Inspecting the result object and maximum likelihood pixelized reconstruction.
-**Wrap Up:** Summary of when pixelizations are most useful.
-**Chaining:** Using non-linear search chaining to improve pixelized galaxy modeling.
-**HowToGalaxy:** Pointers to detailed pixelization tutorials in the lecture series.
-**Future Ideas / Contributions:** Potential future additions to this tutorial.
+- **Advantages:** Benefits of using pixelizations to model galaxy light.
+- **Disadvantages:** Drawbacks and additional complexity of pixelized galaxy modeling.
+- **Positive Only Solver:** How a positive solution to pixel fluxes is ensured, and why it is often disabled for interferometer data.
+- **Model:** Description of the pixelized galaxy model fitted in this example.
+- **Mask:** Defining the real-space mask for the interferometer grid.
+- **Dataset:** Loading the interferometer dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Sparse Operators:** Computing the sparse NUFFT operator matrix for fast linear algebra.
+- **Settings:** Disabling the positive-only solver for interferometer data.
+- **Over Sampling:** Why over sampling is not needed for interferometer data.
+- **Mesh Shape:** Defining the number of pixels used by the rectangular mesh.
+- **Model:** Composing a pixelized galaxy model with a mesh and regularization scheme.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Analysis:** Setting up the AnalysisInterferometer object with JAX acceleration.
+- **VRAM:** Estimating GPU VRAM requirements for pixelized modeling.
+- **Run Time:** Profiling run times for pixelized modeling and how they scale.
+- **Model-Fit:** Running the non-linear search to fit the model to data.
+- **Result:** Inspecting the result object and maximum likelihood pixelized reconstruction.
+- **Wrap Up:** Summary of when pixelizations are most useful.
+- **Chaining:** Using non-linear search chaining to improve pixelized galaxy modeling.
+- **HowToGalaxy:** Pointers to detailed pixelization tutorials in the lecture series.
+- **Future Ideas / Contributions:** Potential future additions to this tutorial.
 
 __Advantages__
 
