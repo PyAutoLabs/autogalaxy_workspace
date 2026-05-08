@@ -4,7 +4,7 @@
 
 [Installation Guide](https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html) |
 [readthedocs](https://pyautogalaxy.readthedocs.io/en/latest/index.html) |
-[Introduction on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.1.4/start_here.ipynb) |
+[Introduction on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.8.1/start_here.ipynb) |
 [HowToGalaxy](https://github.com/PyAutoLabs/HowToGalaxy)
 
 Welcome to the **PyAutoGalaxy** Workspace!
@@ -15,7 +15,7 @@ You can get set up on your personal computer by following the installation guide
 our [readthedocs](https://pyautogalaxy.readthedocs.io/).
 
 Alternatively, you can try **PyAutoGalaxy** out in a web browser by going to
-the [autogalaxy workspace on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.1.4/start_here.ipynb).
+the [autogalaxy workspace on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.8.1/start_here.ipynb).
 
 ## New Users
 
@@ -24,7 +24,7 @@ overview of **PyAutoGalaxy**'s core features and API.
 
 This can be done via a web browser by going to the following Google Colab link:
 
-https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.1.4/start_here.ipynb
+https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.5.8.1/start_here.ipynb
 
 Then checkout the [new user starting guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html)
 to navigate the workspace for your science case.
