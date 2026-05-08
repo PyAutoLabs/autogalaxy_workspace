@@ -9,10 +9,10 @@ This is used on a variety of important cosmological quantities for example the e
 
 __Contents__
 
-**Errors:** How to produce errors on unit-converted quantities via marginalization.
-**Galaxy:** Set up a galaxy and grid to illustrate unit conversions.
-**Arcsec to Kiloparsec:** Convert angular distances to physical distances using a cosmological model.
-**Brightness Units / Luminosity:** Convert image units and compute the total luminosity of a galaxy.
+- **Errors:** How to produce errors on unit-converted quantities via marginalization.
+- **Galaxy:** Set up a galaxy and grid to illustrate unit conversions.
+- **Arcsec to Kiloparsec:** Convert angular distances to physical distances using a cosmological model.
+- **Brightness Units / Luminosity:** Convert image units and compute the total luminosity of a galaxy.
 
 __Errors__
 

@@ -25,20 +25,20 @@ or for investigating imaging effects in a controlled way.
 
 __Contents__
 
-**Google Colab Setup:** Setting up the environment for Google Colab, including installing dependencies.
-**Imports:** Importing autogalaxy, autofit and other required libraries.
-**Dataset:** Loading CCD imaging data (image, noise-map, PSF) from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Extra Galaxy Removal:** Masking and scaling noise for regions with extra galaxy emission.
-**Masking:** Defining a circular mask and applying adaptive over-sampling for the analysis.
-**Model:** Composing a Multi Gaussian Expansion (MGE) galaxy model.
-**Model Fit:** Fitting the model to the data using the Nautilus non-linear search.
-**Result:** Inspecting the model-fit results and best-fit model.
-**Extra Galaxy Removal GUI:** Interactive GUI tool for creating extra galaxy masks on your own data.
-**Model Your Own Galaxy:** Guidance on adapting the workflow for your own imaging data.
-**Simulator:** Simulating galaxy imaging data with a 2D grid and light profiles.
-**Sample:** Simulating many galaxies drawn from a model distribution for population studies.
-**Wrap Up:** Summary and links to further resources in the workspace.
+- **Google Colab Setup:** Setting up the environment for Google Colab, including installing dependencies.
+- **Imports:** Importing autogalaxy, autofit and other required libraries.
+- **Dataset:** Loading CCD imaging data (image, noise-map, PSF) from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Extra Galaxy Removal:** Masking and scaling noise for regions with extra galaxy emission.
+- **Masking:** Defining a circular mask and applying adaptive over-sampling for the analysis.
+- **Model:** Composing a Multi Gaussian Expansion (MGE) galaxy model.
+- **Model Fit:** Fitting the model to the data using the Nautilus non-linear search.
+- **Result:** Inspecting the model-fit results and best-fit model.
+- **Extra Galaxy Removal GUI:** Interactive GUI tool for creating extra galaxy masks on your own data.
+- **Model Your Own Galaxy:** Guidance on adapting the workflow for your own imaging data.
+- **Simulator:** Simulating galaxy imaging data with a 2D grid and light profiles.
+- **Sample:** Simulating many galaxies drawn from a model distribution for population studies.
+- **Wrap Up:** Summary and links to further resources in the workspace.
 
 __Google Colab Setup__
 

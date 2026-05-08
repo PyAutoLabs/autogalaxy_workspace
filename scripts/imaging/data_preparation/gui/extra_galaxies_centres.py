@@ -15,10 +15,10 @@ above which requires you to input these values manually.
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for extra galaxy centre marking.
-**Search Box:** Configuring the pixel search area around each click.
-**Clicker:** Using the interactive GUI to click on extra galaxy centres.
-**Output:** Saving the extra galaxy centres as a JSON file and PNG visualization.
+- **Dataset:** Loading the imaging dataset for extra galaxy centre marking.
+- **Search Box:** Configuring the pixel search area around each click.
+- **Clicker:** Using the interactive GUI to click on extra galaxy centres.
+- **Output:** Saving the extra galaxy centres as a JSON file and PNG visualization.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

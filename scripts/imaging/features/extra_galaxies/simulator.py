@@ -50,14 +50,14 @@ If any code in this script is unclear, refer to the `simulators/start_here.ipynb
 
 __Contents__
 
-**Dataset Paths:** Defining the output path for the simulated dataset.
-**Grid:** Setting up the 2D grid with adaptive over-sampling for all galaxy centres.
-**Galaxies:** Defining the main galaxy with Sersic bulge and Exponential disk light profiles.
-**Extra Galaxies:** Defining two extra galaxies with spherical Exponential light profiles.
-**Output:** Saving the simulated dataset to FITS files.
-**Visualize:** Outputting subplot and image visualizations as PNG files.
-**Mask Extra Galaxies:** Building and saving `mask_extra_galaxies.fits` so consumers can load it directly.
-**Plane Output:** Saving the Galaxies object as a JSON file for future reference.
+- **Dataset Paths:** Defining the output path for the simulated dataset.
+- **Grid:** Setting up the 2D grid with adaptive over-sampling for all galaxy centres.
+- **Galaxies:** Defining the main galaxy with Sersic bulge and Exponential disk light profiles.
+- **Extra Galaxies:** Defining two extra galaxies with spherical Exponential light profiles.
+- **Output:** Saving the simulated dataset to FITS files.
+- **Visualize:** Outputting subplot and image visualizations as PNG files.
+- **Mask Extra Galaxies:** Building and saving `mask_extra_galaxies.fits` so consumers can load it directly.
+- **Plane Output:** Saving the Galaxies object as a JSON file for future reference.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

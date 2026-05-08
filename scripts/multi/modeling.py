@@ -13,21 +13,21 @@ certain parts of code are not documented to ensure the script is concise.
 
 __Contents__
 
-**Colors:** Defining the multi-wavelength color bands.
-**Pixel Scales:** Setting per-wavelength pixel scales.
-**Dataset:** Loading and plotting each multi-wavelength dataset.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Mask:** Applying a circular mask to each dataset.
-**Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
-**Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
-**Analysis List:** Creating analysis objects for each dataset with JAX acceleration.
-**Analysis Factor:** Wrapping each analysis in a factor graph with per-dataset model customization.
-**Factor Graph:** Combining all analysis factors into a global factor graph model.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**VRAM Use:** Estimating GPU VRAM requirements for multi-dataset fitting.
-**Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
-**Result:** Inspecting the per-wavelength results of the multi-dataset model fit.
-**Wrap Up:** Summary and pointers to further resources.
+- **Colors:** Defining the multi-wavelength color bands.
+- **Pixel Scales:** Setting per-wavelength pixel scales.
+- **Dataset:** Loading and plotting each multi-wavelength dataset.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Mask:** Applying a circular mask to each dataset.
+- **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+- **Model:** Composing a Sersic bulge and Exponential disk model with linear light profiles.
+- **Analysis List:** Creating analysis objects for each dataset with JAX acceleration.
+- **Analysis Factor:** Wrapping each analysis in a factor graph with per-dataset model customization.
+- **Factor Graph:** Combining all analysis factors into a global factor graph model.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **VRAM Use:** Estimating GPU VRAM requirements for multi-dataset fitting.
+- **Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
+- **Result:** Inspecting the per-wavelength results of the multi-dataset model fit.
+- **Wrap Up:** Summary and pointers to further resources.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

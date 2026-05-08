@@ -15,10 +15,10 @@ and therefore you should read these guides in detail first.
 
 __Contents__
 
-**Model Fit:** Perform a model-fit to create a Result object for inspecting galaxies and fits.
-**Max Likelihood Galaxies:** Visualize the maximum likelihood galaxies from the result.
-**Samples:** Extract individual galaxy components from the samples and plot their images.
-**Refitting:** Refit the data using different samples to inspect how the fit varies.
+- **Model Fit:** Perform a model-fit to create a Result object for inspecting galaxies and fits.
+- **Max Likelihood Galaxies:** Visualize the maximum likelihood galaxies from the result.
+- **Samples:** Extract individual galaxy components from the samples and plot their images.
+- **Refitting:** Refit the data using different samples to inspect how the fit varies.
 
 __Units__
 

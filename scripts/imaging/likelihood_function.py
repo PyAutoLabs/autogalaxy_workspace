@@ -16,22 +16,22 @@ packages are called when the likelihood is evaluated.
 
 __Contents__
 
-**Dataset:** Loading the imaging dataset for likelihood evaluation.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Defining and applying a circular mask to the data.
-**Over Sampling:** Disabling over-sampling for simplicity in this guide.
-**Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
-**Light Profiles (Setup):** Defining Sersic bulge and Exponential disk light profiles for the galaxy model.
-**Galaxy:** Combining light profiles into a single Galaxy object.
-**Galaxy Image:** Computing the 2D image of the galaxy's combined light profiles.
-**Convolution:** Convolving the galaxy image with the PSF.
-**Likelihood Function:** Overview of the log likelihood function terms.
-**Chi Squared:** Computing the chi-squared statistic for the fit.
-**Noise Normalization Term:** Computing the noise normalization term of the likelihood.
-**Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
-**Fit:** Performing the same likelihood evaluation using the FitImaging object.
-**Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
-**Wrap Up:** Summary and links to additional guides.
+- **Dataset:** Loading the imaging dataset for likelihood evaluation.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Defining and applying a circular mask to the data.
+- **Over Sampling:** Disabling over-sampling for simplicity in this guide.
+- **Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
+- **Light Profiles (Setup):** Defining Sersic bulge and Exponential disk light profiles for the galaxy model.
+- **Galaxy:** Combining light profiles into a single Galaxy object.
+- **Galaxy Image:** Computing the 2D image of the galaxy's combined light profiles.
+- **Convolution:** Convolving the galaxy image with the PSF.
+- **Likelihood Function:** Overview of the log likelihood function terms.
+- **Chi Squared:** Computing the chi-squared statistic for the fit.
+- **Noise Normalization Term:** Computing the noise normalization term of the likelihood.
+- **Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
+- **Fit:** Performing the same likelihood evaluation using the FitImaging object.
+- **Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
+- **Wrap Up:** Summary and links to additional guides.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

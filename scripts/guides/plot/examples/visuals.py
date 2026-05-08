@@ -13,15 +13,15 @@ behaviour of plotting visuals.
 
 __Contents__
 
-**Setup:** Set up objects (grid, galaxies, dataset) used to illustrate visual overlays.
-**Light Profile Centres:** Overlay light profile centres on an image using positions.
-**Mask:** Overlay a mask on an image.
-**Origin:** Overlay the coordinate origin on an image.
-**Grid:** Overlay a grid of (y,x) coordinates on an image.
-**Border:** Overlay the border of a mask on an image.
-**Array Overlay:** Overlay a 2D array on an image.
-**Patch Overlay:** Overlay matplotlib patches (e.g. ellipses) on an image.
-**Vector Field:** Overlay a quiver plot of vectors on an image.
+- **Setup:** Set up objects (grid, galaxies, dataset) used to illustrate visual overlays.
+- **Light Profile Centres:** Overlay light profile centres on an image using positions.
+- **Mask:** Overlay a mask on an image.
+- **Origin:** Overlay the coordinate origin on an image.
+- **Grid:** Overlay a grid of (y,x) coordinates on an image.
+- **Border:** Overlay the border of a mask on an image.
+- **Array Overlay:** Overlay a 2D array on an image.
+- **Patch Overlay:** Overlay matplotlib patches (e.g. ellipses) on an image.
+- **Vector Field:** Overlay a quiver plot of vectors on an image.
 
 __Setup__
 

@@ -12,15 +12,15 @@ profiles like the `Sersic`.
 
 __Contents__
 
-**Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
-**Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
-**MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
-**Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-**Basis:** How to create a basis of multiple light profiles, in this example Gaussians.
-**Gaussians:** A visualization of the Gaussians in the Basis that make up the MGE.
-**Linear Light Profiles:** How to create a basis of linear light profiles to perform the MGE.
-**Fit:** Perform a fit to a dataset using linear light profile MGE.
-**Intensities:** Access the solved for intensities of linear light profiles from the fit.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
+- **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
+- **MGE Source Galaxy:** Discussion of using the MGE for the source galaxy, which is illustrated fully at the end of the example.
+- **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
+- **Basis:** How to create a basis of multiple light profiles, in this example Gaussians.
+- **Gaussians:** A visualization of the Gaussians in the Basis that make up the MGE.
+- **Linear Light Profiles:** How to create a basis of linear light profiles to perform the MGE.
+- **Fit:** Perform a fit to a dataset using linear light profile MGE.
+- **Intensities:** Access the solved for intensities of linear light profiles from the fit.
 
 __Advantages__
 

@@ -32,12 +32,12 @@ If any code in this script is unclear, refer to the `fit` examples.
 
 __Contents__
 
-**Dataset:** Loading the sky background imaging dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Applying a circular mask to the dataset.
-**Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
-**Fit:** Performing a fit using a DatasetModel to include the sky background level.
-**Wrap Up:** Summary of sky background fitting with the DatasetModel object.
+- **Dataset:** Loading the sky background imaging dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Applying a circular mask to the dataset.
+- **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+- **Fit:** Performing a fit using a DatasetModel to include the sky background level.
+- **Wrap Up:** Summary of sky background fitting with the DatasetModel object.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

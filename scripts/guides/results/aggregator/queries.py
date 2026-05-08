@@ -11,11 +11,11 @@ can be loaded.
 
 __Contents__
 
-**Loading From Hard-disk:** Load results using the Aggregator from the output directory.
-**Unique Tag:** Query results by the unique_tag string used in the search.
-**Search Name:** Query results by the name of the non-linear search.
-**Model Queries:** Query results based on the model components fitted.
-**Logic:** Combine queries using AND (&) and OR (|) logical operators.
+- **Loading From Hard-disk:** Load results using the Aggregator from the output directory.
+- **Unique Tag:** Query results by the unique_tag string used in the search.
+- **Search Name:** Query results by the name of the non-linear search.
+- **Model Queries:** Query results based on the model components fitted.
+- **Logic:** Combine queries using AND (&) and OR (|) logical operators.
 
 __Database File__
 

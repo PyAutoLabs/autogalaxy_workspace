@@ -32,18 +32,18 @@ If any code in this script is unclear, refer to the `modeling/start_here.ipynb` 
 
 __Contents__
 
-**Dataset:** Loading the sky background imaging dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-**Mask:** Applying a circular mask to the dataset.
-**Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
-**Model:** Composing the galaxy model with a DatasetModel for the sky background.
-**Search:** Configuring the Nautilus nested sampling non-linear search.
-**Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
-**VRAM:** Discussion of GPU VRAM usage with the sky background model.
-**Run Time:** Discussion of computational run times with the sky background model.
-**Model-Fit:** Running the model-fit and monitoring output.
-**Result:** Inspecting the result object and inferred sky background level.
-**Wrap Up:** Summary of sky background modeling with the DatasetModel object.
+- **Dataset:** Loading the sky background imaging dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Applying a circular mask to the dataset.
+- **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+- **Model:** Composing the galaxy model with a DatasetModel for the sky background.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
+- **VRAM:** Discussion of GPU VRAM usage with the sky background model.
+- **Run Time:** Discussion of computational run times with the sky background model.
+- **Model-Fit:** Running the model-fit and monitoring output.
+- **Result:** Inspecting the result object and inferred sky background level.
+- **Wrap Up:** Summary of sky background modeling with the DatasetModel object.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

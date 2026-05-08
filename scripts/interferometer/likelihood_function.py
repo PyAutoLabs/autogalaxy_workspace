@@ -16,22 +16,22 @@ packages are called when the likelihood is evaluated.
 
 __Contents__
 
-**Mask:** Defining the real-space mask for the interferometer grid.
-**Dataset:** Loading the interferometer dataset from FITS files.
-**Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
-**Over Sampling:** Why over sampling is not needed for interferometer data.
-**Masked Image Grid:** Setting up the 2D coordinate grid for light profile evaluation.
-**Light Profiles (Setup):** Defining the Sersic and Exponential light profiles for the galaxy model.
-**Galaxy:** Combining light profiles into a Galaxy object.
-**Galaxy Image:** Computing the 2D image of the galaxy from its light profiles.
-**Fourier Transform:** Transforming the galaxy image to the uv-plane via NUFFT.
-**Likelihood Function:** Quantifying the goodness-of-fit of the galaxy model.
-**Chi Squared:** Computing the chi-squared statistic from residuals and noise.
-**Noise Normalization Term:** The noise normalization constant in the log likelihood.
-**Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
-**Fit:** Performing the likelihood evaluation using the FitInterferometer object.
-**Galaxy Modeling:** Overview of how the likelihood function is sampled by a non-linear search.
-**Wrap Up:** Summary and pointers to additional resources.
+- **Mask:** Defining the real-space mask for the interferometer grid.
+- **Dataset:** Loading the interferometer dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Over Sampling:** Why over sampling is not needed for interferometer data.
+- **Masked Image Grid:** Setting up the 2D coordinate grid for light profile evaluation.
+- **Light Profiles (Setup):** Defining the Sersic and Exponential light profiles for the galaxy model.
+- **Galaxy:** Combining light profiles into a Galaxy object.
+- **Galaxy Image:** Computing the 2D image of the galaxy from its light profiles.
+- **Fourier Transform:** Transforming the galaxy image to the uv-plane via NUFFT.
+- **Likelihood Function:** Quantifying the goodness-of-fit of the galaxy model.
+- **Chi Squared:** Computing the chi-squared statistic from residuals and noise.
+- **Noise Normalization Term:** The noise normalization constant in the log likelihood.
+- **Calculate The Log Likelihood:** Combining terms to compute the final log likelihood value.
+- **Fit:** Performing the likelihood evaluation using the FitInterferometer object.
+- **Galaxy Modeling:** Overview of how the likelihood function is sampled by a non-linear search.
+- **Wrap Up:** Summary and pointers to additional resources.
 """
 
 # from autoconf import setup_notebook; setup_notebook()
