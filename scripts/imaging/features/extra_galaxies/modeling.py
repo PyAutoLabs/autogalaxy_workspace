@@ -46,14 +46,15 @@ __Contents__
 - **Extra Galaxies Dataset:** Reloading the dataset without noise scaling for the modeling approach.
 - **Extra Galaxies Centres:** Loading the extra galaxy centre coordinates from a JSON file.
 - **Model:** Composing the galaxy model with Sersic bulge and Exponential disk.
-- **Extra Galaxies Model:** Adding extra galaxy light profiles with fixed centres to the model.
+- **Extra Galaxies Model: Two Options:** SersicSph (Option A, default) vs MGE (Option B, commented out) for the per-galaxy bulge.
 - **Search + Analysis:** Configuring the Nautilus search and analysis for the model-fit.
 - **VRAM:** Discussion of GPU VRAM usage with extra galaxy components.
 - **Run Time:** Discussion of computational run times with extra galaxies.
 - **Model-Fit:** Running the model-fit with the extra galaxies included.
 - **Result:** Inspecting the model-fit results and best-fit model.
 - **Approaches to Extra Galaxies:** Summary of masking vs modeling approaches for extra galaxies.
-- **Multi Gaussian Expansion:** Using MGE as an alternative to Sersic profiles for extra galaxies.
+- **Multi Gaussian Expansion:** MGE as an alternative bulge basis for extra galaxies (Option B above).
+- **Scaling Relations:** Why the autolens scaling-relation tier doesn't transfer to autogalaxy (and where to find it).
 - **Wrap Up:** Summary and links to further resources.
 """
 
@@ -307,26 +308,41 @@ disk = af.Model(ag.lp_linear.Exponential)
 bulge.centre = disk.centre
 
 """
-__Extra Galaxies Model__ 
+__Extra Galaxies Model: Two Options__
 
-We now use the modeling API to create the model for the extra galaxies.
+We now use the modeling API to create the model for the extra galaxies. The extra galaxies API requires that the
+centres of the light profiles are fixed to the input centres (but other parameters remain free).
 
-Currently, the extra galaxies API require that the centres of the light profiles are fixed to the input centres
-(but the other parameters of the light profiles remain free). 
+There are two equally-supported ways to compose the per-galaxy bulge — both shown below so you can pick whichever
+fits your data:
 
-Therefore, in this example fits a model where:
+**Option A (default) — one `SersicSph` per extra galaxy.** The classic API. Each extra galaxy gets a single linear
+spherical Sersic with fixed centre. Adds ~2 free parameters per galaxy (the linear inversion solves intensity).
+Concise; ideal when you have a small handful of bright, roughly-symmetric companions.
+
+**Option B (commented out) — MGE bulges via `ag.model_util.mge_model_from(centre_fixed=...)`.** Each extra galaxy
+gets ~10 Gaussian components sharing centre and ellipticity, with fixed centre. The two free `ell_comps` parameters
+per galaxy in the linear-light limit match Option A's parameter count, but the basis is far more flexible at
+capturing irregular or asymmetric companion morphologies. Recommended once the number of extras grows beyond a
+handful, since the dimensionality cost stays the same regardless of the basis.
+
+Both options leave the centres fixed to the loaded JSON values; the choice is purely about which basis function
+fits the bulge.
+
+In this example fits a model where:
 
  - The galaxy's bulge is a linear parametric `Sersic` [6 parameters].
- 
+
  - The galaxy's disk is a linear parametric `Exponential` [5 parameters].
 
- - Each extra galaxy's light is a linear parametric `SersicSph` profile with fixed centre [2 extra galaxies x 2 parameters = 5 parameters].
+ - Each extra galaxy's light is a linear parametric `SersicSph` profile with fixed centre
+   [2 extra galaxies x 2 parameters = 4 parameters], **or** an MGE basis with the same per-galaxy parameter count.
 
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=16.
-
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=15.
 """
 # Extra Galaxies:
 
+# Option A (default): one SersicSph per extra galaxy
 extra_galaxies_list = []
 
 for extra_galaxy_centre in extra_galaxies_centres:
@@ -339,6 +355,19 @@ for extra_galaxy_centre in extra_galaxies_centres:
     extra_galaxy.bulge.centre = extra_galaxy_centre
 
     extra_galaxies_list.append(extra_galaxy)
+
+# Option B (uncomment to use): MGE bulges via mge_model_from(centre_fixed=...)
+# extra_galaxies_list = []
+#
+# for extra_galaxy_centre in extra_galaxies_centres:
+#     bulge = ag.model_util.mge_model_from(
+#         mask_radius=mask_radius,
+#         total_gaussians=10,
+#         centre_fixed=tuple(extra_galaxy_centre),
+#     )
+#     extra_galaxies_list.append(
+#         af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
+#     )
 
 extra_galaxies = af.Collection(extra_galaxies_list)
 
@@ -426,10 +455,25 @@ https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
 
 __Multi Gaussian Expansion__
 
-If you do not need Sersic profiles to model the extra galaxies, an efficient approach is to use a Multi 
-Gaussian Expansion (MGE). This has benefits includuing more flexibility to fit complex light profiles, and faster
-modeling run times because MGEs have fewer parameters than Sersic profiles and can be fitted very quickly
-using linear algebra.
+We demonstrated MGE inline above as Option B — uncomment that block (and comment out Option A) to swap from
+`SersicSph` to MGE bulges for the extra galaxies. The MGE alternative is recommended once the number of extras
+grows beyond a handful, since each Gaussian basis captures irregular morphology with no extra dimensionality cost
+in the linear-light limit, and the bases evaluate quickly via linear algebra.
+
+__Scaling Relations__
+
+For lensing analyses, the autolens equivalent of this feature also supports a *scaling relation* tier where the
+masses of many faint companion galaxies are tied to their luminosities via a small number of shared free parameters:
+
+    einstein_radius = scaling_factor * (luminosity ** scaling_exponent)
+
+This pattern doesn't transfer to a light-only autogalaxy fit (linear light profiles already solve `intensity` via
+inversion, so scaling intensity by another shared free parameter is degenerate) — see
+`scripts/imaging/features/extra_galaxies/README.md` for the full discussion. If you arrived here looking for the
+scaling-relation tier, the autolens examples are:
+
+    autolens_workspace/scripts/imaging/features/scaling_relation/modeling.py
+    autolens_workspace/scripts/group/features/scaling_relation/modeling.py
 
 __Wrap Up__
 
