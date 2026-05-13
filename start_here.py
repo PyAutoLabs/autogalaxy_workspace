@@ -119,7 +119,10 @@ descriptive labels are included, etc.
 The plot module is highly customizable and designed to make it straight forward to create clean and informative figures
 for fits to large datasets.
 """
-aplt.plot_array(array=sersic_light_profile.image_2d_from(grid=grid), title="Sersic Light Profile Image")
+aplt.plot_array(
+    array=sersic_light_profile.image_2d_from(grid=grid),
+    title="Sersic Light Profile Image",
+)
 
 """
 __Galaxy__
