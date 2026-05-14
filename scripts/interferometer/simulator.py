@@ -74,14 +74,18 @@ uv_wavelengths = ag.ndarray_via_fits_from(
 )
 
 """
-To simulate the interferometer dataset we first create a simulator, which defines the exposure time, noise levels 
+To simulate the interferometer dataset we first create a simulator, which defines the exposure time, noise levels
 and Fourier transform method used in the simulation.
+
+We use `TransformerNUFFT` (backed by `nufftax`, https://github.com/GragasLab/nufftax), a JAX-native Non-Uniform
+Fast Fourier Transform. This is the recommended transformer at any visibility count and is fast enough to
+simulate ALMA-class datasets with millions of visibilities end-to-end on a GPU.
 """
 simulator = ag.SimulatorInterferometer(
     uv_wavelengths=uv_wavelengths,
     exposure_time=300.0,
     noise_sigma=1000.0,
-    transformer_class=ag.TransformerDFT,
+    transformer_class=ag.TransformerNUFFT,
 )
 
 """
