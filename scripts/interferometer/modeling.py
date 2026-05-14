@@ -2,27 +2,24 @@
 Modeling: Start Here
 ====================
 
-This script is the starting point for modeling of interferometer datasets with less than 1000
-visibilities (e.g. SMA, ALMA) and it provides an overview of the modeling API.
+This script is the starting point for modeling of interferometer datasets (e.g. SMA, ALMA) and it provides an
+overview of the modeling API. The same workflow scales from a few hundred visibilities to many millions,
+thanks to the JAX-native `TransformerNUFFT` (backed by `nufftax`).
 
 __Number of Visibilities__
 
 This example fits a **low-resolution interferometric dataset** with a small number of visibilities (273). The
-dataset is intentionally minimal so that the example runs quickly and allows you to become familiar with the API
-and modeling workflow. The code demonstrated in this example can feasible fit datasets with up to around 10000
-visibilities, above which computational time and VRAM use become significant for this modeling approach.
+dataset is intentionally minimal so the example runs quickly and you can become familiar with the API and
+modeling workflow.
 
-High-resolution datasets with many visibilities (e.g. high-quality ALMA observations
-with **millions hundreds of millions of visibilities**) can be modeled efficiently. However, this requires
-using the more advanced **pixelized source reconstructions** modeling approach. These large datasets fully
-exploit **JAX acceleration**, enable modeling to run in **hours on a modern GPU**.
+The same workflow — light profiles + `TransformerNUFFT` (backed by `nufftax`, https://github.com/GragasLab/nufftax) —
+scales to high-resolution datasets with **millions to hundreds of millions of visibilities** (e.g. ALMA), with no
+change beyond the transformer choice. The NUFFT runs inside JAX's jit/vmap pipeline, so both run time and VRAM
+stay manageable on a GPU at any visibility count.
 
-If your dataset contains many visibilities, you should start by working through this example and the other examples
-in the `interferometer` folder. Once you are comfortable with the API, the `feature/pixelization` package provides a
-guided path toward efficiently modeling large interferometric datasets.
-
-The threshold between a dataset having many visibilities and therefore requiring pixelized source reconstructions, or
-being small enough to be modeled with light profiles, is around **10,000 visibilities**.
+Pixelized reconstructions (see `features/pixelization`) remain the right tool when the galaxy has complex,
+irregular morphology that simple light profiles cannot capture. They are no longer required purely because
+the dataset is large.
 
 __Contents__
 
@@ -107,7 +104,7 @@ dataset = ag.Interferometer.from_fits(
     noise_map_path=dataset_path / "noise_map.fits",
     uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
-    transformer_class=ag.TransformerDFT,
+    transformer_class=ag.TransformerNUFFT,
 )
 
 aplt.subplot_interferometer_dirty_images(dataset=dataset)
@@ -368,8 +365,8 @@ __Features__
 The examples in the `autogalaxy_workspace/*/interferometer/features` package illustrate other galaxy modeling
 features.
 
-We recommend you check out just one feature next, because it makes galaxy modeling of interferometer datasets
-more reliable and efficient, and will then allow you to model high-resolution datasets with many visibilities:
+We recommend you check out the `pixelization` feature next, which lets you reconstruct galaxies with complex,
+irregular morphology that simple light profiles cannot capture:
 
 - ``pixelization``: The galaxy’s light is reconstructed using an adaptive Rectangular mesh or Delaunay mesh.
 
