@@ -207,7 +207,7 @@ hides the API to make the code in this introduction example ready to read. We th
 use the PyAutoGalaxy Model API to compose the galaxy model.
 """
 galaxy_bulge = ag.model_util.mge_model_from(
-    mask_radius=mask_radius, total_gaussians=20, centre_prior_is_uniform=False
+    mask_radius=mask_radius, total_gaussians=5, centre_prior_is_uniform=False
 )
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=galaxy_bulge)
 
