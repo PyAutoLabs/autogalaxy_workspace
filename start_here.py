@@ -4,7 +4,7 @@ PyAutoGalaxy
 
 **PyAutoGalaxy** is software for analysing the morphologies and structures of galaxies:
 
-![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/hstcombined.png)
+![HST Image](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/paper/hstcombined.png)
 
 **PyAutoGalaxy** has three core aims:
 
@@ -340,7 +340,7 @@ __Interferometry__
 
 Modeling interferometer data from submillimeter (e.g. ALMA) and radio (e.g. LOFAR) observatories:
 
-![ALMA Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/almacombined.png)
+![ALMA Image](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/paper/almacombined.png)
 
 Visibilities data is fitted directly in the uv-plane, circumventing issues that arise when fitting a dirty image
 such as correlated noise. This uses the non-uniform fast fourier transform algorithm
@@ -354,9 +354,9 @@ __Multi-Wavelength__
 Modeling imaging datasets observed at different wavelengths (e.g. HST F814W and F150W) simultaneously or simultaneously
 analysing imaging and interferometer data:
 
-![g-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/g_image.png)
+![g-band](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_3/g_image.png)
 
-![r-band](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/r_image.png)
+![r-band](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_3/r_image.png)
 
 The appearance of the galaxy changes as a function of wavelength, therefore multi-wavelength analysis means we can learn
 more about the different components in a galaxy (e.g a redder bulge and bluer disk) or when imaging and interferometer
@@ -371,7 +371,7 @@ __Ellipse Fitting__
 Ellipse fitting is a technique which fits many ellipses to a galaxy's emission to determine its ellipticity, position
 angle and centre, without assuming a parametric form for its light (e.g. a Sersic profile):
 
-![ellipse](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/ellipse.png)
+![ellipse](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_3/ellipse.png)
 
 This provides complementary information to parametric light profile fitting, for example giving insights on whether
 the ellipticity and position angle are constant with radius or if the galaxy's emission is lopsided. 
@@ -388,7 +388,7 @@ __Multi Gaussian Expansion (MGE)__
 
 An MGE decomposes the light of a galaxy into tens or hundreds of two dimensional Gaussians:
 
-![MGE](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/docs/overview/images/overview_3/mge.png)
+![MGE](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_3/mge.png)
 
 In the image above, 30 Gaussians are shown, where their sizes go from below the pixel scale (in order to resolve
 point emission) to beyond the size of the galaxy (to capture its extended emission).
@@ -445,7 +445,7 @@ The image below shows a non parametric of a galaxy observed in the Hubble Ultra 
 fitted accurately using light profiles, whereas its asymmetric and irregular spiral arm features are accurately
 captured using a rectangular mesh:
 
-![HST Image](https://raw.githubusercontent.com/Jammy2211/PyAutoGalaxy/main/paper/hstcombined.png)
+![HST Image](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/paper/hstcombined.png)
 
 Checkout `autogalaxy_workspace/notebooks/features/pixelizations.ipynb` to learn how to use a pixelization, however
 this is a more advanced feature and it is recommended you first get to grips with the core API.

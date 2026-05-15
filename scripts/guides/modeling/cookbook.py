@@ -237,8 +237,8 @@ profiles.
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/modeling/imaging/features/multi_gaussian_expansion.ipynb
-https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/modeling/imaging/features/shapelets.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/modeling.ipynb
 
 __Model Linking (Advanced)__
 
@@ -246,7 +246,7 @@ When performing non-linear search chaining, the inferred model of one phase can 
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/imaging/advanced/guides/modeling/chaining.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/advanced/guides/modeling/chaining.ipynb
 
 __Across Datasets (Advanced)__
 
@@ -255,7 +255,7 @@ but certain parameters are free to vary across the datasets.
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/multi/modeling/start_here.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/start_here.ipynb
 
 __Relations (Advanced)__
 
@@ -264,7 +264,7 @@ We can compose models where the free parameter(s) vary according to a user-speci
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/Jammy2211/autogalaxy_workspace/blob/release/notebooks/multi/modeling/features/wavelength_dependence.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/features/wavelength_dependence/modeling.ipynb
 
 __PyAutoFit API__
 
