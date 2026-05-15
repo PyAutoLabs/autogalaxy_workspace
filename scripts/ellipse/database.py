@@ -45,8 +45,9 @@ throughout the example, with API that mirrors the normal aggregator.
 """
 database_name = "ellipse"
 
-if path.exists(Path("output") / f"{database_name}.sqlite"):
-    os.remove(Path("output") / f"{database_name}.sqlite")
+sqlite_path = Path("output") / f"{database_name}.sqlite"
+if sqlite_path.exists():
+    sqlite_path.unlink()
 
 agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
@@ -237,8 +238,9 @@ First, lets build a database of a model-fit using multipoles.
 """
 database_name = "ellipse_multipole"
 
-if path.exists(Path("output") / f"{database_name}.sqlite"):
-    os.remove(Path("output") / f"{database_name}.sqlite")
+sqlite_path = Path("output") / f"{database_name}.sqlite"
+if sqlite_path.exists():
+    sqlite_path.unlink()
 
 agg = af.Aggregator.from_database(
     filename=f"{database_name}.sqlite", completed_only=False
