@@ -120,7 +120,7 @@ image = bulge.image_2d_from(grid=masked_dataset.grids.lp)
 """
 __Linear Light Profiles__
 
-To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_Linear`
+To use a linear light profile, whose `intensity` is computed via linear algebra, we simply use the `lp_linear`
 module instead of the `lp` module used throughout other example scripts. 
 
 The `intensity` parameter of the light profile is no longer passed into the light profiles created via the
