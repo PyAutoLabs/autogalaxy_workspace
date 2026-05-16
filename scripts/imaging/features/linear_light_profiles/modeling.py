@@ -12,7 +12,7 @@ light profiles!
 
 __Contents__
 
-- **Advantages & Disadvatanges:** Benefits and drawbacks of linear light profiles.
+- **Advantages & Disadvantages:** Benefits and drawbacks of linear light profiles.
 - **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
 - **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
 - **Fit:** Perform a fit to a dataset using linear light profile with inputs for other light profile parameters.
@@ -40,7 +40,7 @@ can therefore fit models more reliably and faster!
 
 __Disadvantages__
 
-Althought the computation time of the inversion is small, it is not non-negligable. It is approximately 3-4x slower
+Although the computation time of the inversion is small, it is not non-negligible. It is approximately 3-4x slower
 than using a standard light profile.
 
 The gains in run times due to the simpler non-linear parameter space therefore are somewhat balanced by the slower
@@ -48,7 +48,7 @@ likelihood calculation.
 
 __Positive Only Solver__
 
-Many codes which use linear algebra typically rely on a linear algabra solver which allows for positive and negative
+Many codes which use linear algebra typically rely on a linear algebra solver which allows for positive and negative
 values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
 
 This is problematic, as it means that negative surface brightnesses values can be computed to represent a galaxy's
@@ -171,10 +171,10 @@ print(model.info)
 """
 __Search__
 
-The model is fitted to the data using the nested sampling algorithm Nautilus (see `start.here.py` for a 
+The model is fitted to the data using the nested sampling algorithm Nautilus (see `start_here.py` for a
 full description).
 
-In the `start_here.py` example 150 live points (`n_live=100`) were used to sample parameter space. For the linear
+In the `start_here.py` example 100 live points (`n_live=100`) were used to sample parameter space. For the linear
 light profiles this is reduced to 75, as the simpler parameter space means we need fewer live points to map it out
 accurately. This will lead to faster run times.
 """
@@ -182,8 +182,8 @@ search = af.Nautilus(
     path_prefix=Path("imaging") / "features",
     name="linear_light_profiles",
     unique_tag=dataset_name,
-    n_live=300,
-    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_live=75,
+    n_batch=50,  # GPU galaxy model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -215,7 +215,7 @@ This is still fast, but it does mean that the fit may take around five times lon
 
 However, because two free parameters have been removed from the model (the `intensity` of the bulge and disk), the 
 total number of likelihood evaluations will reduce. Furthermore, the simpler parameter space likely means that the 
-fit will take less than 10000 per free parameter to converge. This is aided further by the reduction in `n_live` to 75.
+fit will take less than 10000 likelihood evaluations per free parameter to converge. This is aided further by the reduction in `n_live` to 75.
 
 Fits using standard light profiles and linear light profiles therefore take roughly the same time to run. However,
 the simpler parameter space of linear light profiles means that the model-fit is more reliable, less susceptible to
@@ -292,7 +292,7 @@ aplt.plot_array(array=galaxies[0].image_2d_from(grid=dataset.grid), title="Image
 """
 __Wrap Up__
 
-Checkout `autoogalaxy_workspace/*/guides/results` for a full description of analysing results.
+Checkout `autogalaxy_workspace/*/guides/results` for a full description of analysing results.
 
 __Result (Advanced)__
 
@@ -314,43 +314,41 @@ pass  # inversion plotter replaced by standalone functions when needed
 """
 __Linear Objects (Internal Source Code)__
 
-An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`. 
+An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`.
 
 This list may include the following objects:
 
- - `LightProfileLinearObjFuncList`: This object contains lists of linear light profiles and the functionality used
- by them to reconstruct data in an inversion. For example it may only contain a list with a single light profile
- (e.g. `lp_linear.Sersic`) or many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
+ - `LightProfileLinearObjFuncList`: Holds a list of linear light profiles and the functionality used to
+   reconstruct data in an inversion. It may contain a single light profile (e.g. `lp_linear.Sersic`) or
+   many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
 
-- `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper` 
-is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularAdaptDensity` mesh).
+ - `Mapper`: The linear object used by a `Pixelization` to reconstruct data via an `Inversion`. The `Mapper`
+   is specific to the `Pixelization`'s `Mesh` (e.g. a `RectangularMapper` is used for a `RectangularAdaptDensity`
+   mesh).
 
-In this example, two linear objects were used to fit the data:
- 
- - An `Sersic` linear light profile.
- ` A `Basis` containing 5 Gaussians. 
+In this example, the model uses one linear `Sersic` for the galaxy's bulge and one linear `Exponential` for
+the galaxy's disk. The inversion therefore has two `LightProfileLinearObjFuncList` entries, one for each
+linear light profile.
 """
 print(inversion.linear_obj_list)
 
 """
-To extract results from an inversion many quantities will come in lists or require that we specific the linear object
-we with to use. 
-
-Thus, knowing what linear objects are contained in the `linear_obj_list` and what indexes they correspond to
-is important.
+To extract results from an inversion many quantities come in lists or require us to specify the linear object
+we wish to use. Knowing what linear objects are in the `linear_obj_list`, and what indexes they correspond to,
+is therefore important.
 """
-print(f"LightProfileLinearObjFuncList (Sersic) = {inversion.linear_obj_list[0]}")
-print(f"LightProfileLinearObjFuncList (Basis) = {inversion.linear_obj_list[1]}")
+print(f"LightProfileLinearObjFuncList (Bulge Sersic)     = {inversion.linear_obj_list[0]}")
+print(f"LightProfileLinearObjFuncList (Disk Exponential) = {inversion.linear_obj_list[1]}")
 
 """
-Each of these `LightProfileLinearObjFuncList` objects contains its list of light profiles, which for the
-`Sersic` is a single entry whereas for the `Basis` is 5 Gaussians.
+Each `LightProfileLinearObjFuncList` contains a `light_profile_list`. For both entries in this example the
+list has a single light profile.
 """
 print(
-    f"Linear Light Profile list (Sersic) = {inversion.linear_obj_list[0].light_profile_list}"
+    f"Linear Light Profile list (Bulge Sersic)     = {inversion.linear_obj_list[0].light_profile_list}"
 )
 print(
-    f"Linear Light Profile list (Basis -> x5 Gaussians) = {inversion.linear_obj_list[1].light_profile_list}"
+    f"Linear Light Profile list (Disk Exponential) = {inversion.linear_obj_list[1].light_profile_list}"
 )
 
 """
@@ -385,7 +383,7 @@ print(
     f"\n Intensity of bulge (lp_linear.Sersic) = {fit.linear_light_profile_intensity_dict[bulge]}"
 )
 print(
-    f"\n Intensity of first Gaussian in disk = {fit.linear_light_profile_intensity_dict[disk]}"
+    f"\n Intensity of disk (lp_linear.Exponential) = {fit.linear_light_profile_intensity_dict[disk]}"
 )
 
 """
