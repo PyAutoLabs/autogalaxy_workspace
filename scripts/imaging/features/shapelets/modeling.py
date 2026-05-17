@@ -7,13 +7,13 @@ has been employed in galaxy structure studies to model the light of the galaxy, 
 features of disky star forming galaxies that a single Sersic function cannot.
 
 - https://ui.adsabs.harvard.edu/abs/2016MNRAS.457.3066T
-- https://iopscience.iop.org/article/10.1088/0004-637X/813/2/102 t
+- https://iopscience.iop.org/article/10.1088/0004-637X/813/2/102
 
 Shapelets are described in full in the following paper:
 
  https://arxiv.org/abs/astro-ph/0105178
 
-This script performs a model-fit using shapelet, where it decomposes the galaxy light into ~20
+This script performs a model-fit using shapelets, where it decomposes the galaxy light into ~20
 Shapelets. The `intensity` of every Shapelet is solved for via linear algebra (see the `linear_light_profiles.py`
 feature).
 
@@ -30,8 +30,8 @@ __Contents__
 - **Search & Analysis:** Standard set up of non-linear search and analysis.
 - **Run Time:** Profiling of shapelet run times and discussion of how they compare to standard light profiles.
 - **Model-Fit:** Performs the model fit using standard API.
-- **Result:** Shaeplet results, including accessing light profiles with solved for intensity values.
-- **Cartesian Shapelets:** Using shapelets definedon a Cartesian coordinate system instead of polar coordinates.
+- **Result:** Shapelet results, including accessing light profiles with solved for intensity values.
+- **Cartesian Shapelets:** Using shapelets defined on a Cartesian coordinate system instead of polar coordinates.
 - **Lens Shapelets:** Using shapelets to decompose the lens galaxy instead of the source galaxy.
 - **Regularization:** API for applying regularization to shapelets, which is not recommend but included for illustration.
 
@@ -42,17 +42,17 @@ irregular and asymmetric morphological of galaxies (e.g. isophotal twists, an el
 Shapelets can capture some of these features and can therefore better represent the emission of complex galaxies.
 
 The shapelet model can be composed in a way that has fewer non-linear parameters than an elliptical Sersic. In this
-example, the ~20 shapelets which represent the `bulge` of that are composed in a model corresponding to just
-N=3 non-linear parameters (a `bulge` comprising a linear Sersic would give N=6).
+example, the ~20 shapelets which represent the `bulge` of the galaxy are composed in a model corresponding
+to just N=3 non-linear parameters (a `bulge` comprising a linear Sersic would give N=6).
 
-Therefore, shapelet fit more complex galaxy morphologies using fewer non-linear parameters than the standard
-light profile models!
+Therefore, shapelets fit more complex galaxy morphologies using fewer non-linear parameters than the standard
+light profile models.
 
 __Disadvantages__
 
-- There are many types of galaxy structure which shapelets may struggle to represent, such as a bar or assymetric
-knots of star formation. They also rely on the galaxy have a distinct central over which the shapelets can be
-centered, which is not the case of the galaxy is multiple merging systems or has bright companion galaxies.
+- There are many types of galaxy structure which shapelets may struggle to represent, such as a bar or asymmetric
+knots of star formation. They also rely on the galaxy having a distinct centre over which the shapelets can be
+centered, which is not the case if the galaxy is multiple merging systems or has bright companion galaxies.
 
 - The linear algebra used to solve for the `intensity` of each shapelet has to allow for negative values of intensity
 in order for shapelets to work. Negative surface brightnesses are unphysical, and are often inferred in a shapelet
@@ -64,7 +64,7 @@ __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy's bulge is a super position of `ShapeletCartesianSph`` profiles.
+ - The galaxy's bulge is a superposition of `ShapeletPolar` profiles.
 
 __Start Here Notebook__
 
