@@ -252,44 +252,45 @@ galaxy's light is decomposed into a sum of many concentric Gaussians at fixed ce
 ellipticities but with increasing widths — together they reproduce arbitrary radial profiles
 the standard parametric forms cannot capture.
 
-The `Basis` constructor takes a `profile_list` of any light or mass profiles:
+The `Basis` constructor takes a `profile_list` of any light or mass profiles.  Below we
+build a four-Gaussian MGE with shared centre and ellipticity, sigmas that span an order of
+magnitude, and explicit decreasing `intensity` so the innermost Gaussian dominates the
+core and the wider ones add the outer envelope.  Standard `ag.lp.Gaussian` profiles are
+used here so the demo image is meaningful; in an actual fit you would swap these for
+`ag.lp_linear.Gaussian` (see the note after the plot).
 """
 basis = ag.lp_basis.Basis(
     profile_list=[
-        ag.lp_linear.Gaussian(
+        ag.lp.Gaussian(
             centre=(0.0, 0.0),
             ell_comps=ag.convert.ell_comps_from(axis_ratio=0.8, angle=45.0),
+            intensity=1.0,
             sigma=0.05,
         ),
-        ag.lp_linear.Gaussian(
+        ag.lp.Gaussian(
             centre=(0.0, 0.0),
             ell_comps=ag.convert.ell_comps_from(axis_ratio=0.8, angle=45.0),
+            intensity=0.5,
             sigma=0.15,
         ),
-        ag.lp_linear.Gaussian(
+        ag.lp.Gaussian(
             centre=(0.0, 0.0),
             ell_comps=ag.convert.ell_comps_from(axis_ratio=0.8, angle=45.0),
+            intensity=0.25,
             sigma=0.4,
         ),
-        ag.lp_linear.Gaussian(
+        ag.lp.Gaussian(
             centre=(0.0, 0.0),
             ell_comps=ag.convert.ell_comps_from(axis_ratio=0.8, angle=45.0),
+            intensity=0.1,
             sigma=1.0,
         ),
     ]
 )
 
-"""
-Because the constituents are `LightProfileLinear` instances they have no concrete
-`intensity` value yet — the intensity is the thing the inversion would solve for during a
-fit.  To plot what the basis looks like *as a model component* we wrap it as the `bulge` of
-a `Galaxy` and plot the galaxy's image, which is how the basis is used in practice:
-"""
-basis_galaxy = ag.Galaxy(redshift=0.5, bulge=basis)
-
 aplt.plot_array(
-    array=basis_galaxy.image_2d_from(grid=grid),
-    title="Basis Image (4-Gaussian MGE, plotted via Galaxy)",
+    array=basis.image_2d_from(grid=grid),
+    title="Basis Image (4-Gaussian MGE)",
 )
 
 """
@@ -297,10 +298,14 @@ Two things make `Basis` powerful:
 
 - It slots into a `Galaxy` exactly like a `Sersic` would — once wrapped, the rest of the
   modelling code doesn't have to know it's looking at four Gaussians under the hood.
-- When *every* constituent profile is a `LightProfileLinear` (as in the example above), all
-  of their `intensity` values are solved together in a **single combined inversion** at each
+- When the constituents are `LightProfileLinear` instances (e.g. `ag.lp_linear.Gaussian`)
+  rather than the standard `ag.lp.Gaussian` used in the demo above, all of their
+  `intensity` values are solved together in a **single combined inversion** at each
   likelihood evaluation.  This means an MGE built from, say, 30 Gaussians adds only the
   shared geometric parameters to the non-linear search rather than 30 extra intensities.
+  The demo above uses standard Gaussians purely so the image is non-zero on a static
+  plot — in a real fit you would build the basis from `ag.lp_linear.Gaussian` and let the
+  inversion solve the intensities.
 
 The full MGE workflow — choosing how many Gaussians to use, how to space their `sigma`
 values, and how the inversion plays with regularisation — is documented in:
