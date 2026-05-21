@@ -179,7 +179,10 @@ __Visualization__
 The helper-galaxies object created above replaces every linear `ShapeletPolar` with an ordinary
 `ShapeletPolar` carrying its solved-for `intensity` — that object can be plotted directly.
 """
-aplt.plot_array(array=galaxies.image_2d_from(grid=dataset.grid), title="Galaxy Image (shapelet bulge)")
+aplt.plot_array(
+    array=galaxies.image_2d_from(grid=dataset.grid),
+    title="Galaxy Image (shapelet bulge)",
+)
 
 
 """

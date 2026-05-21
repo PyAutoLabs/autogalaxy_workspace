@@ -332,7 +332,10 @@ mapped_reconstructed_visibilities = ag.Visibilities(
     visibilities=mapped_reconstructed_visibilities
 )
 
-aplt.plot_grid(grid=mapped_reconstructed_visibilities.in_grid, title="Model Visibilities (MGE galaxy)")
+aplt.plot_grid(
+    grid=mapped_reconstructed_visibilities.in_grid,
+    title="Model Visibilities (MGE galaxy)",
+)
 
 
 """
@@ -371,8 +374,12 @@ __Noise Normalization Term__
 The likelihood function assumes the visibility data consists of independent Gaussian noise on every
 visibility (real and imaginary parts treated independently).
 """
-noise_normalization_real = float(np.sum(np.log(2 * np.pi * dataset.noise_map.real ** 2.0)))
-noise_normalization_imag = float(np.sum(np.log(2 * np.pi * dataset.noise_map.imag ** 2.0)))
+noise_normalization_real = float(
+    np.sum(np.log(2 * np.pi * dataset.noise_map.real**2.0))
+)
+noise_normalization_imag = float(
+    np.sum(np.log(2 * np.pi * dataset.noise_map.imag**2.0))
+)
 noise_normalization = noise_normalization_real + noise_normalization_imag
 
 """

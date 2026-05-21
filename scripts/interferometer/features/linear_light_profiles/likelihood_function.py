@@ -374,7 +374,9 @@ mapped_reconstructed_visibilities = ag.Visibilities(
     visibilities=mapped_reconstructed_visibilities
 )
 
-aplt.plot_grid(grid=mapped_reconstructed_visibilities.in_grid, title="Model Visibilities")
+aplt.plot_grid(
+    grid=mapped_reconstructed_visibilities.in_grid, title="Model Visibilities"
+)
 
 
 """
@@ -426,8 +428,12 @@ The `noise_normalization` term is the sum of the log of every noise-map value sq
 it is included so that the absolute value of `log_likelihood` has the correct calibration for model
 comparison.
 """
-noise_normalization_real = float(np.sum(np.log(2 * np.pi * dataset.noise_map.real ** 2.0)))
-noise_normalization_imag = float(np.sum(np.log(2 * np.pi * dataset.noise_map.imag ** 2.0)))
+noise_normalization_real = float(
+    np.sum(np.log(2 * np.pi * dataset.noise_map.real**2.0))
+)
+noise_normalization_imag = float(
+    np.sum(np.log(2 * np.pi * dataset.noise_map.imag**2.0))
+)
 noise_normalization = noise_normalization_real + noise_normalization_imag
 
 """

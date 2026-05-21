@@ -329,7 +329,9 @@ galaxies = result.max_log_likelihood_galaxies
 
 aplt.plot_array(array=galaxies.image_2d_from(grid=dataset.grid), title="Galaxy Image")
 
-aplt.plot_array(array=galaxies[0].image_2d_from(grid=dataset.grid), title="Galaxy Image")
+aplt.plot_array(
+    array=galaxies[0].image_2d_from(grid=dataset.grid), title="Galaxy Image"
+)
 
 """
 __Wrap Up__
@@ -376,8 +378,12 @@ To extract results from an inversion many quantities come in lists or require us
 we wish to use. Knowing what linear objects are in the `linear_obj_list`, and what indexes they correspond to,
 is therefore important.
 """
-print(f"LightProfileLinearObjFuncList (Bulge Sersic)     = {inversion.linear_obj_list[0]}")
-print(f"LightProfileLinearObjFuncList (Disk Exponential) = {inversion.linear_obj_list[1]}")
+print(
+    f"LightProfileLinearObjFuncList (Bulge Sersic)     = {inversion.linear_obj_list[0]}"
+)
+print(
+    f"LightProfileLinearObjFuncList (Disk Exponential) = {inversion.linear_obj_list[1]}"
+)
 
 """
 Each `LightProfileLinearObjFuncList` contains a `light_profile_list`. For both entries in this example the

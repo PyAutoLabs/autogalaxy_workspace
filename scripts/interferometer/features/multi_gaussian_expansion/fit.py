@@ -194,7 +194,9 @@ have an `intensity` value.
 The helper-galaxies object created above replaces every linear `Gaussian` with an ordinary `Gaussian`
 carrying its solved-for `intensity` — that object can be plotted directly.
 """
-aplt.plot_array(array=galaxies.image_2d_from(grid=dataset.grid), title="Galaxy Image (MGE bulge)")
+aplt.plot_array(
+    array=galaxies.image_2d_from(grid=dataset.grid), title="Galaxy Image (MGE bulge)"
+)
 
 
 """
