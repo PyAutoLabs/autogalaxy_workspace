@@ -42,7 +42,7 @@ real_space_mask = ag.Mask2D.circular(
     radius=mask_radius,
 )
 
-dataset_name = "simple"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 """
@@ -56,7 +56,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/interferometer/simulator.py"],
+        [sys.executable, "scripts/interferometer/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -109,9 +109,11 @@ result = search.fit(model=model, analysis=analysis)
 __Reconstruction CSV__
 
 In the results `image` folder there is a .csv file called `source_plane_reconstruction_0.csv` which contains the
-y and x coordinates of the pixelization mesh, the reconstruct values and the noise map of these values.
+y and x coordinates of the pixelization mesh, the reconstructed values and the noise map of these values. The
+filename retains the `source_plane_` prefix because it is emitted by the shared library inversion machinery used
+by both PyAutoGalaxy and PyAutoLens — the contents are nonetheless the galaxy's pixelized reconstruction here.
 
-This file provides all information on the reconstruction in a format that does not depend on autogalaxy
+This file provides all information on the reconstruction in a format that does not depend on PyAutoGalaxy
 and can therefore be easily loaded to create images of the galaxy or shared with collaborators who do not have
 PyAutoGalaxy installed.
 

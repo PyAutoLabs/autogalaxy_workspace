@@ -7,6 +7,9 @@ This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a
  - The galaxy's light is modeled using an `Inversion` with a rectangular pixelization and constant regularization
  scheme.
 
+For the canonical single-band tutorial that motivates the bulge + pixelization use-case (smooth bulge plus
+asymmetric clumpy star formation), see `scripts/imaging/features/pixelization/modeling.py`.
+
 Two images are fitted, corresponding to a greener ('g' band) and redder image (`r` band).
 
 This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for galaxy modeling. Thus,
@@ -218,7 +221,8 @@ print(result_list[0].max_log_likelihood_instance)
 print(result_list[1].max_log_likelihood_instance)
 
 """
-Plotting each result's galaxies shows that the source appears different, owning to its different intensities.
+Plotting each result's galaxies shows that the galaxy appears different at each wavelength, owing to its different
+intensities.
 """
 for result in result_list:
     aplt.subplot_galaxies(

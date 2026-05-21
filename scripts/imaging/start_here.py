@@ -513,5 +513,5 @@ The following locations of the workspace are good places to check out next:
 - `autogalaxy_workspace/*/imaging/data_preparation`: How to load and prepare your own imaging data for galaxy modeling.
 - `autogalaxy_workspace/guides/results`: How to load and analyze the results of your galaxy model fits, including tools for large samples.
 - `autogalaxy_workspace/guides`: A complete description of the API and information on calculations and units.
-- `autogalaxy_workspace/imaging/features`: A description of advanced features for galaxy modeling, for example pixelized reconstructions, read this once you're confident with the basics!
+- `autogalaxy_workspace/imaging/features`: A description of advanced features for galaxy modeling, for example pixelized reconstructions of asymmetric clumpy galaxies (`imaging/features/pixelization`), read this once you're confident with the basics!
 """

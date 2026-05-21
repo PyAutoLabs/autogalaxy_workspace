@@ -2,15 +2,18 @@
 Features: Pixelization Fit
 ==========================
 
-A pixelization reconstructs a galaxy's light using a pixel-grid, which is regularized using a prior that forces
-the solution to have a degree of smoothness.
+This script performs a single, direct fit (no non-linear search) of a galaxy that has two components:
 
-This can be used to explitcitly reconstruct complex and irregular components in galaxies (e.g. spiral arms, clumps)
-which symmetric light profiles like a Sersic cannot easily fit.
+ - A smooth central **bulge**, captured by a linear `Sersic` light profile.
+ - **Asymmetric clumpy star formation**, reconstructed on a pixelization with a rectangular mesh and constant
+   regularization scheme.
 
-This script fits a galaxy in a way which uses a pixelization to reconstruct the source's light. This uses a
-rectangular mesh and constant regularization scheme are, which are the simplest forms of each, both providing
-computationally fast and accurate solutions.
+The `clumpy` imaging dataset used here is the canonical motivating example for pixelizations in galaxy modeling.
+Parametric profiles fit the bulge well but leave structured residuals where the clumps live; the pixelization
+absorbs whatever the Sersic cannot describe on a flexible pixel grid.
+
+See `modeling.py` for the same model fit via a non-linear search, and `galaxy_reconstruction.py` for how to export
+the reconstructed clumpy component to a CSV for downstream science.
 
 Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
 
@@ -34,36 +37,36 @@ via the library `numba`.
 
 __Contents__
 
-- **Advantages & Disadvantages:** Benefits and drawbacks of using an MGE.
-- **Positive Only Solver:** How a positive solution to the light profile intensities is ensured.
-- **Dataset & Mask:** Standard set up of imaging dataset that is fitted.
-- **Mesh Shape**: Defining the shape of the mesh that reconstructs the source in advance, such that JAX knows static array shapes.
+- **Advantages & Disadvantages:** Benefits and drawbacks of using a pixelization to reconstruct a galaxy.
+- **Positive Only Solver:** How a positive solution to the reconstructed pixel fluxes is ensured.
+- **Dataset & Mask:** Standard set up of the clumpy imaging dataset that is fitted.
+- **Mesh Shape**: Defining the shape of the mesh that reconstructs the clumpy component in advance, such that JAX knows static array shapes.
 - **Pixelization:** How to create a pixelization, including a description of its inputs.
-- **Fit:** Perform a fit to a dataset using a pixelization, and visualize its results.
-- **Interpolated Source:** Interpolate the source reconstruction from an irregular Voronoi mesh to a uniform square grid and output to a .fits file.
-- **Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
-- **Simulate (Advanced):** Simulating a dataset with the inferred pixelized source.
+- **Fit:** Perform a fit to the dataset combining a `Sersic` bulge with a pixelization for the clumps.
+- **Mask Extra Galaxies:** Using noise scaling to handle nearby galaxies whose emission would otherwise contaminate the fit.
+- **Linear Objects / Grids / Reconstruction:** Inspecting the inversion output for the reconstructed clumpy component.
 
 __Advantages__
 
 Many galaxies are complex, and have asymmetric and irregular morphologies. These morphologies cannot be well
-approximated by a light profiles like a Sersic, or many Sersics, and thus a pixelization is required to reconstruct
-the source's irregular light.
+approximated by light profiles like a Sersic, or many Sersics, and thus a pixelization is required to reconstruct
+the irregular component of the galaxy's light.
 
 Even basis functions like shapelets or a multi-Gaussian expansion cannot reconstruct a galaxy accurately
-if there are multiple sources of light, or if the galaxy has a very complex morphology.
+if its surface brightness has highly localised, asymmetric substructure.
 
-With a pixeliation, we can specficially estimate how much light is in irregular components of a galaxy (e.g. spiral
-arms, star forming clumps) compared to its smooth components (e.g. bulge, disk).
+With a pixelization, we can specifically estimate how much light is in the irregular components of a galaxy
+(e.g. spiral arms, star forming clumps) compared to its smooth components (e.g. bulge, disk), by pairing a
+parametric profile for the bulge with a pixelization for the rest.
 
 __Disadvantages__
 
-Pixelizations are computationally slow and run times are typically longer than a parametric source model. It is not
-uncommon for models using a pixelization to take hours to fit high resolution imaging data (e.g. Hubble Space
-Telescope imaging), albeit on modern GPUs run times are often closer to < 20 minutes.
+Pixelizations are computationally slow and run times are typically longer than a purely parametric galaxy model.
+It is not uncommon for models using a pixelization to take hours to fit high resolution imaging data
+(e.g. Hubble Space Telescope imaging), albeit on modern GPUs run times are often closer to < 20 minutes.
 
-It will take you longer to learn how to successfully fit lens models with a pixelization than other methods illustrated
-in the workspace!
+It will take you longer to learn how to successfully fit galaxy models with a pixelization than other methods
+illustrated in the workspace!
 
 __Positive Only Solver__
 
@@ -71,8 +74,8 @@ Many codes which use linear algebra typically rely on a linear algabra solver wh
 values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
 
 This is problematic, as it means that negative surface brightnesses values can be computed to represent a galaxy's
-light, which is clearly unphysical. For a pixelizaiton, this often produces negative source pixels which over-fit
-the data, producing unphysical solutions.
+light, which is clearly unphysical. For a pixelization, this often produces negative reconstruction pixels which
+over-fit the data, producing unphysical solutions.
 
 All pixelized reconstructions use a positive-only solver, meaning that every pixel is only allowed
 to reconstruct positive flux values. This ensures that the reconstruction is physical and that we don't
@@ -100,9 +103,9 @@ from autoarray.inversion.plot.inversion_plots import subplot_of_mapper
 """
 __Dataset__
 
-Load and plot the strong lens dataset `simple__sersic` via .fits files.
+Load and plot the `clumpy` imaging dataset, a galaxy with a smooth central bulge and asymmetric clumpy star formation.
 """
-dataset_name = "simple__sersic"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
@@ -116,7 +119,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator_sersic.py"],
+        [sys.executable, "scripts/imaging/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -161,29 +164,28 @@ aplt.subplot_imaging_dataset(dataset=dataset)
 """
 __Mesh Shape__
 
-The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
-set below to 28 x 28. 
+The `mesh_shape` parameter defines the number of pixels used by the rectangular mesh to reconstruct the clumpy
+component of the galaxy, set below to 30 x 30.
 
 The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
-mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh shape to define static shaped arrays which use the mesh to reconstruct the galaxy. For a rectangular
 mesh, the same number of pixels must be used in the y and x directions.
 """
-mesh_pixels_yx = 28
+mesh_pixels_yx = 30
 mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 """
 __Pixelization__
 
-We create a `Pixelization` object to perform the pixelized source reconstruction, which is made up of three
+We create a `Pixelization` object to perform the pixelized galaxy reconstruction, which is made up of two
 components:
 
-- `mesh:` Different types of mesh can be used to perform the source reconstruction, where the mesh changes the
-details of how the source is reconstructed (e.g. interpolation weights). In this example, we use a rectangular mesh.
+- `mesh:` Different types of mesh can be used to perform the reconstruction, where the mesh changes the
+details of how the galaxy is reconstructed (e.g. interpolation weights). In this example, we use a rectangular mesh.
 
-- `regularization:` A pixelization uses many pixels to reconstructed the source, which will often lead to over fitting
-of the noise in the data and an unrealistically complex and structured source. Regularization smooths the source
-reconstruction solution by penalizing solutions where neighboring pixels have
-large flux differences.
+- `regularization:` A pixelization uses many pixels for the reconstruction, which will often lead to over-fitting
+of the noise in the data and an unrealistically complex and structured solution. Regularization smooths the
+reconstruction by penalizing solutions where neighboring pixels have large flux differences.
 """
 mesh = ag.mesh.RectangularAdaptDensity(shape=mesh_shape)
 regularization = ag.reg.Constant(coefficient=1.0)
@@ -193,17 +195,24 @@ pixelization = ag.Pixelization(mesh=mesh, regularization=regularization)
 """
 __Fit__
 
-This is to illustrate the API for performing a fit via a pixelization using standard autolens objects like 
-the `Galaxy`, `Tracer` and `FitImaging` 
+This illustrates the API for performing a single (no non-linear search) fit using a parametric bulge plus a
+pixelization for the clumpy component, via standard PyAutoGalaxy objects: `Galaxy`, `Galaxies`, and `FitImaging`.
 
-We simply create a `Pixelization` and pass it to the source galaxy, which then gets input into the tracer.
+We create a `Galaxy` with both a parametric `Sersic` bulge and the `Pixelization` defined above. We use a
+standard `lp.Sersic` here (rather than `lp_linear.Sersic` as in `modeling.py`) and hand-tune all of its parameters
+so that the linear `Inversion` only contains the pixelization `Mapper` — keeping the rest of this script (which
+walks through the mapper internals) easy to read. In `modeling.py` the bulge `intensity` is solved for via the
+inversion alongside the pixelization reconstruction.
 """
-pixelization = ag.Pixelization(
-    mesh=ag.mesh.RectangularAdaptDensity(shape=(30, 30)),
-    regularization=ag.reg.Constant(coefficient=1.0),
+bulge = ag.lp.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
+    intensity=0.5,
+    effective_radius=0.6,
+    sersic_index=2.5,
 )
 
-galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
+galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, pixelization=pixelization)
 
 galaxies = ag.Galaxies([galaxy])
 
@@ -213,8 +222,8 @@ fit = ag.FitImaging(
 )
 
 """
-By plotting the fit, we see that the pixelized source does a good job at capturing the appearance of the galaxy
-and fitting the data to roughly the noise level.
+By plotting the fit, we see that the bulge captures the smooth central component while the pixelization absorbs
+the clumpy off-centre light, fitting the data to roughly the noise level.
 """
 aplt.subplot_fit_imaging(fit=fit)
 
@@ -239,7 +248,7 @@ the emission of these galaxies altogether. This is analogous to what the circula
 does.
 
 For fits using a pixelization, masking regions of the image in a way that removes their image pixels entirely from
-the fit. This can produce discontinuities in the pixelixation used to reconstruct the source and produce unexpected
+the fit can produce discontinuities in the pixelization used to reconstruct the galaxy and produce unexpected
 systematics and unsatisfactory results. In this case, applying the mask in a way where the image pixels are not
 removed from the fit, but their data and noise-map values are scaled such that they contribute negligibly to the fit,
 is a better approach.
@@ -285,23 +294,24 @@ dataset = dataset.apply_mask(mask=mask)
 aplt.subplot_imaging_dataset(dataset=dataset)
 
 """
-We do not explictly fit this data, for the sake of brevity, however if your data has these nearby galaxies you should
-apply the mask as above before fitting the data.
+We do not explicitly fit this data, for the sake of brevity, however if your data has these nearby galaxies you
+should apply the mask as above before fitting the data.
 
 __Wrap Up__
 
-Pixelizations are the most complex but also most powerful way to model a galaxy.
+Pixelizations are the most complex but also most powerful way to reconstruct a galaxy's light.
 
 Whether you need to use them or not depends on the science you are doing. If you are only interested in fitting
 the smooth and symmetric components of a galaxy's light (e.g. bulge, disk) then using parametric light profiles
 is likely a better approach, as they are fast and accurate for this purpose.
 
-However, fitting complex structures in galaxies (e.g. spiral arms, clumps) requires a pixelization, as parametric 
-light profiles cannot easily capture these features.
+However, fitting complex structures in galaxies (e.g. spiral arms, clumps) requires a pixelization, as parametric
+light profiles cannot easily capture these features. The combination of a parametric bulge with a pixelization for
+the irregular component — as in the model fit above — is the canonical PyAutoGalaxy approach.
 
 __Linear Objects__
 
-An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`. 
+An `Inversion` contains all of the linear objects used to reconstruct the data in its `linear_obj_list`.
 
 This list may include the following objects:
 
@@ -309,17 +319,17 @@ This list may include the following objects:
  by them to reconstruct data in an inversion. For example it may only contain a list with a single light profile
  (e.g. `lp_linear.Sersic`) or many light profiles combined in a `Basis` (e.g. `lp_basis.Basis`).
 
-- `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper` 
-is specific to the `Pixelization`'s `Mesh` (e.g. a `RectnagularMapper` is used for a `RectangularAdaptDensity` mesh).
+- `Mapper`: The linear object used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper`
+is specific to the `Pixelization`'s `Mesh` (e.g. a `RectangularMapper` is used for a `RectangularAdaptDensity` mesh).
 
-In this example, the only linear object used to fit the data was a `Pixelization`, thus the `linear_obj_list`
-contains just one entry corresponding to a `Mapper`:
+In this example, the bulge is a non-linear `lp.Sersic` so it does not enter the `Inversion`. The only linear object
+used to fit the data is therefore the pixelization `Mapper`, and `linear_obj_list` contains just one entry:
 """
 print(inversion.linear_obj_list)
 
 """
-To extract results from an inversion many quantities will come in lists or require that we specific the linear object
-we with to use. 
+To extract results from an inversion many quantities come in lists or require that we specify the linear object
+we wish to use.
 
 Thus, knowing what linear objects are contained in the `linear_obj_list` and what indexes they correspond to
 is important.
@@ -329,11 +339,14 @@ print(f"Mapper = {inversion.linear_obj_list[0]}")
 """
 __Grids__
 
-The role of a mapper is to map between the image-plane and source-plane. 
+The role of a mapper is to map between the image-plane data grid and the pixelization mesh used to reconstruct
+the galaxy.
 
-This includes mapping grids corresponding to the data grid (e.g. the centers of each image-pixel in the image and
-source plane) and the pixelization grid (e.g. the centre of the Delaunay triangulation in the image-plane and 
-source-plane).
+This includes mapping grids corresponding to the data grid (e.g. the centres of each image-pixel) and the
+pixelization grid (e.g. the centre of each mesh pixel). For a galaxy reconstruction the `image-plane data grid` is
+where the data lives and the `source-plane` naming used by the library API refers to the plane in which the
+pixelization mesh is laid out — for `PyAutoGalaxy` (where there is no lensing) this is just the same image-plane
+grid the data sits on.
 
 All grids are available in a mapper via its `mapper` property.
 """
@@ -342,26 +355,25 @@ mapper = inversion.linear_obj_list[0]
 # Centre of each masked image pixel in the image-plane.
 print(mapper.image_plane_data_grid)
 
-# Centre of each source pixel in the source-plane.
+# Centre of each image pixel in the pixelization's mesh frame (identical to the image-plane grid in PyAutoGalaxy).
 print(mapper.source_plane_data_grid)
 
-# Centre of each pixelization pixel in the image-plane (the `Overlay` image_mesh computes these in the image-plane
-# and maps to the source-plane).
+# Centre of each pixelization pixel in the image-plane.
 print(mapper.image_plane_mesh_grid)
 
-# Centre of each pixelization pixel in the source-plane.
+# Centre of each pixelization pixel in the mesh frame.
 print(mapper.source_plane_mesh_grid)
 
 """
 __Reconstruction__
 
 The reconstruction is also available as a 1D numpy array of values representative of the pixelization
-itself (in this example, the reconstructed source values at each rectangular pixel).
+itself (in this example, the reconstructed clump flux at each rectangular pixel).
 """
 print(inversion.reconstruction)
 
 """
-The (y,x) grid of coordinates associated with these values is given by the `Inversion`'s `Mapper` (which are 
+The (y,x) grid of coordinates associated with these values is given by the `Inversion`'s `Mapper` (which are
 described in chapter 4 of **HowToGalaxy**).
 
 Note above how we showed that the first entry of the `linear_obj_list` contains the inversion's `Mapper`.
@@ -370,19 +382,19 @@ mapper = inversion.linear_obj_list[0]
 print(mapper.source_plane_mesh_grid)
 
 """
-The mapper also contains the (y,x) grid of coordinates that correspond to the imaging data's grid
+The mapper also contains the (y,x) grid of coordinates that correspond to the imaging data's grid.
 """
 print(mapper.source_plane_data_grid)
 
 """
 __Mapped Reconstructed Images__
 
-The reconstruction(s) are mapped to the image grid in order to fit the model.
+The reconstruction is mapped to the image grid in order to fit the model.
 
-These mapped reconstructed images are also accessible via the `Inversion`. 
+This mapped reconstructed image is also accessible via the `Inversion`.
 
-Note that any parametric light profiles in the model (e.g. the `bulge` and `disk` of a galaxy) are not 
-included in this image -- it only contains the source.
+Note that any parametric light profiles in the model (e.g. the `bulge` of the galaxy fitted above) are not
+included in this image — it only contains the pixelized reconstruction of the clumpy component.
 """
 print(inversion.mapped_reconstructed_operated_data.native)
 
@@ -406,7 +418,8 @@ of fit:
 https://arxiv.org/abs/1708.07377
 https://arxiv.org/abs/astro-ph/0601493
 
-This evidence balances solutions which fit the data accurately, without using an overly complex regularization source.
+This evidence balances solutions which fit the data accurately, without using an overly complex regularized
+reconstruction.
 
 The individual terms of the evidence and accessed via the following properties:
 """
@@ -420,6 +433,6 @@ __Future Ideas / Contributions__
 Here are a list of things I would like to add to this tutorial but haven't found the time. If you are interested
 in having a go at adding them contact me on SLACK! :)
 
-- More 
-- Source gradient calculations.
+- More diagnostic quantities for the reconstructed clumpy light.
+- Gradient calculations of the reconstructed light distribution.
 """
