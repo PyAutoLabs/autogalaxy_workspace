@@ -2,8 +2,11 @@
 Plots: Pixelization
 ===================
 
-This example illustrates the API for plotting pixelized source reconstructions using the new function-based
+This example illustrates the API for plotting pixelized galaxy reconstructions using the new function-based
 plotting API and dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.
+
+For the canonical end-to-end example of when to use a pixelization on a galaxy with a smooth bulge plus
+asymmetric clumpy star formation, see `scripts/imaging/features/pixelization/modeling.py`.
 
 __Start Here Notebook__
 
@@ -14,10 +17,10 @@ __Contents__
 
 - **Setup:** Set up all objects (e.g. grid, dataset, fit) used to illustrate plotting.
 - **Fit Imaging:** Plot the fit of a model to an imaging dataset that uses a pixelization.
-- **Reconstruction:** Plot the reconstructed source galaxy mapped back to the image frame.
+- **Reconstruction:** Plot the reconstructed galaxy mapped back to the image frame.
 - **Inversion Plots:** Plot diagnostic subplots of the inversion properties using subplot_of_mapper.
-- **Mapper:** Plot the mapper that maps image-plane pixels to the source-plane pixelization.
-- **Mesh Grids:** Plot the image and source plane mesh grids.
+- **Mapper:** Plot the mapper that maps image-plane pixels to the pixelization mesh.
+- **Mesh Grids:** Plot the image and reconstruction plane mesh grids.
 - **Delaunay:** Customize the filling of Delaunay mesh plots.
 
 __Setup__
@@ -80,16 +83,16 @@ fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
 """
 __Fit Imaging__
 
-The fit of a model using a pixelized source reconstruction is plotted using `aplt.subplot_fit_imaging`.
+The fit of a model using a pixelized galaxy reconstruction is plotted using `aplt.subplot_fit_imaging`.
 
-This subplot shows the data, model image, residuals and source-plane reconstruction on the mesh.
+This subplot shows the data, model image, residuals and pixelized galaxy reconstruction on the mesh.
 """
 aplt.subplot_fit_imaging(fit=fit)
 
 """
 __Reconstruction__
 
-The reconstructed source galaxy on the mesh can be plotted using `aplt.plot_array`, passing the reconstruction
+The reconstructed galaxy on the mesh can be plotted using `aplt.plot_array`, passing the reconstruction
 mapped back to the native image frame.
 """
 inversion = fit.inversion
@@ -100,14 +103,14 @@ aplt.plot_array(array=fit.model_data, title="Reconstruction")
 __Inversion Plots__
 
 The `subplot_of_mapper` function provides a comprehensive diagnostic subplot of the inversion properties for
-a single mapper, including the reconstructed image, source reconstruction, noise map and regularization weights.
+a single mapper, including the reconstructed image, galaxy reconstruction, noise map and regularization weights.
 """
 subplot_of_mapper(inversion=inversion, mapper_index=0)
 
 """
 __Mapper__
 
-The `Mapper` maps image-plane pixels to the source-plane pixelization.
+The `Mapper` maps image-plane pixels to the pixelization mesh.
 
 We extract the mapper from the inversion and plot it using `plot_mapper` and `subplot_image_and_mapper`.
 """
@@ -125,19 +128,20 @@ mapper = list(mapper_galaxy_dict)[0]
 plot_mapper(mapper=mapper)
 
 """
-The `Mapper` can also be plotted with a subplot showing the original image alongside the source-plane reconstruction.
+The `Mapper` can also be plotted with a subplot showing the original image alongside the pixelization reconstruction.
 """
 subplot_image_and_mapper(mapper=mapper, image=dataset.data)
 
 """
-The indexes of `Mapper` plots can be highlighted to show how certain image pixels map to the source plane.
+The indexes of `Mapper` plots can be highlighted to show how certain image pixels map to the pixelization mesh.
 """
 subplot_image_and_mapper(mapper=mapper, image=dataset.data)
 
 """
 __Mesh Grids__
 
-The image and source plane mesh grids, showing the centre of every source pixel, can be computed and plotted.
+The image and reconstruction plane mesh grids, showing the centre of every reconstruction pixel, can be
+computed and plotted.
 """
 image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 
