@@ -2,18 +2,23 @@
 Features: Pixelization
 ======================
 
-A pixelization reconstructs a galaxy’s light on a grid of pixels, which is regularized using a prior that
-enforces a degree of smoothness in the solution.
+This is the canonical example of when (and why) you should reach for a pixelization to model interferometer
+visibilities of a galaxy in **PyAutoGalaxy**.
 
-This script fits a galaxy model that uses a pixelization to reconstruct the galaxy’s light. It employs a
-rectangular mesh with a constant regularization scheme, which together form the simplest pixelization and
-regularization choices available. Despite their simplicity, these choices provide fast and accurate solutions.
+The `clumpy` interferometer dataset is the Fourier transform of a galaxy with two very different kinds of light:
 
-For simplicity, the galaxy’s light is modeled using only a pixelization. For interferometer datasets, additional
-light components are rarely required and this is the common scenario.
+ - A smooth, symmetric central **bulge** that is well described by a single Sersic profile.
+ - **Asymmetric clumpy star formation** spread irregularly across the galaxy, which no parametric profile (or
+   combination of profiles) can fit cleanly.
 
-You may wish to first read the pixelization/fit.py example, which demonstrates how a pixelized reconstruction
-is applied to a single dataset.
+For simplicity this interferometer example reconstructs the entire galaxy on the pixelization mesh (no parametric
+bulge in the model). On interferometer data the pixelization absorbs both the bulge and clumps cleanly, and adding
+a separate bulge component is rarely necessary for science. The imaging counterpart in
+`autogalaxy_workspace/scripts/imaging/features/pixelization/modeling.py` demonstrates the hybrid bulge +
+pixelization model that is more useful for CCD imaging.
+
+You may wish to first read the pixelization/fit.py example, which demonstrates how a pixelized galaxy
+reconstruction is applied to a single dataset.
 
 Pixelizations are covered in detail in Chapter 4 of the HowToGalaxy lecture series.
 
@@ -167,7 +172,7 @@ interferometer datasets containing ~1-10 million visibilities.
 If you want to use the high resolution ALMA dataset, uncomment the relevant lines of code below after downloading
 the data from the repository described in the "High Resolution Dataset" section above.
 """
-dataset_name = "simple"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 """
@@ -181,7 +186,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/interferometer/simulator.py"],
+        [sys.executable, "scripts/interferometer/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -204,7 +209,7 @@ using an alternative mathematical approach called the **sparse linear algebra fo
 
 You do not need to understand the full details of the method, but the key point is:
 
-- It exploits the **sparsity** of the matrices used in pixelized source reconstruction.
+- It exploits the **sparsity** of the matrices used in pixelized galaxy reconstruction.
 - This leads to a **significant speed-up on GPU or CPU**, using JAX to perform the linear algebra calculations.
 
 To enable this feature, we call `apply_sparse_operator()` on the dataset. This computes and stores a NUFFT operator 
@@ -242,11 +247,11 @@ calculations are performed without over sampling.
 
 __Mesh Shape__
 
-The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
-set below to 28 x 28. 
+The `mesh_shape` parameter defines the number of pixels used by the rectangular mesh to reconstruct the galaxy,
+set below to 28 x 28.
 
 The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
-mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh shape to define static shaped arrays which use the mesh to reconstruct the galaxy. For a rectangular
 mesh, the same number of pixels must be used in the y and x directions.
 """
 mesh_pixels_yx = 28

@@ -1,17 +1,15 @@
 """
-Features: Pixelization
-======================
+Features: Pixelization Fit
+==========================
 
-A pixelization reconstructs the galaxy's light using a pixel-grid, which is regularized using a prior that forces
-the solution to have a degree of smoothness.
+This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset — a
+galaxy with a smooth central bulge plus asymmetric clumpy star formation. The fit uses a pixelization with a
+rectangular mesh and constant regularization scheme to reconstruct the galaxy's surface brightness on a pixel
+grid.
 
-This script fits a galaxy model which uses a pixelization to reconstruct the galaxy's light.
-
-A rectangular mesh and constant regularization scheme are used, which are the simplest forms of mesh and
-regularization and provide computationally fast and accurate solutions.
-
-For simplicity, the galaxy’s light is modeled using only a pixelization. It is straightforward to include additional
-parametric light components in the model.
+The matching imaging tutorial pairs a parametric `Sersic` bulge with the pixelization. For interferometer data
+the pixelization can absorb both the bulge and clumps cleanly, so this example reconstructs the entire galaxy
+on the mesh.
 
 Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
 
@@ -145,7 +143,7 @@ interferometer datasets containing ~1-10 million visibilities.
 If you want to use the high resolution ALMA dataset, uncomment the relevant lines of code below after downloading
 the data from the repository described in the "High Resolution Dataset" section above.
 """
-dataset_name = "simple"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "interferometer" / dataset_name
 
 """
@@ -159,7 +157,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/interferometer/simulator.py"],
+        [sys.executable, "scripts/interferometer/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -182,7 +180,7 @@ using an alternative mathematical approach called the **sparse linear algebra fo
 
 You do not need to understand the full details of the method, but the key point is:
 
-- It exploits the **sparsity** of the matrices used in pixelized source reconstruction.
+- It exploits the **sparsity** of the matrices used in pixelized galaxy reconstruction.
 - This leads to a **significant speed-up on GPU or CPU**, using JAX to perform the linear algebra calculations.
 
 To enable this feature, we call `apply_sparse_operator()` on the dataset. This computes and stores a NUFFT operator 
@@ -216,11 +214,11 @@ calculations are performed without over sampling.
 
 __Mesh Shape__
 
-The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
-set below to 28 x 28. 
+The `mesh_shape` parameter defines the number of pixels used by the rectangular mesh to reconstruct the galaxy,
+set below to 28 x 28.
 
 The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
-mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh shape to define static shaped arrays which use the mesh to reconstruct the galaxy. For a rectangular
 mesh, the same number of pixels must be used in the y and x directions.
 """
 mesh_pixels_yx = 28
@@ -395,7 +393,8 @@ of fit:
 https://arxiv.org/abs/1708.07377
 https://arxiv.org/abs/astro-ph/0601493
 
-This evidence balances solutions which fit the data accurately, without using an overly complex regularization source.
+This evidence balances solutions which fit the data accurately, without using an overly complex regularized
+reconstruction.
 
 The individual terms of the evidence and accessed via the following properties:
 """
@@ -481,6 +480,6 @@ __Future Ideas / Contributions__
 Here are a list of things I would like to add to this tutorial but haven't found the time. If you are interested
 in having a go at adding them contact me on SLACK! :)
 
-- Source gradient calculations.
+- Gradient calculations of the reconstructed light distribution.
 - A calculation which shows differential effects across the reconstruction.
 """

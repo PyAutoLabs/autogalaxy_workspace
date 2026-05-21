@@ -1,21 +1,22 @@
 """
-Pixelization: Source Reconstruction
+Pixelization: Galaxy Reconstruction
 ===================================
 
-A common pixelization use-case is to reconstruct the galaxy's surface brightness on a pixelization mesh, and
-then export this reconstruction to perform scientific analysis.
+A common pixelization use-case is to reconstruct the irregular component of a galaxy's surface brightness on a
+pixelization mesh, and then export that reconstruction to perform scientific analysis.
 
-It is beneficial to export this reconstruction in a format which is independent of modeling, so study of
-the source can be performed separately.
+It is beneficial to export this reconstruction in a format which is independent of modeling, so study of the
+galaxy's clumpy light can be performed separately and shared with collaborators who do not have PyAutoGalaxy
+installed.
 
-This script illustrates how modeling outputs source reconstructions to a .csv file, and how this can be easily
-loaded to perform analysis without the need for PyAutoLens.
+This script illustrates how the bulge + pixelization model fit (see `modeling.py`) outputs the pixelized
+reconstruction to a .csv file, and how that file can be easily loaded to perform downstream analysis.
 
 __Contents__
 
-- **Model Fit:** Running a pixelization model-fit which outputs the source reconstruction to a CSV file.
+- **Model Fit:** Running a bulge + pixelization model-fit which outputs the reconstruction to a CSV file.
 - **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
-- **Reconstruction CSV:** Loading the source reconstruction from the output CSV file and performing analysis.
+- **Reconstruction CSV:** Loading the galaxy reconstruction from the output CSV file and performing analysis.
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports
@@ -31,10 +32,11 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below is identical to the pixelizaiton `modeling` example, crucially creating a model-fit which
-outputs the pixelization source reconstruction to a .csv file.
+The code below mirrors the pixelization `modeling` example — fitting the `clumpy` dataset with a `Sersic` bulge
+plus a pixelization for the irregular clumpy component. Crucially this model-fit outputs the pixelization
+reconstruction to a .csv file.
 """
-dataset_name = "simple__sersic"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
@@ -48,7 +50,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator_sersic.py"],
+        [sys.executable, "scripts/imaging/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -83,7 +85,12 @@ pixelization = af.Model(
     regularization=ag.reg.MaternKernel,
 )
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
+galaxy = af.Model(
+    ag.Galaxy,
+    redshift=0.5,
+    bulge=ag.lp_linear.Sersic,
+    pixelization=pixelization,
+)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
@@ -104,16 +111,18 @@ result = search.fit(model=model, analysis=analysis)
 __Reconstruction CSV__
 
 In the results `image` folder there is a .csv file called `source_plane_reconstruction_0.csv` which contains the
-y and x coordinates of the pixelization mesh, the reconstruct values and the noise map of these values.
+y and x coordinates of the pixelization mesh, the reconstructed values and the noise map of these values. The
+filename retains the `source_plane_` prefix because it is emitted by the shared library inversion machinery used
+by both PyAutoGalaxy and PyAutoLens — the contents are nonetheless the galaxy's pixelized reconstruction here.
 
-This file is provides all information on the source reconstruction in a format that does not depend autolens
-and therefore be easily loaded to create images of the source or shared collaborations who do not have PyAutoLens
-installed.
+This file provides all information on the galaxy reconstruction in a format that does not depend on PyAutoGalaxy
+and therefore can be easily loaded to create images of the reconstruction or shared with collaborators who do not
+have PyAutoGalaxy installed.
 
 First, lets load `source_plane_reconstruction_0.csv` as a dictionary, using basic `csv` functionality in Python.
 
-NOTE: If the .csv file does not exist, we create a dictionary with the same format but with dummy values so the rest of
-the script can be run.
+NOTE: If the .csv file does not exist, we create a dictionary with the same format but with dummy values so the
+rest of the script can be run.
 """
 import csv
 
@@ -157,12 +166,12 @@ print(reconstruction_dict["reconstruction"])
 print(reconstruction_dict["noise_map"])
 
 """
-You can now use standard libraries to performed calculations with the reconstruction on the mesh, again avoiding
-the need to use autolens.
+You can now use standard libraries to perform calculations with the reconstruction on the mesh, without needing
+PyAutoGalaxy.
 
-For example, we can create a RectangularAdaptDensity mesh using the scipy.spatial library, which is a triangulation
-of the y and x coordinates of the pixelization mesh. This is useful for visualizing the pixelization
-and performing calculations on the mesh.
+For example, we can create a Delaunay triangulation of the pixelization mesh using the scipy.spatial library, from
+the y and x coordinates exported above. This is useful for visualizing the pixelization and performing calculations
+on the mesh.
 """
 import scipy
 
@@ -171,11 +180,11 @@ points = np.stack(arrays=(reconstruction_dict["x"], reconstruction_dict["y"]), a
 mesh = scipy.spatial.Delaunay(points)
 
 """
-Interpolating the result to a uniform grid is also possible using the scipy.interpolate library, which means the result
-can be turned into a uniform 2D image which can be useful to analyse the source with tools which require an uniform grid.
+Interpolating the result to a uniform grid is also possible using the scipy.interpolate library, which means the
+result can be turned into a uniform 2D image which is useful for analysis tools that require a regular grid.
 
 Below, we interpolate the result onto a 201 x 201 grid of pixels with the extent spanning -1.0" to 1.0", which
-capture the majority of the source reconstruction without being too high resolution.
+captures the majority of the galaxy reconstruction without being too high resolution.
 """
 from scipy.interpolate import griddata
 
