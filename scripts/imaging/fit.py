@@ -26,8 +26,9 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 
 __Other Models__
 
-This tutorial does not use a pixelized source reconstruction or linear light profiles, which have their own dediciated
-functionality that interfacts with the `FitImaging` object.
+This tutorial does not use a pixelized galaxy reconstruction or linear light profiles, which have their own dedicated
+functionality that interfaces with the `FitImaging` object. See `imaging/features/pixelization/fit.py` for the
+canonical bulge + pixelization fit example.
 
 This is described in the dedicated example scripts `modeling/features/linear_light_profiles.py`
 and `modeling/features/pixelizaiton.py`.

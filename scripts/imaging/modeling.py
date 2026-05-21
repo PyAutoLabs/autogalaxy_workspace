@@ -324,7 +324,7 @@ The method below prints the VRAM usage estimate for the analysis and model with 
 it takes about 20-30 seconds to run so you may want to comment it out once you are familiar with your GPU's VRAM limits.
 
 For a MGE model with the low resolution dataset fitted in this example VRAM use is relatively low (~0.027GB) For other 
-models (e.g. pixelized sources) and higher resolution datasets it can be much higher (> 1GB going beyond 10GB).
+models (e.g. pixelized galaxy reconstructions) and higher resolution datasets it can be much higher (> 1GB going beyond 10GB).
 """
 analysis.print_vram_use(model=model, batch_size=search.batch_size)
 

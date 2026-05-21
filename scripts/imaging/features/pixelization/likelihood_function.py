@@ -2,11 +2,15 @@
 __Log Likelihood Function: Pixelization__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization scheme`).
+`Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization
+scheme).
 
-This example combines does not include a light profile or linear light profiles, which can be combined with a
-pixelization to fit an image. The inclusion of these components is described in the notebook
-`log_likelihood_function/imaging/pixelization/with_light_profile.ipynb`.
+The dataset is the `clumpy` galaxy used throughout the pixelization package — a smooth central bulge plus
+asymmetric clumpy star formation. For pedagogical clarity, this script fits a pixelization-only model (no
+parametric bulge). The bulge is therefore absorbed by the rectangular mesh together with the clumps, which keeps
+the walk-through of the likelihood mechanics simple and self-contained. A production fit would pair the
+pixelization with a `Sersic` bulge — see `modeling.py` and the `with_light_profile` companion notebook
+referenced at the bottom of this script.
 
 This script has the following aims:
 
@@ -33,18 +37,18 @@ __Contents__
 - **Over Sampling:** Setting up over-sampling for the pixelization.
 - **Masked Image Grid:** Setting up the 2D grid of masked image-pixel coordinates.
 - **Galaxy:** Creating the galaxy object for the pixelized reconstruction.
-- **Source Galaxy Pixelization and Regularization:** Defining the mesh and regularization for the pixelization.
-- **Interpolation:** Interpolating image-pixel coordinates to source-pixel coordinates.
-- **Mapper:** Creating the mapper object which maps between image and source planes.
+- **Galaxy Pixelization and Regularization:** Defining the mesh and regularization for the pixelization.
+- **Interpolation:** Interpolating image-pixel coordinates to mesh-pixel coordinates.
+- **Mapper:** Creating the mapper object which maps between image pixels and mesh pixels.
 - **Over Sampling:** Over-sampling applied to the pixelization grid.
 - **Alternative Meshes:** Discussion of other mesh types available in PyAutoGalaxy.
-- **Mapping Matrix:** Computing the mapping matrix from source pixels to image pixels.
+- **Mapping Matrix:** Computing the mapping matrix from reconstruction pixels to image pixels.
 - **Blurred Mapping Matrix ($f$):** Computing the PSF-convolved mapping matrix.
 - **Data Vector (D):** Computing the data vector for the linear inversion.
 - **Curvature Matrix (F):** Computing the curvature matrix for the linear inversion.
 - **Regularization Matrix (H):** Computing the regularization matrix that enforces smoothness.
 - **F + Lamdba H:** Combining the curvature and regularization matrices.
-- **Galaxy Reconstruction (s):** Solving for the source pixel flux values.
+- **Galaxy Reconstruction (s):** Solving for the reconstruction pixel flux values.
 - **Image Reconstruction:** Mapping the reconstruction back to the image plane.
 - **Likelihood Function:** Overview of the log likelihood function terms for pixelizations.
 - **Chi Squared:** Computing the chi-squared statistic for the fit.
@@ -81,10 +85,11 @@ __Dataset__
 
 In order to perform a likelihood evaluation, we first load a dataset.
 
-This example fits a simulated galaxy which is simulated using a 0.1 arcsecond-per-pixel resolution (this is lower
-resolution than the best quality Hubble Space Telescope imaging and close to that of the Euclid space satellite).
+This example fits the `clumpy` galaxy dataset, which is simulated using a 0.1 arcsecond-per-pixel resolution
+(this is lower resolution than the best quality Hubble Space Telescope imaging and close to that of the Euclid
+space satellite).
 """
-dataset_path = Path("dataset", "imaging", "simple")
+dataset_path = Path("dataset", "imaging", "clumpy")
 
 """
 __Dataset Auto-Simulation__
@@ -97,7 +102,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator.py"],
+        [sys.executable, "scripts/imaging/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -185,12 +190,13 @@ pixelization = ag.Pixelization(
 galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
 
 """
-__Source Galaxy Pixelization and Regularization__
+__Galaxy Pixelization and Regularization__
 
-The source galaxy is reconstructed using a pixel-grid, in this example a RectangularUniform mesh, which accounts for 
-irregularities and asymmetries in the source's surface brightness. 
+The galaxy is reconstructed using a pixel-grid, in this example a `RectangularAdaptDensity` mesh, which accounts for
+irregularities and asymmetries in the galaxy's surface brightness — exactly the kind of clumpy structure visible
+in this dataset.
 
-A constant regularization scheme is applied which applies a smoothness prior on the reconstruction. 
+A constant regularization scheme is applied which applies a smoothness prior on the reconstruction.
 """
 from autoarray.inversion.mesh.mesh.rectangular_adapt_density import (
     overlay_grid_from,
@@ -226,16 +232,20 @@ print(interpolator.weights[0])
 """
 __Mapper__
 
-The rectangular mesh will now be referred to interchangeably as the `source-plane`, to represent that it is a 
-pixelization which will reconstruct a source galaxy.
+The rectangular mesh defines the plane in which the galaxy's surface brightness is reconstructed. In the library
+API this is called the `source-plane` for historical reasons (the same mesh-based inversion machinery is used to
+reconstruct lensed source galaxies in PyAutoLens). For PyAutoGalaxy there is no lensing — the "source-plane" is
+simply the image-plane in which the galaxy lives — but the attribute names on the `Mapper` keep the lens-modelling
+naming so a single inversion implementation can be shared between the two libraries.
 
-We now use the interpolator to create a `Mapper`, which describes the mapping between every image pixel and every 
+We now use the interpolator to create a `Mapper`, which describes the mapping between every image pixel and every
 rectangular pixel, based on the interpolation scheme above.
 """
 mapper = ag.Mapper(interpolator=interpolator)
 
 """
-Plotting the rectangular mesh shows that the source-plane has been discretized into a grid of rectangular pixels.
+Plotting the rectangular mesh shows that the reconstruction plane has been discretized into a grid of rectangular
+pixels.
 
 Below, we plot the rectangular mesh without the image-grid pixels (for clarity) and with them as black dots in order
 to show how each set of image-pixels fall within a rectangular pixel.
@@ -250,12 +260,12 @@ The `Mapper` contains:
  1) `source_plane_data_grid`: the grid of masked (y,x) image-pixel coordinate centres (`masked_dataset.grids.pixelization`).
  2) `source_plane_mesh_grid`: The rectangular mesh of (y,x) pixelization pixel coordinates (`mesh_grid`).
 
-We have therefore discretized the source-plane into a rectangular mesh, and can pair every image-pixel coordinate
-with the corresponding rectangular pixel it lands in.
+We have therefore discretized the reconstruction plane into a rectangular mesh, and can pair every image-pixel
+coordinate with the corresponding rectangular pixel it lands in.
 
-These quantities are both in the source-plane, and do not by themselves describe the mapping between the image and 
-source planes. The mapping is described by the `pix_indexes_for_sub_slim_index`, which maps every image-pixel index to 
-every pixelization pixel index.
+These quantities are both in the reconstruction plane, and do not by themselves describe the mapping between the
+image and reconstruction. The mapping is described by the `pix_indexes_for_sub_slim_index`, which maps every
+image-pixel index to every pixelization pixel index.
 
 `pix_indexes` refers to the pixelization pixel indexes (e.g. rectangular pixel 0, 1, 2 etc.) and `sub_slim_index`  
 refers to the index of an image pixel (e.g. image-pixel 0, 1, 2 etc.). 
@@ -287,14 +297,14 @@ subplot_image_and_mapper(mapper=mapper, image=masked_dataset.data)
 """
 __Interpolation__
 
-The right hand plot shows more laying over source pixel 200 than its retangular black lines. Pixels further 
-out than the pixel appear to be mapped to this source pixel. 
+The right hand plot shows more laying over reconstruction pixel 200 than its retangular black lines. Pixels further 
+out than the pixel appear to be mapped to this reconstruction pixel. 
 
-This is because of the interpolation mapping scheme whereby each image pixels is paired with four source 
+This is because of the interpolation mapping scheme whereby each image pixel is paired with four reconstruction
 pixels.
 
-We can confirm that every image pixel maps to four source pixels by printing 
-the `pix_sizes_for_sub_slim_index`, which gives the number of mapped source pixels for every image pixel.
+We can confirm that every image pixel maps to four reconstruction pixels by printing 
+the `pix_sizes_for_sub_slim_index`, which gives the number of mapped reconstruction pixels for every image pixel.
 
 We can also confirm that the interpolation introduces weights to each mapping by printing the 
 `pix_weights_for_sub_slim_index`, which gives the weight of each mapping for every image pixel.
@@ -306,11 +316,11 @@ print(mapper.pix_weights_for_sub_slim_index[0:9])
 __Over Sampling__
 
 Lets quickly think about what happens when we use over sampling in the pixelization (e.g. `sub_size>1`). For
-the `sub_size=1` case above, each image pixel maps to 4 source pixels (due to bilinear interpolation)
+the `sub_size=1` case above, each image pixel maps to 4 reconstruction pixels (due to bilinear interpolation)
 with a weight determined from the bilinear interpolation scheme.
 
 However, the default over sampling for a pixelization is `sub_size=4`, meaning each image pixel is divided
-into a 4x4 grid of sub-pixels (16 sub-pixels in total). Each of these sub-pixels maps to 4 source pixels
+into a 4x4 grid of sub-pixels (16 sub-pixels in total). Each of these sub-pixels maps to 4 reconstruction pixels
 (due to bilinear interpolation), where the weight of each mapping is determined by the bilinear interpolation
 scheme divided by 16 (because there are 16 sub-pixels).
 
@@ -321,22 +331,22 @@ arrays above and understanding of the mapping scheme as simple as possible. You 
 __Alternative Meshes__
 
 We can briefly consider how this step differs for other mesh types. Above, we simply overlaid a uniform rectangular
-grid to define the source pixel centres and then mapped image pixels to these source pixels.
+grid to define the reconstruction pixel centres and then mapped image pixels to these reconstruction pixels.
 
 The `RectangularAdaptDensity` mesh pretty much works exactly the same, its just that a calculation (which we don't
-describe here) works out how to make a grid of rectangular pixels that adapt to the source-plane density and thus
+describe here) works out how to make a grid of rectangular pixels that adapt to the data density and thus
 vary in size. 
 
 There is also a `RectangularAdaptImage` mesh which uses the image of the galaxy to adapt
 the rectangular pixel sizes. This often puts even smaller pixels in the brightest regions of the galaxy,
 even if it lies offset or away from the caustic.
 
-There is also a `Delaunay` mesh which uses a Delaunay triangulation to define an irregular grid of source pixels.
+There is also a `Delaunay` mesh which uses a Delaunay triangulation to define an irregular grid of reconstruction pixels.
 This is described fully in the `delaunay` example including a likelihood function guide.
 
 __Mapping Matrix__
 
-The `mapping_matrix` represents the image-pixel to source-pixel mappings above in a 2D matrix. 
+The `mapping_matrix` represents the image-pixel to reconstruction-pixel mappings above in a 2D matrix.
 
 It has dimensions `(total_image_pixels, total_rectangular_pixels)`.
 """
@@ -392,10 +402,10 @@ blurred_mapping_matrix = masked_dataset.psf.convolved_mapping_matrix_from(
 )
 
 """
-A 2D plot of the `blurred_mapping_matrix` shows all image-source pixel mappings including PSF blurring.
+A 2D plot of the `blurred_mapping_matrix` shows all image-reconstruction pixel mappings including PSF blurring.
 
 Note how, unlike for the `mapping_matrix`, every row of image-pixels now has multiple non-zero entries. It is now 
-possible for two image pixels to map to the same source pixel, because they become correlated by PSF convolution.
+possible for two image pixels to map to the same reconstruction pixel, because they become correlated by PSF convolution.
 """
 plt.imshow(
     blurred_mapping_matrix,
@@ -418,7 +428,7 @@ aplt.plot_array(array=array_2d, title="Image")
 
 """
 In Warren & Dye 2003 (https://arxiv.org/abs/astro-ph/0302587) the `blurred_mapping_matrix` is denoted $f_{ij}$
-where $i$ maps over all $I$ source pixels and $j$ maps over all $J$ image pixels. 
+where $i$ maps over all $I$ reconstruction pixels and $j$ maps over all $J$ image pixels. 
 
 For example: 
 
@@ -433,11 +443,11 @@ print(f"Mapping between image pixel 0 and rectangular pixel 2 = {mapping_matrix[
 """
 __Data Vector (D)__
 
-To solve for the source pixel fluxes we now pose the problem as a linear inversion.
+To solve for the reconstruction pixel fluxes we now pose the problem as a linear inversion.
 
 This requires us to convert the `blurred_mapping_matrix` and our `data` and `noise map` into matrices of certain dimensions. 
 
-The `data_vector`, $D$, is the first matrix and it has dimensions `(total_source_pixels,)`.
+The `data_vector`, $D$, is the first matrix and it has dimensions `(total_reconstruction_pixels,)`.
 
 In WD03 (https://arxiv.org/abs/astro-ph/0302587) and N15 (https://arxiv.org/abs/1412.7436) the data vector 
 is give by: 
@@ -451,7 +461,7 @@ Where:
  subtracted image).
  - $\sigma{\rm _j}^2$ are the statistical uncertainties of each image-pixel value.
 
-$i$ maps over all $I$ source pixels and $j$ maps over all $J$ image pixels. 
+$i$ maps over all $I$ reconstruction pixels and $j$ maps over all $J$ image pixels. 
 
 NOTE: WD03 assume the data is already lens subtracted thus $b_{j}$ is omitted (e.g. all values are zero).
 """
@@ -475,7 +485,7 @@ plt.show()
 plt.close()
 
 """
-The dimensions of $D$ are the number of source pixels.
+The dimensions of $D$ are the number of reconstruction pixels.
 """
 print("Data Vector:")
 print(data_vector)
@@ -496,8 +506,8 @@ NOTE: this notation implicitly assumes a summation over $K$, where $k$ runs over
 Note how summation over $J$ runs over $f$ twice, such that every entry of $F$ is the sum of the multiplication
 between all values in every two columns of $f$.
 
-For example, $F_{0,1}$ is the sum of every blurred image pixels values in $f$ of source pixel 0 multiplied by
-every blurred image pixel value of source pixel 1.
+For example, $F_{0,1}$ is the sum of every blurred image pixels values in $f$ of reconstruction pixel 0 multiplied by
+every blurred image pixel value of reconstruction pixel 1.
 """
 curvature_matrix = ag.util.inversion.curvature_matrix_via_mapping_matrix_from(
     mapping_matrix=blurred_mapping_matrix, noise_map=masked_dataset.noise_map
@@ -515,19 +525,19 @@ image-pixel, which we saw above is only possible due to PSF blurring.
 For example, we can see a non-zero entry for $F_{100,101}$ and plotting their images
 show overlap.
 """
-source_pixel_0 = 0
-source_pixel_1 = 1
+recon_pixel_0 = 0
+recon_pixel_1 = 1
 
-print(curvature_matrix[source_pixel_0, source_pixel_1])
+print(curvature_matrix[recon_pixel_0, recon_pixel_1])
 
 array_2d = ag.Array2D(
-    values=blurred_mapping_matrix[:, source_pixel_0], mask=masked_dataset.mask
+    values=blurred_mapping_matrix[:, recon_pixel_0], mask=masked_dataset.mask
 )
 
 aplt.plot_array(array=array_2d, title="Image")
 
 array_2d = ag.Array2D(
-    values=blurred_mapping_matrix[:, source_pixel_1], mask=masked_dataset.mask
+    values=blurred_mapping_matrix[:, recon_pixel_1], mask=masked_dataset.mask
 )
 
 aplt.plot_array(array=array_2d, title="Image")
@@ -575,7 +585,7 @@ function $G$ (equation 11 WD03):
  $G = \chi^2 + \lambda \, G_{\rm L}$
 
 where $\lambda$ is the `regularization_coefficient` which describes the magnitude of smoothness that is applied. A 
-higher $\lambda$ will regularize the source more, leading to a smoother galaxy reconstruction.
+higher $\lambda$ will regularize the reconstruction more, leading to a smoother galaxy reconstruction.
 
 Different forms for $G_{\rm L}$ can be defined which regularize the reconstruction in different ways. The 
 `Constant` regularization scheme used in this example applies gradient regularization (equation 14 WD03):
@@ -741,7 +751,7 @@ the `regularization_coefficient` smooths the solution more and therefore:
 
  - Decreases `chi_squared` by fitting the data worse, producing a lower `log_likelihood`.
 
- - Increases the `regularization_term` by penalizing the differences between source pixel fluxes more, again reducing
+ - Increases the `regularization_term` by penalizing the differences between reconstruction pixel fluxes more, again reducing
  the inferred `log_likelihood`.
 
 If we set the regularization coefficient based purely on these two terms, we would set a value of 0.0 and be back where
@@ -755,8 +765,8 @@ the `regularization_coefficient` makes the galaxy reconstruction more complex (b
 smoothed less uses more flexibility to fit the data better).
 
 These two terms therefore counteract the `chi_squared` and `regularization_term`, so as to attribute a higher
-`log_likelihood` to solutions which fit the data with a more smoothed and less complex source (e.g. one with a higher 
-`regularization_coefficient`).
+`log_likelihood` to solutions which fit the data with a more smoothed and less complex reconstruction (e.g. one
+with a higher `regularization_coefficient`).
 
 In **HowToGalaxy** -> `chapter 4` -> `tutorial_4_bayesian_regularization` we expand on this further and give a more
 detailed description of how these different terms impact the `log_likelihood_function`. 
@@ -840,8 +850,8 @@ things happen:
 
 - `linear light profile`: If linear light profiles are included in the galaxy model, their light is computed
   on the image grid and linearly solved for simultaneously with the pixelization reconstruction. This means
-  they trade off their solved for `intensity` values with the source pixel fluxes to fit the image data. The
-  inversion is thus performed simultaneously for both the linear light profile intensities and source pixel fluxes!
+  they trade off their solved for `intensity` values with the reconstruction pixel fluxes to fit the image data. The
+  inversion is thus performed simultaneously for both the linear light profile intensities and reconstruction pixel fluxes!
 
 __Wrap Up__
 

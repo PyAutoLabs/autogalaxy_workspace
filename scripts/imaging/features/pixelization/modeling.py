@@ -2,19 +2,23 @@
 Features: Pixelization Modeling
 ===============================
 
-A pixelization reconstructs a galaxy’s light using a pixel grid, which is regularized using a prior that forces
-the solution to have a degree of smoothness.
+This is the canonical example of when (and why) you should reach for a pixelization in **PyAutoGalaxy**.
 
-This script fits a galaxy model which uses a pixelization to reconstruct the galaxy’s light.
+The dataset (`dataset/imaging/clumpy`) shows a galaxy with two very different kinds of light:
 
-A rectangular mesh and constant regularization scheme are used, which are the simplest forms of mesh and regularization
-and provide computationally fast and accurate solutions.
+ - A smooth, symmetric central **bulge** that is well described by a single Sersic profile.
+ - **Asymmetric clumpy star formation** spread irregularly across the galaxy, which no parametric profile (or even a
+   combination of profiles) can fit cleanly.
 
-For simplicity, the galaxy is modeled using only a pixelized light component. Including additional parametric
-light components is straightforward and can be done within the same framework.
+We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularAdaptDensity`
+mesh and `GaussianKernel` regularization scheme) for the clumpy component. The Sersic captures the smooth bulge with
+just a handful of parameters; the pixelization reconstructs whatever the Sersic cannot fit on a flexible pixel grid.
 
-You may wish to first read the `pixelization/fit.py` example, which demonstrates how a pixelized galaxy reconstruction
-is applied to a single dataset.
+This split is the canonical use-case for a pixelization in galaxy modeling: parametric profile for the smooth part,
+pixelization for the irregular part.
+
+You may wish to first read the `pixelization/fit.py` example, which demonstrates how a bulge + pixelization galaxy
+reconstruction is applied to a single dataset.
 
 Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
 
@@ -59,29 +63,30 @@ __Contents__
 
 - **Advantages & Disadvantages:** Benefits and drawbacks of using a pixelization to model galaxy light.
 - **Positive Only Solver:** How a positive solution to the reconstructed pixel fluxes is ensured.
-- **Dataset & Mask:** Standard setup of the imaging dataset that is fitted.
+- **Dataset & Mask:** Standard setup of the clumpy imaging dataset that is fitted.
 - **Pixelization:** How to create a pixelization, including a description of its inputs.
-- **Model:** Composing a model using a pixelization and how it changes the number of free parameters.
+- **Model:** Composing a hybrid model with a parametric `Sersic` bulge and a pixelization for the clumps.
 - **Search & Analysis:** Standard setup of non-linear search and analysis.
 - **Run Time:** Profiling of pixelization run times and discussion of how they compare to analytic light profiles.
 - **Model-Fit:** Performs the model fit using the standard API.
-- **Result:** Pixelization results and visualization.
-- **Including Smooth Components:** How to combine a pixelization with parametric light profiles to model both smooth and complex galaxy structures.
-- **Chaining:** How the advanced modeling feature, non-linear search chaining, can significantly improve lens modeling with pixelizaitons.
-- **Result (Advanced):** API for various pixelization outputs (magnifications, mappings) which requires some polishing.
-- **Simulate (Advanced):** Simulating a strong lens dataset with the inferred pixelized source.
+- **Result:** Galaxy reconstruction results and visualization.
+- **Chaining:** How the advanced modeling feature, non-linear search chaining, can significantly improve modeling with pixelizations.
+- **Result (Advanced):** API for various pixelization outputs.
+- **Wrap Up:** Summary and pointers to further reading.
 
 __Advantages__
 
-Many galaxies exhibit complex, asymmetric, and irregular morphologies. Such structures cannot be well approximated by
-analytic light profiles such as a Sérsic profile, or even combinations of multiple Sérsic components. Pixelizations are
-therefore required to accurately reconstruct this irregular galaxy light.
+Many galaxies exhibit complex, asymmetric, and irregular morphologies — spiral arms, star-forming clumps, tidal
+features, low-surface-brightness substructure. The clumpy dataset used here is a clean example: parametric profiles
+fit the smooth bulge well but leave structured residuals where the clumps live.
 
-Even alternative basis-function approaches, such as shapelets or multi-Gaussian expansions, struggle to accurately
-reconstruct galaxies with highly complex morphologies or multiple distinct components.
+Alternative basis-function approaches (shapelets, multi-Gaussian expansions) can absorb some of this irregular light
+but typically struggle when the substructure is highly localised or asymmetric. A pixelization places no smoothness
+assumption beyond the regularization prior, and so reconstructs irregular features directly on a flexible pixel grid.
 
-Pixelized galaxy models are therefore essential when the goal is to recover detailed structure in galaxy light
-distributions beyond what is possible with parametric profiles.
+Combining a parametric profile for the smooth component with a pixelization for the irregular component gives the
+best of both worlds: a low-dimensional, physically interpretable description of the bulge, and a flexible flux map
+for everything the bulge cannot explain.
 
 Finally, many science applications aim to study galaxy morphology itself in detail, particularly for faint or
 low-surface-brightness features. Pixelizations reconstruct the intrinsic galaxy light distribution, enabling these
@@ -121,8 +126,9 @@ __Model__
 
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
- - The galaxy’s surface brightness is reconstructed using a pixelization.
- - A `RectangularAdaptDensity` mesh and `Constant` regularization scheme are used.
+ - The galaxy's smooth central bulge is fit with a linear `Sersic` light profile.
+ - The galaxy's asymmetric clumpy star formation is reconstructed using a pixelization with a
+   `RectangularAdaptDensity` mesh and `GaussianKernel` regularization scheme.
 
 __Start Here Notebook__
 
@@ -140,10 +146,9 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-
-Load and plot the strong lens dataset `simple__sersic` via .fits files
+Load and plot the `clumpy` imaging dataset, a galaxy with a smooth central bulge and asymmetric clumpy star formation.
 """
-dataset_name = "simple__sersic"
+dataset_name = "clumpy"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
 """
@@ -157,7 +162,7 @@ if not dataset_path.exists():
     import sys
 
     subprocess.run(
-        [sys.executable, "scripts/imaging/simulator_sersic.py"],
+        [sys.executable, "scripts/imaging/features/pixelization/simulator.py"],
         check=True,
     )
 
@@ -188,8 +193,10 @@ aplt.subplot_imaging_dataset(dataset=dataset)
 """
 __Over Sampling__
 
-A pixelization uses a separate grid for light evaluation, with its own over sampling scheme, which below we set to a
-uniform grid of values of 4.
+A pixelization uses a separate grid for light evaluation, with its own over sampling scheme. Below we use an
+adaptive scheme that over-samples heavily (8x8) near the bulge centre, transitions through 4x4, then drops to
+1x1 in the outskirts. The bulge centre is the only region where high over-sampling matters for the parametric
+Sersic — the clumps are reconstructed by the pixelization itself and do not need profile over-sampling.
 
 Note that the over sampling is input into the `over_sample_size_pixelization` because we are using a `Pixelization`.
 """
@@ -207,11 +214,11 @@ aplt.subplot_imaging_dataset(dataset=dataset)
 """
 __Mesh Shape__
 
-The `mesh_shape` parameter defines number of pixels used by the rectangular mesh to reconstruct the source,
-set below to 28 x 28. 
+The `mesh_shape` parameter defines the number of pixels used by the rectangular mesh to reconstruct the galaxy,
+set below to 28 x 28.
 
 The `mesh_shape` must be fixed before modeling and cannot be a free parameter of the model, because JAX uses the
-mesh shape to define static shaped arrays which use the mesh to reconstruct the source. For a rectangular
+mesh shape to define static shaped arrays which use the mesh to reconstruct the galaxy. For a rectangular
 mesh, the same number of pixels must be used in the y and x directions.
 """
 mesh_pixels_yx = 28
@@ -220,17 +227,22 @@ mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 """
 __Model__
 
-We compose our model using `Model` objects, which represent the galaxies we fit to our data.  In this 
-example we fit a model where:
+We compose our model using `Model` objects, which represent the galaxies we fit to our data. In this example we fit
+a single galaxy with two components:
 
- - The galaxy's light uses a 20 x 20 `RectangularAdaptDensity` mesh [0 parameters]. 
- 
- - This pixelization is regularized using a `GaussianKernel` scheme which smooths every source [2 parameter]. 
+ - The galaxy's smooth central **bulge** is fit with a linear elliptical `Sersic` light profile [6 parameters: centre,
+   ell_comps, effective_radius, sersic_index]. Using `lp_linear.Sersic` rather than `lp.Sersic` means the bulge's
+   `intensity` is solved for via the same linear inversion that solves for the pixelization reconstruction, removing
+   one non-linear parameter and avoiding the bulge/pixelization brightness degeneracy.
 
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=2. 
- 
-It is worth noting the `Pixelization`  use significantly fewer parameters (3 parameters) than 
-fitting this complex galaxy using parametric light profiles would (20+ parameters). 
+ - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularAdaptDensity` mesh
+   [0 parameters], regularized with a `GaussianKernel` scheme that smooths the reconstruction [2 parameters].
+
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=8.
+
+The pixelization absorbs whatever the Sersic cannot fit. The combination is dramatically more parsimonious than
+trying to add more and more parametric light profiles (Sersics, Gaussians) until every clump is described —
+a 20+ parameter approach that would still struggle with truly irregular substructure.
 """
 pixelization = af.Model(
     ag.Pixelization,
@@ -238,7 +250,12 @@ pixelization = af.Model(
     regularization=ag.reg.GaussianKernel,
 )
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
+galaxy = af.Model(
+    ag.Galaxy,
+    redshift=0.5,
+    bulge=ag.lp_linear.Sersic,
+    pixelization=pixelization,
+)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
@@ -260,7 +277,7 @@ search = af.Nautilus(
     name="pixelization",
     unique_tag=dataset_name,
     n_live=100,
-    n_batch=20,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    n_batch=20,  # GPU model fits are batched and run simultaneously, see VRAM section below.
 )
 
 """
@@ -274,14 +291,14 @@ analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 """
 __VRAM__
 
-The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM 
+The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM
 required by a model.
 
-pixelizations use a lot more VRAM than light profile-only models, with the amount required depending on the size of
-dataset and the number of source pixels in the pixelization's mesh. For 400 source pixels, around 0.05 GB per batched
-likelihood of VRAM is used. 
+Pixelizations use a lot more VRAM than light profile-only models, with the amount required depending on the size of
+the dataset and the number of mesh pixels in the pixelization. For 400 reconstruction pixels, around 0.05 GB per
+batched likelihood of VRAM is used.
 
-This is why the `batch_size` above is 20, lower than other examples, because reducing the batch size ensures a more 
+This is why the `batch_size` above is 20, lower than other examples, because reducing the batch size ensures a more
 modest amount of VRAM is used. If you have a GPU with more VRAM, increasing the batch size will lead to faster run times.
 
 Given VRAM use is an important consideration, we print out the estimated VRAM required for this
@@ -323,8 +340,9 @@ print(result.info)
 """
 We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
 
-The galaxy bulge and disk appear similar to those in the data, confirming that the `intensity` values inferred by
-the inversion process are accurate.
+The reconstructed bulge image and the pixelized reconstruction of the clumps should together reproduce the data to
+roughly the noise level, with the bulge component absorbing the smooth central light and the pixelization absorbing
+the off-centre clumpy structure.
 """
 print(result.max_log_likelihood_instance)
 
@@ -334,30 +352,30 @@ aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
 
 """
-__Including Smooth Components__
+__Adding More Light Profiles__
 
-By combining a pixelization with parametric light profiles, we can model galaxies whose light consists of both smooth
-and complex, irregular components. For example, we can quantify the light in bulge and disk components while
-simultaneously reconstructing irregular features such as spiral arms or star-forming clumps using a pixelization.
-This allows a physically meaningful decomposition of a galaxy into its main structural components and a robust
-measurement of their properties.
+The model above pairs a single `Sersic` bulge with the pixelization. Galaxies with additional smooth components
+(for example a bulge plus an extended disk) can include those components in exactly the same way by adding them as
+extra attributes on the `Galaxy` model alongside the bulge and pixelization. We use linear light profiles
+(`lp_linear.*`) to maximize computational efficiency — their intensities are solved for simultaneously with the
+pixelization reconstruction.
 
-Combining a pixelization with parametric light profiles is straightforward: we simply add light profiles to the
-galaxy model alongside the pixelization using the standard modeling API. Below, we use linear light profiles to
-maximize computational efficiency, although non-linear light profiles can also be used.
-
-For brevity, we do not perform the model fit here. The code below demonstrates how to construct such a model, which
-can then be fitted using the same search and analysis objects introduced above.
+For brevity, we do not perform a second model fit here. The code below demonstrates how to extend the model with a
+disk, which can then be fitted using the same search and analysis objects introduced above.
 """
 pixelization = af.Model(
     ag.Pixelization,
-    bulge=ag.lp_linear.Sersic,
-    disk=ag.lp_linear.Exponential,
     mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
+galaxy = af.Model(
+    ag.Galaxy,
+    redshift=0.5,
+    bulge=ag.lp_linear.Sersic,
+    disk=ag.lp_linear.Exponential,
+    pixelization=pixelization,
+)
 
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
@@ -372,7 +390,7 @@ the emission of these galaxies altogether. This is analogous to what the circula
 does.
 
 For fits using a pixelization, masking regions of the image in a way that removes their image pixels entirely from
-the fit. This can produce discontinuities in the pixelixation used to reconstruct the source and produce unexpected
+the fit can produce discontinuities in the pixelization used to reconstruct the galaxy and produce unexpected
 systematics and unsatisfactory results. In this case, applying the mask in a way where the image pixels are not
 removed from the fit, but their data and noise-map values are scaled such that they contribute negligibly to the fit,
 is a better approach.
@@ -423,25 +441,27 @@ apply the mask as above before fitting the data.
 
 __Result Use__
 
-There are many things you can do with the result of a pixelixaiton, including analysing the galaxy reconstruction.
+There are many things you can do with the result of a pixelization fit, including analysing the galaxy reconstruction
+and exporting it for downstream science.
 
-These are documented in the `fit.py` example.
+These are documented in the `fit.py` and `galaxy_reconstruction.py` examples.
 """
 inversion = result.max_log_likelihood_fit.inversion
 
 """
 __Wrap Up__
 
-Pixelizations are the most complex but also the most powerful way to model a galaxy’s light.
+Pixelizations are the most complex but also the most powerful way to model a galaxy's light.
 
 Whether you need to use them depends on the science you are doing. If you are only interested in measuring simple
 global quantities (for example, total flux, size, or axis ratio), analytic light profiles such as a Sérsic, MGE, or
-shapelets are often sufficient. For low-resolution data, pixelizations are also unnecessary, as the complex
+shapelets are often sufficient. For low-resolution data, pixelizations are also unnecessary, as the irregular
 structure of the galaxy is not resolved.
 
-However, modeling galaxies with complex, irregular, or highly structured light distributions requires this level of
-flexibility. Furthermore, if you are interested in studying the detailed morphology of a galaxy itself, there is no
-better approach than using a pixelization.
+However, modeling galaxies with complex, irregular, or highly structured light distributions — like the asymmetric
+clumpy galaxy fit here — requires this level of flexibility. Furthermore, if you are interested in studying the
+detailed morphology of a galaxy itself, there is no better approach than combining a parametric bulge with a
+pixelization for the irregular component.
 
 __Chaining__
 
