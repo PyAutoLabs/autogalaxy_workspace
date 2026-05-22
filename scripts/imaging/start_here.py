@@ -482,15 +482,13 @@ we create.
 
 Each galaxy is simulated as if it were observed with CCD imaging, therefore with a PSF and noise-map.
 """
-galaxy_model = ag.model_util.simulator_start_here_model_from()
-
-print(galaxy_model.info)
+print(ag.model_util.SIMULATOR_RANDOM_GALAXY_SUMMARY)
 
 total_datasets = 3
 
 for sample_index in range(total_datasets):
 
-    galaxy = galaxy_model.random_instance()
+    galaxy = ag.model_util.random_galaxy_for_simulation_from()
     galaxies = ag.Galaxies([galaxy])
 
     dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
