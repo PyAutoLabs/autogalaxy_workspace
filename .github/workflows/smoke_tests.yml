@@ -73,7 +73,7 @@ jobs:
           pip install "./PyAutoArray[optional]" "./PyAutoGalaxy[optional]"
         else
           pip install ./PyAutoConf ./PyAutoFit ./PyAutoArray ./PyAutoGalaxy
-          pip install numba
+          pip install numba nufftax
         fi
         pip install tensorflow-probability==0.25.0
         pip install jupyter nbconvert ipynb-py-convert
