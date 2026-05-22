@@ -31,6 +31,7 @@ __Contents__
 # from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
+import numpy as np
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -84,36 +85,39 @@ simulator = ag.SimulatorImaging(
 )
 
 """
-__Sample Model Distributions__
+__Sample Truth Distributions__
 
-To simulate a sample, we draw random instances of galaxies where the parameters of their light profiles are drawn from 
-distributions. These distributions are defined via priors -- the same objects that are used 
-when defining the priors of each parameter for a non-linear search.
+To simulate a sample, we draw random instances of galaxies. Each parameter is sampled
+directly from a numpy ``Generator`` and used to construct a concrete light-profile
+instance — there is no ``af.Model`` involved here because we are generating *truths*
+for synthetic data, not fitting a model.
 
-Below, we define the distributions the galaxy's bulge light is drawn from.
+The bulge uses ``ag.lp_snr.Sersic`` so each galaxy hits a target signal-to-noise ratio
+in the data — SNR is a property of the data, not a fitted parameter.
 """
-bulge = af.Model(ag.lp_snr.Sersic)
+rng = np.random.default_rng()
 
-bulge.centre = (0.0, 0.0)
-bulge.ell_comps.ell_comps_0 = af.TruncatedGaussianPrior(
-    mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
-)
-bulge.ell_comps.ell_comps_1 = af.TruncatedGaussianPrior(
-    mean=0.0, sigma=0.2, lower_limit=-1.0, upper_limit=1.0
-)
-bulge.signal_to_noise_ratio = af.UniformPrior(lower_limit=20.0, upper_limit=60.0)
-bulge.effective_radius = af.UniformPrior(lower_limit=1.0, upper_limit=5.0)
-bulge.sersic_index = af.TruncatedGaussianPrior(
-    mean=4.0, sigma=1.0, lower_limit=0.8, upper_limit=5.0
-)
 
-galaxy_model = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
+def _clipped_ell_comp() -> float:
+    return float(np.clip(rng.normal(0.0, 0.2), -1.0, 1.0))
+
+
+def _random_galaxy() -> ag.Galaxy:
+    bulge = ag.lp_snr.Sersic(
+        centre=(0.0, 0.0),
+        ell_comps=(_clipped_ell_comp(), _clipped_ell_comp()),
+        effective_radius=float(rng.uniform(1.0, 5.0)),
+        sersic_index=float(np.clip(rng.normal(4.0, 1.0), 0.8, 5.0)),
+        signal_to_noise_ratio=float(rng.uniform(20.0, 60.0)),
+    )
+    return ag.Galaxy(redshift=0.5, bulge=bulge)
+
 
 """
 __Sample Instances__
 
-Within a for loop, we will now generate instances of each simulated galaxy using the `Model`'s defined above.
-This loop will run for `total_datasets` iterations, which sets the number of galaxies that are simulated.
+Within a for loop, we will now generate instances of each simulated galaxy. This loop will
+run for `total_datasets` iterations, which sets the number of galaxies that are simulated.
 
 Each iteration of the for loop creates galaxies to simulate the imaging dataset.
 """
@@ -122,7 +126,7 @@ total_datasets = 3
 for sample_index in range(total_datasets):
     dataset_sample_path = Path(dataset_path, f"dataset_{sample_index}")
 
-    galaxy = galaxy_model.random_instance()
+    galaxy = _random_galaxy()
 
     """
     __Galaxies__
