@@ -1,0 +1,14 @@
+# Workspace overrides for the library latent toggles. The PyAutoGalaxy
+# library defaults every key to `false` (so existing fits stay unchanged
+# on upgrade and unawares of `magzero`). Enabling them here means a
+# workspace fit produces real latent output as long as the user also
+# passes `magzero` to `ag.AnalysisImaging(...)`.
+#
+# Run `scripts/guides/results/latent_variables.py` for a tutorial on
+# what each key means and how to extend the catalogue with custom
+# latents in your own scripts.
+
+# `total_galaxy_0_flux_mujy` — total integrated flux of `fit.galaxies[0]`
+# in microjanskies (magzero-converted). Requires `magzero` via Analysis
+# kwargs; raises loudly if missing.
+total_galaxy_0_flux_mujy: true
