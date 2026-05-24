@@ -365,9 +365,80 @@ print(deflections_yx_2d.slim[0, :])
 """
 The role of the terms `slim` and `native` can be thought of in the same way as for scalar quantities. 
 
-For a scalar, the `slim` property gives every scalar value as a 1D ndarray for every unmasked pixel. For a vector we 
-still get an ndarray of every unmasked pixel, however each entry now contains two entries: the vector of (y,x) values. 
+For a scalar, the `slim` property gives every scalar value as a 1D ndarray for every unmasked pixel. For a vector we
+still get an ndarray of every unmasked pixel, however each entry now contains two entries: the vector of (y,x) values.
 
 For a `native` property these vectors are shown on an image-plane 2D grid where again each pixel
 contains a (y,x) vector.
+
+__JAX__
+
+PyAutoGalaxy runs on either NumPy (the default) or JAX. The data
+structures you've met above are *backend-polymorphic* — wrappers
+around a numerical array that can be `numpy.ndarray` or `jax.Array`
+depending on how the structure was constructed.
+
+You can always reach the raw backing array via `.array`:
+
+```python
+grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
+print(type(grid.array))          # numpy.ndarray on the default path
+```
+
+__When the backing becomes `jax.Array`__
+
+Three situations switch the backing to `jax.Array`:
+
+1. The structure comes back from a JAX-accelerated `Analysis(use_jax=True)`
+   fit (`fit.residual_map.array`, `fit.model_image.array`, ...).
+2. The structure comes back from a `Simulator(use_jax=True)` simulation.
+3. You constructed it inside a JAX-traced function with `xp=jnp`.
+
+The Python-level wrapper is the same `aa.Array2D` / `aa.Grid2D` in all
+cases — only the underlying array type changes.
+
+__Host transfer (the JAX → NumPy boundary)__
+
+Most things you do convert back to NumPy transparently: plotting,
+`.fits` writing, `.copy()`, `.tolist()`. Direct NumPy arithmetic
+(`np.sqrt(fit.residual_map.array)`) transfers off the GPU — use
+`jnp.sqrt(...)` for hot loops, don't worry about it for one-off code.
+
+__The not-pytree rule__
+
+If you write your own `@jax.jit` function and try to return an
+`aa.Array2D` (or `aa.Grid2DIrregular`) from inside it, the JIT
+boundary may fail. The workaround: return the raw `.array` from inside
+the jit and rewrap on the host:
+
+```python
+@jax.jit
+def my_image_fn(galaxies, grid):
+    return galaxies.image_2d_from(grid=grid, xp=jnp).array   # raw jax.Array
+
+arr = my_image_fn(galaxies, grid)
+img_wrapped = ag.Array2D(values=arr, mask=grid.mask)
+```
+
+You only encounter this when *you* write the `@jax.jit` — the library
+handles its own returns correctly.
+
+For the canonical "JIT-it-yourself" deep-dive (decorator vs `jax.jit(bound_method)`,
+cache-identity considerations, the `@jax.jit + xp=jnp` pairing rule),
+see the autolens companion at
+`autolens_workspace/scripts/guides/lens_calc.py` `__JAX__` section.
+The patterns there apply equally to autogalaxy primitives — just
+`Galaxy` / `Galaxies` instead of `Tracer` / `LensCalc`.
+
+__Summary__
+
+| You construct / receive | Backing type |
+|---|---|
+| `ag.Grid2D.uniform(shape_native, pixel_scales)` | `numpy.ndarray` |
+| `fit = analysis.fit_from(instance)` from `AnalysisImaging(use_jax=True)` | `jax.Array` |
+| `dataset = simulator.via_galaxies_from(...)` from `SimulatorImaging(use_jax=True)` | `jax.Array` |
+| `galaxies.image_2d_from(grid=jnp_grid, xp=jnp)` inside your own `@jax.jit` | `jax.Array` |
+
+`.array` is the safe accessor for the raw backing. Plotting and
+`.fits` writers handle the conversion transparently.
 """
