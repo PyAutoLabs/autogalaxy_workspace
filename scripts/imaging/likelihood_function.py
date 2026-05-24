@@ -371,6 +371,47 @@ analytic light profiles to fit the galaxy light.
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
 are described in additional notebooks found in the `guides` package:
 
- - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
+ - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually
  ray-traced to the source-plane and used to evaluate the light profile more accurately.
+
+__JAX__
+
+The step-by-step likelihood you've just walked through can be JAX-
+accelerated by wrapping the whole construction in `@jax.jit`:
+
+```python
+import jax
+import jax.numpy as jnp
+
+# Triggering pytree registration: the easiest path is to instantiate an
+# AnalysisImaging at the top of the script, which runs its internal
+# _register_fit_imaging_pytrees() as a side effect.
+_ = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+
+@jax.jit
+def my_log_likelihood(instance):
+    galaxies = ag.Galaxies(galaxies=instance.galaxies)
+    fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
+    return fit.log_likelihood
+```
+
+To validate the JAX path matches the NumPy chi-squared, use
+`Fitness._vmap` (production validation pattern — single `jax.jit(fn)(concrete)`
+hides un-threaded `xp` sites that `vmap(jit(call))` exposes):
+
+```python
+from autofit.non_linear.fitness import Fitness
+
+fitness = Fitness(
+    model=model,
+    analysis=ag.AnalysisImaging(dataset=dataset),
+    fom_is_log_likelihood=True,
+)
+log_l_jax = fitness._vmap(jnp.array([instance_parameters]))[0]
+```
+
+For the canonical Analysis-driven modeling path (zero JAX code on your
+side), see `start_here.py` / `modeling.py`. For JIT-ing library methods
+directly without going through `FitImaging`, see
+`scripts/guides/api/data_structures.py`.
 """

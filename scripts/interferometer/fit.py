@@ -24,6 +24,15 @@ __Contents__
 - **Figures of Merit:** Computing chi-squared, noise normalization, and log likelihood values.
 - **Galaxy Quantities:** Accessing per-galaxy model visibilities and images from the fit.
 - **Outputting Results:** Saving fit results to FITS files for later use.
+
+__JAX__
+
+`FitInterferometer` runs on either NumPy or JAX. For the standard
+analysis-driven path — where `AnalysisInterferometer` auto-enables
+`use_jax=True` and the search driver handles the JIT — see `start_here.py`
+/ `modeling.py`. For the JIT-it-yourself path around individual library
+methods, see `scripts/guides/api/data_structures.py`.
+
 """
 
 from autoconf import jax_wrapper  # Sets JAX environment before other imports
