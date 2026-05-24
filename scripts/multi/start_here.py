@@ -21,14 +21,17 @@ see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
+PyAutoGalaxy runs multi-wavelength galaxy fits on JAX by default. The
+per-band `ag.AnalysisImaging(dataset=dataset, use_jax=True)` instances
+below auto-enable JAX, and the `af.FactorGraphModel(*analysis_factor_list,
+use_jax=True)` further down stitches them into the joint multi-band
+likelihood with JAX-aware broadcasting. If you installed
+`autogalaxy[jax]`, expect 1-10 minutes per band on GPU vs hours on CPU.
 
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
-
-We also show how to simulate galaxy imaging. This is useful for building machine learning training datasets,
-or for investigating imaging effects in a controlled way.
+For the broader JAX principles see the top-level
+`autogalaxy_workspace/start_here.py` `__JAX__` section. Per-band
+`SimulatorImaging(use_jax=True)` usage is shown in
+`scripts/imaging/simulator.py` `__JAX Variant__`.
 
 __Contents__
 
@@ -258,11 +261,12 @@ When there are multiple datasets, a list of analysis objects is created, once fo
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
-
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
+`AnalysisImaging(use_jax=True)` runs per-band; `FactorGraphModel(use_jax=True)`
+below stitches them into the joint multi-band likelihood. The non-linear
+search driver wraps the joint likelihood in `jax.vmap(jax.jit(...))` —
+batches of parameter vectors evaluate in parallel across all bands on a
+single GPU call. Force NumPy with `use_jax=False` (or `PYAUTO_DISABLE_JAX=1`)
+on either constructor when debugging.
 """
 analysis_list = [
     ag.AnalysisImaging(
