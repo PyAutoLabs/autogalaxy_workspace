@@ -378,6 +378,33 @@ analytic light profiles to fit the galaxy light.
 There are a number of other inputs features which slightly change the behaviour of this likelihood function, which
 are described in additional notebooks found in the `guides` package:
 
- - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually 
+ - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually
  ray-traced to the source-plane and used to evaluate the light profile more accurately.
+
+__JAX__
+
+The step-by-step interferometer likelihood you've just walked through
+can be JAX-accelerated by wrapping construction in `@jax.jit`:
+
+```python
+import jax
+import jax.numpy as jnp
+
+# Triggering pytree registration via Analysis init as a side effect.
+_ = ag.AnalysisInterferometer(dataset=dataset, use_jax=True)
+
+@jax.jit
+def my_log_likelihood(instance):
+    galaxies = ag.Galaxies(galaxies=instance.galaxies)
+    fit = ag.FitInterferometer(dataset=dataset, galaxies=galaxies)
+    return fit.log_likelihood
+```
+
+Use `TransformerDFT` (the default) under JAX — `TransformerNUFFT` is not
+JAX-traceable. To validate the JAX log-likelihood matches the NumPy
+chi-squared you derived above, use `Fitness._vmap(jnp.array([parameters]))`.
+
+For the canonical Analysis-driven path (zero JAX code on your side),
+see `start_here.py` / `modeling.py`. For JIT-ing library methods directly,
+see `scripts/guides/api/data_structures.py`.
 """
