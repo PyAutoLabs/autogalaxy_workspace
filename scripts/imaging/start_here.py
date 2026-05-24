@@ -14,14 +14,17 @@ see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
+PyAutoGalaxy runs imaging model-fits on JAX by default. If you installed
+`autogalaxy[jax]`, the `ag.AnalysisImaging(dataset=dataset)` line below
+auto-enables `use_jax=True`; expect 10-30 minutes on CPU, 1-10 minutes on
+GPU, vs 1-2 hours on pure NumPy. If you do not have a GPU locally, Google
+Colab provides free GPUs.
 
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
-
-We also show how to simulate galaxy imaging. This is useful for building machine learning training datasets,
-or for investigating imaging effects in a controlled way.
+For the broader JAX principles (when you write `@jax.jit` yourself, the
+return-type contract, how to opt out for debugging), see the top-level
+`autogalaxy_workspace/start_here.py` `__JAX__` section. For a runnable
+`@jax.jit + SimulatorImaging(use_jax=True)` example, see the
+`__JAX Variant__` section at the end of `scripts/imaging/simulator.py`.
 
 __Contents__
 
@@ -236,11 +239,15 @@ the model to the imaging data.
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
+`ag.AnalysisImaging` defaults to `use_jax=True` when JAX is installed.
+The search driver wraps the likelihood in `jax.vmap(jax.jit(...))` —
+batches of parameter vectors evaluate in parallel on a single GPU call.
+Watch for `JAX: Applying vmap and jit to likelihood function -- may take
+a few seconds.` in the log; that's the JIT compile starting, after which
+evaluations re-use the compiled trace.
 
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
+Force NumPy with `use_jax=False` (or `PYAUTO_DISABLE_JAX=1`) when
+debugging — NumPy stack traces are easier to read than JAX traces.
 
 __Iterations Per Update__
 

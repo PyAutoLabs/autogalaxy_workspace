@@ -187,4 +187,45 @@ ag.output_to_json(
 
 """
 The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple`.
+
+__JAX Variant__
+
+For fast repeated interferometer simulations, construct the simulator
+with `use_jax=True` and wrap the call in `@jax.jit`. The simulator
+handles pytree registration internally.
+
+```python
+import jax
+import jax.numpy as jnp
+
+simulator_jax = ag.SimulatorInterferometer(
+    uv_wavelengths=uv_wavelengths,
+    exposure_time=300.0,
+    noise_sigma=0.1,
+    transformer_class=ag.TransformerDFT,  # NUFFT (pynufft) is not JAX-traceable
+    use_jax=True,
+)
+
+@jax.jit
+def simulate(galaxies):
+    galaxy_obj = ag.Galaxies(galaxies=galaxies)
+    image = galaxy_obj.image_2d_from(grid=real_space_grid, xp=jnp)
+    return simulator_jax.via_image_from(image=image)
+
+dataset_jax = simulate(galaxies)   # Interferometer with jax.Array visibilities
+```
+
+Two notes:
+
+- Use `TransformerDFT` (the default) under JAX. `TransformerNUFFT`
+  (pynufft) is faster on large UV sets but is not JAX-traceable; the
+  `nufftax` replacement is a research path (see
+  `autolens_workspace_test/scripts/interferometer/nufft.py`).
+- Eager `simulator_jax.via_image_from(image)` already runs on JAX without
+  the `@jax.jit` wrap; the JIT wrap is currently blocked by a pre-existing
+  `Array2D.native` autoarray limitation. Eager use works today; the
+  `@jax.jit` wrap shown above will work once a separate refactor lands.
+
+See `scripts/guides/api/data_structures.py` for the broader "JIT-it-
+yourself" pattern.
 """
