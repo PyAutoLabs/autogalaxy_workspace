@@ -50,6 +50,20 @@ __Contents__
 - **Outputting Results:** Saving fit quantities to FITS files for later analysis.
 - **Modeling Results:** Links to modeling result analysis in the workspace.
 - **Wrap Up:** Summary of the FitImaging object and next steps.
+
+__JAX__
+
+This script constructs a `FitImaging` directly from galaxies and a dataset
+(no Analysis / no non-linear search). The fit works on either backend —
+quantities it computes (`fit.model_image`, `fit.residual_map`,
+`fit.log_likelihood`, ...) return `numpy.ndarray` on the default path or
+`jax.Array` if you constructed the upstream objects with `xp=jnp`.
+
+For the standard analysis-driven modeling path — where `AnalysisImaging`
+auto-enables `use_jax=True` and the search driver handles the JIT — see
+`start_here.py` / `modeling.py`. For the advanced path where you wrap your
+own `@jax.jit` around `FitImaging` construction, see `likelihood_function.py`'s
+`__JAX__` section and the `scripts/guides/api/data_structures.py` guide.
 """
 
 # from autoconf import setup_notebook; setup_notebook()

@@ -14,14 +14,18 @@ see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
+PyAutoGalaxy runs interferometer model-fits on JAX by default. If you
+installed `autogalaxy[jax]`, `ag.AnalysisInterferometer(dataset=dataset)`
+below auto-enables `use_jax=True`. Use `TransformerDFT` (the default)
+under JAX — `TransformerNUFFT` (pynufft) is faster on large UV sets but
+is not JAX-traceable; the `nufftax` replacement (see `__NUFFT (nufftax)__`
+below) is a research path tracking that.
 
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
-
-We also show how to simulate interferometer datasets. This is useful for building machine
-learning training datasets, or for investigating galaxy structure in a controlled way.
+For broader JAX principles (when you write `@jax.jit` yourself, the
+return-type contract), see the top-level `autogalaxy_workspace/start_here.py`
+`__JAX__` section. For a runnable `@jax.jit + SimulatorInterferometer(use_jax=True)`
+example, see the `__JAX Variant__` section at the end of
+`scripts/interferometer/simulator.py`.
 
 __NUFFT (nufftax)__
 
@@ -229,11 +233,10 @@ Nautilus to fit the model to the interferometer data.
 
 __JAX__
 
-PyAutoGalaxy uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
-support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
-JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
-
-If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
+`ag.AnalysisInterferometer` defaults to `use_jax=True` when JAX is
+installed. The search driver wraps the likelihood in `jax.vmap(jax.jit(...))`.
+Force NumPy with `use_jax=False` (or `PYAUTO_DISABLE_JAX=1`) when
+debugging.
 
 **Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
 an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
