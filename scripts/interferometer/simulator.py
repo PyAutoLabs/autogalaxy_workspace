@@ -222,9 +222,7 @@ Two notes:
   `nufftax` replacement is a research path (see
   `autolens_workspace_test/scripts/interferometer/nufft.py`).
 - Eager `simulator_jax.via_image_from(image)` already runs on JAX without
-  the `@jax.jit` wrap; the JIT wrap is currently blocked by a pre-existing
-  `Array2D.native` autoarray limitation. Eager use works today; the
-  `@jax.jit` wrap shown above will work once a separate refactor lands.
+  the `@jax.jit` wrap; the JIT only matters for repeated calls.
 
 See `scripts/guides/api/data_structures.py` for the broader "JIT-it-
 yourself" pattern.
