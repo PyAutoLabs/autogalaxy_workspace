@@ -40,6 +40,7 @@ __Contents__
 - **Mask:** Applying a circular mask to the dataset.
 - **Model Composition:** Composing an ellipse model with free centre and elliptical components.
 - **Search:** Configuring the Dynesty non-linear search for ellipse fitting.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
 - **Analysis:** Setting up the AnalysisEllipse object for the model fit.
 - **Run Times:** Estimating the computational cost of the ellipse model fit.
 - **Model-Fit:** Running the non-linear search to fit the ellipse to data.
@@ -263,11 +264,24 @@ Depending on how long it takes for the model to be fitted to the data (see discu
 this can take up a large fraction of the run-time of the non-linear search.
 
 For this fit, the fit is very fast, thus we set a high value of `iterations_per_quick_update=10000` to ensure these updates
-so not slow down the overall speed of the model-fit. 
+so not slow down the overall speed of the model-fit.
 
 **If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
 output results and visualization frequently to hard-disk. If your fit is consistent displaying a log saying that it
 is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
 search = af.DynestyStatic(
     path_prefix=Path("ellipse"),
@@ -276,6 +290,7 @@ search = af.DynestyStatic(
     sample="rwalk",
     n_live=50,
     iterations_per_quick_update=10000,
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 """
@@ -458,6 +473,7 @@ for i in range(len(major_axis_list)):
         n_live=50,
         number_of_cores=4,
         iterations_per_quick_update=10000,
+        live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
     )
 
     analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)
@@ -522,6 +538,7 @@ for i in range(len(major_axis_list)):
         n_live=50,
         number_of_cores=4,
         iterations_per_quick_update=10000,
+        live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
     )
 
     analysis = ag.AnalysisEllipse(dataset=dataset, use_jax=False)

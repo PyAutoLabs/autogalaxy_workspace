@@ -5,19 +5,12 @@
             "type": "instance",
             "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
             "arguments": {
-                "redshift": 0.5,
                 "label": null,
+                "redshift": 0.5,
                 "bulge": {
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.sersic.Sersic",
                     "arguments": {
-                        "centre": {
-                            "type": "tuple",
-                            "values": [
-                                0.0,
-                                0.0
-                            ]
-                        },
                         "ell_comps": {
                             "type": "tuple",
                             "values": [
@@ -25,8 +18,15 @@
                                 3.2227547345982974e-18
                             ]
                         },
-                        "effective_radius": 0.6,
+                        "centre": {
+                            "type": "tuple",
+                            "values": [
+                                0.0,
+                                0.0
+                            ]
+                        },
                         "sersic_index": 3.0,
+                        "effective_radius": 0.6,
                         "intensity": 1.0
                     }
                 },
@@ -41,8 +41,8 @@
                                 0.0
                             ]
                         },
-                        "intensity": 0.5,
                         "effective_radius": 1.6,
+                        "intensity": 0.5,
                         "ell_comps": {
                             "type": "tuple",
                             "values": [
@@ -58,8 +58,8 @@
             "type": "instance",
             "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
             "arguments": {
-                "redshift": 0.5,
                 "label": null,
+                "redshift": 0.5,
                 "light": {
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.exponential.ExponentialSph",
@@ -81,8 +81,8 @@
             "type": "instance",
             "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
             "arguments": {
-                "redshift": 0.5,
                 "label": null,
+                "redshift": 0.5,
                 "light": {
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.exponential.ExponentialSph",

@@ -187,6 +187,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 """
@@ -240,6 +241,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 result_bulge_fixed = search.fit(model=model, analysis=analysis_list[0])
@@ -283,6 +285,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 result = search.fit(model=model, analysis=analysis_list[0])

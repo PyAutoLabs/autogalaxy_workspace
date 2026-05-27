@@ -42,6 +42,7 @@ __Contents__
 - **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
 - **Model:** Composing the galaxy model with linear Sersic bulge and Exponential disk.
 - **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
 - **Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
 - **VRAM Use:** Estimating GPU VRAM usage for JAX-accelerated fitting.
 - **Run Times:** Discussion of computational run times and how to estimate them.
@@ -263,11 +264,24 @@ Depending on how long it takes for the model to be fitted to the data (see discu
 this can take up a large fraction of the run-time of the non-linear search.
 
 For this fit, the fit is very fast, thus we set a high value of `iterations_per_quick_update=10000` to ensure these updates
-so not slow down the overall speed of the model-fit. 
-# 
+so not slow down the overall speed of the model-fit.
+#
 **If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
 output results and visualization frequently to hard-disk. If your fit is consistent displaying a log saying that it
 is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
 search = af.Nautilus(
     path_prefix=Path("imaging") / "features",
@@ -276,6 +290,7 @@ search = af.Nautilus(
     n_live=200,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
     iterations_per_quick_update=10000,
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 """

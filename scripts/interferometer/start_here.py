@@ -72,6 +72,7 @@ __Contents__
 - **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
 - **Model:** Composing a Multi Gaussian Expansion galaxy model.
 - **Model Fit:** Fitting the model to data using Nautilus nested sampling.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
 - **Result:** Inspecting the results of the model fit.
 - **Model Your Own Galaxy:** Tips for applying this workflow to your own interferometer data.
 - **Simulator:** Simulating interferometer datasets of galaxies.
@@ -240,6 +241,19 @@ debugging.
 
 **Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
 an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
 search = af.Nautilus(
     path_prefix=Path("interferometer"),  # The path where results and output are stored.
@@ -248,6 +262,7 @@ search = af.Nautilus(
     n_live=75,  # The number of Nautilus "live" points, increase for more complex models.
     n_batch=50,  # GPU galaxy fits are batched and run simultaneously, see modeling examples for details.
     iterations_per_quick_update=10000,  # Every N iterations the max likelihood model is visualized and output.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 analysis = ag.AnalysisInterferometer(
