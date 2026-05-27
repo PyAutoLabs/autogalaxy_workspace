@@ -10,6 +10,19 @@ Dependencies: `autogalaxy`, `numba`, `autofit` (the probabilistic programming fr
 
 Python version: 3.11
 
+## Scientific Context
+
+Adjacent strong-lensing science — topics that overlap galaxy modelling
+(light profiles + MGE, regularisation, pixelisation, kinematics,
+bulge/halo decomposition) — lives in the lensing sub-wiki at
+[`PyAutoLabs/PyAutoPaper`](https://github.com/PyAutoLabs/PyAutoPaper),
+locally at `../PyAutoPaper/lensing_wiki/`. Lensing-focused but with
+plenty of galaxy-modelling-relevant concept pages
+(`concepts/source-reconstruction.md`, `concepts/regularization.md`,
+`concepts/bulge-halo-decomposition.md`, `concepts/kinematics-and-lensing.md`,
+`concepts/multipoles.md`). Start at
+`../PyAutoPaper/lensing_wiki/index.md`.
+
 ## Running Scripts
 
 Scripts are run from the repository root so that relative paths to `dataset/` and `output/` resolve correctly:

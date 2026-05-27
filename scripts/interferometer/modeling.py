@@ -31,6 +31,7 @@ __Contents__
 - **Over Sampling:** Why over sampling is not needed for interferometer data.
 - **Model:** Composing a Sersic bulge and Exponential disk galaxy model using linear light profiles.
 - **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
 - **Analysis:** Setting up the AnalysisInterferometer object with JAX acceleration.
 - **VRAM Use:** Estimating GPU VRAM requirements for the model fit.
 - **Run Times:** Estimating the computational cost of the model fit.
@@ -196,6 +197,19 @@ based on the model, search and dataset that are used in the fit.
 An identical combination of model, search and dataset generates the same identifier, meaning that rerunning the
 script will use the existing results to resume the model-fit. In contrast, if you change the model, search or dataset,
 a new unique identifier will be generated, ensuring that the model-fit results are output into a separate folder.
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
 search = af.Nautilus(
     path_prefix=Path("interferometer", "modeling"),
@@ -203,6 +217,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     n_batch=50,  # GPU model fits are batched and run simultaneously, see VRAM section below.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 """

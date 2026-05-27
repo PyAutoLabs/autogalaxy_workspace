@@ -24,6 +24,7 @@ __Contents__
 - **Analysis Factor:** Wrapping each analysis in a factor graph with per-dataset model customization.
 - **Factor Graph:** Combining all analysis factors into a global factor graph model.
 - **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
 - **VRAM Use:** Estimating GPU VRAM requirements for multi-dataset fitting.
 - **Model-Fit:** Running the non-linear search to fit the model to all datasets simultaneously.
 - **Result:** Inspecting the per-wavelength results of the multi-dataset model fit.
@@ -250,6 +251,19 @@ print(factor_graph.global_prior_model.info)
 
 """
 __Search__
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
 search = af.Nautilus(
     path_prefix=Path("multi") / "features",
@@ -257,6 +271,7 @@ search = af.Nautilus(
     unique_tag=dataset_name,
     n_live=100,
     n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
 """
