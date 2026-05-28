@@ -139,7 +139,9 @@ attributes on the same instance.
 latent_samples = analysis.compute_latent_samples(result.samples)
 
 median_instance = latent_samples.median_pdf()
-print(f"Median PDF total_galaxy_0_flux_mujy: {median_instance.total_galaxy_0_flux_mujy}")
+print(
+    f"Median PDF total_galaxy_0_flux_mujy: {median_instance.total_galaxy_0_flux_mujy}"
+)
 
 max_likelihood_instance = latent_samples.max_log_likelihood()
 print(
@@ -199,8 +201,8 @@ class AnalysisImagingWithAxisRatio(ag.AnalysisImaging):
         # Custom latent: axis ratio of the Sersic bulge from its ell_comps.
         try:
             ell_y, ell_x = instance.galaxies.galaxy.bulge.ell_comps
-            axis_ratio = (1.0 - np.sqrt(ell_y ** 2 + ell_x ** 2)) / (
-                1.0 + np.sqrt(ell_y ** 2 + ell_x ** 2)
+            axis_ratio = (1.0 - np.sqrt(ell_y**2 + ell_x**2)) / (
+                1.0 + np.sqrt(ell_y**2 + ell_x**2)
             )
         except AttributeError:
             axis_ratio = xp.nan
