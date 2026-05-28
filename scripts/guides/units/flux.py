@@ -25,6 +25,7 @@ __Contents__
 
 - **Zero Point:** Explanation of photometric zero points and their role in flux calibration.
 - **Mega Janskys / steradian (MJy/sr): James Webb Space Telescope:** Convert JWST NIRCam light profile intensities to AB magnitudes.
+- **Latent Variables:** Reading the same total flux directly from the `latent.csv` of a completed fit.
 
 __Zero Point__
 
@@ -115,5 +116,50 @@ zero_point = -6.10 - 2.5 * np.log10(pixar_sr)
 magnitude_ab = zero_point - 2.5 * np.log10(total_flux)
 
 """
+__Latent Variables: Total Flux Directly from the Fit__
+
+The example above computed the total flux by hand: build a light profile, sample it on a grid, sum the image, then
+apply the zero point. PyAutoGalaxy does exactly this automatically as part of every fit and records the result as
+a latent variable in the `latent/samples.csv` file beside the search output. You can skip the manual recipe
+entirely and just read the column.
+
+The raw-flux latent ships default-on (it needs no instrument inputs and runs on every fit unless disabled in
+`config/latent.yaml`):
+
+- `total_galaxy_0_flux` — total integrated flux of the first galaxy (`fit.galaxies[0]`), in the *raw* image
+  units the fit was performed in. For JWST data in MJy/sr, this is MJy/sr; for HST data in e- s^-1, this is
+  e- s^-1.
+
+To convert this to AB magnitudes or microjanskies, apply the same zero-point recipe used above. Suppose you
+have a JWST F444W fit and want the AB magnitude of the galaxy; reading the column from your result and
+converting goes:
+"""
+from autogalaxy.imaging.model.latent import (
+    ab_mag_via_flux_from,
+    flux_mujy_via_ab_mag_from,
+)
+
+# Stand-in for what you'd read from `latent.csv` — in a real script this is one column of one row, e.g.
+#   total_galaxy_0_flux = pd.read_csv(search.paths.output_path / "latent" / "samples.csv")["total_galaxy_0_flux"].iloc[-1]
+total_galaxy_0_flux = 1234.5  # MJy/sr
+
+# JWST F444W zero-point computed exactly as in the MJy/sr section above.
+ab_mag_galaxy = ab_mag_via_flux_from(flux=total_galaxy_0_flux, magzero=zero_point)
+flux_mujy_galaxy = flux_mujy_via_ab_mag_from(ab_mag=ab_mag_galaxy)
+
+"""
+The two helpers used above are the same ones the library uses internally to populate the `_mujy` variant of the
+latent (`total_galaxy_0_flux_mujy`). That variant is default-off because it needs a `magzero` you supply per
+instrument. If you have a single fixed zero-point you can flip it on by:
+
+1. Setting `total_galaxy_0_flux_mujy: true` in your project's `config/latent.yaml`.
+2. Passing `magzero=<value>` when constructing the analysis:
+   `analysis = ag.AnalysisImaging(dataset=dataset, magzero=zero_point)`.
+
+The latent dispatcher then writes the converted µJy column into `latent/samples.csv` directly, so you don't
+have to run the conversion in post. If you enable the `_mujy` latent but forget the `magzero` keyword, the
+column is populated with NaN and a single warning per process notes that the conversion was skipped — the fit
+itself is unaffected.
+
 Finish.
 """
