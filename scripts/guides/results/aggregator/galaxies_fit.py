@@ -48,6 +48,8 @@ If any code in this script is unclear, refer to the `results/start_here.ipynb` n
 # from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
+
+from autoconf.test_mode import with_test_mode_segment
 import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
@@ -60,7 +62,7 @@ The helper writes a capped Nautilus fit to ``output/results_folder/`` so this tu
 in this folder) have results to work with. When that folder already exists the helper exits immediately,
 so re-running this tutorial is cheap.
 """
-results_path = Path("output") / "results_folder"
+results_path = with_test_mode_segment(Path("output")) / "results_folder"
 if not results_path.exists():
     import subprocess
     import sys
