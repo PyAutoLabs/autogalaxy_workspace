@@ -66,7 +66,7 @@ dataset = ag.Interferometer.from_fits(
     noise_map_path=dataset_path / "noise_map.fits",
     uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
     real_space_mask=real_space_mask,
-    transformer_class=ag.TransformerDFT,
+    transformer_class=ag.TransformerNUFFT,
 )
 
 dataset = dataset.apply_sparse_operator(use_jax=True, show_progress=True)
