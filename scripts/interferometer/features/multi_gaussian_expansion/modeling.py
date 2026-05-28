@@ -175,13 +175,13 @@ __Model__
 
 We compose a model where:
 
- - The galaxy's bulge is 30 linear `Gaussian` profiles [6 parameters total].
-   - The centres and elliptical components of the Gaussians are linked together in two groups of 15.
+ - The galaxy's bulge is 10 linear `Gaussian` profiles [6 parameters total].
+   - The centres and elliptical components of the Gaussians are linked together in two groups of 5.
    - The `sigma` size of the Gaussians increases in log10 increments from 0.01 to the mask radius.
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=6.
 
-The MGE comprises 2 groups of 15 Gaussians. Each group has its own elliptical components, so the galaxy's
+The MGE comprises 2 groups of 5 Gaussians. Each group has its own elliptical components, so the galaxy's
 light is decomposed into two distinct elliptical components which could be viewed as a bulge and a disk.
 
 __Model Cookbook__
@@ -190,7 +190,7 @@ A full description of model composition is provided by the model cookbook:
 
 https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
 """
-total_gaussians = 15
+total_gaussians = 5
 gaussian_per_basis = 2
 
 # The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius.

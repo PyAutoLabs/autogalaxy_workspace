@@ -40,7 +40,7 @@ __Model__
 
 This script fits an `Interferometer` dataset of a galaxy with a model where:
 
- - The galaxy's bulge is a multi-Gaussian expansion of 30 linear `Gaussian` profiles, all sharing the
+ - The galaxy's bulge is a multi-Gaussian expansion of 5 linear `Gaussian` profiles, all sharing the
    same centre and `ell_comps`, with `sigma` values spanning 0.01" to the mask radius in log-spaced
    increments.
 
@@ -106,7 +106,7 @@ aplt.subplot_interferometer_dirty_images(dataset=dataset)
 """
 __Basis__
 
-We build a `Basis` of 30 linear `Gaussian` profiles, all sharing the same centre and `ell_comps`, with
+We build a `Basis` of 5 linear `Gaussian` profiles, all sharing the same centre and `ell_comps`, with
 `sigma` values spanning 0.01" to the mask radius in log-spaced increments.
 
 We use linear light profile Gaussians (`lp_linear.Gaussian`), which solve for each Gaussian's `intensity`
@@ -116,7 +116,7 @@ are needed to decompose the galaxy's morphology, and we cannot guess them by eye
 Linear light profiles are described in detail in the `linear_light_profiles.py` example; you should
 familiarize yourself with that example before using the multi-Gaussian expansion.
 """
-total_gaussians = 30
+total_gaussians = 5
 
 # The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius.
 log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
