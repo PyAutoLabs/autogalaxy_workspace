@@ -31,6 +31,8 @@ especially if loading results from hard-disk is slow.
 # from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
+
+from autoconf.test_mode import with_test_mode_segment
 import autofit as af
 import autogalaxy as ag
 
@@ -42,7 +44,7 @@ what the `Aggregator` does if you have not seen it!).
 """
 from autofit.aggregator.aggregator import Aggregator
 
-results_path = Path("output") / "results_folder"
+results_path = with_test_mode_segment(Path("output")) / "results_folder"
 if not results_path.exists():
     import subprocess
     import sys
