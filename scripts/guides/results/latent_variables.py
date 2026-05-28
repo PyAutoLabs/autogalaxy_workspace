@@ -41,29 +41,36 @@ The library ships a flat registry of named latent functions at ``autogalaxy.imag
 backed by the toggle file ``autogalaxy/config/latent.yaml``. Each entry maps a snake-case latent name to a Python
 function that takes a fit, magzero, and ``xp`` (numpy / jax.numpy) and returns a scalar value.
 
-The day-1 catalogue contains a single concrete latent:
+The catalogue contains two related latents that pair as a raw-flux / unit-converted couplet:
 
- - ``total_galaxy_0_flux_mujy`` — total integrated flux of the first galaxy in the fit (``fit.galaxies[0]``),
-   converted from the fit's linear flux units to microjanskies via the ``magzero`` keyword argument passed
-   to ``ag.AnalysisImaging``. Returns NaN when galaxy 0 has no light profile.
+ - ``total_galaxy_0_flux`` — total integrated flux of the first galaxy in the fit (``fit.galaxies[0]``) in the
+   fit's raw image units (typically e- s^-1 for HST, MJy/sr for JWST). Requires no instrument inputs and
+   ships default-on in the library yaml. Returns NaN when galaxy 0 has no light profile. See
+   ``scripts/guides/units/flux.py`` for how to convert this raw flux to microjanskies or AB magnitudes in post.
+
+ - ``total_galaxy_0_flux_mujy`` — the same total flux converted to microjanskies via the ``magzero`` keyword
+   argument passed to ``ag.AnalysisImaging``. Default-off in the library yaml — opt in only when you have a
+   stable per-instrument zero-point. If you enable it without supplying ``magzero`` the column populates with
+   NaN and the library emits a single warning per process (your fit completes uninterrupted).
 
 The catalogue is intentionally narrow at launch — the long-tail of useful galaxy latents will accrue over
 time as users contribute the ones their science needs. See the "Contributing Upstream" section at the end of
 this tutorial for how to add new ones.
 
-Future library releases may extend the registry. The toggle layer below means new entries default to ``false``
-in the library yaml, so adding a latent never changes the behaviour of an existing fit — users opt in by
-enabling the key in their workspace ``config/latent.yaml``.
+Future library releases may extend the registry. The toggle layer below means new entries can default either
+way safely: a new raw-flux latent that requires no inputs can default-on, while anything needing instrument
+metadata defaults-off so existing instrument-naive fits stay unchanged on upgrade.
 """
 
 """
 __Toggling Latents__
 
-The library defaults every latent to ``false`` in ``autogalaxy/config/latent.yaml``. This is deliberate: the
-flux-derived latents require a ``magzero`` value via ``AnalysisImaging(..., magzero=...)`` kwargs, and enabling
-them by default would crash any existing fit that doesn't pass ``magzero``. To opt in, you create or edit your
-workspace's ``config/latent.yaml`` and set the keys you want to ``true``. This workspace ships such a file at
-``autogalaxy_workspace/config/latent.yaml`` with ``total_galaxy_0_flux_mujy: true``.
+The library defaults ``total_galaxy_0_flux: true`` (no instrument inputs needed) and
+``total_galaxy_0_flux_mujy: false`` (you need to supply ``magzero``) in ``autogalaxy/config/latent.yaml``. The
+default-off µJy variant is deliberate: it requires a ``magzero`` value via ``AnalysisImaging(..., magzero=...)``,
+and the workspace fit you're running may not have one to hand. To opt in to the µJy column, edit your
+workspace's ``config/latent.yaml`` and set ``total_galaxy_0_flux_mujy: true``. This workspace ships such a file
+at ``autogalaxy_workspace/config/latent.yaml`` with both keys ``true``.
 
 Workspace ``config/`` values shadow the library defaults — PyAutoFit's ``conf.instance`` searches the workspace
 ``config/`` directory first, then falls back to the library's bundled defaults. So toggling a latent in your
@@ -81,9 +88,10 @@ To make the loading and extending sections below concrete, we run a quick model 
 imaging dataset that ships with the workspace. The model is a single galaxy with a Sersic bulge — keeping it
 small so the example runs in a reasonable time.
 
-We pass ``magzero=25.0`` to ``ag.AnalysisImaging``. This is required by ``total_galaxy_0_flux_mujy`` (the flux
-needs a photometric zero-point to convert into microjanskies). If you forget it, the latent computation will
-raise ``ValueError`` with a message pointing here.
+We pass ``magzero=25.0`` to ``ag.AnalysisImaging`` so ``total_galaxy_0_flux_mujy`` populates with a real value
+rather than NaN. If you forget it, ``total_galaxy_0_flux_mujy`` will be NaN and the library will log a single
+warning per process noting the conversion was skipped — the fit itself is unaffected, and the raw
+``total_galaxy_0_flux`` column populates normally.
 """
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
@@ -132,13 +140,14 @@ directory. You can read them back into a ``Samples`` object via ``analysis.compu
 The returned object exposes the same API as the parameter ``Samples`` — ``median_pdf``, ``max_log_likelihood``,
 ``values_at_sigma_1``, and so on — but reports on the induced latent posterior rather than the parameter posterior.
 
-Because ``total_galaxy_0_flux_mujy`` is the only enabled latent in this workspace, the returned instance only
-exposes that single attribute. If you enable additional latents in the workspace yaml, they all appear as
-attributes on the same instance.
+Because both ``total_galaxy_0_flux`` and ``total_galaxy_0_flux_mujy`` are enabled in this workspace, the
+returned instance exposes both attributes. If you enable additional latents in the workspace yaml, they all
+appear as attributes on the same instance.
 """
 latent_samples = analysis.compute_latent_samples(result.samples)
 
 median_instance = latent_samples.median_pdf()
+print(f"Median PDF total_galaxy_0_flux: {median_instance.total_galaxy_0_flux}")
 print(
     f"Median PDF total_galaxy_0_flux_mujy: {median_instance.total_galaxy_0_flux_mujy}"
 )
