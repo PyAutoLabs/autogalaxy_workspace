@@ -6,6 +6,8 @@ This script simulates `Imaging` of a galaxy using light profiles where:
 
  - The galaxy's bulge is an `Sersic`.
  - The galaxy's disk is an `Exponential`.
+ - A faint extra galaxy is included offset from the main galaxy, whose emission must be removed via noise scaling
+   (a `mask_extra_galaxies.fits` covering it is written below).
 
 __Contents__
 
@@ -58,6 +60,17 @@ grid = ag.Grid2D.uniform(
 )
 
 """
+__Extra Galaxy Centre__
+
+This `simple` dataset deliberately includes a faint extra galaxy offset from the main galaxy, so that the modeling
+examples can demonstrate the `__Extra Galaxies Noise Scaling__` step end-to-end. Its centre is defined here so it
+can be reused for over-sampling, the galaxy itself and the `mask_extra_galaxies.fits` written further down.
+
+It is placed inside the 3.0" modeling mask, towards the edge where the main galaxy's emission is faint.
+"""
+extra_galaxy_centre = (2.2, 1.6)
+
+"""
 __Over Sampling__
 
 Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
@@ -74,7 +87,7 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=grid,
     sub_size_list=[32, 8, 2],
     radial_list=[0.3, 0.6],
-    centre_list=[(0.0, 0.0)],
+    centre_list=[(0.0, 0.0), extra_galaxy_centre],
 )
 
 grid = grid.apply_over_sampling(over_sample_size=over_sample_size)
@@ -128,9 +141,21 @@ galaxy = ag.Galaxy(
 )
 
 """
+A single faint extra galaxy offset from the main galaxy, representing a nearby contaminating object whose emission
+is not associated with the target. Its emission is removed in the modeling examples via the
+`__Extra Galaxies Noise Scaling__` step using the `mask_extra_galaxies.fits` written below.
+"""
+extra_galaxy = ag.Galaxy(
+    redshift=0.5,
+    light=ag.lp.ExponentialSph(
+        centre=extra_galaxy_centre, intensity=1.0, effective_radius=0.3
+    ),
+)
+
+"""
 Use these galaxies to generate the image for the simulated `Imaging` dataset.
 """
-galaxies = ag.Galaxies(galaxies=[galaxy])
+galaxies = ag.Galaxies(galaxies=[galaxy, extra_galaxy])
 aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Image")
 
 """
@@ -153,6 +178,30 @@ aplt.fits_imaging(
     data_path=dataset_path / "data.fits",
     psf_path=dataset_path / "psf.fits",
     noise_map_path=dataset_path / "noise_map.fits",
+    overwrite=True,
+)
+
+"""
+__Mask Extra Galaxies__
+
+Build and output a `mask_extra_galaxies.fits` covering the extra galaxy, so the modeling examples
+(`imaging/modeling.py`, `imaging/fit.py`, `imaging/likelihood_function.py`) can load it directly and apply
+noise scaling without a separate data-preparation step.
+
+The circle is sized to ~3x the galaxy's `effective_radius`, derived from the same `extra_galaxy_centre` defined
+above so it stays in sync with any future tweak.
+"""
+mask_extra_galaxies = ag.Mask2D.circular(
+    shape_native=dataset.shape_native,
+    pixel_scales=dataset.pixel_scales,
+    centre=extra_galaxy_centre,
+    radius=3.0 * 0.3,
+    invert=True,  # `True` inside the circle, i.e. the region whose noise is scaled.
+)
+
+aplt.fits_array(
+    array=mask_extra_galaxies,
+    file_path=dataset_path / "mask_extra_galaxies.fits",
     overwrite=True,
 )
 
