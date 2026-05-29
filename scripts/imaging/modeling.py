@@ -106,9 +106,39 @@ Use an `Imaging` the plot the data, including:
 aplt.subplot_imaging_dataset(dataset=dataset)
 
 """
+__Extra Galaxies Noise Scaling__
+
+Before masking, we must deal with any extra galaxies in the data: nearby galaxies (or foreground stars, or
+data-reduction artefacts) whose emission is not associated with the galaxy we are studying but blends into the
+field. If their light is left in the data it will contaminate the model-fit and bias the inferred model. It is
+too easy to skip straight to modeling without checking for these, so we make this step explicit.
+
+To prevent extra galaxies from impacting the fit, we do not mask them entirely from the fit. Instead, the pixels
+are kept in the fit but their data values are scaled to zero and their noise-map values increased to very large
+values, so they contribute negligibly to the likelihood. This is preferable to removing the pixels entirely
+(e.g. for a pixelized source reconstruction, removing pixels can produce discontinuities in the pixelization).
+
+The `simple` dataset includes a faint extra galaxy, and a `mask_extra_galaxies.fits` covering it is shipped with
+the dataset (created by the simulator). If you are modeling your own data with an extra galaxy, you must either
+create such a mask using the data-preparation tools
+(`autogalaxy_workspace/*/imaging/data_preparation/gui/mask_extra_galaxies.py`, or the manual
+`data_preparation/examples/optional/mask_extra_galaxies.py`), or shrink the circular mask below so the extra
+galaxy lies outside it and is removed from the fit entirely.
+"""
+mask_extra_galaxies = ag.Mask2D.from_fits(
+    file_path=dataset_path / "mask_extra_galaxies.fits",
+    pixel_scales=dataset.pixel_scales,
+    invert=True,  # `True` means a pixel is scaled.
+)
+
+dataset = dataset.apply_noise_scaling(mask=mask_extra_galaxies)
+
+aplt.subplot_imaging_dataset(dataset=dataset)
+
+"""
 __Mask__
 
-The model-fit requires a 2D mask defining the regions of the image we fit the model to the data. 
+The model-fit requires a 2D mask defining the regions of the image we fit the model to the data.
 
 We create a 3.0 arcsecond circular mask and apply it to the `Imaging` object that the model fits.
 """
