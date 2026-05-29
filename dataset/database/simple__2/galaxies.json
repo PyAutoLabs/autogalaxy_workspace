@@ -5,21 +5,12 @@
             "type": "instance",
             "class_path": "autogalaxy.galaxy.galaxy.Galaxy",
             "arguments": {
-                "label": null,
                 "redshift": 0.5,
+                "label": null,
                 "bulge": {
                     "type": "instance",
                     "class_path": "autogalaxy.profiles.light.standard.sersic.Sersic",
                     "arguments": {
-                        "intensity": 0.5,
-                        "centre": {
-                            "type": "tuple",
-                            "values": [
-                                0.0,
-                                0.0
-                            ]
-                        },
-                        "sersic_index": 2.0,
                         "ell_comps": {
                             "type": "tuple",
                             "values": [
@@ -27,21 +18,22 @@
                                 3.2227547345982974e-18
                             ]
                         },
-                        "effective_radius": 0.6
-                    }
-                },
-                "disk": {
-                    "type": "instance",
-                    "class_path": "autogalaxy.profiles.light.standard.exponential.Exponential",
-                    "arguments": {
-                        "intensity": 0.2,
+                        "intensity": 0.5,
+                        "sersic_index": 2.0,
+                        "effective_radius": 0.6,
                         "centre": {
                             "type": "tuple",
                             "values": [
                                 0.0,
                                 0.0
                             ]
-                        },
+                        }
+                    }
+                },
+                "disk": {
+                    "type": "instance",
+                    "class_path": "autogalaxy.profiles.light.standard.exponential.Exponential",
+                    "arguments": {
                         "ell_comps": {
                             "type": "tuple",
                             "values": [
@@ -49,7 +41,15 @@
                                 0.3132308735953028
                             ]
                         },
-                        "effective_radius": 2.0
+                        "centre": {
+                            "type": "tuple",
+                            "values": [
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "effective_radius": 2.0,
+                        "intensity": 0.2
                     }
                 }
             }
