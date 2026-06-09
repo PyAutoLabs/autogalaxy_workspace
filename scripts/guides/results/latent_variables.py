@@ -170,44 +170,39 @@ __Extending with a Custom Latent__
 
 The library catalogue is intentionally small. If you want a different derived quantity — a Sersic effective
 radius converted to kiloparsecs, a colour from two-band fits, a velocity dispersion from a virial estimate —
-you subclass ``ag.AnalysisImaging`` and override ``LATENT_KEYS`` + ``compute_latent_variables``.
+subclass ``ag.LatentGalaxy`` (override ``keys`` and ``variables``) and declare it on your analysis through the
+``Latent`` class attribute. This is the same first-class, swappable mechanism you use to customise a
+``Visualizer`` — the latent catalogue is a component of the analysis, not a pair of methods you monkey-patch.
 
 The example below adds ``bulge_axis_ratio`` (the axis ratio of the Sersic bulge, computed from its
-``ell_comps`` parameters). The same pattern works for any function of the model instance.
-
-A subclass-level ``LATENT_KEYS`` shadows the library's config-driven ``@property``, so once you define your
-own list the workspace yaml stops controlling it. If you want to keep the library latents AND add your own,
-make ``LATENT_KEYS`` a property that returns ``super().LATENT_KEYS + ["your.key"]`` — the Euclid pipeline
-(``euclid_strong_lens_modeling_pipeline/util.py``) shows this pattern in practice.
+``ell_comps`` parameters). The same pattern works for any function of the model instance. Calling
+``ag.LatentGalaxy.keys(analysis)`` / ``ag.LatentGalaxy.variables(...)`` from your overrides keeps the
+config-driven library latents alongside your custom one (subclass the base ``ag.Latent`` instead if you want a
+catalogue from scratch). The Euclid pipeline (``euclid_strong_lens_modeling_pipeline/util.py``, ``LatentEuclid``)
+uses this exact composition pattern in production.
 """
 
 import numpy as np
 
 
-class AnalysisImagingWithAxisRatio(ag.AnalysisImaging):
+class LatentBulgeAxisRatio(ag.LatentGalaxy):
     """
-    AnalysisImaging extended with a custom ``bulge_axis_ratio`` latent — the axis ratio of the Sersic
-    bulge derived from its ``ell_comps``. Demonstrates how to add a user-defined latent without modifying
-    the library.
+    The library galaxy latents plus a custom ``bulge_axis_ratio`` — the axis
+    ratio of the Sersic bulge derived from its ``ell_comps``. Demonstrates adding
+    a user-defined latent without modifying the library: subclass
+    ``ag.LatentGalaxy`` and compose its ``keys`` / ``variables`` static methods.
     """
 
-    @property
-    def LATENT_KEYS(self):
-        return list(super().LATENT_KEYS) + ["bulge_axis_ratio"]
+    @staticmethod
+    def keys(analysis):
+        return list(ag.LatentGalaxy.keys(analysis)) + ["bulge_axis_ratio"]
 
-    def compute_latent_variables(self, parameters, model):
-        from autogalaxy.imaging.model.latent import LATENT_FUNCTIONS
+    @staticmethod
+    def variables(analysis, parameters, model):
+        library_values = ag.LatentGalaxy.variables(analysis, parameters, model)
 
-        xp = self._xp
-        magzero = self.kwargs.get("magzero", None)
         instance = model.instance_from_vector(vector=parameters)
-        fit = self.fit_from(instance=instance)
-        context = {"fit": fit, "magzero": magzero, "xp": xp}
-
-        library_keys = [k for k in super().LATENT_KEYS]
-        library_values = tuple(LATENT_FUNCTIONS[k](**context) for k in library_keys)
-
-        # Custom latent: axis ratio of the Sersic bulge from its ell_comps.
+        xp = analysis._xp
         try:
             ell_y, ell_x = instance.galaxies.galaxy.bulge.ell_comps
             axis_ratio = (1.0 - np.sqrt(ell_y**2 + ell_x**2)) / (
@@ -217,6 +212,16 @@ class AnalysisImagingWithAxisRatio(ag.AnalysisImaging):
             axis_ratio = xp.nan
 
         return library_values + (axis_ratio,)
+
+
+class AnalysisImagingWithAxisRatio(ag.AnalysisImaging):
+    """
+    ``AnalysisImaging`` that swaps in the custom ``LatentBulgeAxisRatio`` catalogue
+    via the ``Latent`` class attribute — the same one-line mechanism used to
+    declare a custom ``Visualizer`` or ``Result``. No library code is modified.
+    """
+
+    Latent = LatentBulgeAxisRatio
 
 
 """
