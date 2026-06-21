@@ -1,0 +1,8 @@
+# Exceptions for .github/scripts/check_navigator.py (path + banner checks).
+# One path or glob per line; '#' starts a comment.
+
+# scripts/guides/hpc/README.md documents how to create a local HPC sync config
+# with `cp scripts/guides/hpc/sync.conf.example scripts/guides/hpc/sync.conf`.
+# The `.example` template is committed; `sync.conf` is the user-generated,
+# git-ignored destination and is intentionally absent from the repo.
+scripts/guides/hpc/sync.conf
