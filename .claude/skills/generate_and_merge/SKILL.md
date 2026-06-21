@@ -1,6 +1,6 @@
 ---
 name: generate_and_merge
-description: Build Jupyter notebooks from scripts, commit, push, raise a PR to main, merge it, then return to main locally.
+description: Build Jupyter notebooks and the LLM catalogue (llms-full.txt + workspace_index.json) from scripts, commit, push, raise a PR to main, merge it, then return to main locally.
 ---
 
 Build notebooks for the autogalaxy_workspace, then open and merge a PR into `main`, and return to `main` locally.
@@ -15,22 +15,26 @@ Build notebooks for the autogalaxy_workspace, then open and merge a PR into `mai
 
    Create and check out a new branch named `notebooks-update-<YYYY-MM-DD>` (use today's date). If the branch already exists, check it out.
 
-3. **Generate notebooks**
+3. **Generate notebooks and the LLM catalogue**
 
-   Run from the workspace root:
+   Run from the workspace root (PyAutoBuild is [PyAutoLabs/PyAutoBuild](https://github.com/PyAutoLabs/PyAutoBuild), cloned as a sibling at `../PyAutoBuild`):
    ```bash
    PYTHONPATH=../PyAutoBuild/autobuild python3 ../PyAutoBuild/autobuild/generate.py autogalaxy
    ```
-   This regenerates all notebooks in `notebooks/` from `scripts/`. It may take a few minutes.
+   This regenerates all notebooks in `notebooks/` from `scripts/`. It may take a few minutes. The same
+   run also (re)writes the LLM-facing catalogue at the workspace root — `llms-full.txt` and
+   `workspace_index.json` — from the script docstrings, so they cannot drift from the scripts. The
+   curated `llms.txt` is hand-maintained and is never written by the generator; leave it untouched.
 
-4. **Commit the generated notebooks**
+4. **Commit the generated notebooks and catalogue**
 
-   Stage all changes under `notebooks/` and any root-level `*.ipynb` files, then commit:
+   Stage all changes under `notebooks/`, any root-level `*.ipynb` files, and the generated catalogue
+   artifacts (by filename), then commit:
    ```bash
-   git add notebooks/ start_here.ipynb
-   git commit -m "Build notebooks from scripts"
+   git add notebooks/ start_here.ipynb llms-full.txt workspace_index.json
+   git commit -m "Build notebooks and LLM catalogue from scripts"
    ```
-   If there is nothing to commit (notebooks already up to date), tell the user and stop.
+   If there is nothing to commit (everything already up to date), tell the user and stop.
 
 5. **Push the branch**
 

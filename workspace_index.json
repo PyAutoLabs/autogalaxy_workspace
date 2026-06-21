@@ -1,0 +1,2706 @@
+[
+  {
+    "contents": [
+      "Aggregator",
+      "Ellipses via Aggregator",
+      "Fits via Aggregator",
+      "Visualization Customization",
+      "Errors (Random draws from PDF)",
+      "Multipoles"
+    ],
+    "cross_refs": [
+      "advanced/manual_generator.py",
+      "examples/models.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/ellipse/database.ipynb",
+    "path": "scripts/ellipse/database.py",
+    "summary": "In this tutorial, we use the aggregator to load models and data from a non-linear search and use them to perform ellipse fits to the data.",
+    "title": "Results: Database"
+  },
+  {
+    "contents": [
+      "Loading Data",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Ellipse Interpolation",
+      "Ellipse Fitting",
+      "FitEllipse",
+      "Multiple Ellipses",
+      "Bad Fit",
+      "Fit Quantities",
+      "Figures of Merit"
+    ],
+    "cross_refs": [
+      "/guides/data_structures.ipynb",
+      "guides/units_and_cosmology.ipynb"
+    ],
+    "notebook": "notebooks/ellipse/fit.ipynb",
+    "path": "scripts/ellipse/fit.py",
+    "summary": "This guide shows how to fit data using ellipse fitting and the `FitEllipse` object, including visualizing and interpreting its results.",
+    "title": "Fits"
+  },
+  {
+    "contents": [
+      "Loading Data",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Model Composition",
+      "Search",
+      "Live Visual Update",
+      "Analysis",
+      "Run Times",
+      "Model-Fit",
+      "Output Folder Layout",
+      "Result",
+      "Multiple Ellipses",
+      "Final Fit",
+      "Masking",
+      "Data Preparation",
+      "HowToGalaxy"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/start_here.ipynb",
+      "/guides/data_structures.ipynb",
+      "/modeling/imaging/customize/priors.py",
+      "autolens_workspace/scripts/modeling/imaging/customize/parallel.py",
+      "fit.py",
+      "guides/units_and_cosmology.ipynb",
+      "parallel.py"
+    ],
+    "notebook": "notebooks/ellipse/modeling.ipynb",
+    "path": "scripts/ellipse/modeling.py",
+    "summary": "This guide shows how to perform ellipse fitting modeling on data using a non-linear search, including visualizing and interpreting its results.",
+    "title": "Modeling"
+  },
+  {
+    "contents": [
+      "Loading Data",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Multipole Fit",
+      "Multipole Order",
+      "Multiple Perturbed Ellipses",
+      "Modeling",
+      "Search",
+      "Analysis",
+      "Run Times",
+      "Model-Fit",
+      "Result",
+      "Multiple Ellipses",
+      "Final Fit",
+      "Masking"
+    ],
+    "cross_refs": [
+      "fit.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/ellipse/multipoles.ipynb",
+    "path": "scripts/ellipse/multipoles.py",
+    "summary": "This guide shows how to perform ellipse fitting and modeling with multipoles modeling.",
+    "title": "Multipoles"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "/notebooks/modeling/imaging/fearure/ellipse_fitting.py",
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/ellipse/simulator.ipynb",
+    "path": "scripts/ellipse/simulator.py",
+    "summary": "Ellipse fitting is a common technique in astronomy to determine the shape of a galaxy, which fits a super position of multiple elliptical isophotes to an image of a galaxy. This allows the ellipticity and position angle of a galaxy to be determined.",
+    "title": "Simulator: Ellipse"
+  },
+  {
+    "contents": [
+      "Illustration",
+      "Numerics",
+      "Images",
+      "Adaptive Over Sampling",
+      "Default Over-Sampling",
+      "Multiple Galaxies",
+      "Dataset & Modeling",
+      "Pixelization"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/guides/advanced/over_sampling.ipynb",
+    "path": "scripts/guides/advanced/over_sampling.py",
+    "summary": "Throughout the workspace, we have created 2D grids of (y,x) coordinates and input them into light profiles to compute their image.",
+    "title": "Over Sampling"
+  },
+  {
+    "contents": [
+      "Units",
+      "API",
+      "Grids",
+      "Native",
+      "Slim",
+      "Masked Data Structures",
+      "Data",
+      "Dataset Auto-Simulation",
+      "Galaxies",
+      "Irregular Structures",
+      "Vector Quantities"
+    ],
+    "cross_refs": [
+      "autolens_workspace/scripts/guides/lens_calc.py",
+      "units_and_cosmology.ipynb"
+    ],
+    "notebook": "notebooks/guides/data_structures.ipynb",
+    "path": "scripts/guides/data_structures.py",
+    "summary": "This tutorial illustrates the data structure objects which data and results quantities are stored using, which are extensions of NumPy arrays.",
+    "title": "Data Structures"
+  },
+  {
+    "contents": [
+      "Units",
+      "Data Structures",
+      "Grids",
+      "Light Profiles",
+      "Galaxies",
+      "Galaxies (multiple)",
+      "Log10",
+      "Extending Objects",
+      "Data Structures Slim / Native",
+      "Individual Galaxy Components",
+      "Galaxies Composition",
+      "One Dimension Projection",
+      "One Dimensional Quantities",
+      "Decomposed 1D Plot",
+      "Modeling Results"
+    ],
+    "cross_refs": [
+      "/guides/data_structures.ipynb",
+      "autolens_workspace/scripts/guides/lens_calc.py",
+      "galaxies_fit.py",
+      "guides/data_structures.py",
+      "guides/units_and_cosmology.ipynb",
+      "scripts/guides/data_structures.py"
+    ],
+    "notebook": "notebooks/guides/galaxies.ipynb",
+    "path": "scripts/guides/galaxies.py",
+    "summary": "This tutorial shows how to use galaxies, including visualizing and extracting their individual light profiles.",
+    "title": "Galaxies"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "PROJECT_PATH/scripts/example.py"
+    ],
+    "notebook": "notebooks/guides/hpc/example_cpu_and_gpu.ipynb",
+    "path": "scripts/guides/hpc/example_cpu_and_gpu.py",
+    "summary": "This example illustrates how to set up galaxy modeling on a High Performance Computing (HPC) system using multiple CPUs.",
+    "title": "HPC: Example CPU"
+  },
+  {
+    "contents": [
+      "The Fix",
+      "Trouble Shooting"
+    ],
+    "cross_refs": [
+      "autogalaxy_workspace/scripts/imaging/modeling.py"
+    ],
+    "notebook": "notebooks/guides/modeling/bug_fix.ipynb",
+    "path": "scripts/guides/modeling/bug_fix.py",
+    "summary": "Depending on the operating system (e.g. Linux, Mac, Windows) and Python version, running a Python script or Jupyter notebook may lead to a error being raised when the search begins.",
+    "title": "Modeling: Parallel Bug Fix"
+  },
+  {
+    "contents": [
+      "Dataset + Masking",
+      "Paths",
+      "Model (Search 1)",
+      "Search + Analysis + Model-Fit (Search 1)",
+      "Result (Search 1)",
+      "Model Chaining",
+      "Search + Analysis + Model-Fit (Search 2)",
+      "Result (Search 2)",
+      "Detailed Explanation Of Prior Passing",
+      "EXAMPLE"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/guides/modeling/chaining.ipynb",
+    "path": "scripts/guides/modeling/chaining.py",
+    "summary": "Non-linear search chaining is an advanced model-fitting approach which breaks the model-fitting procedure down into multiple non-linear searches, using the results of the initial searches to initialization parameter sampling in subsequent searches. This contrasts the `modeling` examples which each compose and fit a single lens model-fit using one non-linear search.",
+    "title": "Modeling: Chaining"
+  },
+  {
+    "contents": [
+      "Simple Model",
+      "More Complex Models",
+      "Concise API",
+      "Prior Customization",
+      "Model Customization",
+      "Available Model Components",
+      "JSon Outputs",
+      "Many Profile Models (Advanced)",
+      "Model Linking (Advanced)",
+      "Across Datasets (Advanced)",
+      "Relations (Advanced)",
+      "PyAutoFit API",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/advanced/guides/modeling/chaining.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/features/wavelength_dependence/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/start_here.ipynb",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/modeling/cookbook.ipynb",
+    "path": "scripts/guides/modeling/cookbook.py",
+    "summary": "The model cookbook provides a concise reference to model composition tools, specifically the `Model` and `Collection` objects.",
+    "title": "Model Cookbook"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Mask",
+      "Over Sampling"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/gui/mask.py",
+      "/guides/advanced/over_sampling.ipynb",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/modeling/customize.ipynb",
+    "path": "scripts/guides/modeling/customize.py",
+    "summary": "This script gives a run through of all the different ways the analysis can be customized for modeling, with reasons explaining why each customization is useful.",
+    "title": "Modeling: Customize"
+  },
+  {
+    "contents": [
+      "Dynesty",
+      "Emcee",
+      "Zeus",
+      "LBFGS",
+      "Start Point",
+      "Search Cookbook"
+    ],
+    "cross_refs": [
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/modeling/searches.ipynb",
+    "path": "scripts/guides/modeling/searches.py",
+    "summary": "This script gives a run through of all non-linear searches that are available for modeling.",
+    "title": "Modeling: Searches"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Fit Imaging",
+      "Reconstruction",
+      "Inversion Plots",
+      "Mapper",
+      "Mesh Grids",
+      "Delaunay"
+    ],
+    "cross_refs": [
+      "//matplotlib.org/stable/api/_as_gen/matplotlib.py",
+      "plots/start_here.ipynb",
+      "scripts/imaging/features/pixelization/modeling.py"
+    ],
+    "notebook": "notebooks/guides/plot/advanced/plotters_pixelization.ipynb",
+    "path": "scripts/guides/plot/advanced/plotters_pixelization.py",
+    "summary": "This example illustrates the API for plotting pixelized galaxy reconstructions using the new function-based plotting API and dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.",
+    "title": "Plots: Pixelization"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Output",
+      "Figure Size and Aspect",
+      "Labels",
+      "Color Map",
+      "Log10",
+      "Contours",
+      "Ticks / Colorbar / Legend / Annotate / Text / Axis"
+    ],
+    "cross_refs": [
+      "plots/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/examples/mat_plot.ipynb",
+    "path": "scripts/guides/plot/examples/mat_plot.py",
+    "summary": "This example illustrates the API for customizing the appearance of figures using arguments passed directly to `plot_array` (and related functions like `plot_grid`).",
+    "title": "Plots: Mat Plot"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Array2D",
+      "Grid2D",
+      "Light Profile",
+      "Galaxy",
+      "Galaxies",
+      "Imaging",
+      "Fit Imaging",
+      "Log10",
+      "One Dimensional Plots",
+      "Output",
+      "Probability Density Function (PDF) Plots"
+    ],
+    "cross_refs": [
+      "plots/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/examples/plotters.ipynb",
+    "path": "scripts/guides/plot/examples/plotters.py",
+    "summary": "This example illustrates the API for plotting using standalone functions, which enable quick visualization of all key quantities.",
+    "title": "Plots: Plotters"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Dynesty",
+      "Emcee",
+      "Zeus",
+      "GetDist"
+    ],
+    "cross_refs": [
+      "plots/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/examples/searches.ipynb",
+    "path": "scripts/guides/plot/examples/searches.py",
+    "summary": "This example illustrates the API for plotting the results of different non-linear searches.",
+    "title": "Plots: Searches"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Light Profile Centres",
+      "Mask",
+      "Origin",
+      "Grid",
+      "Border",
+      "Array Overlay",
+      "Patch Overlay",
+      "Vector Field"
+    ],
+    "cross_refs": [
+      "plots/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/examples/visuals.ipynb",
+    "path": "scripts/guides/plot/examples/visuals.py",
+    "summary": "This example illustrates the API for adding visuals to plots.",
+    "title": "Plots: Visuals"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/simulator.ipynb",
+    "path": "scripts/guides/plot/simulator.py",
+    "summary": "This script simulates `Imaging` of two galaxies where:",
+    "title": "Simulator: Sersic x2"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Figures",
+      "Customization",
+      "Log10",
+      "Configs",
+      "Subplots",
+      "Visuals",
+      "Searches"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/guides/plot/start_here.ipynb",
+    "path": "scripts/guides/plot/start_here.py",
+    "summary": "This example illustrates the API for plotting.",
+    "title": "Plots: Start Here"
+  },
+  {
+    "contents": [
+      "Overview & Docs URL",
+      "All Light Profiles (Survey)",
+      "Detailed Example: Sersic Image",
+      "Linear Light Profiles",
+      "Operated Light Profiles",
+      "Basis",
+      "Light Profile in a Model",
+      "Model Instance from Light Profile",
+      "Multipole Light Profiles",
+      "Remaining Profiles Walkthrough"
+    ],
+    "cross_refs": [
+      "fit.py",
+      "guides/data_structures.py",
+      "guides/units_and_cosmology.ipynb",
+      "likelihood_function.py",
+      "modeling.py",
+      "scripts/guides/results/start_here.py",
+      "scripts/imaging/modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/guides/profiles/light.ipynb",
+    "path": "scripts/guides/profiles/light.py",
+    "summary": "This guide is the single-page tour of every light profile **PyAutoGalaxy** ships with: how to construct each one, how to evaluate its image on a grid, how to compose it into a model, and how to retrieve an instance from that model.  Once you have read this guide you should be able to recognise every profile referenced by the modelling examples and the API reference, and you should know which family (standard / linear / operated / multipole / basis) any given profile belongs to.",
+    "title": "Light Profiles"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/_quick_fit.ipynb",
+    "path": "scripts/guides/results/_quick_fit.py",
+    "summary": "Internal helper invoked via subprocess from the tutorials in this folder (``start_here.py`` and everything under ``aggregator/``). Produces a fast, capped Nautilus fit at ``output/results_folder/`` so the aggregator examples have a populated results directory to read from.",
+    "title": "Results: Quick Fit Helper"
+  },
+  {
+    "contents": [
+      "Aggregator",
+      "Fits via Aggregator",
+      "Modification",
+      "Visualization Customization",
+      "Errors (Random draws from PDF)"
+    ],
+    "cross_refs": [
+      "advanced/manual_generator.py",
+      "examples/models.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/data_fitting.ipynb",
+    "path": "scripts/guides/results/aggregator/data_fitting.py",
+    "summary": "In this tutorial, we use the aggregator to load models and data from a non-linear search and use them to perform fits to the data.",
+    "title": "Results: Data Fitting"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Max Likelihood Galaxies",
+      "Samples",
+      "Refitting"
+    ],
+    "cross_refs": [
+      "/guides/data_structure.ipynb",
+      "/guides/fit.ipynb",
+      "/guides/galaxies.ipynb",
+      "_quick_fit.py",
+      "modeling/start_here.py",
+      "results/start_here.ipynb",
+      "samples.py",
+      "units_and_cosmology.ipynb"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/galaxies_fit.ipynb",
+    "path": "scripts/guides/results/aggregator/galaxies_fit.py",
+    "summary": "This tutorial inspects an inferred model using galaxies inferred by the non-linear search. This allows us to visualize and interpret its results.",
+    "title": "Results: Galaxies and Fits"
+  },
+  {
+    "contents": [],
+    "cross_refs": [],
+    "notebook": "notebooks/guides/results/aggregator/interferometer.ipynb",
+    "path": "scripts/guides/results/aggregator/interferometer.py",
+    "summary": "(no summary in script docstring)",
+    "title": "This script still needs writing, I have kept some notes on questions asked by users which may help you..."
+  },
+  {
+    "contents": [
+      "Aggregator",
+      "Galaxies via Aggregator",
+      "Luminosity Example",
+      "Errors (PDF from samples)",
+      "Errors (Random draws from PDF)"
+    ],
+    "cross_refs": [
+      "advanced/manual_generator.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/models.ipynb",
+    "path": "scripts/guides/results/aggregator/models.py",
+    "summary": "Suppose we have the results of many fits and we only wanted to load and inspect a specific set of model-fits (e.g. the results of `start_here.py`). We can use querying tools to only load the results we are interested in.",
+    "title": "Results: Models"
+  },
+  {
+    "contents": [
+      "Loading From Hard-disk",
+      "Unique Tag",
+      "Search Name",
+      "Model Queries",
+      "Logic"
+    ],
+    "cross_refs": [
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/queries.ipynb",
+    "path": "scripts/guides/results/aggregator/queries.py",
+    "summary": "Suppose we have the results of many fits and we only wanted to load and inspect a specific set of model-fits (e.g. the results of `start_here.py`). We can use querying tools to only load the results we are interested in.",
+    "title": "Database: Queries"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Info",
+      "Plot",
+      "Samples",
+      "Parameters",
+      "Figures of Merit",
+      "Instances",
+      "Posterior / PDF",
+      "Errors",
+      "Sample Instance",
+      "Search Plots",
+      "Maximum Likelihood",
+      "Bayesian Evidence",
+      "Lists",
+      "Latex",
+      "Derived Errors (Advanced)",
+      "Samples Filtering (Advanced)"
+    ],
+    "cross_refs": [
+      "GetDist.py",
+      "_quick_fit.py",
+      "fits.py",
+      "galaxies.py",
+      "guides/units_and_cosmology.ipynb",
+      "modeling/start_here.py",
+      "results/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/samples.ipynb",
+    "path": "scripts/guides/results/aggregator/samples.py",
+    "summary": "After a non-linear search has completed, it returns a `Result` object that contains information on samples of the non-linear search, such as the maximum likelihood model instance, the errors on each parameter and the Bayesian evidence.",
+    "title": "Results: Samples"
+  },
+  {
+    "contents": [
+      "Files",
+      "Generators",
+      "Samples",
+      "Parameters",
+      "Samples Info",
+      "Samples Summary",
+      "Figures of Merit",
+      "Instances",
+      "Posterior / PDF",
+      "Errors",
+      "Sample Instance",
+      "Search Plots",
+      "Maximum Likelihood",
+      "Bayesian Evidence",
+      "Lists",
+      "Latex",
+      "Ordering",
+      "Samples Filtering"
+    ],
+    "cross_refs": [
+      "/results/aggregator/samples.py",
+      "GetDist.py",
+      "samples.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/aggregator/samples_via_aggregator.ipynb",
+    "path": "scripts/guides/results/aggregator/samples_via_aggregator.py",
+    "summary": "In the script `autogalaxy_workspace/*/results/aggregator/samples.py` we show how to inspect the non-linear search samples from a result.",
+    "title": "Database: Samples"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Over Sampling",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output",
+      "Info"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb"
+    ],
+    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__0.ipynb",
+    "path": "scripts/guides/results/database/simulators/light_sersic_exp__0.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Over Sampling",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output",
+      "Info"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb"
+    ],
+    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__1.ipynb",
+    "path": "scripts/guides/results/database/simulators/light_sersic_exp__1.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Over Sampling",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output",
+      "Info"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb"
+    ],
+    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__2.ipynb",
+    "path": "scripts/guides/results/database/simulators/light_sersic_exp__2.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [
+      "Unique Identifiers",
+      "Dataset",
+      "Results From Hard Disk",
+      "Building a Database File From an Output Folder",
+      "Writing Directly To Database",
+      "Files",
+      "Generators",
+      "Model",
+      "Search",
+      "Samples",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "//docs.py"
+    ],
+    "notebook": "notebooks/guides/results/database/start_here.ipynb",
+    "path": "scripts/guides/results/database/start_here.py",
+    "summary": "The default behaviour of model-fitting results output is to be written to hard-disc in folders. These are simple to navigate and manually check.",
+    "title": "Database: Introduction"
+  },
+  {
+    "contents": [
+      "Galaxy Latents in PyAutoGalaxy: The curated default catalogue from ``autogalaxy/config/latent.yaml``.",
+      "Toggling Latents: The workspace ``config/latent.yaml`` override and why it shadows the library default.",
+      "Model Fit: A quick fit that produces real latent output for the loading section below.",
+      "Loading Latent Results: Reading ``latent/samples.csv`` / ``latent_summary.json`` via",
+      "Extending with a Custom Latent: Subclass ``ag.AnalysisImaging``, override ``LATENT_KEYS`` and",
+      "Contributing Upstream: When your custom latent is general enough, consider promoting it to the library."
+    ],
+    "cross_refs": [
+      "../../../autofit_workspace/scripts/cookbooks/latent_variables.py",
+      "autogalaxy/imaging/model/latent.py",
+      "euclid_strong_lens_modeling_pipeline/util.py",
+      "scripts/guides/units/flux.py",
+      "test_autogalaxy/imaging/test_latent.py"
+    ],
+    "notebook": "notebooks/guides/results/latent_variables.ipynb",
+    "path": "scripts/guides/results/latent_variables.py",
+    "summary": "A latent variable is a quantity derived from the model parameters that is not itself sampled by the non-linear search \u2014 its posterior is induced by the posterior over the parameters. PyAutoGalaxy ships a curated catalogue of galaxy-level latent variables out of the box, controlled by ``autogalaxy/config/latent.yaml``. This tutorial shows what the catalogue contains, how to toggle individual latents on or off via the workspace config, how to load latent results from a completed fit, and how to extend ``AnalysisImaging`` with a user-defined latent when the curated set isn't enough.",
+    "title": "Results: Latent Variables"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Info"
+    ],
+    "cross_refs": [
+      "/guides/fits.py",
+      "/guides/galaxies.py",
+      "/guides/units_and_cosmology.py",
+      "/modeling/imaging/linear_light_profiles.py",
+      "/results/aggregator/galaxies_fits.py",
+      "/results/aggregator/pixelizations.py",
+      "/results/aggregator/samples.py",
+      "_quick_fit.py",
+      "aggregator/samples.py",
+      "csv_maker.py",
+      "fits_maker.py",
+      "png_maker.py"
+    ],
+    "notebook": "notebooks/guides/results/start_here.ipynb",
+    "path": "scripts/guides/results/start_here.py",
+    "summary": "After a model-fit completes, nearly everything a user could need is written to the `output/` folder. Most of it can be loaded back into full Python objects with a single line of code, via either `.json` files (for model objects like the `Galaxies`, `Model` and samples) or `.fits` files (for imaging products like the model image, residuals and per-galaxy images).",
+    "title": "Results: Start Here"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Workflow Paths",
+      "Aggregator",
+      "Adding CSV Columns",
+      "Saving the CSV",
+      "Customizing CSV Headers",
+      "Maximum Likelihood Values",
+      "Errors",
+      "Column Label List",
+      "Latent Variables",
+      "Computed Columns"
+    ],
+    "cross_refs": [
+      "fits_make.py",
+      "modeling/start_here.py",
+      "png_make.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/workflow/csv_make.ipynb",
+    "path": "scripts/guides/results/workflow/csv_make.py",
+    "summary": "This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting and interpreting the large libraries of modeling results.",
+    "title": "Results: CSV"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Workflow Paths",
+      "Aggregator",
+      "Extract Images",
+      "Output Single Fits",
+      "Output to Folder",
+      "CSV Files",
+      "Add Extra Fits",
+      "Custom Fits Files in Analysis"
+    ],
+    "cross_refs": [
+      "modeling/start_here.py",
+      "png_make.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/workflow/fits_make.ipynb",
+    "path": "scripts/guides/results/workflow/fits_make.py",
+    "summary": "This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting and interpreting the large libraries of modeling results.",
+    "title": "Results: Fits Make"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Workflow Paths",
+      "Aggregator",
+      "Extract Images",
+      "Output Single Png",
+      "Output to Folder",
+      "Combine Images From Subplots",
+      "Add Extra Png",
+      "Shape Customization",
+      "Zoom Png",
+      "Custom Subplots in Analysis"
+    ],
+    "cross_refs": [
+      "fits_make.py",
+      "modeling/start_here.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/results/workflow/png_make.ipynb",
+    "path": "scripts/guides/results/workflow/png_make.py",
+    "summary": "This example is a results workflow example, which means it provides tool to set up an effective workflow inspecting and interpreting the large libraries of modeling results.",
+    "title": "Results: PNG Make"
+  },
+  {
+    "contents": [
+      "Errors",
+      "Galaxy",
+      "Arcsec to Kiloparsec",
+      "Brightness Units / Luminosity"
+    ],
+    "cross_refs": [
+      "results/aggregator/samples.ipynb"
+    ],
+    "notebook": "notebooks/guides/units/cosmology.ipynb",
+    "path": "scripts/guides/units/cosmology.py",
+    "summary": "This tutorial illustrates how to perform unit conversions from **PyAutoGalaxy**'s internal units (e.g. arc-seconds, electrons per second, dimensionless mass units) to physical units (e.g. kiloparsecs, magnitudes, solar masses).",
+    "title": "Units and Cosmology"
+  },
+  {
+    "contents": [
+      "Zero Point",
+      "Mega Janskys / steradian (MJy/sr): James Webb Space Telescope",
+      "Latent Variables"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/guides/units/flux.ipynb",
+    "path": "scripts/guides/units/flux.py",
+    "summary": "Absolute flux calibration in Astronomy is the process of converting the number of photons detected by a telescope into a physical unit of luminosity or a magnitude. For example, a luminosity might be given in units of solar luminosities or the brightness of a galaxy quoted as a magnitude in units of AB magnitudes.",
+    "title": "Flux"
+  },
+  {
+    "contents": [
+      "Pixel Scale",
+      "Image",
+      "Noise Map",
+      "PSF",
+      "Data Processing Complete",
+      "Mask (Optional)",
+      "Light Centre (Optional)",
+      "Extra Galaxies (Optional)",
+      "Mask Extra Galaxies (Optional)",
+      "Info (Optional)"
+    ],
+    "cross_refs": [
+      "data_preparation/examples/gui/mask.ipynb",
+      "data_preparation/examples/optional/extra_galaxies_centres.py",
+      "data_preparation/examples/optional/info.py",
+      "data_preparation/examples/optional/light_centre.py",
+      "data_preparation/examples/optional/mask.ipynb",
+      "data_preparation/examples/optional/mask_extra_galaxies.py",
+      "data_preparation/gui/extra_galaxies_centres.ipynb",
+      "data_preparation/gui/extra_galaxies_mask.ipynb",
+      "data_preparation/gui/light_centre.ipynb",
+      "data_preparation/imaging/examples/data.ipynb",
+      "data_preparation/imaging/examples/noise_map.ipynb",
+      "data_preparation/imaging/examples/psf.ipynb",
+      "features/extra_galaxies.py",
+      "mask_extra_galaxies.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation.ipynb",
+    "path": "scripts/imaging/data_preparation.py",
+    "summary": "When a CCD imaging dataset is analysed, it must conform to certain standards in order for the analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts which will help you prepare your dataset to adhere to them if it does not already.",
+    "title": "Imaging: Data Preparation"
+  },
+  {
+    "contents": [
+      "Loading Data From Individual Fits Files",
+      "Converting Data To Electrons Per Second",
+      "Resizing Data",
+      "Background Subtraction"
+    ],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/PyAutoArray/blob/main/autoarray/dataset/preprocess.py",
+      "/data_preparation/noise_map.py",
+      "/modeling/imaging/features/sky_background.py",
+      "data_preparation/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/data.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/data.py",
+    "summary": "The image is the image of your galaxy, which comes from a telescope like the Hubble Space telescope (HST).",
+    "title": "Data Preparation: Image"
+  },
+  {
+    "contents": [
+      "Loading Data From Individual Fits Files",
+      "1) Tools Illustrated In Image",
+      "Noise Conversions"
+    ],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/PyAutoArray/blob/main/autoarray/dataset/preprocess.py",
+      "data_preparation/start_here.ipynb",
+      "data_prepatation/examples/image.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/noise_map.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/noise_map.py",
+    "summary": "The noise-map defines the uncertainty in every pixel of your galaxy image, where values are defined as the RMS standard deviation in every pixel (not the variances, HST WHT-map values, etc.).",
+    "title": "Data Preparation: Noise-map"
+  },
+  {
+    "contents": [
+      "Masking Extra Galaxies",
+      "Links / Resources",
+      "Output"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/gui/extra_galaxies_centres.py",
+      "data_preparation/gui/extra_galaxies_centres.ipynb",
+      "data_preparation/start_here.ipynb",
+      "mask_extra_galaxies.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/optional/extra_galaxies_centres.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/optional/extra_galaxies_centres.py",
+    "summary": "There may be extra galaxies nearby the main galaxy, whose emission blends with the galaxy.",
+    "title": "Data Preparation: Extra Galaxies (Optional)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "data_preparation/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/optional/info.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/optional/info.py",
+    "summary": "Auxiliary information about a galaxy dataset may used during an analysis or afterwards when interpreting the modeling results. For example, the redshifts of the source and galaxy.",
+    "title": "Data Preparation: Info (Optional)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "/data_preparation/imaging/gui/light_centres.py",
+      "data_preparation/gui/light_centre.ipynb",
+      "data_preparation/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/optional/light_centre.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/optional/light_centre.py",
+    "summary": "This script marks the (y,x) arcsecond locations of the galaxy light centre(s) of the galaxy you are analysing. These can be used as fixed values for the galaxy light and mass models in a model-fit.",
+    "title": "Data Preparation: Lens Light Centre (Optional)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "/data_preparation/imaging/gui/mask.py",
+      "data_preparation/gui/mask.ipynb",
+      "data_preparation/start_here.ipynb",
+      "examples/mask.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/optional/mask.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/optional/mask.py",
+    "summary": "The mask removes the regions of the image where the galaxy  galaxy are not present, typically the edges of the image.",
+    "title": "Data Preparation: Mask (Optional)"
+  },
+  {
+    "contents": [
+      "Links / Resources",
+      "Output"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/gui/mask_extra_galaxies.py",
+      "data_preparation/gui/extra_galaxies_mask.ipynb",
+      "data_preparation/start_here.ipynb",
+      "scripts/imaging/features/extra_galaxies/simulator.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/optional/mask_extra_galaxies.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/optional/mask_extra_galaxies.py",
+    "summary": "There may be regions of an image that have signal near the galaxy that is from other galaxies not associated with the main galaxy we are studying. The emission from these images will impact our model fitting and needs to be removed from the analysis.",
+    "title": "Data Preparation: Extra Galaxies Mask (Optional)"
+  },
+  {
+    "contents": [
+      "Loading Data From Individual Fits Files",
+      "1) PSF Size",
+      "PSF Dimensions",
+      "PSF Normalization"
+    ],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/PyAutoArray/blob/main/autoarray/dataset/preprocess.py",
+      "data_preparation/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/examples/psf.ipynb",
+    "path": "scripts/imaging/data_preparation/examples/psf.py",
+    "summary": "The Point Spread Function (PSF) describes blurring due the optics of your dataset`s telescope. It is used by PyAutoGalaxy when fitting a dataset to include these effects, such that does not bias the model.",
+    "title": "Data Preparation: PSF"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Search Box",
+      "Clicker",
+      "Output"
+    ],
+    "cross_refs": [
+      "clicker.py",
+      "data_preparation/imaging/example/optional/extra_galaxies_centres.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/gui/extra_galaxies_centres.ipynb",
+    "path": "scripts/imaging/data_preparation/gui/extra_galaxies_centres.py",
+    "summary": "There may be extra galaxies nearby the main galaxy, whose emission blends with the galaxy.",
+    "title": "GUI Preprocessing: Extra Galaxies"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Search Box",
+      "Clicker",
+      "Output"
+    ],
+    "cross_refs": [
+      "clicker.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/gui/light_centre.ipynb",
+    "path": "scripts/imaging/data_preparation/gui/light_centre.py",
+    "summary": "This tool allows one to input the galaxy light centre(s) of a galaxy(es) via a GUI, which can be used as a fixed value in pipelines.",
+    "title": "GUI Preprocessing: Lens Light Centre"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Scribbler",
+      "Output"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/imaging/data_preparation/gui/mask.ipynb",
+    "path": "scripts/imaging/data_preparation/gui/mask.py",
+    "summary": "This tool allows one to mask a bespoke mask for a given image of a galaxy using an interactive GUI. This mask can then be loaded before a pipeline is run and passed to that pipeline so as to become the default masked used by a search (if a mask function is not passed to that search).",
+    "title": "GUI Preprocessing: Mask"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Mask",
+      "Scribbler",
+      "Output"
+    ],
+    "cross_refs": [
+      "data_preparation/imaging/example/optional/extra_galaxies_mask.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/gui/mask_extra_galaxies.ipynb",
+    "path": "scripts/imaging/data_preparation/gui/mask_extra_galaxies.py",
+    "summary": "There may be regions of an image that have signal near the galaxy that is from other galaxies not associated with the main galaxy we are studying. The emission from these images will impact our model fitting and needs to be removed from the analysis.",
+    "title": "GUI Preprocessing: Extra Galaxies Mask (Optional)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [],
+    "notebook": "notebooks/imaging/data_preparation/manual/mask_irregular.ipynb",
+    "path": "scripts/imaging/data_preparation/manual/mask_irregular.py",
+    "summary": "(no summary in script docstring)",
+    "title": "Manual Preprocessing: Mask Irregular"
+  },
+  {
+    "contents": [
+      "Image",
+      "Noise Map",
+      "PSF",
+      "Data Processing Complete",
+      "Mask (Optional)",
+      "Light Centre (Optional)",
+      "Extra Galaxies (Optional)",
+      "Mask Extra Galaxies (Optional)",
+      "Info (Optional)"
+    ],
+    "cross_refs": [
+      "data_preparation/examples/gui/mask.ipynb",
+      "data_preparation/examples/optional/extra_galaxies_centres.py",
+      "data_preparation/examples/optional/info.py",
+      "data_preparation/examples/optional/lens_light_centre.py",
+      "data_preparation/examples/optional/mask.ipynb",
+      "data_preparation/examples/optional/mask_extra_galaxies.py",
+      "data_preparation/gui/extra_galaxies_centres.ipynb",
+      "data_preparation/gui/extra_galaxies_mask.ipynb",
+      "data_preparation/gui/lens_light_centre.ipynb",
+      "data_preparation/imaging/examples/data.ipynb",
+      "data_preparation/imaging/examples/noise_map.ipynb",
+      "data_preparation/imaging/examples/psf.ipynb",
+      "extra_galaxies_centres.py",
+      "features/extra_galaxies.py",
+      "mask_extra_galaxies.py"
+    ],
+    "notebook": "notebooks/imaging/data_preparation/start_here.ipynb",
+    "path": "scripts/imaging/data_preparation/start_here.py",
+    "summary": "When a CCD imaging dataset is analysed, it must conform to certain standards in order for the analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts which will help you prepare your dataset to adhere to them if it does not already.",
+    "title": "Imaging: Data Preparation"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Extra Galaxies Over Sampling",
+      "Extra Galaxies Noise Scaling",
+      "Extra Galaxies Dataset",
+      "Extra Galaxies Centres",
+      "Model",
+      "Extra Galaxies Model: Two Options",
+      "Search + Analysis",
+      "VRAM",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Approaches to Extra Galaxies",
+      "Multi Gaussian Expansion",
+      "Scaling Relations",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/optional/extra_galaxies_centres.py",
+      "/data_preparation/imaging/optional/mask_extra_galaxies.py",
+      "/guides/over_sampling.ipynb",
+      "/imaging/data_preparation/examples/optional/extra_galaxies_centres.py",
+      "autolens_workspace/scripts/group/features/scaling_relation/modeling.py",
+      "autolens_workspace/scripts/imaging/features/scaling_relation/modeling.py",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/extra_galaxies/modeling.ipynb",
+    "path": "scripts/imaging/features/extra_galaxies/modeling.py",
+    "summary": "There may be extra galaxies nearby the main galaxy, whose emission blends with the main galaxy.",
+    "title": "Modeling Features: Extra Galaxies"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Extra Galaxies",
+      "Output",
+      "Visualize",
+      "Mask Extra Galaxies",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/examples/optional/extra_galaxies_centres.ipynb",
+      "/data_preparation/imaging/examples/optional/scaled_dataset.ipynb",
+      "/modeling/imaging/features/extra_galaxies.ipynb",
+      "/modeling/imaging/features/extra_galaxies.py",
+      "data_preparation/examples/optional/extra_galaxies_centres.py",
+      "features/extra_galaxies/modeling.py",
+      "imaging/features/extra_galaxies/modeling.py",
+      "imaging/features/pixelization/modeling.py",
+      "imaging/start_here.py",
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/extra_galaxies/simulator.ipynb",
+    "path": "scripts/imaging/features/extra_galaxies/simulator.py",
+    "summary": "Certain galaxies have extra galaxies nearby their emission, which may overlap the emission of the galaxy we are interested in.",
+    "title": "Simulator: Extra Galaxies"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Dataset & Mask",
+      "Fit",
+      "Intensities",
+      "Visualization",
+      "Linear Objects (Source Code)"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/linear_light_profiles/fit.ipynb",
+    "path": "scripts/imaging/features/linear_light_profiles/fit.py",
+    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "title": "Modeling Features: Linear Light Profiles Fit"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Masked Image Grid",
+      "Linear Light Profiles",
+      "LightProfileLinearObjFuncList",
+      "Mapping Matrix",
+      "Blurred Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Reconstruction (Positive-Negative)",
+      "Reconstruction (Positive Only)",
+      "Image Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "contributor_guide.py",
+      "light_profile/likelihood_function.ipynb",
+      "light_profile/log_likelihood_function.py"
+    ],
+    "notebook": "notebooks/imaging/features/linear_light_profiles/likelihood_function.ipynb",
+    "path": "scripts/imaging/features/linear_light_profiles/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with parametric linear light profiles (e.g. a Sersic bulge and Exponential disk).",
+    "title": "__Log Likelihood Function: Linear Light Profile__"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Dataset & Mask",
+      "Fit",
+      "Intensities",
+      "Model",
+      "Search & Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result & Intensities",
+      "Visualization",
+      "Linear Objects (Source Code)"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "modeling/start_here.ipynb",
+      "start_here.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/imaging/features/linear_light_profiles/modeling.ipynb",
+    "path": "scripts/imaging/features/linear_light_profiles/modeling.py",
+    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "title": "Modeling Features: Linear Light Profiles"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "MGE Source Galaxy",
+      "Dataset & Mask",
+      "Basis",
+      "Gaussians",
+      "Linear Light Profiles",
+      "Fit",
+      "Intensities"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "linear_light_profiles.py",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/multi_gaussian_expansion/fit.ipynb",
+    "path": "scripts/imaging/features/multi_gaussian_expansion/fit.py",
+    "summary": "A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via a linear algebra using a process called an \"inversion\" (see the `linear_light_profiles.py` feature for a full description of this).",
+    "title": "Modeling Features: Multi Gaussian Expansion"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Masked Image Grid",
+      "Multiple Gaussians & Linear Light Profiles",
+      "Basis",
+      "Comparison To Linear Light Profiles Example",
+      "LightProfileLinearObjFuncList",
+      "Mapping Matrix",
+      "Blurred Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Reconstruction (Positive-Negative)",
+      "Reconstruction (Positive Only)",
+      "Image Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "contributor_guide.py",
+      "light_profile/likelihood_function.ipynb",
+      "light_profile/log_likelihood_function.py",
+      "linear_light_profile/likelihood_function.ipynb",
+      "linear_light_profile/log_likelihood_function.py",
+      "log_likelihood_function/imaging/linear_light_profile/likelihood_function.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/multi_gaussian_expansion/likelihood_function.ipynb",
+    "path": "scripts/imaging/features/multi_gaussian_expansion/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.",
+    "title": "__Log Likelihood Function: Multi Gaussian Expansion__"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "MGE Source Galaxy",
+      "Dataset & Mask",
+      "Model",
+      "Search & Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "MGE Source",
+      "Regularization"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "autolens_workspace_developer/basis_regularization/mge_galaxy.py",
+      "linear.py",
+      "linear_light_profiles.py",
+      "modeling/start_here.ipynb",
+      "start_here.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb",
+    "path": "scripts/imaging/features/multi_gaussian_expansion/modeling.py",
+    "summary": "A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via a linear algebra using a process called an \"inversion\" (see the `linear_light_profiles.py` feature for a full description of this).",
+    "title": "Modeling Features: Multi Gaussian Expansion"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/multi_gaussian_expansion/simulator.ipynb",
+    "path": "scripts/imaging/features/multi_gaussian_expansion/simulator.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Light MGE"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Model",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "/modeling/imaging/results.py",
+      "fit.py",
+      "linear_light_profiles.py",
+      "modeling/imaging/fit.py",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/operated_light_profile/modeling.ipynb",
+    "path": "scripts/imaging/features/operated_light_profile/modeling.py",
+    "summary": "(no summary in script docstring)",
+    "title": "Modeling: Light Parametric Operated"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/operated_light_profile/simulator.ipynb",
+    "path": "scripts/imaging/features/operated_light_profile/simulator.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Dataset & Mask",
+      "Mesh Shape",
+      "Pixelization",
+      "Fit",
+      "Mask Extra Galaxies",
+      "Linear Objects / Grids / Reconstruction"
+    ],
+    "cross_refs": [
+      "galaxy_reconstruction.py",
+      "modeling.py",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/fit.ipynb",
+    "path": "scripts/imaging/features/pixelization/fit.py",
+    "summary": "This script performs a single, direct fit (no non-linear search) of a galaxy that has two components:",
+    "title": "Features: Pixelization Fit"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Dataset Auto-Simulation",
+      "Reconstruction CSV"
+    ],
+    "cross_refs": [
+      "modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/galaxy_reconstruction.ipynb",
+    "path": "scripts/imaging/features/pixelization/galaxy_reconstruction.py",
+    "summary": "A common pixelization use-case is to reconstruct the irregular component of a galaxy's surface brightness on a pixelization mesh, and then export that reconstruction to perform scientific analysis.",
+    "title": "Pixelization: Galaxy Reconstruction"
+  },
+  {
+    "contents": [
+      "Mesh Shape",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Masked Image Grid",
+      "Galaxy",
+      "Galaxy Pixelization and Regularization",
+      "Interpolation",
+      "Mapper",
+      "Over Sampling",
+      "Alternative Meshes",
+      "Mapping Matrix",
+      "Blurred Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Regularization Matrix (H)",
+      "F + Lamdba H",
+      "Galaxy Reconstruction (s)",
+      "Image Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Regularization Term",
+      "Complexity Terms",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Log Likelihood Function: Pixelization With Light Profile",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.py",
+      "light_profile/likelihood_function.ipynb",
+      "linear_light_profile/likelihood_function.ipynb",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/likelihood_function.ipynb",
+    "path": "scripts/imaging/features/pixelization/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization scheme).",
+    "title": "__Log Likelihood Function: Pixelization__"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Dataset & Mask",
+      "Pixelization",
+      "Model",
+      "Search & Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Chaining",
+      "Result (Advanced)",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "fit.py",
+      "galaxy_reconstruction.py",
+      "modeling/start_here.ipynb",
+      "pixelization/fit.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/modeling.ipynb",
+    "path": "scripts/imaging/features/pixelization/modeling.py",
+    "summary": "This is the canonical example of when (and why) you should reach for a pixelization in **PyAutoGalaxy**.",
+    "title": "Features: Pixelization Modeling"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Over Sampling",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Mask Extra Galaxies",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "imaging/features/pixelization/fit.py",
+      "imaging/features/pixelization/modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/simulator.ipynb",
+    "path": "scripts/imaging/features/pixelization/simulator.py",
+    "summary": "This script simulates `Imaging` of a galaxy whose light has two distinct components:",
+    "title": "Simulator: Clumpy Galaxy"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Dataset & Mask",
+      "Basis",
+      "Coefficients",
+      "Linear Light Profiles",
+      "Fit",
+      "Intensities",
+      "Model",
+      "Search & Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Cartesian Shapelets"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "linear_light_profiles.py",
+      "modeling/features/multi_gaussian_expansion.py",
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/shapelets/fit.ipynb",
+    "path": "scripts/imaging/features/shapelets/fit.py",
+    "summary": "A shapelet is a basis function that is appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy structure studies to model the light of the galaxy, because it can represent features of disky star forming galaxies that a single Sersic function cannot.",
+    "title": "Modeling Features: Shapelets"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Dataset & Mask",
+      "Basis",
+      "Coefficients",
+      "Linear Light Profiles",
+      "Fit",
+      "Intensities",
+      "Model",
+      "Search & Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Cartesian Shapelets",
+      "Lens Shapelets",
+      "Regularization"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "autolens_workspace_developer/basis_regularization/shapelets_galaxy.py",
+      "linear_light_profiles.py",
+      "modeling/start_here.ipynb",
+      "start.here.py",
+      "start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/shapelets/modeling.ipynb",
+    "path": "scripts/imaging/features/shapelets/modeling.py",
+    "summary": "A shapelet is a basis function that is appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy structure studies to model the light of the galaxy, because it can represent features of disky star forming galaxies that a single Sersic function cannot.",
+    "title": "Modeling Features: Shapelets"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/simulator_manual_signal_to_noise.ipynb",
+    "path": "scripts/imaging/features/simulator_manual_signal_to_noise.py",
+    "summary": "When simulating `Imaging` of a galaxy, one is often not concerned with the actual units of the light (e.g. electrons per second, counts, etc.) but instead simple wants the data to correspond to a certain signal to noise value.",
+    "title": "Simulator: Manual Signal to Noise Ratio"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Fit",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/sky_background/fit.ipynb",
+    "path": "scripts/imaging/features/sky_background/fit.py",
+    "summary": "The background of an image is the light that is not associated with the galaxy we are interested in. This is due to light from the sky, zodiacal light, and light from other galaxies in the field of view.",
+    "title": "Modeling Features: Sky Background"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Model",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "modeling/start_here.ipynb",
+      "start.here.py",
+      "start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/sky_background/modeling.ipynb",
+    "path": "scripts/imaging/features/sky_background/modeling.py",
+    "summary": "The background of an image is the light that is not associated with the galaxy we are interested in. This is due to light from the sky, zodiacal light, and light from other galaxies in the field of view.",
+    "title": "Modeling Features: Sky Background"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "/modeling/imaging/features/sky_background.py",
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/features/sky_background/simulator.ipynb",
+    "path": "scripts/imaging/features/sky_background/simulator.py",
+    "summary": "This script simulates `Imaging` of a galaxy where the sky background is not subtracted from the image and therefore appears in the dataset.",
+    "title": "Simulator: Sky Background"
+  },
+  {
+    "contents": [
+      "Loading Data",
+      "Dataset Auto-Simulation",
+      "Grid",
+      "Mask",
+      "Fitting",
+      "Bad Fit",
+      "Fit Quantities",
+      "Figures of Merit",
+      "Galaxy Quantities",
+      "Unmasked Quantities",
+      "Mask",
+      "Pixel Counting",
+      "Outputting Results",
+      "Modeling Results",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/data_structures.ipynb",
+      "galaxies_fit.py",
+      "guides/units_and_cosmology.ipynb",
+      "imaging/features/pixelization/fit.py",
+      "likelihood_function.py",
+      "modeling.py",
+      "modeling/features/linear_light_profiles.py",
+      "modeling/features/pixelizaiton.py",
+      "scripts/guides/api/data_structures.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/imaging/fit.ipynb",
+    "path": "scripts/imaging/fit.py",
+    "summary": "This guide shows how to fit data using the `FitImaging` object, including visualizing and interpreting its results.",
+    "title": "Fits"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Masked Image Grid",
+      "Light Profiles (Setup)",
+      "Galaxy",
+      "Galaxy Image",
+      "Convolution",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.py",
+      "contributor_guide.py",
+      "modeling.py",
+      "scripts/guides/api/data_structures.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/imaging/likelihood_function.ipynb",
+    "path": "scripts/imaging/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with parametric light profiles (e.g. a Sersic bulge and Exponential disk).",
+    "title": "__Log Likelihood Function: Light Profile__"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Model",
+      "Search",
+      "Live Visual Update",
+      "Analysis",
+      "VRAM Use",
+      "Run Times",
+      "Model-Fit",
+      "Output Folder Layout",
+      "Result",
+      "Features",
+      "Data Preparation",
+      "HowToGalaxy"
+    ],
+    "cross_refs": [
+      "/data_preparation/imaging/start_here.ipynb",
+      "/guides/over_sampling.ipynb",
+      "/guides/results/start_here.py",
+      "/imaging/data_preparation/gui/mask_extra_galaxies.py",
+      "/modeling/imaging/customize/custom_mask.py",
+      "/modeling/imaging/customize/priors.py",
+      "/modeling/imaging/features/linear_light_profiles.py",
+      "/simulators/imaging/start_here.py",
+      "data_preparation/examples/optional/mask_extra_galaxies.py",
+      "over_sampling.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/imaging/modeling.ipynb",
+    "path": "scripts/imaging/modeling.py",
+    "summary": "This script is the starting point for modeling of CCD imaging data (E.g. Hubble Space Telescope, Euclid) with **PyAutoGalaxy** and it provides an overview of the modeling API.",
+    "title": "Modeling: Start Here"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Over Sampling",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb",
+      "imaging/fit.py",
+      "imaging/likelihood_function.py",
+      "imaging/modeling.py",
+      "scripts/guides/api/data_structures.py"
+    ],
+    "notebook": "notebooks/imaging/simulator.ipynb",
+    "path": "scripts/imaging/simulator.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Sample Model Distributions",
+      "Sample Instances",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "simulators/imaging/misc/manual_signal_to_noise_ratio.ipynb",
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/imaging/simulator_sample.ipynb",
+    "path": "scripts/imaging/simulator_sample.py",
+    "summary": "This script simulates a sample of `Imaging` datasets of galaxies where:",
+    "title": "Simulator: Sample Power-Law"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Mask Extra Galaxies",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "imaging/features/pixelization/fit.py",
+      "imaging/features/pixelization/modeling.py",
+      "imaging/simulator.py"
+    ],
+    "notebook": "notebooks/imaging/simulator_sersic.ipynb",
+    "path": "scripts/imaging/simulator_sersic.py",
+    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "title": "Simulator: Sersic"
+  },
+  {
+    "contents": [
+      "Google Colab Setup",
+      "Imports",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Extra Galaxy Removal",
+      "Masking",
+      "Model",
+      "Model Fit",
+      "Live Visual Update",
+      "Result",
+      "Extra Galaxy Removal GUI",
+      "Model Your Own Galaxy",
+      "Simulator",
+      "Sample",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "autogalaxy_workspace/start_here.py",
+      "scripts/imaging/simulator.py",
+      "start_here_cluster.ipynb",
+      "start_here_group.ipynb"
+    ],
+    "notebook": "notebooks/imaging/start_here.ipynb",
+    "path": "scripts/imaging/start_here.py",
+    "summary": "Galaxies are often observed with CCD imaging, for example using HST, JWST, or ground-based telescopes.",
+    "title": "Start Here: Imaging"
+  },
+  {
+    "contents": [],
+    "cross_refs": [],
+    "notebook": "notebooks/interferometer/casa_reduction.ipynb",
+    "path": "scripts/interferometer/casa_reduction.py",
+    "summary": "If not contact us on SLACK!",
+    "title": "THIS SCRIPT IS INCOMPLETE AND IN DEVELOPMENT BUT IT HOPEFULLY IS INFORMATIVE ENOUGH TO HELP YOU GET STARTED."
+  },
+  {
+    "contents": [
+      "SLACK",
+      "Pixel Scale",
+      "Visibilities",
+      "Noise-Map",
+      "UV Wavelengths",
+      "Real Space Mask",
+      "Data Processing Complete",
+      "Light Centre (Optional)",
+      "Extra Galaxies (Optional)",
+      "Mask Extra Galaxies (Optional)",
+      "Info (Optional)"
+    ],
+    "cross_refs": [
+      "data_preparation/examples/optional/extra_galaxies_centres.py",
+      "data_preparation/examples/optional/info.py",
+      "data_preparation/examples/optional/lens_light_centre.py",
+      "data_preparation/examples/optional/mask_extra_galaxies.py",
+      "data_preparation/gui/extra_galaxies_centres.ipynb",
+      "data_preparation/gui/extra_galaxies_mask.ipynb",
+      "data_preparation/gui/lens_light_centre.ipynb",
+      "examples/casa_reduction.ipynb",
+      "features/extra_galaxies.py",
+      "mask_extra_galaxies.py"
+    ],
+    "notebook": "notebooks/interferometer/data_preparation.ipynb",
+    "path": "scripts/interferometer/data_preparation.py",
+    "summary": "When an interferometer dataset is analysed, it must conform to certain standards in order for the analysis to be performed correctly. This tutorial describes these standards and links to more detailed scripts which will help you prepare your dataset to adhere to them if it does not already.",
+    "title": "Interferometer: Data Preparation"
+  },
+  {
+    "contents": [
+      "Data Preparation",
+      "Mask",
+      "Dataset",
+      "Extra Galaxies Centres",
+      "Model",
+      "Extra Galaxies Model",
+      "Search + Analysis",
+      "VRAM",
+      "Run Time",
+      "Result",
+      "Approaches to Extra Galaxies",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/imaging/features/extra_galaxies/modeling.py",
+      "/interferometer/features/extra_galaxies/modeling.py",
+      "interferometer/modeling.py",
+      "interferometer/start_here.ipynb",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/interferometer/features/extra_galaxies/modeling.ipynb",
+    "path": "scripts/interferometer/features/extra_galaxies/modeling.py",
+    "summary": "There may be extra galaxies nearby the main galaxy whose light blends with the main galaxy's emission. For interferometer data \u2014 unlike strong-lensing imaging \u2014 we typically *want* to detect these extra galaxies and fit their light, because autogalaxy is a morphology-fitting tool for multi-galaxy fields rather than a gravitational-lensing tool.",
+    "title": "Modeling Features: Extra Galaxies (Interferometer)"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "uv-wavelengths",
+      "Simulator",
+      "Galaxies",
+      "Output",
+      "Galaxies json",
+      "Extra Galaxies Centres"
+    ],
+    "cross_refs": [
+      "/interferometer/features/extra_galaxies/modeling.py",
+      "features/extra_galaxies/modeling.py",
+      "modeling.py",
+      "simulators/start_here.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/extra_galaxies/simulator.ipynb",
+    "path": "scripts/interferometer/features/extra_galaxies/simulator.py",
+    "summary": "Certain galaxies have extra galaxies nearby their emission, which may overlap the emission of the galaxy we are interested in. For interferometer data \u2014 unlike strong-lensing imaging \u2014 we typically *want* to detect the extra galaxies and fit their light, because autogalaxy is a morphology-fitting tool for multi-galaxy fields rather than a gravitational-lensing tool.",
+    "title": "Simulator: Extra Galaxies (Interferometer)"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Fit",
+      "Intensities",
+      "Visualization",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "interferometer/start_here.ipynb",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/linear_light_profiles/fit.ipynb",
+    "path": "scripts/interferometer/features/linear_light_profiles/fit.py",
+    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "title": "Modeling Features: Linear Light Profiles Fit (Interferometer)"
+  },
+  {
+    "contents": [
+      "Prerequisites",
+      "Mask",
+      "Dataset",
+      "Galaxy Linear Light Profiles",
+      "Internal Intensity",
+      "Mapping Matrix",
+      "Transformed Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Reconstruction (Positive-Negative)",
+      "Reconstruction (Positive Only)",
+      "Visibilities Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "imaging/features/linear_light_profiles/likelihood_function.ipynb",
+      "interferometer/log_likelihood_function.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/linear_light_profiles/likelihood_function.ipynb",
+    "path": "scripts/interferometer/features/linear_light_profiles/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data with parametric linear light profiles (e.g. a linear `Sersic` bulge and linear `Exponential` disk).",
+    "title": "__Log Likelihood Function: Linear Light Profile (Interferometer)__"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "NUFFT (nufftax)",
+      "Positive Only Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Over Sampling",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Result",
+      "Intensities",
+      "Visualization",
+      "Max Likelihood Inversion",
+      "Linear Objects (Internal Source Code)",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/imaging/features/linear_light_profiles/modeling.py",
+      "interferometer/modeling.py",
+      "interferometer/start_here.ipynb",
+      "start_here.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/features/linear_light_profiles/modeling.ipynb",
+    "path": "scripts/interferometer/features/linear_light_profiles/modeling.py",
+    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "title": "Modeling Features: Linear Light Profiles (Interferometer)"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Only Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Basis",
+      "Fit",
+      "Intensities",
+      "Visualization",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "interferometer/start_here.ipynb",
+      "linear_light_profiles.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/fit.ipynb",
+    "path": "scripts/interferometer/features/multi_gaussian_expansion/fit.py",
+    "summary": "A multi-Gaussian expansion (MGE) decomposes a galaxy's light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via linear algebra using a process called an \"inversion\".",
+    "title": "Modeling Features: Multi Gaussian Expansion Fit (Interferometer)"
+  },
+  {
+    "contents": [
+      "Prerequisites",
+      "Mask",
+      "Dataset",
+      "Galaxy MGE Basis",
+      "Mapping Matrix",
+      "Transformed Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Reconstruction (Positive-Negative)",
+      "Reconstruction (Positive Only)",
+      "Visibilities Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "features/linear_light_profiles/likelihood_function.py",
+      "interferometer/features/linear_light_profiles/likelihood_function.ipynb",
+      "interferometer/features/linear_light_profiles/likelihood_function.py",
+      "interferometer/log_likelihood_function.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/likelihood_function.ipynb",
+    "path": "scripts/interferometer/features/multi_gaussian_expansion/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data with a multi-Gaussian expansion (MGE): a `Basis` of many linear `Gaussian` profiles whose `intensity` values are solved for analytically via a linear inversion.",
+    "title": "__Log Likelihood Function: Multi Gaussian Expansion (Interferometer)__"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "NUFFT (nufftax)",
+      "Positive Only Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Over Sampling",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Result",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/imaging/features/multi_gaussian_expansion/modeling.py",
+      "interferometer/modeling.py",
+      "interferometer/start_here.ipynb",
+      "start_here.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/modeling.ipynb",
+    "path": "scripts/interferometer/features/multi_gaussian_expansion/modeling.py",
+    "summary": "A multi-Gaussian expansion (MGE) decomposes a galaxy's light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via linear algebra using a process called an \"inversion\" (see the `linear_light_profiles` feature for a full description of this).",
+    "title": "Modeling Features: Multi Gaussian Expansion (Interferometer)"
+  },
+  {
+    "contents": [
+      "Advantages",
+      "Disadvantages",
+      "Positive Only Solver",
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Sparse Operators",
+      "Settings",
+      "Over Sampling",
+      "Mesh Shape",
+      "Pixelization",
+      "Fit",
+      "Wrap Up",
+      "Linear Objects",
+      "Grids",
+      "Reconstruction",
+      "Mapped Reconstructed Images",
+      "Linear Algebra Matrices (Advanced)",
+      "Evidence Terms (Advanced)",
+      "Simulated Interferometer",
+      "Future Ideas / Contributions"
+    ],
+    "cross_refs": [
+      "pixelization/many_visibilities_preparation.py"
+    ],
+    "notebook": "notebooks/interferometer/features/pixelization/fit.ipynb",
+    "path": "scripts/interferometer/features/pixelization/fit.py",
+    "summary": "This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset \u2014 a galaxy with a smooth central bulge plus asymmetric clumpy star formation. The fit uses a pixelization with a rectangular mesh and constant regularization scheme to reconstruct the galaxy's surface brightness on a pixel grid.",
+    "title": "Features: Pixelization Fit"
+  },
+  {
+    "contents": [
+      "Model Fit",
+      "Dataset Auto-Simulation",
+      "Reconstruction CSV"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/interferometer/features/pixelization/galaxy_reconstruction.ipynb",
+    "path": "scripts/interferometer/features/pixelization/galaxy_reconstruction.py",
+    "summary": "A common pixelization use-case is to reconstruct a galaxy\u2019s surface brightness on a pixelization mesh, and then export this reconstruction to perform scientific analysis.",
+    "title": "Pixelization: Galaxy Reconstruction"
+  },
+  {
+    "contents": [
+      "Mesh Shape",
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Over Sampling",
+      "Masked Image Grid",
+      "Galaxy",
+      "Rectangular Mesh",
+      "Interpolation",
+      "Mapper",
+      "Over Sampling",
+      "Alternative Meshes",
+      "Mapping Matrix",
+      "Transformed Mapping Matrix ($f$)",
+      "Data Vector (D)",
+      "Curvature Matrix (F)",
+      "Regularization Matrix (H)",
+      "F + Lamdba H",
+      "Galaxy Reconstruction (s)",
+      "Visibilities Reconstruction",
+      "Likelihood Function",
+      "Chi Squared",
+      "Regularization Term",
+      "Complexity Terms",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Log Likelihood Function: Pixelization With Light Profile",
+      "Log Likelihood Function: Fast Chi Squared",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "light_profile/likelihood_function.ipynb",
+      "linear_light_profile/likelihood_function.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/pixelization/likelihood_function.ipynb",
+    "path": "scripts/interferometer/features/pixelization/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Interferometer` data with an inversion (specifically a `RectangularUniform` mesh and `Constant` regularization scheme`).",
+    "title": "__Log Likelihood Function: Pixelization__"
+  },
+  {
+    "contents": [
+      "High Resolution Dataset",
+      "Dataset + Masking",
+      "Profiling Dataset",
+      "Curvature Preload",
+      "Curvature Preload Output",
+      "Wrap Up"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/interferometer/features/pixelization/many_visibilities_preparation.ipynb",
+    "path": "scripts/interferometer/features/pixelization/many_visibilities_preparation.py",
+    "summary": "To perform many visibility modeling, a matrix called `nufft_precision_operator` is created and used, which encodes information and symmetries into the Fourier transform operation performed when modeling interferometer datasets, in a way that exploits the sparsity of the pixelized galaxy reconstructions and means a very small amount of memory or VRAM is used.",
+    "title": "Pixelization: Many Visibilities Preparation"
+  },
+  {
+    "contents": [
+      "Advantages",
+      "Disadvantages",
+      "Positive Only Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Sparse Operators",
+      "Settings",
+      "Over Sampling",
+      "Mesh Shape",
+      "Model",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Wrap Up",
+      "Chaining",
+      "HowToGalaxy",
+      "Future Ideas / Contributions"
+    ],
+    "cross_refs": [
+      "autogalaxy_workspace/scripts/imaging/features/pixelization/modeling.py",
+      "modeling/start_here.ipynb",
+      "pixelization/fit.py",
+      "pixelization/many_visibilities_preparation.py",
+      "start.here.py",
+      "start_here.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/pixelization/modeling.ipynb",
+    "path": "scripts/interferometer/features/pixelization/modeling.py",
+    "summary": "This is the canonical example of when (and why) you should reach for a pixelization to model interferometer visibilities of a galaxy in **PyAutoGalaxy**.",
+    "title": "Features: Pixelization"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "UV Wavelengths",
+      "Simulator",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/interferometer/features/pixelization/simulator.ipynb",
+    "path": "scripts/interferometer/features/pixelization/simulator.py",
+    "summary": "This script simulates `Interferometer` data of a galaxy whose real-space light has two distinct components:",
+    "title": "Simulator: Clumpy Galaxy (Interferometer)"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "Positive Negative Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Basis",
+      "Fit",
+      "Intensities",
+      "Visualization",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/shapelets/fit.ipynb",
+    "path": "scripts/interferometer/features/shapelets/fit.py",
+    "summary": "A shapelet is a basis function appropriate for capturing the exponential / disk-like features of a galaxy. The `intensity` of every shapelet is solved for via linear algebra (\"inversion\") rather than being a free parameter of the non-linear search.",
+    "title": "Modeling Features: Shapelets Fit (Interferometer)"
+  },
+  {
+    "contents": [
+      "Advantages & Disadvantages",
+      "NUFFT (nufftax)",
+      "Positive Negative Solver",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Over Sampling",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Result",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/imaging/features/shapelets/modeling.py",
+      "interferometer/features/multi_gaussian_expansion/modeling.py",
+      "interferometer/start_here.ipynb",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/features/shapelets/modeling.ipynb",
+    "path": "scripts/interferometer/features/shapelets/modeling.py",
+    "summary": "A shapelet is a basis function appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy-structure studies to model galaxy light because it can represent disky star-forming features that a single Sersic function cannot.",
+    "title": "Modeling Features: Shapelets (Interferometer)"
+  },
+  {
+    "contents": [
+      "Mask",
+      "Loading Data",
+      "Dataset Auto-Simulation",
+      "Fitting",
+      "Bad Fit",
+      "Fit Quantities",
+      "Figures of Merit",
+      "Galaxy Quantities",
+      "Outputting Results"
+    ],
+    "cross_refs": [
+      "modeling.py",
+      "scripts/guides/api/data_structures.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/fit.ipynb",
+    "path": "scripts/interferometer/fit.py",
+    "summary": "This guide shows how to fit data using the `FitInterferometer` object, including visualizing and interpreting its results.",
+    "title": "Fits"
+  },
+  {
+    "contents": [
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Over Sampling",
+      "Masked Image Grid",
+      "Light Profiles (Setup)",
+      "Galaxy",
+      "Galaxy Image",
+      "Fourier Transform",
+      "Likelihood Function",
+      "Chi Squared",
+      "Noise Normalization Term",
+      "Calculate The Log Likelihood",
+      "Fit",
+      "Galaxy Modeling",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "contributor_guide.py",
+      "modeling.py",
+      "scripts/guides/api/data_structures.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/likelihood_function.ipynb",
+    "path": "scripts/interferometer/likelihood_function.py",
+    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data with parametric light profiles (e.g. a Sersic bulge and Exponential disk).",
+    "title": "__Log Likelihood Function: Parametric__"
+  },
+  {
+    "contents": [
+      "Number of Visibilities",
+      "Model",
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Over Sampling",
+      "Model",
+      "Search",
+      "Live Visual Update",
+      "Analysis",
+      "VRAM Use",
+      "Run Times",
+      "Model-Fit",
+      "Output Folder Layout",
+      "Result",
+      "Features",
+      "Data Preparation",
+      "HowToGalaxy",
+      "Modeling Customization"
+    ],
+    "cross_refs": [
+      "/interferometer/data_preparation/start_here.ipynb",
+      "/modeling/imaging/customize/priors.py",
+      "/modeling/imaging/features/linear_light_profiles.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/interferometer/modeling.ipynb",
+    "path": "scripts/interferometer/modeling.py",
+    "summary": "This script is the starting point for modeling of interferometer datasets (e.g. SMA, ALMA) and it provides an overview of the modeling API. The same workflow scales from a few hundred visibilities to many millions, thanks to the JAX-native `TransformerNUFFT` (backed by `nufftax`).",
+    "title": "Modeling: Start Here"
+  },
+  {
+    "contents": [
+      "Grid",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Plane Output"
+    ],
+    "cross_refs": [
+      "autolens_workspace_test/scripts/interferometer/nufft.py",
+      "scripts/guides/api/data_structures.py"
+    ],
+    "notebook": "notebooks/interferometer/simulator.ipynb",
+    "path": "scripts/interferometer/simulator.py",
+    "summary": "This script simulates `Interferometer` data of a galaxy where:",
+    "title": "Simulator: Sersic"
+  },
+  {
+    "contents": [
+      "JAX",
+      "NUFFT (nufftax)",
+      "Number of Visibilities",
+      "Google Colab Setup",
+      "Imports",
+      "Mask (Real Space)",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Model",
+      "Model Fit",
+      "Live Visual Update",
+      "Result",
+      "Model Your Own Galaxy",
+      "Simulator",
+      "Sample",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "autogalaxy_workspace/start_here.py",
+      "scripts/interferometer/simulator.py",
+      "start_here_cluster.ipynb",
+      "start_here_group.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/start_here.ipynb",
+    "path": "scripts/interferometer/start_here.py",
+    "summary": "Galaxies are observed with radio/mm interferometers (e.g. ALMA), which measure complex visibilities in the uv-plane instead of CCD images.",
+    "title": "Start Here: Interferometer"
+  },
+  {
+    "contents": [
+      "Advantages",
+      "Disadvantages",
+      "Model",
+      "Colors",
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Analysis",
+      "Model",
+      "Search",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/multi/features/dataset_offsets/modeling.ipynb",
+    "path": "scripts/multi/features/dataset_offsets/modeling.py",
+    "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
+    "title": "Modeling Features: Dataset Offsets"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Dataset Paths",
+      "Simulate",
+      "Offset",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/features/dataset_offsets/simulator.ipynb",
+    "path": "scripts/multi/features/dataset_offsets/simulator.py",
+    "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
+    "title": "Simulator: Dataset Offsets"
+  },
+  {
+    "contents": [
+      "Benefits",
+      "Interferometer Masking",
+      "Interferometer Dataset",
+      "Dataset Auto-Simulation",
+      "Imaging Dataset",
+      "Imaging Masking",
+      "Analysis",
+      "Search",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/features/imaging_and_interferometer/modeling.ipynb",
+    "path": "scripts/multi/features/imaging_and_interferometer/modeling.py",
+    "summary": "This script fits an `Imaging` dataset of a galaxy with a model where:",
+    "title": "Modeling: Imaging & Interferometer"
+  },
+  {
+    "contents": [
+      "Simulate",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [
+      "multi/simulators/simple.py"
+    ],
+    "notebook": "notebooks/multi/features/imaging_and_interferometer/simulator.ipynb",
+    "path": "scripts/multi/features/imaging_and_interferometer/simulator.py",
+    "summary": "This script simulates `Interferometer` data of a galaxy where:",
+    "title": "Simulator: Mutli Interferometer"
+  },
+  {
+    "contents": [
+      "Model",
+      "Colors",
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Analysis",
+      "Model",
+      "Search",
+      "Model-Fit",
+      "Result",
+      "Second Dataset Bulge Model Fixed",
+      "Second Dataset Offset"
+    ],
+    "cross_refs": [
+      "modeling/start_here.ipynb"
+    ],
+    "notebook": "notebooks/multi/features/one_by_one/modeling.ipynb",
+    "path": "scripts/multi/features/one_by_one/modeling.py",
+    "summary": "Multi-wavelength analysis does not necessarily require us to fit all datasets simultaneously. Instead, we can fit one dataset first in order to infer a robust galaxy model, and then fit the next dataset, using the inferred model as the starting point.",
+    "title": "Modeling Features: One By One"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Mesh Shape",
+      "Analysis",
+      "Model",
+      "Search",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [
+      "scripts/imaging/features/pixelization/modeling.py"
+    ],
+    "notebook": "notebooks/multi/features/pixelization/modeling.ipynb",
+    "path": "scripts/multi/features/pixelization/modeling.py",
+    "summary": "This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:",
+    "title": "Modeling: Pixelized"
+  },
+  {
+    "contents": [
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Analysis",
+      "Model",
+      "Search",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [
+      "multi/modeling/features/dataset_offset.py"
+    ],
+    "notebook": "notebooks/multi/features/same_wavelength/modeling.ipynb",
+    "path": "scripts/multi/features/same_wavelength/modeling.py",
+    "summary": "This script fits a multiple `Imaging` datasets observed at the same wavelength of a galaxy with a model where:",
+    "title": "Modeling: Same Wavelength"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Simulate",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/features/same_wavelength/simulator.ipynb",
+    "path": "scripts/multi/features/same_wavelength/simulator.py",
+    "summary": "This script simulates multiple `Imaging` datasets of a galaxy where:",
+    "title": "Simulator: Same Wavelength"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Wavelengths",
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Analysis",
+      "Model",
+      "Model + Analysis",
+      "Search",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/features/wavelength_dependence/modeling.ipynb",
+    "path": "scripts/multi/features/wavelength_dependence/modeling.py",
+    "summary": "This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:",
+    "title": "Modeling: Wavelength Dependence"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Wavelengths",
+      "Dataset Paths",
+      "Simulate",
+      "Intensity vs Wavelength",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/features/wavelength_dependence/simulator.ipynb",
+    "path": "scripts/multi/features/wavelength_dependence/simulator.py",
+    "summary": "This script simulates multi-wavelength `Imaging` of a galaxy where:",
+    "title": "Simulator: Wavelength Dependent"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Pixel Scales",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Mask",
+      "Over Sampling",
+      "Model",
+      "Analysis List",
+      "Analysis Factor",
+      "Factor Graph",
+      "Search",
+      "Live Visual Update",
+      "VRAM Use",
+      "Model-Fit",
+      "Result",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/over_sampling.ipynb"
+    ],
+    "notebook": "notebooks/multi/modeling.ipynb",
+    "path": "scripts/multi/modeling.py",
+    "summary": "This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:",
+    "title": "Modeling: Multi Modeling"
+  },
+  {
+    "contents": [
+      "Imaging Dataset Subplot",
+      "Fit Imaging Subplot",
+      "Galaxies Subplot",
+      "Output",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "plot/start_here.ipynb"
+    ],
+    "notebook": "notebooks/multi/plot.ipynb",
+    "path": "scripts/multi/plot.py",
+    "summary": "This example illustrates how to produce multiple subplot figures from different data objects, using the function-based plotting API.",
+    "title": "Plots: MultiSubPlots"
+  },
+  {
+    "contents": [
+      "Colors",
+      "Dataset Paths",
+      "Simulate",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/multi/simulator.ipynb",
+    "path": "scripts/multi/simulator.py",
+    "summary": "This script simulates multi-wavelength `Imaging` of a galaxy where:",
+    "title": "Simulator: Multi Light Sersic"
+  },
+  {
+    "contents": [
+      "JAX",
+      "Google Colab Setup",
+      "Imports",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Masking",
+      "Model",
+      "Analysis",
+      "Model Fit",
+      "Live Visual Update",
+      "Result",
+      "Model Your Own Galaxy",
+      "Simulator",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "autogalaxy_workspace/start_here.py",
+      "scripts/imaging/simulator.py",
+      "start_here_cluster.ipynb",
+      "start_here_group.ipynb",
+      "start_here_imaging.ipynb"
+    ],
+    "notebook": "notebooks/multi/start_here.ipynb",
+    "path": "scripts/multi/start_here.py",
+    "summary": "Galaxies are often observed with CCD imaging, for example using HST, JWST, or ground-based telescopes.",
+    "title": "Start Here: Multi Wavelength"
+  }
+]
