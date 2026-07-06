@@ -40,6 +40,11 @@ os.environ.pop("PYAUTO_SKIP_FIT_OUTPUT", None)
 
 import autofit as af
 import autogalaxy as ag
+from autoconf import conf
+
+# This deliberately shallow helper must retain its exploratory samples because
+# the results tutorials demonstrate indexed sample access.
+conf.instance["output"]["samples_weight_threshold"] = None
 
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
