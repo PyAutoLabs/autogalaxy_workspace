@@ -24,7 +24,7 @@ Internally, splicing uses standard Astorpy functions to open, edit and save .fit
 
 __Contents__
 
-- **Model Fit:** Perform model-fits whose results are output for FITS extraction.
+- **Model Fit:** Run the shared quick-fit helper if results have not already been created.
 - **Workflow Paths:** Set the output path for workflow FITS files.
 - **Aggregator:** Load results using the Aggregator.
 - **Extract Images:** Extract specific HDU images from fit.fits files.
@@ -39,7 +39,7 @@ __CSV, Png and Fits__
 Workflow functionality closely mirrors the `png_make.py` and `fits_make.py`  examples, which load results of
 model-fits and output th em as .png files and .fits files to quickly summarise results.
 
-The same initial fit creating results in a folder called `results_folder_csv_png_fits` is therefore used.
+The shared `_quick_fit.py` helper creates these results in `results_folder`. If you have older outputs under `results_folder_csv_png_fits`, use `results_folder` for these examples instead.
 
 __Interferometer__
 
@@ -69,7 +69,6 @@ especially if loading results from hard-disk is slow.
 # from autoconf import setup_notebook; setup_notebook()
 
 from pathlib import Path
-from pathlib import Path
 
 import autofit as af
 import autogalaxy as ag
@@ -78,94 +77,27 @@ import autogalaxy.plot as aplt
 """
 __Model Fit__
 
-The code below performs a model-fit using nautilus. 
+These workflow examples reuse the shared ``_quick_fit.py`` helper instead of
+performing model-fits in every script. The helper creates two capped Nautilus
+fits, including the latent quantities used below, in ``output/results_folder/``.
 
-You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
-
-__Unique Tag__
-
-One thing to note is that the `unique_tag` of the search is given the name of the dataset with an index for the
-fit of 0 and 1. 
-
-This `unique_tag` names the fit in a descriptive and human-readable way, which we will exploit to make our .fits files
-more descriptive and easier to interpret.
+Older versions of these workflow examples used ``output/results_folder_csv_png_fits/``;
+use ``output/results_folder/`` for the centralized setup here.
 """
-for i in range(2):
-    dataset_name = f"simple"
-    dataset_path = Path("dataset") / "imaging" / dataset_name
+import subprocess
+import sys
 
-    """
-    __Dataset Auto-Simulation__
-
-    If the dataset does not already exist on your system, it will be created by running the corresponding
-    simulator script. This ensures that all example scripts can be run without manually simulating data first.
-    """
-    if not dataset_path.exists():
-        import subprocess
-        import sys
-
-        subprocess.run(
-            [sys.executable, "scripts/imaging/simulator.py"],
-            check=True,
-        )
-
-    dataset = ag.Imaging.from_fits(
-        data_path=dataset_path / "data.fits",
-        psf_path=dataset_path / "psf.fits",
-        noise_map_path=dataset_path / "noise_map.fits",
-        pixel_scales=0.1,
+results_path = Path("output") / "results_folder"
+if (
+    len(list(results_path.glob("**/image/dataset.fits"))) < 2
+    or len(list(results_path.glob("**/files/latent/latent_summary.json"))) < 2
+    or len(list(results_path.glob("**/image/fit.png"))) < 2
+    or len(list(results_path.glob("**/image/fit.fits"))) < 2
+):
+    subprocess.run(
+        [sys.executable, "scripts/guides/results/_quick_fit.py"],
+        check=True,
     )
-
-    mask = ag.Mask2D.circular(
-        shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
-    )
-
-    dataset = dataset.apply_mask(mask=mask)
-
-    bulge = af.Model(ag.lp_linear.Sersic)
-    disk = af.Model(ag.lp_linear.Exponential)
-    bulge.centre = disk.centre
-
-    galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
-
-    model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
-
-    """
-    __N Like Max__
-
-    `n_like_max=300` caps the search at 300 likelihood evaluations so this workflow example runs in
-    seconds and produces the .fits files it demonstrates without waiting for a full Nautilus
-    convergence. Remove the cap (or raise it substantially) for a real model fit.
-    """
-    search = af.Nautilus(
-        path_prefix=Path("results_folder_csv_png_fits"),
-        name="results",
-        unique_tag=f"simple_{i}",
-        n_live=100,
-        n_batch=50,
-        n_like_max=300,  # samples capped for quick result generation
-    )
-
-    class LatentSersicIndex(ag.Latent):
-        """Custom catalogue replacing library defaults; subclass ag.Latent (base) and override keys/variables;
-        declare via Latent = LatentSersicIndex; note: subclass ag.LatentGalaxy instead to keep library latents."""
-
-        @staticmethod
-        def keys(analysis):
-            return ["galaxies.galaxy.bulge.sersic_index"]
-
-        @staticmethod
-        def variables(analysis, parameters, model):
-            instance = model.instance_from_vector(vector=parameters)
-
-            return (instance.galaxies.galaxy.bulge.sersic_index * 2.0,)
-
-    class AnalysisLatent(ag.AnalysisImaging):
-        Latent = LatentSersicIndex
-
-    analysis = AnalysisLatent(dataset=dataset)
-
-    result = search.fit(model=model, analysis=analysis)
 
 """
 __Workflow Paths__
@@ -176,7 +108,7 @@ required for your science, which are therefore placed in a single path for easy 
 The `workflow_path` specifies where these files are output, in this case the .fits files containing the key 
 results we require.
 """
-workflow_path = Path("output") / "results_folder_csv_png_fits" / "workflow_make_example"
+workflow_path = Path("output") / "results_folder" / "workflow_make_example"
 
 """
 __Aggregator__
@@ -186,7 +118,7 @@ Set up the aggregator as shown in `start_here.py`.
 from autofit.aggregator.aggregator import Aggregator
 
 agg = Aggregator.from_directory(
-    directory=Path("output") / "results_folder_csv_png_fits",
+    directory=Path("output") / "results_folder",
 )
 
 """
@@ -243,7 +175,7 @@ We require a naming convention for the output files. In this example, we have tw
 files are going to be output.
 
 One way to name the .fits files is to use the `unique_tag` of the search, which is unique to every model-fit. For
-the search above, the `unique_tag` was `simple_0` and `simple_1`, therefore this will informatively name the .fits
+the helper-generated `unique_tag` values are `simple_0` and `simple_1`, therefore this will informatively name the .fits
 files the names of the datasets.
 
 We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
