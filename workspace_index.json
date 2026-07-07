@@ -460,7 +460,7 @@
     ],
     "notebook": "notebooks/guides/results/_quick_fit.ipynb",
     "path": "scripts/guides/results/_quick_fit.py",
-    "summary": "Internal helper invoked via subprocess from the tutorials in this folder (``start_here.py`` and everything under ``aggregator/``). Produces a fast, capped Nautilus fit at ``output/results_folder/`` so the aggregator examples have a populated results directory to read from.",
+    "summary": "Internal helper invoked via subprocess from the tutorials in this folder. Produces two fast, capped Nautilus fits at ``output/results_folder/`` so the aggregator and workflow examples have a populated results directory to read from.",
     "title": "Results: Quick Fit Helper"
   },
   {
@@ -749,8 +749,8 @@
       "Computed Columns"
     ],
     "cross_refs": [
+      "_quick_fit.py",
       "fits_make.py",
-      "modeling/start_here.py",
       "png_make.py",
       "start_here.py"
     ],
@@ -772,7 +772,7 @@
       "Custom Fits Files in Analysis"
     ],
     "cross_refs": [
-      "modeling/start_here.py",
+      "_quick_fit.py",
       "png_make.py",
       "start_here.py"
     ],
@@ -796,8 +796,8 @@
       "Custom Subplots in Analysis"
     ],
     "cross_refs": [
+      "_quick_fit.py",
       "fits_make.py",
-      "modeling/start_here.py",
       "start_here.py"
     ],
     "notebook": "notebooks/guides/results/workflow/png_make.ipynb",
