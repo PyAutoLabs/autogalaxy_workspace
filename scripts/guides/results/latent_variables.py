@@ -19,9 +19,9 @@ __Contents__
 
  - Galaxy Latents in PyAutoGalaxy: The curated default catalogue from ``autogalaxy/config/latent.yaml``.
  - Toggling Latents: The workspace ``config/latent.yaml`` override and why it shadows the library default.
- - Model Fit: A quick fit that produces real latent output for the loading section below.
- - Loading Latent Results: Reading ``latent/samples.csv`` / ``latent_summary.json`` via
-   ``analysis.compute_latent_samples(result.samples)`` and the standard ``Samples`` API.
+ - Model Fit: Reuse the shared quick fit (``_quick_fit.py``) that produces real latent output.
+ - Loading Latent Results: ``analysis.compute_latent_samples`` over a subset of PDF draws, and the two
+   config surfaces (``latent.yaml`` / ``output.yaml``) that control which latents and how many draws.
  - Extending with a Custom Latent: Subclass ``ag.AnalysisImaging``, override ``LATENT_KEYS`` and
    ``compute_latent_variables`` to add your own derived quantity.
  - Contributing Upstream: When your custom latent is general enough, consider promoting it to the library.
@@ -84,26 +84,35 @@ keys lives in ``autogalaxy.imaging.model.latent.LATENT_FUNCTIONS``.
 """
 __Model Fit__
 
-To make the loading and extending sections below concrete, we run a quick model fit on the standard simple-
-imaging dataset that ships with the workspace. The model is a single galaxy with a Sersic bulge — keeping it
-small so the example runs in a reasonable time.
+The loading and extending sections below need a completed fit to read latents from. Rather than run a bespoke
+fit here, we reuse the shared quick fit that the other results guides use: ``_quick_fit.py`` writes a capped
+single-galaxy (Sersic bulge + Exponential disk) fit of the standard ``simple`` imaging dataset to
+``output/results_folder/``. It is idempotent — it returns immediately if those results already exist — so the
+non-linear search is paid once across the whole guide suite rather than repeated in every example.
 
-We pass ``magzero=25.0`` to ``ag.AnalysisImaging`` so ``total_galaxy_0_flux_mujy`` populates with a real value
-rather than NaN. If you forget it, ``total_galaxy_0_flux_mujy`` will be NaN and the library will log a single
-warning per process noting the conversion was skipped — the fit itself is unaffected, and the raw
-``total_galaxy_0_flux`` column populates normally.
+We then load that fit's samples via the aggregator, exactly as ``start_here.py`` and ``aggregator/models.py`` do.
+"""
+import subprocess
+import sys
+
+subprocess.run(
+    [sys.executable, "scripts/guides/results/_quick_fit.py"],
+    check=True,
+)
+
+from autofit.aggregator.aggregator import Aggregator
+
+agg = Aggregator.from_directory(directory=Path("output") / "results_folder")
+samples = list(agg)[0].samples
+
+"""
+The samples carry the parameter posterior; the ``analysis`` carries the machinery that turns each posterior
+draw into latent values. We rebuild the dataset and an ``ag.AnalysisImaging`` with ``magzero=25.0`` so
+``total_galaxy_0_flux_mujy`` populates with a real value rather than NaN (without it that column is NaN and the
+library logs a single warning per process; the raw ``total_galaxy_0_flux`` column populates normally).
 """
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
-
-if not dataset_path.exists():
-    import subprocess
-    import sys
-
-    subprocess.run(
-        [sys.executable, "scripts/imaging/simulator.py"],
-        check=True,
-    )
 
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
@@ -119,32 +128,34 @@ mask = ag.Mask2D.circular(
 )
 dataset = dataset.apply_mask(mask=mask)
 
-galaxy_model = af.Model(ag.Galaxy, redshift=0.5, bulge=af.Model(ag.lp.Sersic))
-model = af.Collection(galaxies=af.Collection(galaxy=galaxy_model))
-
 analysis = ag.AnalysisImaging(dataset=dataset, use_jax=False, magzero=25.0)
-
-search = af.Nautilus(
-    name="cookbook_latent_variables",
-    n_live=50,
-    n_like_max=300,
-)
-
-result = search.fit(model=model, analysis=analysis)
 
 """
 __Loading Latent Results__
 
-The fit above produces ``latent/samples.csv`` and ``latent/latent_summary.json`` under the search's output
-directory. You can read them back into a ``Samples`` object via ``analysis.compute_latent_samples(result.samples)``.
-The returned object exposes the same API as the parameter ``Samples`` — ``median_pdf``, ``max_log_likelihood``,
-``values_at_sigma_1``, and so on — but reports on the induced latent posterior rather than the parameter posterior.
+``analysis.compute_latent_samples(samples)`` reads the posterior into a ``Samples`` object that exposes the same
+API as the parameter ``Samples`` — ``median_pdf``, ``max_log_likelihood``, ``values_at_sigma_1``, and so on — but
+reports on the induced latent posterior. Because both ``total_galaxy_0_flux`` and ``total_galaxy_0_flux_mujy`` are
+enabled in this workspace, the returned instance exposes both attributes; enabling additional latents in the
+workspace yaml makes them all appear as attributes on the same instance.
 
-Because both ``total_galaxy_0_flux`` and ``total_galaxy_0_flux_mujy`` are enabled in this workspace, the
-returned instance exposes both attributes. If you enable additional latents in the workspace yaml, they all
-appear as attributes on the same instance.
+__Controlling the Cost via Config__
+
+Latents are computed by reconstructing a fit for every posterior sample, so the cost scales with the number of
+samples. Two workspace config files control this:
+
+ - ``config/latent.yaml`` — controls *which* latents are computed. Disable the ones you don't need.
+
+ - ``config/output.yaml`` — ``latent_draw_via_pdf`` / ``latent_draw_via_pdf_size`` control *how many* posterior
+   draws the latents are computed over when a live search updates. Drawing a representative subset from the PDF
+   gives faithful latent errors at a fraction of the every-sample cost.
+
+Here we mirror that draw-from-PDF behaviour explicitly with ``samples.samples_drawn_randomly_via_pdf_from``,
+computing the latents over 20 PDF draws so this guide runs quickly while still producing a real, representative
+latent posterior. For a publication-quality result, compute over all samples (or a larger number of draws).
 """
-latent_samples = analysis.compute_latent_samples(result.samples)
+latent_draws = samples.samples_drawn_randomly_via_pdf_from(total_draws=20)
+latent_samples = analysis.compute_latent_samples(latent_draws)
 
 median_instance = latent_samples.median_pdf()
 print(f"Median PDF total_galaxy_0_flux: {median_instance.total_galaxy_0_flux}")
