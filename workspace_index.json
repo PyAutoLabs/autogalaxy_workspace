@@ -693,16 +693,19 @@
     "contents": [
       "Galaxy Latents in PyAutoGalaxy: The curated default catalogue from ``autogalaxy/config/latent.yaml``.",
       "Toggling Latents: The workspace ``config/latent.yaml`` override and why it shadows the library default.",
-      "Model Fit: A quick fit that produces real latent output for the loading section below.",
-      "Loading Latent Results: Reading ``latent/samples.csv`` / ``latent_summary.json`` via",
+      "Model Fit: Reuse the shared quick fit (``_quick_fit.py``) that produces real latent output.",
+      "Loading Latent Results: ``analysis.compute_latent_samples`` over a subset of PDF draws, and the two",
       "Extending with a Custom Latent: Subclass ``ag.AnalysisImaging``, override ``LATENT_KEYS`` and",
       "Contributing Upstream: When your custom latent is general enough, consider promoting it to the library."
     ],
     "cross_refs": [
       "../../../autofit_workspace/scripts/cookbooks/latent_variables.py",
+      "_quick_fit.py",
+      "aggregator/models.py",
       "autogalaxy/imaging/model/latent.py",
       "euclid_strong_lens_modeling_pipeline/util.py",
       "scripts/guides/units/flux.py",
+      "start_here.py",
       "test_autogalaxy/imaging/test_latent.py"
     ],
     "notebook": "notebooks/guides/results/latent_variables.ipynb",
