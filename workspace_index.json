@@ -1745,6 +1745,7 @@
       "Dataset Paths",
       "Grid",
       "Over Sampling",
+      "PSF Convolution",
       "Galaxies",
       "Output",
       "Visualize",
@@ -1752,6 +1753,7 @@
     ],
     "cross_refs": [
       "/guides/over_sampling.ipynb",
+      "guides/advanced/over_sampling.py",
       "imaging/fit.py",
       "imaging/likelihood_function.py",
       "imaging/modeling.py",
