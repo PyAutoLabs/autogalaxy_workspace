@@ -1,0 +1,43 @@
+# Curated examples rendered to executed markdown pages (markdown/) with their
+# real output images, so they can be read on GitHub. Built manually by
+# PyAutoBuild's generate_markdown.py — see that module's docstring for the
+# rules (never TEST_MODE; features/ scripts never rendered; list order is
+# execution order and index order).
+- script: start_here.py
+  max_minutes: 120
+- script: scripts/imaging/start_here.py
+  max_minutes: 240
+- script: scripts/imaging/simulator.py
+  max_minutes: 45
+- script: scripts/imaging/likelihood_function.py
+  max_minutes: 45
+- script: scripts/imaging/fit.py
+  max_minutes: 45
+- script: scripts/imaging/modeling.py
+  max_minutes: 240
+- script: scripts/interferometer/start_here.py
+  max_minutes: 240
+- script: scripts/interferometer/simulator.py
+  max_minutes: 45
+- script: scripts/interferometer/likelihood_function.py
+  max_minutes: 45
+- script: scripts/interferometer/fit.py
+  max_minutes: 45
+- script: scripts/interferometer/modeling.py
+  max_minutes: 300
+- script: scripts/multi/start_here.py
+  max_minutes: 120
+- script: scripts/multi/simulator.py
+  max_minutes: 45
+- script: scripts/multi/modeling.py
+  max_minutes: 240
+- script: scripts/ellipse/simulator.py
+  max_minutes: 45
+- script: scripts/ellipse/fit.py
+  max_minutes: 45
+- script: scripts/ellipse/modeling.py
+  max_minutes: 120
+- script: scripts/guides/galaxies.py
+  max_minutes: 45
+- script: scripts/guides/data_structures.py
+  max_minutes: 45
