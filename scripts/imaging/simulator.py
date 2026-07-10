@@ -14,6 +14,7 @@ __Contents__
 - **Dataset Paths:** Defining the output path for the simulated dataset.
 - **Grid:** Setting up the 2D grid of coordinates for image evaluation.
 - **Over Sampling:** Applying adaptive over-sampling for accurate image simulation.
+- **PSF Convolution:** Define the Point Spread Function (PSF) that blurs the simulated image.
 - **Galaxies:** Defining the galaxy with Sersic bulge and Exponential disk light profiles.
 - **Output:** Saving the simulated dataset to FITS files.
 - **Visualize:** Outputting subplot and image visualizations as PNG files.
@@ -93,9 +94,25 @@ over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
 grid = grid.apply_over_sampling(over_sample_size=over_sample_size)
 
 """
-Simulate a simple Gaussian PSF for the image.
+__PSF Convolution__
+
+All CCD imaging data (e.g. Hubble Space Telescope, Euclid) are blurred by the telescope optics when they are imaged.
+
+The Point Spread Function (PSF) describes the blurring of the image by the telescope optics, in the form of a
+two dimensional convolution kernel. The modeling scripts use this PSF when fitting the data, to account for
+this blurring of the image.
+
+In this example, use a simple 2D Gaussian PSF, which is convolved with the image of the galaxies when simulating
+the dataset.
+
+PSF convolution runs at the image resolution (sub size 1), which is the fastest option and accurate for well-sampled
+PSFs. Supplying a PSF at a multiple of the image resolution and raising this value improves blurring fidelity for
+undersampled PSFs (e.g. HST / Euclid VIS) at extra compute cost — see `guides/advanced/over_sampling.py`.
 """
+psf_convolve_over_sample_size = 1
+
 psf = ag.Convolver.from_gaussian(
+    convolve_over_sample_size=psf_convolve_over_sample_size,
     shape_native=(11, 11), sigma=0.1, pixel_scales=grid.pixel_scales
 )
 
