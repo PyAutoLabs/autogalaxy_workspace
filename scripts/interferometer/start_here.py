@@ -127,6 +127,24 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 
 """
+__NUFFT Backend Check__
+
+Interferometer analysis uses the default `TransformerNUFFT`, backed by the
+`nufftax` NUFFT library. It ships with the `[optional]` extras and requires
+Python >= 3.12. When it is not installed (e.g. the NumPy-only CI matrix), skip
+this example gracefully rather than erroring on the data-simulation step.
+"""
+import importlib.util
+
+if importlib.util.find_spec("nufftax") is None:
+    print(
+        "Skipping interferometer example: the `nufftax` NUFFT backend is not "
+        "installed (install with `pip install autogalaxy[optional]`; requires "
+        "Python >= 3.12)."
+    )
+    sys.exit(0)
+
+"""
 __Mask (Real Space)__
 
 Interferometer modeling evaluates the galaxy image on a *real-space grid* and Fourier transforms
