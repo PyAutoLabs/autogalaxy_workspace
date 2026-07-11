@@ -1,0 +1,720 @@
+> ✏️ **This page is auto-generated from [`scripts/guides/galaxies.py`](../../scripts/guides/galaxies.py) — do not edit it directly.**
+> It shows the example fully executed, with its real output images.
+> Run it yourself via the [Python script](../../scripts/guides/galaxies.py) or the [Jupyter notebook](../../notebooks/guides/galaxies.ipynb).
+
+Galaxies
+========
+
+This tutorial shows how to use galaxies, including visualizing and extracting their individual light profiles.
+
+__Contents__
+
+- **Units:** The internal unit system used throughout this example.
+- **Data Structures:** Overview of bespoke data structures and the slim/native API.
+- **Grids:** Create a 2D grid of (y,x) coordinates for evaluating galaxy light.
+- **Light Profiles:** Define Sersic and other light profiles to describe a galaxy's luminosity distribution.
+- **Galaxies:** Create Galaxy objects from multiple light profiles and compute their images.
+- **Galaxies (multiple):** Group multiple galaxies into a Galaxies object and compute combined images.
+- **Log10:** Plot galaxy images in log10 space for clearer visualization of outskirts.
+- **Extending Objects:** Create complex multi-galaxy systems with many light profiles.
+- **Data Structures Slim / Native:** Access images in 1D slim or 2D native representations.
+- **Individual Galaxy Components:** Extract and plot individual light profile components from galaxies.
+- **Galaxies Composition:** Summarize the composition of galaxies and their profiles.
+- **One Dimension Projection:** Create projected 2D radial grids for 1D profile calculations.
+- **One Dimensional Quantities:** Compute and plot 1D radial profiles of galaxy light.
+- **Decomposed 1D Plot:** Plot decomposed 1D profiles showing each light component separately.
+- **Modeling Results:** Pointers to results-specific functionality for galaxy models.
+
+__Units__
+
+In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in
+arc seconds, luminosities in electrons per second and mass quantities (e.g. convergence) are dimensionless.
+
+The guide `guides/units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
+kiloparsecs, magnitudes and solar masses.
+
+__Data Structures__
+
+Quantities inspected in this example script use **PyAutoGalaxy** bespoke data structures for storing arrays, grids,
+vectors and other 1D and 2D quantities. These use the `slim` and `native` API to toggle between representing the
+data in 1D numpy arrays or high dimension numpy arrays.
+
+This tutorial will only use the `slim` properties which show results in 1D numpy arrays of
+shape [total_unmasked_pixels]. This is a slimmed-down representation of the data in 1D that contains only the
+unmasked data points
+
+These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
+
+
+```python
+
+from autoconf import setup_notebook; setup_notebook()
+
+import matplotlib.pyplot as plt
+import numpy as np
+from pathlib import Path
+import autofit as af
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+
+```
+
+    Working Directory has been set to `autogalaxy_workspace`
+
+
+__Grids__
+
+To describe the luminous emission of galaxies, **PyAutoGalaxy** uses `Grid2D` data structures, which are 
+two-dimensional Cartesian grids of (y,x) coordinates. 
+
+Below, we make and plot a uniform Cartesian grid:
+
+
+```python
+grid = ag.Grid2D.uniform(
+    shape_native=(100, 100),
+    pixel_scales=0.1,  # The pixel-scale describes the conversion from pixel units to arc-seconds.
+)
+
+aplt.plot_grid(grid=grid, title="Grid")
+```
+
+
+    
+![png](galaxies_files/galaxies_3_0.png)
+    
+
+
+__Light Profiles__
+
+We will use this `Grid2D`'s coordinates to evaluate the galaxy's morphology. We therefore need analytic 
+functions representing a galaxy's light distribution(s). 
+
+For this,  **PyAutoGalaxy** uses `LightProfile` objects, for example the `Sersic` `LightProfile` object which
+represents a light distribution:
+
+
+```python
+sersic_light_profile = ag.lp.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=(0.2, 0.1),
+    intensity=0.005,
+    effective_radius=2.0,
+    sersic_index=4.0,
+)
+```
+
+By passing this profile a `Grid2D`, we evaluate the light at every (y,x) coordinate on the `Grid2D` and create an 
+image of the `LightProfile`.
+
+
+```python
+image = sersic_light_profile.image_2d_from(grid=grid)
+```
+
+The PyAutoGalaxy plot module provides methods for plotting objects and their properties, like 
+the `LightProfile`'s image.
+
+
+```python
+aplt.plot_array(array=sersic_light_profile.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](galaxies_files/galaxies_9_0.png)
+    
+
+
+__Galaxies__
+
+A `Galaxy` object is a collection of `LightProfile` objects at a given redshift. 
+
+The code below creates a galaxy which is made of two components, a bulge and disk.
+
+
+```python
+bulge = ag.lp.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
+    intensity=1.0,
+    effective_radius=0.6,
+    sersic_index=3.0,
+)
+
+disk = ag.lp.Exponential(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.7, angle=30.0),
+    intensity=0.5,
+    effective_radius=1.6,
+)
+
+galaxy = ag.Galaxy(redshift=0.5, bulge=bulge, disk=disk)
+```
+
+We can create an image the galaxy by passing it the 2D grid above.
+
+
+```python
+image = galaxy.image_2d_from(grid=grid)
+```
+
+The **PyAutoGalaxy** plot module provides methods for plotting galaxies.
+
+Below, we plot its image, which is the sum of the bulge and disk components.
+
+
+```python
+aplt.plot_array(array=galaxy.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](galaxies_files/galaxies_15_0.png)
+    
+
+
+__Galaxies__
+
+If our observation contains multiple galaxies, we can create a `Galaxies` object to represent all galaxies.
+
+By passing `Galaxy` objects to a `Galaxies`, **PyAutoGalaxy** groups them to indicate they are at the same redshift.
+
+
+```python
+galaxy_0 = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lp.Sersic(
+        centre=(0.0, -1.0),
+        ell_comps=(0.25, 0.1),
+        intensity=0.1,
+        effective_radius=0.8,
+        sersic_index=2.5,
+    ),
+)
+
+galaxy_1 = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lp.Sersic(
+        centre=(0.0, 1.0),
+        ell_comps=(0.0, 0.1),
+        intensity=0.1,
+        effective_radius=0.6,
+        sersic_index=3.0,
+    ),
+)
+
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])
+```
+
+The image of all galaxies summed can easily be computed from this object.
+
+**PyAutoGalaxy** plot tools allow us to plot this image or a subplot containing images of each individual galaxy.
+
+
+```python
+image = galaxies.image_2d_from(grid=grid)
+
+aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Image")
+aplt.subplot_galaxies(galaxies=galaxies, grid=grid)
+```
+
+
+    
+![png](galaxies_files/galaxies_19_0.png)
+    
+
+
+
+    
+![png](galaxies_files/galaxies_19_1.png)
+    
+
+
+__Log10__
+
+The light distributions of galaxies are closer to a log10 distribution than a linear one. 
+
+This means that when we plot an image of a light profile, its appearance is better highlighted when we take the
+logarithm of its values and plot it in log10 space.
+
+The `MatPlot2D` object has an input `use_log10`, which will do this automatically when we call the `figures_2d` method.
+Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
+
+
+```python
+aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Image", use_log10=True)
+```
+
+
+    
+![png](galaxies_files/galaxies_21_0.png)
+    
+
+
+__Extending Objects__
+
+The PyAutoGalaxy API is designed such that all of the objects introduced above are extensible. `Galaxy` objects 
+can take many `LightProfile`'s and `Galaxies`'s many `Galaxy`'s. 
+
+To finish, lets create 2 merging galaxies, where the second galaxy has multiple star forming clumps.
+
+
+```python
+galaxy_0 = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lmp.Sersic(
+        centre=(0.0, 0.0),
+        ell_comps=(0.0, 0.05),
+        intensity=0.5,
+        effective_radius=0.3,
+        sersic_index=3.5,
+        mass_to_light_ratio=0.6,
+    ),
+    disk=ag.lmp.Exponential(
+        centre=(0.0, 0.0),
+        ell_comps=(0.0, 0.1),
+        intensity=1.0,
+        effective_radius=2.0,
+        mass_to_light_ratio=0.2,
+    ),
+)
+
+galaxy_1 = ag.Galaxy(
+    redshift=1.0,
+    bulge=ag.lp.Exponential(
+        centre=(0.00, 0.00),
+        ell_comps=(0.05, 0.05),
+        intensity=1.2,
+        effective_radius=0.1,
+    ),
+    extra_galaxy_0=ag.lp.Sersic(centre=(1.0, 1.0), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_1=ag.lp.Sersic(centre=(0.5, 0.8), intensity=0.5, effective_radius=0.2),
+    extra_galaxy_2=ag.lp.Sersic(
+        centre=(-1.0, -0.7), intensity=0.5, effective_radius=0.2
+    ),
+)
+
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1])
+```
+
+This is what the merging galaxies look like:
+
+
+```python
+aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](galaxies_files/galaxies_25_0.png)
+    
+
+
+__Data Structures Slim / Native__
+
+The images above are returned as a 1D numpy array. 
+
+**PyAutoLens** includes dedicated functionality for manipulating this array, for example mapping it to 2D or
+performing the calculation on a high resolution sub-grid which is then binned up. 
+
+This uses the data structure API, which is described in the `guides/data_structures.py` example. This 
+tutorial will avoid using this API, but if you need to manipulate results in more detail you should check it out.
+
+
+```python
+print(image.slim)
+```
+
+    Array2D([0.00012135, 0.00012641, 0.00013167, ..., 0.00013974, 0.0001351 ,
+           0.00013057], shape=(10000,))
+
+
+__Individual Galaxy Components__
+
+We are able to create an image of each galaxy as follows, which includes the emission of only one galaxy at a
+time.
+
+
+```python
+image = galaxies[0].image_2d_from(grid=grid)
+image = galaxies[1].image_2d_from(grid=grid)
+```
+
+In order to create images of each light profile (e.g. the `bulge`), we can extract each individual component from 
+each galaxy.
+
+The list of galaxies is in order of how we specify them in the `collection` above.
+
+
+```python
+bulge_0 = galaxies[0].bulge
+bulge_1 = galaxies[1].bulge
+```
+
+You could easily extract the `disk`  of `galaxy_0`:
+
+ disk_0 = galaxies[0].disk
+
+Finally, we can use the extracted bulge components to make images of the bulge.
+
+
+```python
+bulge_0_image_2d = bulge_0.image_2d_from(grid=grid)
+bulge_1_image_2d = bulge_1.image_2d_from(grid=grid)
+
+print(bulge_0_image_2d.slim[0])
+print(bulge_1_image_2d.slim[0])
+```
+
+    2.9256275516321914e-05
+    1.2224665676968334e-53
+
+
+It is more concise to extract these quantities in one line of Python:
+
+
+```python
+bulge_0_image_2d = galaxies[0].bulge.image_2d_from(grid=grid)
+```
+
+It is straight forward to extract and plot an individual light profile component.
+
+
+```python
+aplt.plot_array(array=galaxies[0].bulge.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](galaxies_files/galaxies_37_0.png)
+    
+
+
+__Galaxies__
+
+We extracted the `bulge` light profiles of each galaxy. 
+
+We can just as easily extract each `Galaxy` and use it to perform the calculations above.
+
+
+```python
+galaxy_0 = galaxies[0]
+
+galaxy_0_image_2d = galaxy_0.image_2d_from(grid=grid)
+```
+
+We can also plot the galaxy, for example a subplot of each individual light profile 
+image (which because this galxy is only a single bulge, is a single image).
+
+
+```python
+aplt.plot_array(array=galaxy_0.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](galaxies_files/galaxies_41_0.png)
+    
+
+
+__Galaxies Composition__
+
+Lets quickly summarise what we've learnt by printing every object:
+
+
+```python
+print(galaxies)
+print(galaxies[0])
+print(galaxies[0])
+print(galaxies[0].bulge)
+print(galaxies[1].bulge)
+print()
+```
+
+    [Redshift: 0.5
+    Light Profiles:
+    Sersic
+    centre: (0.0, 0.0)
+    ell_comps: (0.0, 0.05)
+    mass_to_light_ratio: 0.6
+    intensity: 0.5
+    effective_radius: 0.3
+    sersic_index: 3.5
+    Exponential
+    ... [103 lines of output truncated] ...
+    ell_comps: (0.0, 0.1)
+    mass_to_light_ratio: 0.2
+    intensity: 1.0
+    effective_radius: 2.0
+    sersic_index: 1.0
+    Sersic
+    centre: (0.0, 0.0)
+    ell_comps: (0.0, 0.05)
+    mass_to_light_ratio: 0.6
+    intensity: 0.5
+    effective_radius: 0.3
+    sersic_index: 3.5
+    Exponential
+    centre: (0.0, 0.0)
+    ell_comps: (0.05, 0.05)
+    intensity: 1.2
+    effective_radius: 0.1
+    sersic_index: 1.0
+    
+
+
+__One Dimension Projection__
+
+We often want to calculative 1D quantities of a light profile, for example to plot how its light changes as
+a function of radius.
+
+To do this, we must still input a 2D grid into the `image_2d_from` method, therefore we create a project 2D 
+radial grid as follows which has shape [Number_of_1d_coordinates, 2] and where all [:,0] entries are the same.
+
+A simple example of such a grid is as follows with 4 1D coordinates is:
+
+
+```python
+grid_2d_projected = ag.Grid2DIrregular(
+    [
+        [1.000000e-06, 1.000000e-06],
+        [1.000000e-06, 1.000001e00],
+        [1.000000e-06, 2.000001e00],
+        [1.000000e-06, 3.000001e00],
+    ]
+)
+```
+
+As in this example, we often already have a 2D grid we are using to calculate images of a ligth profile
+and it would be convenient to simply create `grid_2d_projected` from that.
+
+For example, we may want the project grid which traces it major axis in uniform radial steps.
+
+This is easily computed using the `grid_2d_radial_project_from` function and passing the `centre` and `angle`
+of a light profile we can make it align with the light profile itself.
+
+Note how in this example the two galaxy bulges are not rotationally aligned but we aligned the projected
+grid with the first galaxy. The centres are aligned, but if they were not that would cause similar
+issues.
+
+
+```python
+grid_2d_projected = grid.grid_2d_radial_projected_from(
+    centre=galaxy_0.bulge.centre, angle=galaxy_0.bulge.angle()
+)
+```
+
+__One Dimensional Quantities__
+
+We can now compute quantities quantities in 1D using the project grid, for inspection and visualization.
+
+To do this, we perform the following steps:
+
+For example, from a light profile or galaxy we can compute its `image_1d`, which provides us with its image values
+(e.g. luminosity) as a function of radius.
+
+
+```python
+galaxy_0 = galaxies[0]
+image_1d = galaxy_0.image_2d_from(grid=grid_2d_projected)
+print(image_1d)
+
+galaxy_1 = galaxies[1]
+image_1d = galaxy_1.image_2d_from(grid=grid_2d_projected)
+print(image_1d)
+```
+
+    ArrayIrregular([3.27759508e+02, 8.19640350e+00, 5.73071734e+00, 4.81559688e+00,
+           4.26705602e+00, 3.86067876e+00, 3.52738792e+00, 3.23960876e+00,
+           2.98419833e+00, 2.75396839e+00, 2.54451422e+00, 2.35286737e+00,
+           2.17686513e+00, 2.01483152e+00, 1.86540495e+00, 1.72743977e+00,
+           1.59994698e+00, 1.48205687e+00, 1.37299429e+00, 1.27206170e+00,
+           1.17862690e+00, 1.09211395e+00, 1.01199616e+00, 9.37790480e-01,
+           8.69052904e-01, 8.05374650e-01, 7.46378877e-01, 6.91717836e-01,
+           6.41070377e-01, 5.94139725e-01, 5.50651496e-01, 5.10351899e-01,
+           4.73006122e-01, 4.38396846e-01, 4.06322903e-01, 3.76598039e-01,
+           3.49049785e-01, 3.23518411e-01, 2.99855974e-01, 2.77925434e-01,
+           2.57599840e-01, 2.38761578e-01, 2.21301685e-01, 2.05119197e-01,
+           1.90120567e-01, 1.76219112e-01, 1.63334508e-01, 1.51392323e-01,
+           1.40323581e-01, 1.30064360e-01, 1.20555422e-01])
+    ArrayIrregular([6.45156864e+00, 1.32406920e+00, 2.93949187e-01, 9.19960451e-02,
+           5.87150799e-02, 6.07195536e-02, 6.98978867e-02, 7.83072239e-02,
+           8.18426466e-02, 7.88136635e-02, 7.04959400e-02, 5.97760824e-02,
+           4.91149309e-02, 3.97636817e-02, 3.20499305e-02, 2.58589627e-02,
+           2.09390311e-02, 1.70347508e-02, 1.39291673e-02, 1.14492358e-02,
+           9.45998960e-03, 7.85679683e-03, 6.55851530e-03, 5.50205424e-03,
+           4.63819498e-03, 3.92840483e-03, 3.34240697e-03, 2.85632216e-03,
+           2.45124361e-03, 2.11214133e-03, 1.82701773e-03, 1.58625528e-03,
+           1.38211133e-03, 1.20832576e-03, 1.05981529e-03, 9.32434618e-04,
+           8.22789106e-04, 7.28087289e-04, 6.46024392e-04, 5.74689919e-04,
+           5.12494083e-04, 4.58109001e-04, 4.10421500e-04, 3.68495094e-04,
+           3.31539246e-04, 2.98884403e-04, 2.69961665e-04, 2.44286149e-04,
+           2.21443345e-04, 2.01077875e-04, 1.82884200e-04])
+
+
+When we plot 1D quantities, we do not use built-in plotting functions as in 2D, but instead use standard
+matplotlib functionality.
+
+The reason is partly that 1D plotting is simple, but also because 1D plots have many different decisions
+about what is plotted and how they are computed, meaning its better to give the user full control.
+
+
+```python
+plt.plot(grid_2d_projected[:, 1], image_1d)
+plt.xlabel("Radius (arcseconds)")
+plt.ylabel("Luminosity")
+plt.show()
+plt.close()
+```
+
+
+    
+![png](galaxies_files/galaxies_51_0.png)
+    
+
+
+If we want a specific 1D radial profile over a certain range of coordinates, we create a `Grid2DIrregular` of
+(y,x) coordinates along the x-axis and evaluate the image on it.
+
+
+```python
+radii = np.arange(10000) * 0.01
+grid_radial = ag.Grid2DIrregular(values=[(0.0, r) for r in radii])
+image_1d = galaxy_0.image_2d_from(grid=grid_radial)
+
+plt.plot(radii, image_1d)
+plt.xlabel("Radius (arcseconds)")
+plt.ylabel("Luminosity")
+plt.show()
+plt.close()
+```
+
+
+    
+![png](galaxies_files/galaxies_53_0.png)
+    
+
+
+__Decomposed 1D Plot__
+
+We can make calculate a plot containing every individual light profile of a galaxy in 1D, for example showing a  
+decomposition of its `bulge` and `disk`.
+
+Every profile on a decomposed plot is computed using a radial grid centred on its profile centre and aligned with
+its major-axis. Therefore 2D offsets between the components are not portray in such a figure.
+
+
+```python
+grid_2d_projected = grid.grid_2d_radial_projected_from(
+    centre=galaxy_0.bulge.centre, angle=galaxy_0.bulge.angle()
+)
+bulge_image_1d = galaxy_0.bulge.image_2d_from(grid=grid_2d_projected)
+
+grid_2d_projected = grid.grid_2d_radial_projected_from(
+    centre=galaxy_0.disk.centre, angle=galaxy_0.disk.angle()
+)
+disk_image_1d = galaxy_0.disk.image_2d_from(grid=grid_2d_projected)
+
+plt.plot(grid_2d_projected[:, 1], bulge_image_1d, label="Bulge")
+plt.plot(grid_2d_projected[:, 1], disk_image_1d, label="Disk")
+plt.xlabel("Radius (arcseconds)")
+plt.ylabel("Luminosity")
+plt.legend()
+plt.show()
+plt.close()
+```
+
+
+    
+![png](galaxies_files/galaxies_55_0.png)
+    
+
+
+__Modeling Results__
+
+Modeling uses a non-linear search to fit a model of galaxies to a dataset.
+
+It is illustrated in the `modeling` packages of `autogalaxy_workspace`.
+
+Modeling results have some specific functionality and use cases, which are described in the `results` packages of
+`autogalaxy_workspace`,  in particular the `galaxies_fit.py` example script which describes: 
+
+ - `Max Likelihood`: Extract and plot the galaxy models which maximize the likelihood of the fit.
+ - `Samples`, Extract the samples of the non-linear search and inspect specific parameter values.
+ - `Errors`: Makes plots that quantify the errors on the inferred galaxy properties.
+ - `Refitting` Refit specific models from the modeling process to the dataset. 
+
+__Wrap Up__
+
+This tutorial explained how to compute the results of an inferred model from a galaxies.
+
+We have learnt how to extract individual galaxies and light profiles from the results of
+a model-fit and use these objects to compute specific quantities of each component.
+
+__JAX__
+
+When you write your own `@jax.jit` around a function that takes a
+`Galaxy` or `Galaxies` as an argument, JAX needs to flatten/unflatten
+that object across the JIT boundary — i.e. the class must be registered
+as a JAX pytree. The library handles this for you automatically in two
+situations:
+
+1. You constructed an `Analysis` with `use_jax=True` (the default for
+   modeling fits). Its first `fit_from` call walks the dataset and
+   registers every reachable `Galaxy` / profile class.
+2. You constructed a `Simulator` with `use_jax=True` and made a call —
+   same walk happens.
+
+After either, every `Galaxy`, `LightProfile`, `MassProfile` of the same
+class is JIT-safe in the current process. You never call
+`register_instance_pytree(Galaxy)` yourself.
+
+__The "no Analysis or Simulator handy" case__
+
+For a quick exploration script or a custom forward model that doesn't go
+through `Simulator`, you may want to JIT a function that takes a
+`Galaxy` as a traced argument:
+
+```python
+@jax.jit
+def galaxy_image(galaxy, grid):
+    return galaxy.image_2d_from(grid=grid, xp=jnp).array
+```
+
+Without prior pytree registration this fails the first time `galaxy` is
+traced. Workaround: trigger registration at the top of your script via
+an `Analysis` instantiation as a side effect:
+
+```python
+_ = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+```
+
+After this, `galaxy_image` JITs cleanly.
+
+__Closure-captured galaxy: registration not needed__
+
+A way to JIT a galaxy-method call that does NOT need pytree
+registration: pass the galaxy as the bound method's `self`, not as an
+argument.
+
+```python
+jitted_image = jax.jit(galaxy.image_2d_from)   # bound method; assign ONCE
+arr = jitted_image(grid=grid, xp=jnp).array
+```
+
+Trade-off: you can't vary `galaxy` across calls and still hit the
+compilation cache. For parameter sweeps, use the argument form.
+
+For the full deep-dive on the bound-method vs traced-argument trade-off,
+cache-identity footguns, and the `@jax.jit + xp=jnp` pairing rule, see
+the autolens companion at
+`autolens_workspace/scripts/guides/lens_calc.py` `__JAX__` section. The
+patterns apply to autogalaxy primitives equally — substitute `Galaxy` /
+`Galaxies` for `Tracer` / `LensCalc`. The `.array` host-transfer
+mechanics live in `scripts/guides/data_structures.py`.
+
+
+```python
+
+```
