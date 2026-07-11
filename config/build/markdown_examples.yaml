@@ -31,12 +31,14 @@
   max_minutes: 45
 - script: scripts/multi/modeling.py
   max_minutes: 240
+# ellipse/modeling.py deliberately excluded: its "Multiple Ellipses" section runs
+# many sequential DynestyStatic/Drawer fits (>2h, blows the per-cell timeout) —
+# disproportionate for one gallery page. Tracked as a follow-up. ellipse/simulator
+# + ellipse/fit already showcase the ellipse dataset and a fit.
 - script: scripts/ellipse/simulator.py
   max_minutes: 45
 - script: scripts/ellipse/fit.py
   max_minutes: 45
-- script: scripts/ellipse/modeling.py
-  max_minutes: 120
 - script: scripts/guides/galaxies.py
   max_minutes: 45
 - script: scripts/guides/data_structures.py

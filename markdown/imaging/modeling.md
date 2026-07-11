@@ -1,0 +1,780 @@
+> ✏️ **This page is auto-generated from [`scripts/imaging/modeling.py`](../../scripts/imaging/modeling.py) — do not edit it directly.**
+> It shows the example fully executed, with its real output images.
+> Run it yourself via the [Python script](../../scripts/imaging/modeling.py) or the [Jupyter notebook](../../notebooks/imaging/modeling.ipynb).
+
+Modeling: Start Here
+====================
+
+This script is the starting point for modeling of CCD imaging data (E.g. Hubble Space Telescope, Euclid) with
+**PyAutoGalaxy** and it provides an overview of the modeling API.
+
+After reading this script, the `features`, `customize` and `searches` folders provide example for performing lens
+modeling in different ways and customizing the analysis.
+
+__Model__
+
+This script fits an `Imaging` dataset of a galaxy with a model where:
+
+ - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
+
+__Plotters__
+
+To produce images of the data `Plotter` objects are used, which are high-level wrappers of matplotlib
+code which produce high quality visualization of galaxies.
+
+The `PLotter` API is described in the script `autogalaxy_workspace/*/guides/plot`.
+
+__Simulation__
+
+This script fits a simulated `Imaging` dataset of a galaxy, which is produced in the
+script `autogalaxy_workspace/*/simulators/imaging/start_here.py`
+
+__Data Preparation__
+
+The `Imaging` dataset fitted in this example confirms to a number of standard that make it suitable to be fitted in
+**PyAutoGalaxy**.
+
+If you are intending to fit your own data, you will need to ensure it conforms to these standards, which are
+described in the script `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb`.
+
+__Contents__
+
+- **Dataset:** Loading the imaging dataset from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
+- **Mask:** Defining a 2D mask for the region of interest around the galaxy.
+- **Over Sampling:** Applying adaptive over-sampling for accurate light profile evaluation.
+- **Model:** Composing the galaxy model with linear Sersic bulge and Exponential disk.
+- **Search:** Configuring the Nautilus nested sampling non-linear search.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
+- **Analysis:** Creating the AnalysisImaging object for likelihood evaluation.
+- **VRAM Use:** Estimating GPU VRAM usage for JAX-accelerated fitting.
+- **Run Times:** Discussion of computational run times and how to estimate them.
+- **Model-Fit:** Running the model-fit and monitoring output.
+- **Output Folder Layout:** Description of the structure of the `output` folder where results are written.
+- **Result:** Inspecting the result object, maximum likelihood model and posteriors.
+- **Features:** Links to advanced modeling features in the workspace.
+- **Data Preparation:** Links to data preparation resources.
+- **HowToGalaxy:** Links to the HowToGalaxy tutorial lectures.
+
+
+```python
+
+from autoconf import setup_notebook; setup_notebook()
+
+from pathlib import Path
+import autofit as af
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+```
+
+    Working Directory has been set to `autogalaxy_workspace`
+
+
+__Dataset__
+
+Load the strong dataset `simple` via .fits files, which is a data format used by astronomers to store images.
+
+The `pixel_scales` define the arc-second to pixel conversion factor of the image, which for the dataset we are using 
+is 0.1" / pixel.
+
+
+```python
+dataset_name = "simple"
+dataset_path = Path("dataset") / "imaging" / dataset_name
+```
+
+__Dataset Auto-Simulation__
+
+If the dataset does not already exist on your system, it will be created by running the corresponding
+simulator script. This ensures that all example scripts can be run without manually simulating data first.
+
+
+```python
+if ag.util.dataset.should_simulate(str(dataset_path)):
+    import subprocess
+    import sys
+
+    subprocess.run(
+        [sys.executable, "scripts/imaging/simulator.py"],
+        check=True,
+    )
+
+
+dataset = ag.Imaging.from_fits(
+    data_path=dataset_path / "data.fits",
+    psf_path=dataset_path / "psf.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    pixel_scales=0.1,
+)
+```
+
+Use an `Imaging` the plot the data, including: 
+
+ - `data`: The image of the strong lens.
+ - `noise_map`: The noise-map of the image, which quantifies the noise in every pixel as their RMS values.
+ - `psf`: The point spread function of the image, which describes the blurring of the image by the telescope optics.
+ - `signal_to_noise_map`: Quantifies the signal-to-noise in every pixel.
+
+
+```python
+aplt.subplot_imaging_dataset(dataset=dataset)
+```
+
+
+    
+![png](modeling_files/modeling_7_0.png)
+    
+
+
+__Extra Galaxies Noise Scaling__
+
+Before masking, we must deal with any extra galaxies in the data: nearby galaxies (or foreground stars, or
+data-reduction artefacts) whose emission is not associated with the galaxy we are studying but blends into the
+field. If their light is left in the data it will contaminate the model-fit and bias the inferred model. It is
+too easy to skip straight to modeling without checking for these, so we make this step explicit.
+
+To prevent extra galaxies from impacting the fit, we do not mask them entirely from the fit. Instead, the pixels
+are kept in the fit but their data values are scaled to zero and their noise-map values increased to very large
+values, so they contribute negligibly to the likelihood. This is preferable to removing the pixels entirely
+(e.g. for a pixelized source reconstruction, removing pixels can produce discontinuities in the pixelization).
+
+The `simple` dataset includes a faint extra galaxy, and a `mask_extra_galaxies.fits` covering it is shipped with
+the dataset (created by the simulator). If you are modeling your own data with an extra galaxy, you must either
+create such a mask using the data-preparation tools
+(`autogalaxy_workspace/*/imaging/data_preparation/gui/mask_extra_galaxies.py`, or the manual
+`data_preparation/examples/optional/mask_extra_galaxies.py`), or shrink the circular mask below so the extra
+galaxy lies outside it and is removed from the fit entirely.
+
+
+```python
+mask_extra_galaxies = ag.Mask2D.from_fits(
+    file_path=dataset_path / "mask_extra_galaxies.fits",
+    pixel_scales=dataset.pixel_scales,
+    invert=True,  # `True` means a pixel is scaled.
+)
+
+dataset = dataset.apply_noise_scaling(mask=mask_extra_galaxies)
+
+aplt.subplot_imaging_dataset(dataset=dataset)
+```
+
+    2026-07-11 10:40:50,891 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data noise scaling applied, a total of 256 pixels were scaled to large noise values.
+
+
+
+    
+![png](modeling_files/modeling_9_1.png)
+    
+
+
+__Mask__
+
+The model-fit requires a 2D mask defining the regions of the image we fit the model to the data.
+
+We create a 3.0 arcsecond circular mask and apply it to the `Imaging` object that the model fits.
+
+
+```python
+mask = ag.Mask2D.circular(
+    shape_native=dataset.shape_native, pixel_scales=dataset.pixel_scales, radius=3.0
+)
+
+dataset = dataset.apply_mask(mask=mask)
+```
+
+    2026-07-11 10:40:52,720 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data masked, contains a total of 2828 image-pixels
+
+
+If we plot the masked data, the mask removes the exterior regions of the image where there is no emission from the 
+galaxy.
+
+The mask used to fit the data can be customized, as described in 
+the script `autogalaxy_workspace/*/modeling/imaging/customize/custom_mask.py`
+
+
+```python
+aplt.subplot_imaging_dataset(dataset=dataset)
+```
+
+
+    
+![png](modeling_files/modeling_13_0.png)
+    
+
+
+__Over Sampling__
+
+Over sampling is a numerical technique where the images of light profiles and galaxies are evaluated 
+on a higher resolution grid than the image data to ensure the calculation is accurate. 
+
+For a new user, the details of over-sampling are not important, therefore just be aware that below we make it so that 
+all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
+
+Once you are more experienced, you should read up on over-sampling in more detail via 
+the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+
+
+```python
+over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
+    grid=dataset.grid,
+    sub_size_list=[8, 4, 1],
+    radial_list=[0.3, 0.6],
+    centre_list=[(0.0, 0.0)],
+)
+
+dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
+```
+
+The imaging subplot updates the bottom two panels to reflect the update to over sampling, which now uses a higher
+values in the centre.
+
+Whilst you may not yet understand the details of over-sampling, you can at least track it visually in the plots
+and later learnt more about it in the `over_sampling.ipynb` guide.
+
+
+```python
+aplt.subplot_imaging_dataset(dataset=dataset)
+```
+
+
+    
+![png](modeling_files/modeling_17_0.png)
+    
+
+
+__Model__
+
+In this example we compose a model where:
+
+ - The galaxy's bulge is a linear parametric `Sersic` bulge [6 parameters]. 
+
+ - The galaxy's disk is a linear parametric `Exponential` disk, whose centre is aligned with the bulge [3 parameters].
+ 
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=11.
+
+__Linear Light Profiles__
+
+The model below uses a `linear light profile` for the bulge and disk, via the API `lp_linear`. This is a specific type 
+of light profile that solves for the `intensity` of each profile that best fits the data via a linear inversion. 
+This means it is not a free parameter, reducing the dimensionality of non-linear parameter space. 
+
+Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
+by default in every modeling example. A full description of linear light profiles is provided in the
+`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
+
+A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
+
+__Model Composition__
+
+The API below for composing a model uses the `Model` and `Collection` objects, which are imported from 
+**PyAutoGalaxy**'s parent project **PyAutoFit** 
+
+The API is fairly self explanatory and is straight forward to extend, for example adding more light profiles
+to the galaxy.
+
+__Model Cookbook__
+
+A full description of model composition is provided by the model cookbook: 
+
+https://pyautogalaxy.readthedocs.io/en/latest/general/model_cookbook.html
+
+__Coordinates__
+
+The model fitting default settings assume that the galaxy centre is near the coordinates (0.0", 0.0"). 
+
+If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
+
+ - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
+ - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
+
+
+```python
+bulge = af.Model(ag.lp_linear.Sersic)
+disk = af.Model(ag.lp_linear.Exponential)
+bulge.centre = disk.centre
+
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk)
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+```
+
+The `info` attribute shows the model in a readable format.
+
+[The `info` below may not display optimally on your computer screen, for example the whitespace between parameter
+names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
+common issue in Jupyter notebooks.
+
+The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
+increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
+appear in a notebook).]
+
+
+```python
+print(model.info)
+```
+
+    Total Free Parameters = 9
+    
+    model                                                                           Collection (N=9)
+        galaxies                                                                    Collection (N=9)
+            galaxy                                                                  Galaxy (N=9)
+                bulge                                                               Sersic (N=6)
+                disk                                                                Exponential (N=5)
+    
+    galaxies
+        galaxy
+            redshift                                                                0.5
+            bulge - disk
+                centre
+                    centre_0                                                        GaussianPrior [6], mean = 0.0, sigma = 0.3
+                    centre_1                                                        GaussianPrior [7], mean = 0.0, sigma = 0.3
+            bulge
+                ell_comps
+                    ell_comps_0                                                     TruncatedGaussianPrior [2], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                    ell_comps_1                                                     TruncatedGaussianPrior [3], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                effective_radius                                                    UniformPrior [4], lower_limit = 0.0, upper_limit = 30.0
+                sersic_index                                                        UniformPrior [5], lower_limit = 0.8, upper_limit = 5.0
+            disk
+                ell_comps
+                    ell_comps_0                                                     TruncatedGaussianPrior [8], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                    ell_comps_1                                                     TruncatedGaussianPrior [9], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                effective_radius                                                    UniformPrior [10], lower_limit = 0.0, upper_limit = 30.0
+
+
+__Search__
+
+The model is fitted to the data using a non-linear search. 
+
+All examples in the autogalaxy workspace use the nested sampling algorithm 
+Nautilus (https://nautilus-sampler.readthedocs.io/en/latest/), which extensive testing has revealed gives the most 
+accurate and efficient modeling results.
+
+Nautilus has one main setting that trades-off accuracy and computational run-time, the number of `live_points`. 
+A higher number of live points gives a more accurate result, but increases the run-time. A lower value may give 
+less reliable modeling (e.g. the fit may infer a local maxima), but is faster. 
+
+The suitable value depends on the model complexity whereby models with more parameters require more live points. 
+The default value of 200 is sufficient for the vast majority of common galaxy models. Lower values often given reliable
+results though, and speed up the run-times. In this example, given the model is quite simple (N=21 parameters), we 
+reduce the number of live points to 100 to speed up the run-time.
+
+__Unique Identifier__
+
+In the path above, the `unique_identifier` appears as a collection of characters, where this identifier is generated 
+based on the model, search and dataset that are used in the fit.
+ 
+An identical combination of model and search generates the same identifier, meaning that rerunning the script will use 
+the existing results to resume the model-fit. In contrast, if you change the model or search, a new unique identifier 
+will be generated, ensuring that the model-fit results are output into a separate folder.
+
+We additionally want the unique identifier to be specific to the dataset fitted, so that if we fit different datasets
+with the same model and search results are output to a different folder. We achieve this below by passing 
+the `dataset_name` to the search's `unique_tag`.
+
+__Iterations Per Update__
+
+Every N iterations, the non-linear search outputs the current results to the folder `autogalaxy_workspace/output`,
+which includes producing visualization. 
+
+Depending on how long it takes for the model to be fitted to the data (see discussion about run times below), 
+this can take up a large fraction of the run-time of the non-linear search.
+
+For this fit, the fit is very fast, thus we set a high value of `iterations_per_quick_update=10000` to ensure these updates
+so not slow down the overall speed of the model-fit.
+#
+**If the iteration per update is too low, the model-fit may be significantly slowed down by the time it takes to
+output results and visualization frequently to hard-disk. If your fit is consistent displaying a log saying that it
+is outputting results, try increasing this value to ensure the model-fit runs efficiently.**
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
+
+
+```python
+search = af.Nautilus(
+    path_prefix=Path("imaging") / "features",
+    name="start_here",
+    unique_tag=dataset_name,
+    n_live=200,
+    n_batch=50,  # GPU lens model fits are batched and run simultaneously, see VRAM section below.
+    iterations_per_quick_update=10000,
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
+)
+```
+
+__Analysis__
+
+We next create an `AnalysisImaging` object, which can be given many inputs customizing how the model is fitted to the 
+data (in this example they are omitted for simplicity).
+
+Internally, this object defines the `log_likelihood_function` used by the non-linear search to fit the model to 
+the `Imaging` dataset. 
+
+It is not vital that you as a user understand the details of how the `log_likelihood_function` fits a model to 
+data, but interested readers can find a step-by-step guide of the likelihood 
+function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
+
+__JAX__
+
+Analysis uses JAX under the hood for fast GPU/CPU acceleration. If JAX is installed with GPU
+support, your fits will run much faster (around 10 minutes instead of an hour). If only a CPU is available,
+JAX will still provide a speed up via multithreading, with fits taking around 20-30 minutes.
+
+If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
+
+
+```python
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+```
+
+__VRAM Use__
+
+When running with JAX on a GPU, the analysis must fit within the GPU’s
+available VRAM. If insufficient VRAM is available, the analysis will fail with an
+out-of-memory error, typically during JIT compilation or the first likelihood call.
+
+Two factors dictate the VRAM usage of an analysis:
+
+- The number of arrays and other data structures JAX must store in VRAM to fit the model
+  to the data in the likelihood function. This is dictated by the model complexity and dataset size.
+
+- The `batch_size` sets how many likelihood evaluations are performed simultaneously.
+  Increasing the batch size increases VRAM usage but can reduce overall run time,
+  while decreasing it lowers VRAM usage at the cost of slower execution.
+
+Before running an analysis, users should check that the estimated VRAM usage for the
+chosen batch size is comfortably below their GPU’s total VRAM.
+
+The method below prints the VRAM usage estimate for the analysis and model with the specified batch size,
+it takes about 20-30 seconds to run so you may want to comment it out once you are familiar with your GPU's VRAM limits.
+
+For a MGE model with the low resolution dataset fitted in this example VRAM use is relatively low (~0.027GB) For other 
+models (e.g. pixelized galaxy reconstructions) and higher resolution datasets it can be much higher (> 1GB going beyond 10GB).
+
+
+```python
+analysis.print_vram_use(model=model, batch_size=search.batch_size)
+```
+
+    2026-07-11 10:40:56,924 - autofit.non_linear.fitness - INFO - JAX: Applying vmap and jit to likelihood function -- may take a few seconds.
+
+
+    2026-07-11 10:40:56,925 - autofit.non_linear.fitness - INFO - JAX: vmap and jit applied in 0.001199960708618164 seconds.
+
+
+    VRAM USE = 0.025 GB
+
+
+__Run Times__
+
+Modeling can be a computationally expensive process. When fitting complex models to high resolution datasets 
+run times can be of order hours, days, weeks or even months.
+
+Run times are dictated by two factors:
+
+ - The log likelihood evaluation time: the time it takes for a single `instance` of the model to be fitted to 
+   the dataset such that a log likelihood is returned.
+
+ - The number of iterations (e.g. log likelihood evaluations) performed by the non-linear search: more complex
+   models require more iterations to converge to a solution.
+
+For this analysis, the log likelihood evaluation time is ~0.03 seconds, which is extremely fast for modeling. More advanced
+modeling features (e.g. shapelets, multi Gaussian expansions, pixelizations) have slower log likelihood evaluation
+times (1-3 seconds), and you should be wary of this when using these features.PointDataset
+
+To estimate the expected overall run time of the model-fit we multiply the log likelihood evaluation time by an 
+estimate of the number of iterations the non-linear search will perform. 
+
+Estimating this quantity is more tricky, as it varies depending on the model complexity (e.g. number of parameters)
+and the properties of the dataset and model being fitted.
+
+For this example, we conservatively estimate that the non-linear search will perform ~10000 iterations per free 
+parameter in the model. This is an upper limit, with models typically converging in far fewer iterations.
+
+If you perform the fit over multiple CPUs, you can divide the run time by the number of cores to get an estimate of
+the time it will take to fit the model. Parallelization with Nautilus scales well, it speeds up the model-fit by the 
+`number_of_cores` for N < 8 CPUs and roughly `0.5*number_of_cores` for N > 8 CPUs. This scaling continues 
+for N> 50 CPUs, meaning that with super computing facilities you can always achieve fast run times!
+
+__Model-Fit__
+
+We can now begin the model-fit by passing the model and analysis object to the search, which performs a non-linear
+search to find which models fit the data with the highest likelihood.
+
+Checkout the output folder for live outputs of the results of the fit, including on-the-fly visualization of the best 
+fit model!
+
+**Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce 
+an error. If this occurs, see the `autolens_workspace/guides/modeling/bug_fix` example for a fix.
+
+
+```python
+result = search.fit(model=model, analysis=analysis)
+```
+
+    2026-07-11 10:41:01,028 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with JAX (CPU: cpu).
+
+
+    2026-07-11 10:41:01,155 - start_here - INFO - The output path of this fit is autogalaxy_workspace/output/imaging/features/simple/start_here/69fd7015cc2b38aefbf69030ca485f2b
+
+
+    2026-07-11 10:41:01,441 - start_here - INFO - Fit Already Completed: skipping non-linear search.
+
+
+    2026-07-11 10:41:02,249 - start_here - INFO - Removing search internal folder.
+
+
+    2026-07-11 10:41:02,253 - start_here - INFO - Removing all files except for .zip file
+
+
+    2026-07-11 10:41:03,411 - start_here - INFO - Search complete, returning result
+
+
+__Output Folder Layout__
+
+Now the fit is running you should checkout the `autogalaxy_workspace/output` folder. This is where results are
+written to hard-disk in human-readable formats — `.json`, `.csv`, `.fits`, `.png` and plain text.
+
+As the fit progresses, results are written on the fly using the highest likelihood model found by the
+non-linear search so far. This means you can inspect the model-fit as it runs, without waiting for the
+non-linear search to terminate.
+
+Each completed fit lives at a path like::
+
+    output/imaging/<dataset_name>/modeling/<unique_hash>/
+        files/                         <- JSON + CSV: loadable Python objects
+            galaxies.json              <- max log likelihood Galaxies
+            model.json                 <- fitted af.Collection model
+            samples.csv                <- full Nautilus samples
+            samples_summary.json       <- max log likelihood parameter values + errors
+            samples_info.json          <- metadata about the samples
+            search.json                <- non-linear search configuration
+            settings.json              <- search settings
+            covariance.csv             <- parameter covariance matrix
+        image/                         <- FITS + PNG: imaging products
+            dataset.fits               <- data, noise-map and PSF
+            fit.fits                   <- model image, residuals, chi-squared map
+            model_galaxy_images.fits   <- per-galaxy model images
+            galaxy_images.fits         <- per-galaxy images
+            dataset.png, fit.png       <- visualisations
+        model.info                     <- human-readable model summary
+        model.results                  <- human-readable fit summary
+        search.summary                 <- search run summary
+        search_internal/               <- internal files used to resume / visualise the search
+        metadata                       <- run metadata
+
+The `<unique_hash>` is a 32-character identifier derived from the model, search and dataset, so re-running the
+same configuration resumes from the existing fit automatically.
+
+__Result__
+
+The search returns a result object, which whose `info` attribute shows the result in a readable format.
+
+[Above, we discussed that the `info_whitespace_length` parameter in the config files could b changed to make 
+the `model.info` attribute display optimally on your computer. This attribute also controls the whitespace of the
+`result.info` attribute.]
+
+
+```python
+print(result.info)
+```
+
+    Bayesian Evidence                                                               1260.19002697
+    Maximum Log Likelihood                                                          1306.60906682
+    
+    model                                                                           Collection (N=9)
+        galaxies                                                                    Collection (N=9)
+            galaxy                                                                  Galaxy (N=9)
+                bulge                                                               Sersic (N=6)
+                disk                                                                Exponential (N=5)
+    
+    Maximum Log Likelihood Model:
+    ... [47 lines of output truncated] ...
+                    ell_comps_0                                                     0.0519 (0.0469, 0.0569)
+                    ell_comps_1                                                     0.0019 (-0.0029, 0.0068)
+                effective_radius                                                    0.5841 (0.5201, 0.6598)
+                sersic_index                                                        2.9642 (2.7824, 3.1619)
+            bulge - disk
+                centre
+                    centre_0                                                        0.0005 (-0.0003, 0.0013)
+                    centre_1                                                        0.0008 (-0.0000, 0.0017)
+            disk
+                ell_comps
+                    ell_comps_0                                                     0.1537 (0.1494, 0.1583)
+                    ell_comps_1                                                     0.0868 (0.0833, 0.0908)
+                effective_radius                                                    1.5926 (1.5824, 1.6022)
+    
+    instances
+    
+    galaxies
+        galaxy
+            redshift                                                                0.5
+
+
+The `Result` object also contains:
+
+ - The model corresponding to the maximum log likelihood solution in parameter space.
+ - The corresponding maximum log likelihood `Galaxies` and `FitImaging` objects.
+
+
+```python
+print(result.max_log_likelihood_instance)
+
+aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp)
+
+aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
+```
+
+    <autofit.mapper.model.ModelInstance object at 0x7fe8f9ba6060>
+
+
+
+    
+![png](modeling_files/modeling_33_1.png)
+    
+
+
+
+    
+![png](modeling_files/modeling_33_2.png)
+    
+
+
+The result contains the full posterior information of our non-linear search, including all parameter samples, 
+log likelihood values and tools to compute the errors on the model. 
+
+There are built in visualization tools for plotting this.
+
+The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
+parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.
+
+The superscripts of labels correspond to the name each component was given in the model (e.g. for the `Isothermal`
+mass its name `mass` defined when making the `Model` above is used).
+
+
+```python
+aplt.corner_cornerpy(samples=result.samples)
+```
+
+    2026-07-11 10:41:13,742 - arviz - INFO - Found 'auto' as default backend, checking available backends
+
+
+    2026-07-11 10:41:13,743 - arviz - INFO - Matplotlib is available, defining as default backend
+
+
+    2026-07-11 10:41:13,753 - arviz - INFO - arviz_base 1.0.0 available, exposing its functions as part of the `arviz` namespace
+
+
+    2026-07-11 10:41:13,901 - arviz - INFO - arviz_stats 1.0.0 available, exposing its functions as part of the `arviz` namespace
+
+
+    2026-07-11 10:41:13,934 - arviz - INFO - arviz_plots 1.0.0 available, exposing its functions as part of the `arviz` namespace
+
+
+
+    
+![png](modeling_files/modeling_35_5.png)
+    
+
+
+__Loading From Output Folder__
+
+Everything the `Result` object contains has also been written to hard-disk, inside the fit's output folder. Each
+file loads back into a full Python object with a single line — much faster and simpler than re-running the fit.
+
+For example, the maximum log likelihood `Galaxies` is saved as a `.json` file and the per-galaxy model images as
+a `.fits` file:
+
+
+```python
+from autoconf.dictable import from_json
+
+result_path = search.paths.output_path  # Points at the fit's unique output folder.
+
+if (result_path / "files" / "galaxies.json").exists():
+    galaxies = from_json(file_path=result_path / "files" / "galaxies.json")
+
+    galaxy_images = ag.Array2D.from_fits(
+        file_path=result_path / "image" / "galaxy_images.fits", hdu=0, pixel_scales=0.1
+    )
+```
+
+The output folder also contains `model.json`, `samples.csv`, `dataset.fits`, `fit.fits` and more. A full walkthrough
+of loading results from the output folder — covering both single-fit (`from_json`) and multi-fit (aggregator)
+workflows — is given in:
+
+  `autogalaxy_workspace/*/guides/results/start_here.py`
+
+
+```python
+
+# %%
+'''
+This script gives a concise overview of the PyAutoGalaxy modeling API, fitting one the simplest models possible.
+So, what next? 
+
+__Features__
+
+The examples in the `autogalaxy_workspace/*/modeling/imaging/features` package illustrate other modeling features. 
+
+We recommend you checkout the following features, because the make modeling in general more reliable and 
+efficient (you will therefore benefit from using these features irrespective of the quality of your data and 
+scientific topic of study).
+
+We recommend you now checkout the following feature:
+
+- ``linear_light_profiles``: The model light profiles use linear algebra to solve for their intensity, reducing model complexity.
+
+All other features may be useful to specific users with specific datasets and scientific goals, but are not useful
+for general modeling.
+
+The folders `autogalaxy_workspace/*/modeling/imaging/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`
+provide guides on how to customize many other aspects of the model-fit. Check them out to see if anything
+sounds useful, but for most users you can get by without using these forms of customization!
+  
+__Data Preparation__
+
+If you are looking to fit your own CCD imaging data of a galaxy, checkout  
+the `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb` script for an overview of how data should be 
+prepared before being modeled.
+
+__HowToGalaxy__
+
+This `start_here.py` script, and the features examples above, do not explain many details of how modeling is 
+performed, for example:
+
+ - How does PyAutoGalaxy perform calculations which determine how a gaalxy emits light and therefore fit a model?
+ - How is the model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed?).
+ - How does Nautilus find the highest likelihood models? What exactly is a "non-linear search"?
+
+You do not need to be able to answer these questions in order to fit models with PyAutoGalaxy and do science.
+However, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist
+
+This deeper insight is offered by the **HowToGalaxy** Jupyter notebook lectures, which live
+at https://github.com/PyAutoLabs/HowToGalaxy.
+
+I recommend that you check them out if you are interested in more details!
+'''
+```
+
+
+
+
+    '\nThis script gives a concise overview of the PyAutoGalaxy modeling API, fitting one the simplest models possible.\nSo, what next? \n\n__Features__\n\nThe examples in the `autogalaxy_workspace/*/modeling/imaging/features` package illustrate other modeling features. \n\nWe recommend you checkout the following features, because the make modeling in general more reliable and \nefficient (you will therefore benefit from using these features irrespective of the quality of your data and \nscientific topic of study).\n\nWe recommend you now checkout the following feature:\n\n- ``linear_light_profiles``: The model light profiles use linear algebra to solve for their intensity, reducing model complexity.\n\nAll other features may be useful to specific users with specific datasets and scientific goals, but are not useful\nfor general modeling.\n\nThe folders `autogalaxy_workspace/*/modeling/imaging/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`\nprovide guides on how to customize many other aspects of the model-fit. Check them out to see if anything\nsounds useful, but for most users you can get by without using these forms of customization!\n\n__Data Preparation__\n\nIf you are looking to fit your own CCD imaging data of a galaxy, checkout  \nthe `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb` script for an overview of how data should be \nprepared before being modeled.\n\n__HowToGalaxy__\n\nThis `start_here.py` script, and the features examples above, do not explain many details of how modeling is \nperformed, for example:\n\n - How does PyAutoGalaxy perform calculations which determine how a gaalxy emits light and therefore fit a model?\n - How is the model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed?).\n - How does Nautilus find the highest likelihood models? What exactly is a "non-linear search"?\n\nYou do not need to be able to answer these questions in order to fit models with PyAutoGalaxy and do science.\nHowever, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist\n\nThis deeper insight is offered by the **HowToGalaxy** Jupyter notebook lectures, which live\nat https://github.com/PyAutoLabs/HowToGalaxy.\n\nI recommend that you check them out if you are interested in more details!\n'
+
+
+
+
+```python
+
+```
