@@ -1,0 +1,744 @@
+> ✏️ **This page is auto-generated from [`scripts/interferometer/start_here.py`](../../scripts/interferometer/start_here.py) — do not edit it directly.**
+> It shows the example fully executed, with its real output images.
+> Run it yourself via the [Python script](../../scripts/interferometer/start_here.py) or the [Jupyter notebook](../../notebooks/interferometer/start_here.ipynb).
+
+Start Here: Interferometer
+==========================
+
+Galaxies are observed with radio/mm interferometers (e.g. ALMA), which measure
+complex visibilities in the uv-plane instead of CCD images.
+
+This script shows you how to model such a galaxy using **PyAutoGalaxy** with as little setup
+as possible. In about 15 minutes you’ll be able to point the code at your own FITS files and
+fit your first galaxy.
+
+We focus on a *galaxy-scale* target (a single galaxy). If you have multiple galaxies,
+see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
+
+__JAX__
+
+PyAutoGalaxy runs interferometer model-fits on JAX by default. If you
+installed `autogalaxy[jax]`, `ag.AnalysisInterferometer(dataset=dataset)`
+below auto-enables `use_jax=True`. Use `TransformerDFT` (the default)
+under JAX — `TransformerNUFFT` (pynufft) is faster on large UV sets but
+is not JAX-traceable; the `nufftax` replacement (see `__NUFFT (nufftax)__`
+below) is a research path tracking that.
+
+For broader JAX principles (when you write `@jax.jit` yourself, the
+return-type contract), see the top-level `autogalaxy_workspace/start_here.py`
+`__JAX__` section. For a runnable `@jax.jit + SimulatorInterferometer(use_jax=True)`
+example, see the `__JAX Variant__` section at the end of
+`scripts/interferometer/simulator.py`.
+
+__NUFFT (nufftax)__
+
+The image-to-visibilities Fourier transform is performed by a Non-Uniform Fast Fourier Transform (NUFFT),
+exposed in **PyAutoGalaxy** as `TransformerNUFFT`. The default backend is `nufftax`, a pure-JAX NUFFT
+that jit-compiles and vmap-batches like the rest of the library:
+
+  https://github.com/GragasLab/nufftax
+
+Because `nufftax` is JAX-native, light-profile interferometer modeling now runs at full GPU speed for
+datasets with **arbitrarily many visibilities** — including high-resolution ALMA observations with tens of
+millions to hundreds of millions of visibilities. Previously this was only practical for small datasets,
+or required switching to a pixelized reconstruction. Pixelized reconstructions are still recommended for
+complex, irregular galaxy morphologies (see `features/pixelization`), but they are no longer a
+performance requirement for large datasets.
+
+If `nufftax` is not installed, install it via `pip install nufftax`. A legacy pynufft-backed
+transformer (`TransformerNUFFTPyNUFFT`) is also available as a non-JAX fallback.
+
+__Number of Visibilities__
+
+This example fits a **low-resolution interferometric dataset** with a small number of visibilities (273). The
+dataset is intentionally minimal so that the example runs quickly and allows you to become familiar with the API
+and modeling workflow.
+
+The same modeling workflow — light profiles + `TransformerNUFFT` (nufftax) — scales to high-resolution
+datasets with **millions to hundreds of millions of visibilities** (e.g. ALMA), with no special handling
+beyond switching the transformer choice. Both computational time and VRAM use stay manageable on a GPU
+because `nufftax` runs the NUFFT inside the JAX jit/vmap pipeline.
+
+Pixelized reconstructions (see `features/pixelization`) remain the right tool when the galaxy has complex,
+irregular morphology that simple light profiles cannot capture. They are no longer required purely because
+the dataset is large.
+
+__Contents__
+
+- **JAX:** Overview of JAX GPU/CPU acceleration for fast model fitting.
+- **NUFFT (nufftax):** A JAX-native Non-Uniform FFT, used for the image to uv-plane transform of light profiles.
+- **Number of Visibilities:** Discussion of dataset size; the same workflow scales to many millions of visibilities.
+- **Google Colab Setup:** Setting up the environment for Google Colab.
+- **Imports:** Standard imports used across workspace examples.
+- **Mask (Real Space):** Defining the real-space mask for interferometer modeling.
+- **Dataset:** Loading interferometer data from FITS files.
+- **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
+- **Model:** Composing a Multi Gaussian Expansion galaxy model.
+- **Model Fit:** Fitting the model to data using Nautilus nested sampling.
+- **Live Visual Update:** Push the quick-update image to a live display surface.
+- **Result:** Inspecting the results of the model fit.
+- **Model Your Own Galaxy:** Tips for applying this workflow to your own interferometer data.
+- **Simulator:** Simulating interferometer datasets of galaxies.
+- **Sample:** Simulating many galaxies from a model distribution.
+- **Wrap Up:** Summary and pointers to further resources.
+
+__Google Colab Setup__
+
+The introduction `start_here` examples are available on Google Colab, which allows you to run them in a web browser
+without manual local PyAutoGalaxy installation.
+
+The code below sets up your environment if you are using Google Colab, including installing autogalaxy and downloading
+files required to run the notebook. If you are running this script not in Colab (e.g. locally on your own computer),
+running the code will still check correctly that your environment is set up and ready to go.
+
+
+```python
+
+import subprocess
+import sys
+
+try:
+    import google.colab
+
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "autoconf", "--no-deps"]
+    )
+except ImportError:
+    pass
+
+from autoconf import setup_colab
+
+# NOTE: This is the only call below that is AutoLens-specific. Update to the PyAutoGalaxy equivalent in your codebase.
+setup_colab.for_autogalaxy(
+    raise_error_if_not_gpu=False  # Switch to False for CPU Google Colab
+)
+```
+
+    
+                You are not running in a Google Colab environment so cannot use the setup_colab() function.
+    
+                You should therefore have PyAutoGalaxy installed locally in your environment already (e.g. via pip or
+                conda) and can run the rest of your script normally.
+    
+                You may now continue running your script or Notebook.
+                
+
+
+__Imports__
+
+Lets first import autogalaxy, its plotting module and the other libraries we'll need.
+
+You'll see these imports in the majority of workspace examples.
+
+
+```python
+from autoconf import jax_wrapper  # Sets JAX environment before other imports
+
+from autoconf import setup_notebook; setup_notebook()
+
+from pathlib import Path
+import numpy as np
+
+import autofit as af
+import autogalaxy as ag
+import autogalaxy.plot as aplt
+```
+
+    Working Directory has been set to `autogalaxy_workspace`
+
+
+__Mask (Real Space)__
+
+Interferometer modeling evaluates the galaxy image on a *real-space grid* and Fourier transforms
+to the uv-plane to compare with visibilities.
+
+We therefore define a circular real-space mask, which sets the pixel grid size and pixel-to-arcsecond
+pixel scale in real space.
+
+
+```python
+mask_radius = 3.5
+
+real_space_mask = ag.Mask2D.circular(
+    shape_native=(256, 256),
+    pixel_scales=0.1,
+    radius=mask_radius,
+)
+```
+
+__Dataset__
+
+We begin by loading an `Interferometer` dataset from FITS, three ingredients are needed for galaxy modeling:
+
+- `data.fits`: complex visibilities (shape: n_vis)
+- `noise_map.fits`: per-visibility complex RMS
+- `uv_wavelengths.fits`: (u, v) sampling of the interferometer in wavelengths
+
+We must also choose a transformer for mapping the real-space image to visibilities:
+
+- `TransformerNUFFT`: JAX-native Non-Uniform FFT (default, backed by `nufftax`). Recommended for any
+  dataset size — runs at full GPU speed for millions of visibilities.
+- `TransformerDFT`: exact Discrete FT. Slower than the NUFFT for large `n_vis`, but useful as a reference
+  for verification and for the pixelized reconstruction's sparse-operator workflow (see
+  `features/pixelization`).
+
+We load a low resolution Square Mile Array (SMA) dataset for this example, which has just 273 visibilities.
+We use `TransformerNUFFT` so that this example reflects the recommended workflow at any visibility count;
+for 273 visibilities `TransformerDFT` would also work and produce a near-identical result.
+
+
+```python
+dataset_name = "simple"
+dataset_path = Path("dataset") / "interferometer" / dataset_name
+```
+
+__Dataset Auto-Simulation__
+
+If the dataset does not already exist on your system, it will be created by running the corresponding
+simulator script. This ensures that all example scripts can be run without manually simulating data first.
+
+
+```python
+if ag.util.dataset.should_simulate(str(dataset_path)):
+    import subprocess
+    import sys
+
+    subprocess.run(
+        [sys.executable, "scripts/interferometer/simulator.py"],
+        check=True,
+    )
+
+
+dataset = ag.Interferometer.from_fits(
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
+    real_space_mask=real_space_mask,
+    transformer_class=ag.TransformerNUFFT,
+)
+
+aplt.subplot_interferometer_dirty_images(dataset=dataset)
+```
+
+
+    
+![png](start_here_files/start_here_9_0.png)
+    
+
+
+__Model__
+
+To perform galaxy modeling we must define a galaxy model describing the light profile of the galaxy.
+
+A brilliant model to start with is one which uses a Multi Gaussian Expansion (MGE)
+to model the galaxy light.
+
+Full details of why this model is so good are provided in the main workspace docs,
+but in a nutshell it provides an excellent balance of being fast to fit, flexible
+enough to capture complex galaxy morphologies and providing accurate fits to the vast
+majority of galaxy images.
+
+The MGE model composition API is quite long and technical, so we simply load the MGE
+model for the galaxy below via a utility function `mge_model_from` which
+hides the API to make the code in this introduction example ready to read. We then
+use the PyAutoGalaxy Model API to compose the galaxy model.
+
+
+```python
+galaxy_bulge = ag.model_util.mge_model_from(
+    mask_radius=mask_radius, total_gaussians=5, centre_prior_is_uniform=False
+)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=galaxy_bulge)
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+```
+
+We can print the model to show the parameters that the model is composed of, which shows many of the MGE's fixed
+parameter values the API above hid the composition of.
+
+
+```python
+print(model.info)
+```
+
+    Total Free Parameters = 4
+    
+    model                                                                           Collection (N=4)
+        galaxies                                                                    Collection (N=4)
+            galaxy                                                                  Galaxy (N=4)
+                bulge                                                               Basis (N=4)
+                    profile_list                                                    Collection (N=4)
+                        0 - 4                                                       Gaussian (N=4)
+    
+    galaxies
+        galaxy
+            redshift                                                                0.5
+            bulge
+                profile_list
+                    0 - 4
+                        centre
+                            centre_0                                                GaussianPrior [0], mean = 0.0, sigma = 0.3
+                            centre_1                                                GaussianPrior [1], mean = 0.0, sigma = 0.3
+                        ell_comps
+                            ell_comps_0                                             TruncatedGaussianPrior [2], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                            ell_comps_1                                             TruncatedGaussianPrior [3], mean = 0.0, sigma = 0.3, lower_limit = -1.0, upper_limit = 1.0
+                    0
+                        sigma                                                       0.0001
+                    1
+                        sigma                                                       0.0013677823998673804
+                    2
+                        sigma                                                       0.01870828693386971
+                    3
+                        sigma                                                       0.2558886559981587
+                    4
+                        sigma                                                       3.5000000000000004
+
+
+__Model Fit__
+
+We now fit the data with the galaxy model using the non-linear fitting method and nested sampling algorithm Nautilus.
+
+We fit the visibilities with `AnalysisInterferometer`, which defines the `log_likelihood_function` used by
+Nautilus to fit the model to the interferometer data.
+
+__JAX__
+
+`ag.AnalysisInterferometer` defaults to `use_jax=True` when JAX is
+installed. The search driver wraps the likelihood in `jax.vmap(jax.jit(...))`.
+Force NumPy with `use_jax=False` (or `PYAUTO_DISABLE_JAX=1`) when
+debugging.
+
+**Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
+an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
+
+__Live Visual Update__
+
+By default the quick-update image is only written to disk. Set `live_visual_update=True` to also push it to a
+live display surface:
+
+- **Python script** — a matplotlib window opens automatically and refreshes with each quick update, so you can
+  watch the fit converge without leaving your terminal.
+- **Jupyter / Colab notebook** — the cell that ran `search.fit(...)` shows a single self-updating image that
+  refreshes in place every `iterations_per_quick_update`.
+
+The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
+want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
+
+
+```python
+search = af.Nautilus(
+    path_prefix=Path("interferometer"),  # The path where results and output are stored.
+    name="start_here",  # The name of the fit and folder results are output to.
+    unique_tag=dataset_name,  # A unique tag which also defines the folder.
+    n_live=75,  # The number of Nautilus "live" points, increase for more complex models.
+    n_batch=50,  # GPU galaxy fits are batched and run simultaneously, see modeling examples for details.
+    iterations_per_quick_update=10000,  # Every N iterations the max likelihood model is visualized and output.
+    live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
+)
+
+analysis = ag.AnalysisInterferometer(
+    dataset=dataset,
+    use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
+)
+```
+
+The code below begins the model-fit. This will take around 10 minutes with a GPU, or 20-30 minutes with a CPU.
+
+**Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
+an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
+
+
+```python
+print(
+    """
+    The non-linear search has begun running.
+
+    This Jupyter notebook cell will progress once the search has completed - this could take a few minutes!
+
+    On-the-fly updates every iterations_per_quick_update are printed to the notebook.
+    """
+)
+
+result = search.fit(model=model, analysis=analysis)
+
+print("The search has finished run - you may now continue the notebook.")
+```
+
+    
+        The non-linear search has begun running.
+    
+        This Jupyter notebook cell will progress once the search has completed - this could take a few minutes!
+    
+        On-the-fly updates every iterations_per_quick_update are printed to the notebook.
+        
+    2026-07-10 18:48:01,656 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with JAX (CPU: cpu).
+
+
+    2026-07-10 18:48:02,657 - start_here - INFO - The output path of this fit is autogalaxy_workspace/output/interferometer/simple/start_here/359744ee3f53a9c0eae608b4bb315e07
+
+
+    2026-07-10 18:48:02,659 - start_here - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+
+
+    2026-07-10 18:48:04,201 - start_here - INFO - Starting new Nautilus non-linear search (no previous samples found).
+
+
+    2026-07-10 18:48:04,205 - autofit.non_linear.fitness - INFO - JAX: Applying vmap and jit to likelihood function -- may take a few seconds.
+
+
+    2026-07-10 18:48:04,207 - autofit.non_linear.fitness - INFO - JAX: vmap and jit applied in 0.0026395320892333984 seconds.
+
+
+    2026-07-10 18:48:04,209 - autofit.non_linear.fitness - INFO - Warming up visualization (one-time JAX compilation)...
+
+
+    2026-07-10 18:48:16,249 - autofit.non_linear.fitness - INFO - Visualization warm-up complete.
+
+
+    2026-07-10 18:48:16,251 - start_here - INFO - Running search with JAX vectorization (parallelization handled by JAX).
+
+
+    Starting the nautilus sampler...
+    Please report issues at github.com/johannesulf/nautilus.
+    Status    | Bounds | Ellipses | Networks | Calls    | f_live | N_eff | log Z    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    Finished  | 7      | 1        | 4        | 1000     | N/A    | 570   | -3189.72 
+    2026-07-10 18:49:37,736 - start_here - INFO - Fit Running: Updating results (see output folder).
+
+
+    Starting the nautilus sampler...
+    Please report issues at github.com/johannesulf/nautilus.
+    Status    | Bounds | Ellipses | Networks | Calls    | f_live | N_eff | log Z    
+    Finished  | 7      | 1        | 4        | 1000     | N/A    | 570   | -3189.72 
+    2026-07-10 18:49:50,162 - start_here - INFO - Fit Running: Updating results (see output folder).
+
+
+    2026-07-10 18:49:50,277 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+
+
+    2026-07-10 18:49:50,327 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+
+
+    2026-07-10 18:50:00,960 - start_here - INFO - Removing search internal folder.
+
+
+    2026-07-10 18:50:00,963 - start_here - INFO - Removing all files except for .zip file
+
+
+    2026-07-10 18:50:01,447 - start_here - INFO - Search complete, returning result
+
+
+    The search has finished run - you may now continue the notebook.
+
+
+__Result__
+
+Now this is running you should check out the `autogalaxy_workspace/output` folder, where many results of the fit
+are written in a human readable format (e.g. .json files) and .fits and .png images of the fit are stored.
+
+When the fit is complex, we can print the results by printing `result.info`.
+
+
+```python
+print(result.info)
+```
+
+    Bayesian Evidence                                                               -3189.71625467
+    Maximum Log Likelihood                                                          -3187.91126849
+    
+    model                                                                           Collection (N=4)
+        galaxies                                                                    Collection (N=4)
+            galaxy                                                                  Galaxy (N=4)
+                bulge                                                               Basis (N=4)
+                    profile_list                                                    Collection (N=4)
+                        0 - 4                                                       Gaussian (N=4)
+    
+    ... [42 lines of output truncated] ...
+                            ell_comps_1                                             -0.0005 (-0.2893, 0.2882)
+    
+    instances
+    
+    galaxies
+        galaxy
+            redshift                                                                0.5
+            bulge
+                profile_list
+                    0
+                        sigma                                                       0.0001
+                    1
+                        sigma                                                       0.0013677823998673804
+                    2
+                        sigma                                                       0.01870828693386971
+                    3
+                        sigma                                                       0.2558886559981587
+                    4
+                        sigma                                                       3.5000000000000004
+
+
+The result also contains the maximum likelihood galaxy model which can be used to plot the best-fit information
+and fit to the data.
+
+
+```python
+aplt.subplot_fit_dirty_images(
+    fit=result.max_log_likelihood_fit
+)  # residuals, chi^2, dirty image, etc.
+```
+
+
+    
+![png](start_here_files/start_here_21_0.png)
+    
+
+
+The result object contains pretty much everything you need to do science with your own galaxy, but details
+of all the information it contains are beyond the scope of this introductory script. The `guides` and `result`
+packages of the workspace contain all the information you need to analyze your results yourself.
+
+__Model Your Own Galaxy__
+
+If you have your own interferometer data of a galaxy — at any visibility count, from a handful up to the
+hundreds of millions typical of ALMA — you are ready to model it yourself by adapting the code above and
+inputting the path to your own .fits files into the `Interferometer.from_fits()` function.
+
+A few things to note, with full details on data preparation provided in the main workspace documentation:
+
+- Supply your own visibilities, noise-map and uv-wavelengths .fits files.
+- Ensure the galaxy is roughly centered in the image.
+- Double-check `pixel_scales` for the real space mask of your interferometer.
+- Adjust the mask radius to include all relevant light.
+- Start with the default model — it works very well for pretty much all galaxy-scale targets!
+
+__Simulator__
+
+Let’s now switch gears and simulate our own interferometer dataset. This is a great way to:
+
+- Practice galaxy modeling before using real data.
+- Build large training sets (e.g. for machine learning).
+- Test galaxy modeling assumptions in a controlled environment.
+
+To do this we need to define a 2D grid of (y,x) coordinates in the image-plane. This grid is
+where we’ll evaluate the light from the galaxy.
+
+
+```python
+grid = ag.Grid2D.uniform(
+    shape_native=(100, 100),
+    pixel_scales=0.1,
+)
+```
+
+We now define a `Galaxy` which contains the light profile we will simulate.
+
+
+```python
+galaxy = ag.Galaxy(
+    redshift=0.5,
+    bulge=ag.lp.Sersic(
+        centre=(0.0, 0.0),
+        ell_comps=ag.convert.ell_comps_from(axis_ratio=0.8, angle=60.0),
+        intensity=4.0,
+        effective_radius=0.1,
+        sersic_index=1.0,
+    ),
+)
+
+aplt.plot_array(array=galaxy.image_2d_from(grid=grid), title="Image")
+```
+
+
+    
+![png](start_here_files/start_here_25_0.png)
+    
+
+
+The image can be saved to .fits for later use.
+
+
+```python
+image = galaxy.image_2d_from(grid=grid)
+
+ag.output_to_fits(
+    values=image.native,
+    file_path=Path("image.fits"),
+    overwrite=True,
+)
+```
+
+__Simulator__
+
+The images above do not represent real interferometer data, as they do not include the transform of the data
+to visibilities or any noise.
+
+The `SimulatorInterferometer` class simulates these two key properties of real interferometer data, which we use below to
+create realistic interferometer data of the galaxy.
+
+The units of the image are arbitrary, with the workspace providing guides on how to convert to physical units for galaxy
+simulations.
+
+The code below performs the simulation, plots the simulated interferometer data and outputs it to .fits files with .png
+files included for easy visualization.
+
+
+```python
+uv_wavelengths = dataset.uv_wavelengths
+
+simulator = ag.SimulatorInterferometer(
+    uv_wavelengths=uv_wavelengths,
+    exposure_time=300.0,  # Length of observation in seconds, higher time = higher S/N
+    noise_sigma=1000.0,  # RMS of the complex Gaussian noise added to the visibilities
+    transformer_class=ag.TransformerNUFFT,  # JAX-native NUFFT (nufftax) — scales to many visibilities
+)
+
+galaxies = ag.Galaxies([galaxy])
+dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
+
+aplt.plot_array(array=dataset.dirty_image, title="Dirty Image")
+aplt.subplot_interferometer_dirty_images(dataset=dataset)
+
+dataset_path = Path("dataset") / "interferometer" / "simulated_galaxy"
+
+aplt.fits_interferometer(
+    dataset=dataset,
+    data_path=dataset_path / "data.fits",
+    noise_map_path=dataset_path / "noise_map.fits",
+    uv_wavelengths_path=dataset_path / "uv_wavelengths.fits",
+    overwrite=True,
+)
+```
+
+
+    
+![png](start_here_files/start_here_29_0.png)
+    
+
+
+
+    
+![png](start_here_files/start_here_29_1.png)
+    
+
+
+__Sample__
+
+Often we want to simulate *many* galaxies — for example, to train a neural network
+or to explore population-level statistics.
+
+This uses the model composition API to define the distribution of the light profiles
+of the galaxies we draw from. The model composition is a little too complex for
+the first example, thus we use a helper function to create a simple galaxy model.
+
+We then generate 3 galaxies for speed, and plot their images so you can see the variety of galaxies
+we create.
+
+Each galaxy is simulated as if it were observed with an interferometer, therefore with a PSF and noise-map.
+
+
+```python
+print(ag.model_util.SIMULATOR_RANDOM_GALAXY_SUMMARY)
+
+total_datasets = 3
+
+for sample_index in range(total_datasets):
+
+    galaxy = ag.model_util.random_galaxy_for_simulation_from()
+    galaxies = ag.Galaxies([galaxy])
+
+    dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
+
+    aplt.subplot_interferometer_dirty_images(dataset=dataset)
+```
+
+    Each simulated galaxy draws a fresh bulge from: signal-to-noise ratio in [20, 60], effective radius in [1.0, 5.0] arcsec, sersic index in [3.5, 4.5], ell_comps each ~ Normal(0, 0.2) clipped to [-1, 1].
+
+
+
+    
+![png](start_here_files/start_here_31_1.png)
+    
+
+
+
+    
+![png](start_here_files/start_here_31_2.png)
+    
+
+
+
+    
+![png](start_here_files/start_here_31_3.png)
+    
+
+
+__Wrap Up__
+
+This script has shown how to model interferometer data of galaxies, and simulate your own interferometer datasets.
+
+Details of the **PyAutoGalaxy** API and how galaxy modeling and simulations actually work were omitted for simplicity,
+but everything you need to know is described throughout the main workspace documentation. You should check it out,
+but maybe you want to try and model your own galaxy first!
+
+The following locations of the workspace are good places to check out next:
+
+- `autogalaxy_workspace/*/interferometer/modeling`: A full description of the galaxy modeling API and how to customize your model-fits.
+- `autogalaxy_workspace/*/interferometer/simulators`: A full description of the galaxy simulation API and how to customize your simulations.
+- `autogalaxy_workspace/*/interferometer/data_preparation`: How to load and prepare your own interferometer data for galaxy modeling.
+- `autogalaxy_workspace/guides/results`: How to load and analyze the results of your galaxy model fits, including tools for large samples.
+- `autogalaxy_workspace/guides`: A complete description of the API and information on calculations and units.
+- `autogalaxy_workspace/interferometer/features`: A description of advanced features for galaxy modeling, for example pixelized reconstructions, read this once you're confident with the basics!
+
+
+```python
+
+```
