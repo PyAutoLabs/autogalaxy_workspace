@@ -3,6 +3,9 @@ root.log
 dataset/**
 !dataset/.gitignore
 !dataset/interferometer/uv_wavelengths/**
+!dataset/database/simple__0/**
+!dataset/database/simple__1/**
+!dataset/database/simple__2/**
 output/
 test_report.md
 test_results/
