@@ -64,7 +64,7 @@ Contributions are welcome and greatly appreciated!
 
 4. Test your changes:
     ```
-    bash run_all_scripts.sh
+    python .github/scripts/run_smoke.py
     ```
 
 5. Regenerate notebooks after scripts pass.

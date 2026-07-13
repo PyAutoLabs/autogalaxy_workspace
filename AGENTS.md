@@ -89,19 +89,6 @@ failure, and exits non-zero if any entry failed.
 
 A script that fails under these flags indicates a real problem (broken import, renamed API, etc.).
 
-### Full local sweep
-
-To run **every** script under `scripts/` (not just the smoke list), use the local runner:
-
-```bash
-bash run_all_scripts.sh
-```
-
-It sets `PYAUTO_TEST_MODE=1` automatically, runs `start_here.py` first within each folder, skips
-scripts listed under the `autogalaxy:` key of `../PyAutoBuild/autobuild/config/no_run.yaml`
-(printing each skip and its reason, flagging `FUTURE_PR` entries), writes failure logs to
-`failed/<relative_path>.log`, and prints a pass/fail/skipped summary.
-
 ## Sandboxed / restricted runs
 
 If `numba` or `matplotlib` cannot write to the default home/source-tree cache locations, point them
