@@ -21,6 +21,7 @@ __Contents__
 - **Run Time:** Profiling of MGE run times and discussion of how they compare to standard light profiles.
 - **Model-Fit:** Performs the model fit using standard API.
 - **Result:** MGE results, including accessing light profiles with solved for intensity values.
+- **Point Source:** Using a compact MGE to model an unresolved point-like component (e.g. an AGN) in the galaxy.
 - **MGE Source:** Detailed illustration of using MGE source.
 - **Regularization:** API for applying regularization to MGE, which is not recommend but included for illustration.
 
@@ -303,6 +304,84 @@ aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=result.g
 
 aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
+
+"""
+__Point Source__
+
+The MGE is not only suited to a galaxy's extended stellar light -- it is also an effective way to model a compact,
+unresolved point-like component at the centre of the galaxy, for example a nuclear starburst, an active galactic
+nucleus (AGN) or an unresolved bulge.
+
+Such a component is modeled as a `Basis` of a small number of linear Gaussians (here 10) which all share the same
+`centre` and elliptical components. Their `sigma` values are fixed to a set of logarithmically spaced values between
+0.01" and twice the pixel scale of the data. This keeps the basis compact relative to the resolution of the image, so
+that it represents a realistic PSF-convolved point source. Fixing the sigmas and linking the centre and ellipticity
+across all Gaussians keeps the parameter count low: the only free parameters are the shared (y, x) `centre` (given a
++/- 0.1" uniform prior) and the two shared elliptical components, for N=4 in total.
+
+The point-source MGE is added to the galaxy as an additional light component alongside the extended `bulge` MGE
+composed above, so the galaxy's light becomes the sum of its diffuse stellar emission and its compact nuclear source.
+We recreate the Gaussians line-by-line below so you can copy and paste the code into your own scripts.
+"""
+# The pixel scale of the data, which sets the maximum Gaussian sigma (and therefore how compact the source is).
+
+pixel_scales = 0.1
+
+total_point_gaussians = 10
+
+# Sigma values span 0.01" (10**-2) up to twice the pixel scale, keeping the basis compact and point-like.
+
+log10_sigma_list = np.linspace(-2, np.log10(2.0 * pixel_scales), total_point_gaussians)
+
+# The centre is the only free parameter, shared by every Gaussian and given a +/- 0.1" uniform prior.
+
+centre_0 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+centre_1 = af.UniformPrior(lower_limit=-0.1, upper_limit=0.1)
+
+point_gaussian_list = af.Collection(
+    af.Model(ag.lp_linear.Gaussian) for _ in range(total_point_gaussians)
+)
+
+for i, gaussian in enumerate(point_gaussian_list):
+    gaussian.centre.centre_0 = centre_0  # All Gaussians share the same y centre.
+    gaussian.centre.centre_1 = centre_1  # All Gaussians share the same x centre.
+    gaussian.ell_comps = point_gaussian_list[
+        0
+    ].ell_comps  # All Gaussians share the same elliptical components.
+    gaussian.sigma = 10 ** log10_sigma_list[i]  # Fixed, log-spaced sigma values.
+
+# The Basis groups the Gaussians into a single compact point-source light component.
+
+point = af.Model(ag.lp_basis.Basis, profile_list=point_gaussian_list)
+
+# The point-source MGE is added to the galaxy alongside its extended `bulge` MGE.
+
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, point=point)
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+"""
+Printing the model info confirms the galaxy now has both an extended `bulge` MGE and a compact `point` MGE.
+"""
+print(model.info)
+
+"""
+Recreating the Gaussians line-by-line is useful for understanding how the point-source basis is composed, but in
+practice it is more convenient to use the `mge_point_model_from` helper, which builds exactly the same compact basis
+in a single line. It takes the data's `pixel_scales` (which sets the maximum Gaussian `sigma` and therefore how
+compact the source is), the number of Gaussians and the source `centre`:
+"""
+point = ag.model_util.mge_point_model_from(
+    pixel_scales=0.1,
+    total_gaussians=10,
+    centre=(0.0, 0.0),
+)
+
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, point=point)
+
+model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+print(model.info)
 
 """
 __Wrap Up__
