@@ -27,6 +27,7 @@ __Contents__
 - **Emcee**: An ensemble MCMC sampler that is commonly used in Astronomy and Astrophysics.
 - **Zeus**: An ensemble MCMC slice sampler that is the most effective MCMC method for modeling.
 - **LBFGS**: A quasi-Newton optimization algorithm that is a maximum likelihood estimator (MLE) method.
+- **MultiStartAdam**: A JAX multi-start gradient maximum a posteriori (MAP) optimizer that works on complex model parameter spaces.
 - **Start Point**: An API that allows the user to specify the start-point of a model-fit, which is useful for MCMC and MLE methods.
 - **Search Cookbook**: A cookbook that documents all searches available in **PyAutoFit**, including those not documented here.
 
@@ -182,6 +183,33 @@ search = af.LBFGS(
     path_prefix=Path("imaging", "searches"),
     name="LBFGS",
     unique_tag="example",
+)
+
+"""
+__MultiStartAdam__
+
+`MultiStartAdam` is a JAX / `optax` multi-start first-order gradient optimizer, and a maximum a posteriori (MAP)
+estimator. It directly addresses the weakness of a single-start optimizer like `LBFGS` noted above: instead of
+descending from a single starting point (which, for the complex parameter spaces of galaxy models, frequently gets
+stuck in a local maximum), it launches `n_starts` independent optimizations from broad starting points in parallel
+via `jax.vmap` and returns the best one. This wide population of starts reliably finds the global maximum-likelihood
+basin, making it a robust and fast optimizer even for models where single-start optimizers fail.
+
+Because it is gradient-based, it requires a JAX-traceable analysis (created via `use_jax=True`). It also manages its
+own broad starting points, so unlike `LBFGS` it does not use the start-point API described below.
+
+`MultiStartADABelief` and `MultiStartLion` are drop-in alternatives that use a different `optax` update rule (`Lion`
+is sign-based and therefore prefers a ~10x smaller `learning_rate`).
+
+Like all optimizers it returns a single best-fit model, not a posterior with errors, so `Nautilus` remains the
+default recommendation when parameter uncertainties are required.
+"""
+search = af.MultiStartAdam(
+    path_prefix=Path("imaging", "searches"),
+    name="MultiStartAdam",
+    n_starts=50,
+    n_steps=500,
+    learning_rate=0.01,
 )
 
 """
