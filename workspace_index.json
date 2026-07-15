@@ -282,6 +282,7 @@
       "Emcee",
       "Zeus",
       "LBFGS",
+      "MultiStartAdam",
       "Start Point",
       "Search Cookbook"
     ],
