@@ -70,7 +70,9 @@ does not impact the results of the ellipse fitting example, as ellipse fitting d
 """
 psf = ag.Convolver.from_gaussian(
     convolve_over_sample_size=1,
-    shape_native=(11, 11), sigma=0.05, pixel_scales=grid.pixel_scales
+    shape_native=(11, 11),
+    sigma=0.05,
+    pixel_scales=grid.pixel_scales,
 )
 
 """
