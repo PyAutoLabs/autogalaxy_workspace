@@ -58,9 +58,9 @@ parameter; and `Analysis` objects accept `use_jax=True` for JAX-accelerated fits
 ## Testing
 
 On CI, every PR is gated by three workflows on Python **3.12 and 3.13**: `smoke_tests.yml` (the
-smoke runner below — the definition of green), `navigator_check.yml` (PyAutoBuild's reusable
+smoke runner below — the definition of green), `navigator_check.yml` (PyAutoHands's reusable
 navigator-catalogue check; see *Notebooks vs Scripts*), and `url_check.yml` (link checking). The
-smoke and navigator jobs check out **PyAutoBuild** as a sibling and run the PyAuto* libraries from
+smoke and navigator jobs check out **PyAutoHands** as a sibling and run the PyAuto* libraries from
 the **same-named branch** of each source repo, so a workspace PR is validated against matching
 library branches.
 
@@ -106,13 +106,13 @@ and markdown cells.
 
 ### Generating notebooks
 
-After updating scripts, regenerate the notebooks using the PyAutoBuild tool (run from the workspace
+After updating scripts, regenerate the notebooks using the PyAutoHands tool (run from the workspace
 root):
 
 ```bash
 pip install ipynb-py-convert
-git clone https://github.com/PyAutoLabs/PyAutoBuild.git ../PyAutoBuild
-PYTHONPATH=../PyAutoBuild/autobuild python3 ../PyAutoBuild/autobuild/generate.py autogalaxy
+git clone https://github.com/PyAutoLabs/PyAutoHands.git ../PyAutoHands
+PYTHONPATH=../PyAutoHands/autobuild python3 ../PyAutoHands/autobuild/generate.py autogalaxy
 ```
 
 Commit the regenerated notebooks alongside the script changes.
@@ -149,12 +149,12 @@ The PyAutoGalaxy stack (all on the `PyAutoLabs` GitHub org):
 - https://github.com/PyAutoLabs/PyAutoArray — arrays, grids, masks
 - https://github.com/PyAutoLabs/PyAutoFit — model composition + non-linear search
 - https://github.com/PyAutoLabs/PyAutoGalaxy — this library: light/mass profiles, galaxies
-- https://github.com/PyAutoLabs/PyAutoBuild — notebook generation + CI
+- https://github.com/PyAutoLabs/PyAutoHands — notebook generation + CI
 - https://github.com/PyAutoLabs/HowToGalaxy — tutorial lecture series teaching galaxy morphology
   from first principles; the starting point for beginners new to galaxy modeling
 
 For local development, these are typically cloned as siblings of this repo (`../PyAutoGalaxy`,
-`../PyAutoBuild`, etc.).
+`../PyAutoHands`, etc.).
 
 ## Task Workflows
 

@@ -21,4 +21,4 @@ Every page below is the corresponding example script **fully executed**, rendere
 - [Galaxies](guides/galaxies.md) — from `scripts/guides/galaxies.py`
 - [Data Structures](guides/data_structures.md) — from `scripts/guides/data_structures.py`
 
-These pages are regenerated manually by PyAutoBuild's `generate_markdown.py` when a curated script changes.
+These pages are regenerated manually by PyAutoHands's `generate_markdown.py` when a curated script changes.

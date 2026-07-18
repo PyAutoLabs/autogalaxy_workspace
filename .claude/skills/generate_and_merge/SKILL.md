@@ -17,9 +17,9 @@ Build notebooks for the autogalaxy_workspace, then open and merge a PR into `mai
 
 3. **Generate notebooks and the LLM catalogue**
 
-   Run from the workspace root (PyAutoBuild is [PyAutoLabs/PyAutoBuild](https://github.com/PyAutoLabs/PyAutoBuild), cloned as a sibling at `../PyAutoBuild`):
+   Run from the workspace root (PyAutoHands is [PyAutoLabs/PyAutoHands](https://github.com/PyAutoLabs/PyAutoHands), cloned as a sibling at `../PyAutoHands`):
    ```bash
-   PYTHONPATH=../PyAutoBuild/autobuild python3 ../PyAutoBuild/autobuild/generate.py autogalaxy
+   PYTHONPATH=../PyAutoHands/autobuild python3 ../PyAutoHands/autobuild/generate.py autogalaxy
    ```
    This regenerates all notebooks in `notebooks/` from `scripts/`. It may take a few minutes. The same
    run also (re)writes the LLM-facing catalogue at the workspace root — `llms-full.txt` and
