@@ -59,7 +59,7 @@ __Contents__
 
 ```python
 
-from autoconf import setup_notebook; setup_notebook()
+from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af
@@ -697,7 +697,7 @@ a `.fits` file:
 
 
 ```python
-from autoconf.dictable import from_json
+from autogalaxy import from_json
 
 result_path = search.paths.output_path  # Points at the fit's unique output folder.
 

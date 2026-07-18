@@ -60,7 +60,7 @@ For the strong-lensing version (extras contribute mass, not light), see
 `autolens_workspace/*/interferometer/features/extra_galaxies/modeling.py`.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

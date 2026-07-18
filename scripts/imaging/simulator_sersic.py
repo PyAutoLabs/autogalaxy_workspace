@@ -22,7 +22,7 @@ If any code in this script is unclear, refer to `imaging/simulator.py` which is 
 walk-through of the same simulation steps for a bulge + disk galaxy.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

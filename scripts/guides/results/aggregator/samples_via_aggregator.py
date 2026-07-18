@@ -44,7 +44,7 @@ This is done so users can directly copy and paste Python code which loads result
 the samples.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 

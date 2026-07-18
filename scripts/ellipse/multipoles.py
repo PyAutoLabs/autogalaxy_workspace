@@ -33,7 +33,7 @@ __Contents__
 - **Masking:** Applying an extra galaxies mask and repeating the multipole fitting.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

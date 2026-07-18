@@ -23,7 +23,7 @@ To illustrate plotting, we require standard objects like a dataset and model whi
 for illustration.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 from pathlib import Path

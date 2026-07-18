@@ -39,7 +39,7 @@ __Contents__
 - **Figures of Merit:** Computing chi-squared and log likelihood values.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

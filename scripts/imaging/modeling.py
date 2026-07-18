@@ -54,7 +54,7 @@ __Contents__
 - **HowToGalaxy:** Links to the HowToGalaxy tutorial lectures.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af
@@ -500,7 +500,7 @@ file loads back into a full Python object with a single line — much faster and
 For example, the maximum log likelihood `Galaxies` is saved as a `.json` file and the per-galaxy model images as
 a `.fits` file:
 """
-from autoconf.dictable import from_json
+from autogalaxy import from_json
 
 result_path = search.paths.output_path  # Points at the fit's unique output folder.
 

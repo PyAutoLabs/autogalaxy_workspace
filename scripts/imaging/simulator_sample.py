@@ -28,7 +28,7 @@ __Contents__
 - **Plane Output:** Saving each Galaxies object as a JSON file.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import numpy as np

@@ -71,7 +71,7 @@ own `@jax.jit` around `FitImaging` construction, see `likelihood_function.py`'s
 
 ```python
 
-from autoconf import setup_notebook; setup_notebook()
+from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

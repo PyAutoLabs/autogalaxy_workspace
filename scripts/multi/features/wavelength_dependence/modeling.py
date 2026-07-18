@@ -38,7 +38,7 @@ __Contents__
 - **Result:** Inspecting the per-wavelength results of the model fit.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 

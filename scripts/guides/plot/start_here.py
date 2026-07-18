@@ -16,7 +16,7 @@ __Contents__
 - **Searches**: Visualize the results of a search.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

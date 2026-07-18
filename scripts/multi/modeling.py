@@ -31,7 +31,7 @@ __Contents__
 - **Wrap Up:** Summary and pointers to further resources.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

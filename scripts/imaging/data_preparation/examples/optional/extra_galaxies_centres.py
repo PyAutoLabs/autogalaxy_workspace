@@ -43,7 +43,7 @@ __Contents__
 - **Output:** Saving extra galaxy centres as a PNG and JSON file.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

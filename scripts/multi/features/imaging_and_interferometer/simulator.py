@@ -20,7 +20,7 @@ __Contents__
 - **Galaxies json:** Saving the galaxy model as a JSON file for future reference.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

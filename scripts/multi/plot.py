@@ -24,7 +24,7 @@ __Start Here Notebook__
 If any code in this script is unclear, refer to the `plot/start_here.ipynb` notebook.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag
