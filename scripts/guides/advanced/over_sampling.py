@@ -39,7 +39,7 @@ in the central regions of the image, 4x4 further out and 1x1 beyond that.
 This guide will explain why these choices were made for the default over-sampling behaviour.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

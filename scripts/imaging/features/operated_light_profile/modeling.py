@@ -58,7 +58,7 @@ __Contents__
 - **Result:** Inspecting the result object and best-fit model.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

@@ -114,7 +114,7 @@ For the CCD-imaging version of this script, see
 `autogalaxy_workspace/*/imaging/features/linear_light_profiles/modeling.py`.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

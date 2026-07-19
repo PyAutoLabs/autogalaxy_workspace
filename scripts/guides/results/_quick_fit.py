@@ -45,7 +45,7 @@ os.environ.pop("PYAUTO_FAST_PLOTS", None)
 
 import autofit as af
 import autogalaxy as ag
-from autoconf import conf
+from autogalaxy import conf
 
 # This deliberately shallow helper must retain its exploratory samples because
 # the results tutorials demonstrate indexed sample access.

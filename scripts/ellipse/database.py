@@ -28,7 +28,7 @@ __Contents__
 - **Multipoles:** Loading and inspecting multipole model-fit results from the database.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import os
 from pathlib import Path

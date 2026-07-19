@@ -27,7 +27,7 @@ __Contents__
  - Contributing Upstream: When your custom latent is general enough, consider promoting it to the library.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 

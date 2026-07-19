@@ -27,7 +27,7 @@ A number of benefits are apparent if we combine the analysis of both datasets at
  more information with which to constrain the galaxy structure.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

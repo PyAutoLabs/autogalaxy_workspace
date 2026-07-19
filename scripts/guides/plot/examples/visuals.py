@@ -28,7 +28,7 @@ __Setup__
 To illustrate plotting, we require standard objects like a grid, galaxies and dataset.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

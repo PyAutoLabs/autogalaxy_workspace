@@ -53,7 +53,7 @@ __Contents__
 - **HowToGalaxy:** Pointers to the HowToGalaxy lecture series for light profile modeling.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

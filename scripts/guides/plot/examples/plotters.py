@@ -33,7 +33,7 @@ __Setup__
 To illustrate plotting, we require standard objects like a grid, dataset and fit.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 import math

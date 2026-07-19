@@ -41,7 +41,7 @@ The conversions below all require a zero point, which is typically provided in t
 instrument that was used to observe the data.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 import autogalaxy as ag

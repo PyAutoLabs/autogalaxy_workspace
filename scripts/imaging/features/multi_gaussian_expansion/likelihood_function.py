@@ -50,9 +50,9 @@ __Contents__
 - **Wrap Up:** Summary and links to additional guides.
 """
 
-from autoconf import jax_wrapper  # Sets JAX environment before other imports
+from autogalaxy import jax_wrapper  # Sets JAX environment before other imports
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 import numpy as np

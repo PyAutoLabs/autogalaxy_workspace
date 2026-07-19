@@ -59,7 +59,7 @@ documented there under the `Standard [ag.lp]` autosummary, and so on for `ag.lp_
 `ag.lp_operated`, `ag.lp_basis`.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import autofit as af
 import autogalaxy as ag

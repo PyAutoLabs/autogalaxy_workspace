@@ -19,7 +19,7 @@ __Contents__
 - **Info:** Save metadata (redshift, velocity dispersion) as a JSON file.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import json
 from pathlib import Path

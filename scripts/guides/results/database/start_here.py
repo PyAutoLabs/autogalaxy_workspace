@@ -37,7 +37,7 @@ The search fits each galaxy with:
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import json
 from pathlib import Path

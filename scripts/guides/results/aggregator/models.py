@@ -30,7 +30,7 @@ especially if loading results from hard-disk is slow.
 
 import os
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 

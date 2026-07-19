@@ -74,7 +74,7 @@ __Start Here Notebook__
 If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

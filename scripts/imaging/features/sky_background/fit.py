@@ -40,7 +40,7 @@ __Contents__
 - **Wrap Up:** Summary of sky background fitting with the DatasetModel object.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

@@ -106,7 +106,7 @@ For the CCD-imaging version of this script, see
 `autogalaxy_workspace/*/imaging/features/multi_gaussian_expansion/modeling.py`.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

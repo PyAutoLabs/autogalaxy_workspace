@@ -115,9 +115,9 @@ Lets first import autogalaxy, its plotting module and the other libraries we'll 
 
 You'll see these imports in the majority of workspace examples.
 """
-from autoconf import jax_wrapper  # Sets JAX environment before other imports
+from autogalaxy import jax_wrapper  # Sets JAX environment before other imports
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import numpy as np

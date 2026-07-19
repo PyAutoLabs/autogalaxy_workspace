@@ -15,7 +15,7 @@ __Contents__
 - **Output:** Saving the light centres as a JSON file and PNG visualization.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

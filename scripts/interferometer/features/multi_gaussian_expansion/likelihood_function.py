@@ -51,7 +51,7 @@ __Contents__
 - **Wrap Up:** Summary and next steps.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 import numpy as np

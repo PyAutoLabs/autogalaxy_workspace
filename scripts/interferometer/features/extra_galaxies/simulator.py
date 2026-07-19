@@ -39,7 +39,7 @@ __Contents__
   so the modeling script can fix them.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

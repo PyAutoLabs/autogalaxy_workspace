@@ -34,7 +34,7 @@ __Contents__
 - **Info (Optional):** Storing auxiliary information about the dataset as a JSON file.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

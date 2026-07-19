@@ -19,9 +19,9 @@ __Contents__
 - **Reconstruction CSV:** Loading the galaxy reconstruction from the output CSV file and performing analysis.
 """
 
-from autoconf import jax_wrapper  # Sets JAX environment before other imports
+from autogalaxy import jax_wrapper  # Sets JAX environment before other imports
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

@@ -55,7 +55,7 @@ This script fits `Interferometer` dataset of a galaxy with a model where:
 
 ```python
 
-from autoconf import setup_notebook; setup_notebook()
+from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

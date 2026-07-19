@@ -34,7 +34,7 @@ This script fits an `Interferometer` dataset of a galaxy with a model where:
    ell_comps, and beta.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

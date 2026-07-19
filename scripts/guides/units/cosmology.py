@@ -20,7 +20,7 @@ To produce errors on unit converted quantities, you`ll may need to perform margi
 converted quantities (see `results/aggregator/samples.ipynb`).
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 
