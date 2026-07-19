@@ -145,7 +145,7 @@ bulge/disk decomposition, kinematics).
 
 The PyAutoGalaxy stack (all on the `PyAutoLabs` GitHub org):
 
-- https://github.com/PyAutoLabs/PyAutoConf — configuration handling
+- https://github.com/PyAutoLabs/PyAutoNerves — configuration handling
 - https://github.com/PyAutoLabs/PyAutoArray — arrays, grids, masks
 - https://github.com/PyAutoLabs/PyAutoFit — model composition + non-linear search
 - https://github.com/PyAutoLabs/PyAutoGalaxy — this library: light/mass profiles, galaxies

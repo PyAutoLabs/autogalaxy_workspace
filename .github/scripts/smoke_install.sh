@@ -7,10 +7,10 @@
 set -e
 
 if [ "$PYTHON_VERSION" = "3.12" ]; then
-  pip install ./PyAutoConf ./PyAutoFit ./PyAutoArray ./PyAutoGalaxy
+  pip install ./PyAutoNerves ./PyAutoFit ./PyAutoArray ./PyAutoGalaxy
   pip install "./PyAutoArray[optional]" "./PyAutoGalaxy[optional]"
 else
-  pip install ./PyAutoConf ./PyAutoFit ./PyAutoArray ./PyAutoGalaxy
+  pip install ./PyAutoNerves ./PyAutoFit ./PyAutoArray ./PyAutoGalaxy
   pip install numba nufftax
 fi
 pip install tensorflow-probability==0.25.0

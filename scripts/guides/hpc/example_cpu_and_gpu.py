@@ -109,7 +109,7 @@ directory of the example project in your the hpc home directory.
 config_path = Path(home_path, "hpc", "config")
 
 """
-Set the config and output paths using autoconf, as you would for a laptop run.
+Set the config and output paths using autonerves, as you would for a laptop run.
 """
 from autogalaxy import conf
 

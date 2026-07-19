@@ -66,12 +66,12 @@ try:
     import google.colab
 
     subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "autoconf", "--no-deps"]
+        [sys.executable, "-m", "pip", "install", "autonerves", "--no-deps"]
     )
 except ImportError:
     pass
 
-from autoconf import setup_colab
+from autonerves import setup_colab
 
 # NOTE: This call is AutoLens-specific. Update to the PyAutoGalaxy equivalent in your codebase.
 setup_colab.for_autogalaxy(
