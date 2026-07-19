@@ -66,7 +66,7 @@ own `@jax.jit` around `FitImaging` construction, see `likelihood_function.py`'s
 `__JAX__` section and the `scripts/guides/api/data_structures.py` guide.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

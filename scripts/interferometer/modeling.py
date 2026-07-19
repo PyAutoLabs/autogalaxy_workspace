@@ -50,7 +50,7 @@ This script fits `Interferometer` dataset of a galaxy with a model where:
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

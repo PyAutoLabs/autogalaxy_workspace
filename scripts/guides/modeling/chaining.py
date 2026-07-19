@@ -41,7 +41,7 @@ to pass information between searches as well as tools for customizing prior pass
 More details on search chaining can be found in Chapter 3 of the HowToGalaxy lectures.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autofit as af

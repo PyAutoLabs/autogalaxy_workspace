@@ -48,7 +48,7 @@ These are documented fully in the `autogalaxy_workspace/*/guides/data_structures
 
 ```python
 
-from autoconf import setup_notebook; setup_notebook()
+from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 import numpy as np

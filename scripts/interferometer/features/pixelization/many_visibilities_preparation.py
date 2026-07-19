@@ -54,9 +54,9 @@ You can then compute the `nufft_precision_operator` matrix for this dataset by u
 the line `dataset_name = "alma"` below.
 """
 
-from autoconf import jax_wrapper  # Sets JAX environment before other imports
+from autogalaxy import jax_wrapper  # Sets JAX environment before other imports
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import numpy as np
 from pathlib import Path

@@ -43,7 +43,7 @@ unmasked data points
 These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 import matplotlib.pyplot as plt
 import numpy as np

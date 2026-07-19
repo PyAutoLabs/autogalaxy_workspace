@@ -36,7 +36,7 @@ __Contents__
 - **Noise Conversions:** Functions for computing noise-maps from various input formats.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

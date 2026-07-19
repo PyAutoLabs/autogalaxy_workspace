@@ -43,7 +43,7 @@ It is absolutely vital you use a sufficently small pixel scale that all structur
 Fourier transform. If the pixel scale is too large, the Fourier transform will smear out the data and the model.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag

@@ -33,7 +33,7 @@ __Contents__
 - **Background Subtraction:** Overview of background sky subtraction tools and modeling approaches.
 """
 
-# from autoconf import setup_notebook; setup_notebook()
+# from autogalaxy import setup_notebook; setup_notebook()
 
 from pathlib import Path
 import autogalaxy as ag
