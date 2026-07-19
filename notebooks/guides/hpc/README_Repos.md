@@ -78,7 +78,7 @@ source $HOME/PyAuto/bin/activate
 
 # Add PyAutoGalaxy and all parent projects to PYTHONPATH
 export PYTHONPATH=$HOME:\
-$HOME/PyAuto/PyAutoConf:\
+$HOME/PyAuto/PyAutoNerves:\
 $HOME/PyAuto/PyAutoFit:\
 $HOME/PyAuto/PyAutoArray:\
 $HOME/PyAuto/PyAutoGalaxy:\
@@ -118,7 +118,7 @@ cd $HOME/PyAuto
 Clone all required repositories:
 
 ```
-git clone https://github.com/PyAutoLabs/PyAutoConf
+git clone https://github.com/PyAutoLabs/PyAutoNerves
 git clone https://github.com/PyAutoLabs/PyAutoFit
 git clone https://github.com/PyAutoLabs/PyAutoArray
 git clone https://github.com/PyAutoLabs/PyAutoGalaxy
@@ -129,7 +129,7 @@ git clone https://github.com/PyAutoLabs/PyAutoGalaxy
 Install the dependencies for each package:
 
 ```
-pip install -r PyAutoConf/requirements.txt
+pip install -r PyAutoNerves/requirements.txt
 pip install -r PyAutoFit/requirements.txt
 pip install -r PyAutoArray/requirements.txt
 pip install -r PyAutoGalaxy/requirements.txt
