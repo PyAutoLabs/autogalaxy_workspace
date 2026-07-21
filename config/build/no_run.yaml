@@ -26,8 +26,5 @@
 - fits_make # Test mode does not output .fits images.
 - png_make # Test mode does not output .png images.
 - examples/searches # Test mode breaks search visualization.
-- imaging/features/pixelization/modeling # NEEDS_FIX 2026-04-10 - LinAlgError: matrix not positive definite in pixelization modeling
 - autogalaxy_workspace/scripts/imaging/modeling # NEEDS_FIX 2026-04-10 - KeyError on ('galaxies','galaxy','bulge','ell_comps'...) kwargs after API drift in top-level imaging/modeling.py
-- interferometer/features/pixelization/modeling # NEEDS_FIX 2026-04-10 - LinAlgError: matrix not positive definite in interferometer pixelization modeling
-- interferometer/features/multi_gaussian_expansion/likelihood_function # NEEDS_FIX 2026-05-20 - LinAlgError: matrix singular in MGE inversion -> InversionException (known_numerical; same family as pixelization variants above)
 - imaging/features/shapelets/modeling # SLOW 2026-07-14 - real-search JAX shapelet fit exceeds the 1800s mode=release cap (>30min); speedup tracked by the Profiling Agent (PyAutoHeart#72). Not a bug.
