@@ -26,5 +26,4 @@
 - fits_make # Test mode does not output .fits images.
 - png_make # Test mode does not output .png images.
 - examples/searches # Test mode breaks search visualization.
-- autogalaxy_workspace/scripts/imaging/modeling # NEEDS_FIX 2026-04-10 - KeyError on ('galaxies','galaxy','bulge','ell_comps'...) kwargs after API drift in top-level imaging/modeling.py
 - imaging/features/shapelets/modeling # SLOW 2026-07-14 - real-search JAX shapelet fit exceeds the 1800s mode=release cap (>30min); speedup tracked by the Profiling Agent (PyAutoHeart#72). Not a bug.
