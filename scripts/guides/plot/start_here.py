@@ -15,6 +15,9 @@ __Contents__
 - **Visuals**: Add visuals to the figure, such as a mask or light profile centres.
 - **Searches**: Visualize the results of a search.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 

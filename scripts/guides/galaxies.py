@@ -42,6 +42,9 @@ unmasked data points
 
 These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
