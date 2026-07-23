@@ -162,9 +162,7 @@ column is populated with NaN and a single warning per process notes that the con
 itself is unaffected.
 
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

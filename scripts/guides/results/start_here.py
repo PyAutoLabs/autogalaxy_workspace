@@ -577,9 +577,7 @@ results including:
  - Inspecting the evidence terms of the fit, which quantify how well the pixelization reconstructs fits the data whilst
    accounting for the complexity of the pixelization.
  - Estimating the magnification of the galaxy's image using the pixelization.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

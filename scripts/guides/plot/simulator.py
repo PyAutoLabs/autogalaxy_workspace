@@ -170,9 +170,7 @@ ag.output_to_json(
 
 """
 The dataset can be viewed in the folder `autogalaxy_workspace/imaging/sersic_x2`.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

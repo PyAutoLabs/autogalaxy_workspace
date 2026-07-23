@@ -603,9 +603,7 @@ throughout this guide:
 - `operated_light_profile/` — using `ag.lp_operated.*` in a fit.
 - `multi_gaussian_expansion/` — building and fitting an MGE-style `Basis`.
 - `shapelets/` — building and fitting a shapelet-style `Basis`.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.
