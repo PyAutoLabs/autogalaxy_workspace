@@ -179,9 +179,7 @@ dataset = dataset.apply_over_sampling(over_sample_size_lp=over_sample_size)
 
 """
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

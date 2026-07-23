@@ -354,9 +354,7 @@ To submit a GPU job:
 
   export PROJECT_PATH=/path/to/autogalaxy_workspace
   sbatch scripts/guides/hpc/batch_gpu/submit
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

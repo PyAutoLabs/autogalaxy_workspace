@@ -162,9 +162,7 @@ To change these defaults, edit the corresponding YAML config file and restart th
 (or Jupyter kernel) for the changes to take effect.
 
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

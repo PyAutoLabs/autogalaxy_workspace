@@ -511,9 +511,7 @@ the autolens companion at
 patterns apply to autogalaxy primitives equally — substitute `Galaxy` /
 `Galaxies` for `Tracer` / `LensCalc`. The `.array` host-transfer
 mechanics live in `scripts/guides/data_structures.py`.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.
