@@ -9,7 +9,7 @@ Use this skill in the autogalaxy workspace when the user wants an iterative vali
 
 Match PyAutoHands behavior instead of inventing a separate policy:
 
-- Respect `../PyAutoHands/autobuild/config/no_run.yaml` for project `autogalaxy`.
+- Respect `../PyAutoHands/autohands/config/no_run.yaml` for project `autogalaxy`.
 - Use PyAutoHands ordering: if a folder contains `start_here.py`, run it before the other scripts in that folder and before descending into subfolders.
 - Otherwise keep the run order stable and deterministic.
 

@@ -112,7 +112,7 @@ root):
 ```bash
 pip install ipynb-py-convert
 git clone https://github.com/PyAutoLabs/PyAutoHands.git ../PyAutoHands
-PYTHONPATH=../PyAutoHands/autobuild python3 ../PyAutoHands/autobuild/generate.py autogalaxy
+PYTHONPATH=../PyAutoHands/autohands python3 ../PyAutoHands/autohands/generate.py autogalaxy
 ```
 
 Commit the regenerated notebooks alongside the script changes.
