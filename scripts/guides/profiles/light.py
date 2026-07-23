@@ -58,9 +58,6 @@ This guide mirrors it section-by-section, so a class shown here as `ag.lp.Sersic
 documented there under the `Standard [ag.lp]` autosummary, and so on for `ag.lp_linear`,
 `ag.lp_operated`, `ag.lp_basis`.
 """
-# ENV: full_datasets
-# Guides load committed full-resolution FITS; SMALL_DATASETS would
-# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
@@ -606,4 +603,18 @@ throughout this guide:
 - `operated_light_profile/` — using `ag.lp_operated.*` in a fit.
 - `multi_gaussian_expansion/` — building and fitting an MGE-style `Basis`.
 - `shapelets/` — building and fitting a shapelet-style `Basis`.
+"""
+
+"""
+__Env__ (Developer Only)
+
+Not user documentation: this section configures the automated test harness.
+The ENV line declares the environment applied when this script runs in CI
+(PyAutoHands docs/env_profile_redesign.md §10); this whole section is
+stripped from generated notebooks and markdown.
+
+Guides load committed full-resolution FITS; SMALL_DATASETS would mismatch
+the pre-existing 100x100 data shape.
+
+ENV: full_datasets
 """

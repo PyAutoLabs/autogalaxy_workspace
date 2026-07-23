@@ -38,9 +38,6 @@ in the central regions of the image, 4x4 further out and 1x1 beyond that.
 
 This guide will explain why these choices were made for the default over-sampling behaviour.
 """
-# ENV: full_datasets
-# Guides load committed full-resolution FITS; SMALL_DATASETS would
-# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
@@ -401,4 +398,18 @@ dataset = dataset.apply_over_sampling(over_sample_size_pixelization=4)
 
 """
 Finish.
+"""
+
+"""
+__Env__ (Developer Only)
+
+Not user documentation: this section configures the automated test harness.
+The ENV line declares the environment applied when this script runs in CI
+(PyAutoHands docs/env_profile_redesign.md §10); this whole section is
+stripped from generated notebooks and markdown.
+
+Guides load committed full-resolution FITS; SMALL_DATASETS would mismatch
+the pre-existing 100x100 data shape.
+
+ENV: full_datasets
 """
