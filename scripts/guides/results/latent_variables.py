@@ -26,6 +26,11 @@ __Contents__
    ``compute_latent_variables`` to add your own derived quantity.
  - Contributing Upstream: When your custom latent is general enough, consider promoting it to the library.
 """
+# ENV: full_datasets real_search
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
+# Results guides must produce real (reduced) samples so downstream
+# aggregator reads (data_fitting, queries, ...) are non-empty.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
