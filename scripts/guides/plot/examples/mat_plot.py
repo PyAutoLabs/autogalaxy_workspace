@@ -25,6 +25,9 @@ __Setup__
 
 To illustrate plotting, we require standard objects like a grid and dataset.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
