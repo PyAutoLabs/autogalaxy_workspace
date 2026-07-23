@@ -199,9 +199,7 @@ with open(info_file, "w+") as f:
 
 """
 The dataset can be viewed in the folder `autogalaxy_workspace/database/simple__1`.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.
