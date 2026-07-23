@@ -38,6 +38,9 @@ in the central regions of the image, 4x4 further out and 1x1 beyond that.
 
 This guide will explain why these choices were made for the default over-sampling behaviour.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 

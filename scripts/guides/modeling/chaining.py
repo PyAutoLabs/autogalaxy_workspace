@@ -40,6 +40,9 @@ to pass information between searches as well as tools for customizing prior pass
 
 More details on search chaining can be found in Chapter 3 of the HowToGalaxy lectures.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 

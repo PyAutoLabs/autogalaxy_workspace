@@ -19,6 +19,9 @@ __Errors__
 To produce errors on unit converted quantities, you`ll may need to perform marginalization over samples of these
 converted quantities (see `results/aggregator/samples.ipynb`).
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 

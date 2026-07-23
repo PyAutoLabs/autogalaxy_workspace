@@ -31,6 +31,9 @@ The SLURM batch scripts referenced throughout this example are in:
 See README.md in this folder for the full setup guide, including how to transfer files
 using the sync script.
 """
+# ENV: full_datasets
+# Guides load committed full-resolution FITS; SMALL_DATASETS would
+# mismatch the pre-existing 100x100 data shape.
 
 # %%
 """
