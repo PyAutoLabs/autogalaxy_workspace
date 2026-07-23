@@ -106,9 +106,7 @@ given bandpass.
 This functionality is not currently implemented in **PyAutoGalaxy**, but would be fairly simple for you to do
 yourself (e.g. using the `astropy` package). If you want to contribute to **PyAutoGalaxy**, this would be a great
 first issue to tackle, so please get in touch on SLACK!
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

@@ -160,9 +160,7 @@ subplot_of_mapper(inversion=inversion, mapper_index=0)
 
 """
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

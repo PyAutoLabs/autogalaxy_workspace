@@ -398,9 +398,7 @@ dataset = dataset.apply_over_sampling(over_sample_size_pixelization=4)
 
 """
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

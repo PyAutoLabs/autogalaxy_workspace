@@ -141,9 +141,7 @@ Model-fits using a non-linear search (e.g. Nautilus, Emcee) produce search-speci
 The `searches` example illustrates how to perform this visualization for every search (e.g. via the `corner_anesthetic` function).
 
 Finish.
-"""
 
-"""
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.
