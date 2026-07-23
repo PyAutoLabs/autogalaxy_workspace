@@ -31,9 +31,6 @@ The SLURM batch scripts referenced throughout this example are in:
 See README.md in this folder for the full setup guide, including how to transfer files
 using the sync script.
 """
-# ENV: full_datasets
-# Guides load committed full-resolution FITS; SMALL_DATASETS would
-# mismatch the pre-existing 100x100 data shape.
 
 # %%
 """
@@ -357,4 +354,18 @@ To submit a GPU job:
 
   export PROJECT_PATH=/path/to/autogalaxy_workspace
   sbatch scripts/guides/hpc/batch_gpu/submit
+"""
+
+"""
+__Env__ (Developer Only)
+
+Not user documentation: this section configures the automated test harness.
+The ENV line declares the environment applied when this script runs in CI
+(PyAutoHands docs/env_profile_redesign.md §10); this whole section is
+stripped from generated notebooks and markdown.
+
+Guides load committed full-resolution FITS; SMALL_DATASETS would mismatch
+the pre-existing 100x100 data shape.
+
+ENV: full_datasets
 """

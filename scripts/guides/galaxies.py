@@ -42,9 +42,6 @@ unmasked data points
 
 These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
 """
-# ENV: full_datasets
-# Guides load committed full-resolution FITS; SMALL_DATASETS would
-# mismatch the pre-existing 100x100 data shape.
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
@@ -514,4 +511,18 @@ the autolens companion at
 patterns apply to autogalaxy primitives equally — substitute `Galaxy` /
 `Galaxies` for `Tracer` / `LensCalc`. The `.array` host-transfer
 mechanics live in `scripts/guides/data_structures.py`.
+"""
+
+"""
+__Env__ (Developer Only)
+
+Not user documentation: this section configures the automated test harness.
+The ENV line declares the environment applied when this script runs in CI
+(PyAutoHands docs/env_profile_redesign.md §10); this whole section is
+stripped from generated notebooks and markdown.
+
+Guides load committed full-resolution FITS; SMALL_DATASETS would mismatch
+the pre-existing 100x100 data shape.
+
+ENV: full_datasets
 """
