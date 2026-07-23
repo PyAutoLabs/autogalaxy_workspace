@@ -38,9 +38,6 @@ SMOKE_FILE = WORKSPACE / "smoke_tests.txt"
 NOTEBOOK_FILE = WORKSPACE / "smoke_notebooks.txt"
 _BUILD_DIR = WORKSPACE / "config" / "build"
 ENV_VARS_FILE = _BUILD_DIR / "profile_smoke.yaml"
-if not ENV_VARS_FILE.exists():
-    # Legacy fallback; removed at the PyAutoHands#161 stage-3 cleanup.
-    ENV_VARS_FILE = _BUILD_DIR / "env_vars.yaml"
 SCRIPTS_DIR = WORKSPACE / "scripts"
 NOTEBOOKS_DIR = WORKSPACE / "notebooks"
 
