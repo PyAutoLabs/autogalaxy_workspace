@@ -207,8 +207,6 @@ for result in result_list:
 The `Samples` object still has the dimensions of the overall non-linear search (in this case N=15). 
 
 Therefore, the samples is identical in every result object.
-"""
 
-"""
 Checkout `autogalaxy_workspace/*/results` for a full description of analysing results in **PyAutoGalaxy**.
 """

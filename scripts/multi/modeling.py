@@ -333,9 +333,7 @@ for result in result_list:
 The `Samples` object still has the dimensions of the overall non-linear search (in this case N=16). 
 
 Therefore, the samples is identical in every result object.
-"""
 
-"""
 __Wrap Up__
 
 This simple example introduces the API for fitting multiple datasets with a shared model.

@@ -8,6 +8,7 @@ The following files in the `guide` folder are important, providing a full overvi
 most calculations.
 
 - `data_structures`: How the NumPy arrays containing results are structured and the API for using them.
+- `using_jax`: How JAX acceleration works — auto-enabled modeling, disabling it, and writing `@jax.jit` yourself.
 - `galaxies` Creating and using galaxies and their mass and light profiles.
 
 # Folders
