@@ -12,15 +12,16 @@ Welcome to the **PyAutoGalaxy** Workspace!
 
 ## Getting Started
 
+### PyAutoGalaxy AI Assistant
+
 The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its full scope and instructions.
+
+### Human-Readable Documentation and Examples
 
 The following human-readable documentation and examples are also useful for new starters:
 
-You can get set up on your personal computer by following the installation guide on
-our [readthedocs](https://pyautogalaxy.readthedocs.io/).
-
-Alternatively, you can try **PyAutoGalaxy** out in a web browser by going to
-the [autogalaxy workspace on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.7.23.1/notebooks/imaging/start_here.ipynb).
+- [Installation guide](https://pyautogalaxy.readthedocs.io/): set up **PyAutoGalaxy** on your personal computer.
+- [PyAutoGalaxy on Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.7.23.1/notebooks/imaging/start_here.ipynb): try **PyAutoGalaxy** in a web browser without installing it.
 
 ## New Users
 
