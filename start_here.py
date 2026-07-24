@@ -54,8 +54,6 @@ Lets first import autolens, its plotting module and the other libraries we'll ne
 
 You'll see these imports in the majority of workspace examples.
 """
-# %matplotlib inline
-
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
