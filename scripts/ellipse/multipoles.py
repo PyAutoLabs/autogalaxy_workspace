@@ -320,9 +320,7 @@ log likelihood values and tools to compute the errors on the model.
 
 When multipoles are included in the model, the parameter space complexity increases, producing more
 significant degeneracies between the model parameters.
-"""
 
-"""
 __Multiple Ellipses__
 """
 number_of_ellipses = 10
