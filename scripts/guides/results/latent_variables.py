@@ -60,9 +60,7 @@ this tutorial for how to add new ones.
 Future library releases may extend the registry. The toggle layer below means new entries can default either
 way safely: a new raw-flux latent that requires no inputs can default-on, while anything needing instrument
 metadata defaults-off so existing instrument-naive fits stay unchanged on upgrade.
-"""
 
-"""
 __Toggling Latents__
 
 The library defaults ``total_galaxy_0_flux: true`` (no instrument inputs needed) and
@@ -79,9 +77,7 @@ workspace yaml is enough to enable it without modifying the library install.
 To disable a latent for a specific fit (e.g. a quick test where you don't want to incur the latent
 computation cost), set its key to ``false`` in ``autogalaxy_workspace/config/latent.yaml``. The list of valid
 keys lives in ``autogalaxy.imaging.model.latent.LATENT_FUNCTIONS``.
-"""
 
-"""
 __Model Fit__
 
 The loading and extending sections below need a completed fit to read latents from. Rather than run a bespoke
@@ -174,9 +170,7 @@ analytic Gaussian propagation of the parameter errors through the latent functio
 posterior is skewed (e.g. ``intensity`` near zero, or a banana-shaped degeneracy between Sersic ``sigma`` and
 ``intensity``), the latent interval inherits that asymmetry faithfully. See
 ``../../../autofit_workspace/scripts/cookbooks/latent_variables.py`` for the foundational treatment of why.
-"""
 
-"""
 __Extending with a Custom Latent__
 
 The library catalogue is intentionally small. If you want a different derived quantity — a Sersic effective
@@ -240,9 +234,7 @@ With the subclass defined, running a fit that uses it produces a ``latent.csv`` 
 (``bulge_axis_ratio``) on top of the library defaults. We don't actually run a second fit here — the pattern
 above is the full recipe — but the workspace test suite (``autolens_workspace_test``) exercises identical
 custom-latent subclasses end-to-end if you want a verified example.
-"""
 
-"""
 __Contributing Upstream__
 
 If your custom latent is general enough that other PyAutoGalaxy users would benefit from it (e.g. a Sersic

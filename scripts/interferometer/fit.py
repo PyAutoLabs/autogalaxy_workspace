@@ -109,9 +109,7 @@ Visibility data is in uv space, making it hard to interpret by eye.
 
 The dirty images of the interferometer dataset can plotted, which use the transformer of the interferometer
 to map the visibilities, noise-map or other quantity to a real-space image.
-"""
 
-"""
 __Fitting__
 
 Following the previous overview example, we can make a galaxy from a collection of light profiles.
