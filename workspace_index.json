@@ -838,6 +838,27 @@
   },
   {
     "contents": [
+      "Auto-Enabled Modeling",
+      "Disabling JAX",
+      "Writing @jax.jit Yourself",
+      "JIT-ing Library Methods",
+      "Return-Type Contract"
+    ],
+    "cross_refs": [
+      "data_structures.py",
+      "scripts/guides/data_structures.py",
+      "scripts/imaging/simulator.py",
+      "scripts/interferometer/simulator.py",
+      "simulator.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/guides/using_jax.ipynb",
+    "path": "scripts/guides/using_jax.py",
+    "summary": "**PyAutoGalaxy** runs on either **NumPy** (the default) or **JAX** (Google's array library with GPU support and just-in-time compilation). JAX makes galaxy model-fitting 10-100x faster on large grids \u2014 sometimes more on GPU \u2014 so the library is built to use it automatically wherever it helps.",
+    "title": "Using JAX"
+  },
+  {
+    "contents": [
       "Pixel Scale",
       "Image",
       "Noise Map",
