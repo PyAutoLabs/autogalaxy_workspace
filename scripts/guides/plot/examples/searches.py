@@ -114,10 +114,7 @@ we:
  
 There are other `_kwargs` inputs we pass as None, you should check out the Dynesty docs if you need to customize your
 figure.
-"""
 
-
-"""
 The internal sampler can be used to plot the results of the non-linear search. 
 
 We do this using the `search_internal` attribute which contains the sampler in its native form.

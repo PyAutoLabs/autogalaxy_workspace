@@ -329,9 +329,7 @@ the anesthetic library's corner plotting tools.
 
 The `autofit_workspace/*/plots` folder illustrates other packages that can be used to make these plots using
 the standard output results formats (e.g. `GetDist.py`).
-"""
 
-"""
 __Maximum Likelihood__
 
 The maximum log likelihood value of the model-fit can be estimated by simple taking the maximum of all log

@@ -517,9 +517,7 @@ of loading results from the output folder — covering both single-fit (`from_js
 workflows — is given in:
 
   `autogalaxy_workspace/*/guides/results/start_here.py`
-"""
 
-"""
 This script gives a concise overview of the PyAutoGalaxy modeling API, fitting one the simplest models possible.
 So, what next? 
 
