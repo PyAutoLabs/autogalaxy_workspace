@@ -169,7 +169,7 @@ data_eps = ag.preprocess.array_adus_to_eps(
 aplt.plot_array(array=data_eps, title="Image")
 
 """
-In `autogalaxy_workspace/*/data_preparation/noise_map.py` we show that a noise-map must also be in units of
+In `autogalaxy_workspace/*/imaging/data_preparation/examples/noise_map.py` we show that a noise-map must also be in units of
 electrons per second, and that the same functions as above can be used to do this.
 
 __Resizing Data__
@@ -211,7 +211,7 @@ Functions related to background subtraction are:
 - `background_noise_map_via_edges_from`
 
 Alternatively, it is possible to model the background sky as part of your fitting procedure. This is described in the
-`autogalaxy_workspace/*/modeling/imaging/features/sky_background.py` example script.
+`autogalaxy_workspace/*/imaging/features/sky_background/modeling.py` example script.
 
 Modeling the sky has only a small impact on computational run times but does produce more accurate results, and
 therefore is recommended. Even if your data is sky subtracted, you can still include the sky in the model to ensure

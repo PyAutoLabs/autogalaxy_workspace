@@ -9,7 +9,7 @@ We therefore will mask the emission of these extra galaxies or include them in t
 fit and subtract the emission.
 
 This uses the **PyAutoGalaxy** extra galaxies API, which is illustrated in
-the  script `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.py`.
+the  script `autogalaxy_workspace/*/imaging/features/extra_galaxies/modeling.py`.
 
 This script simulates an imaging dataset which includes extra galaxies near the main galaxy.
 This is used to illustrate the extra galaxies API in the script above.
@@ -26,16 +26,16 @@ __Other Scripts__
 
 This dataset is used in the following scripts:
 
- `autogalaxy_workspace/*/data_preparation/imaging/examples/optional/scaled_dataset.ipynb`
+ `autogalaxy_workspace/*/imaging/data_preparation/examples/optional/mask_extra_galaxies.ipynb`
 
 To illustrate how to subtract and remove the light of extra galaxies in real imaging data, so that it does
 not impact the model.
 
- `autogalaxy_workspace/*/data_preparation/imaging/examples/optional/extra_galaxies_centres.ipynb`
+ `autogalaxy_workspace/*/imaging/data_preparation/examples/optional/extra_galaxies_centres.ipynb`
 
 To illustrate how mark extra galaxy centres on a dataset so they can be used in the model.
 
- `autogalaxy_workspace/*/modeling/imaging/features/extra_galaxies.ipynb`
+ `autogalaxy_workspace/*/imaging/features/extra_galaxies/modeling.ipynb`
 
 To illustrate how compose and fit a model which includes the extra galaxies as light profiles.
 
@@ -46,7 +46,7 @@ simulators not in the `advanced` folder for more detailed comments.
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `imaging/simulator.ipynb` notebook.
 
 __Contents__
 

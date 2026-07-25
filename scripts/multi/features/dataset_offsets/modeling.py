@@ -62,7 +62,7 @@ __Contents__
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `multi/modeling.ipynb` notebook.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()

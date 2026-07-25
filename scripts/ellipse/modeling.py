@@ -18,7 +18,7 @@ __Units__
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in
 arc seconds, luminosities in electrons per second and mass quantities (e.g. convergence) are dimensionless.
 
-The guide `guides/units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
+The guide `guides/units/cosmology.ipynb` illustrates how to convert these quantities to physical units like
 kiloparsecs, magnitudes and solar masses.
 
 __Data Structures__
@@ -184,7 +184,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 ellipse = af.Model(ag.Ellipse)
 
@@ -249,7 +249,7 @@ correctly, requiring a Python script to be run, often from a command line termin
 
 To fix these issues, the Python script needs to be adapted to use an `if __name__ == "__main__":` API, as this allows
 the Python `multiprocessing` module to allocate threads and jobs correctly. An adaptation of this example script 
-is provided at `autolens_workspace/scripts/modeling/imaging/customize/parallel.py`, which will hopefully run 
+is provided at `autogalaxy_workspace/*/guides/modeling/bug_fix.py`, which will hopefully run 
 successfully in parallel on your computer!
 
 Therefore if paralellization for this script doesn't work, check out the `parallel.py` example. You will need to update
@@ -569,7 +569,7 @@ So, what next?
 __Data Preparation__
 
 If you are looking to fit your own CCD imaging data of a galaxy, checkout  
-the `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb` script for an overview of how data should be 
+the `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb` script for an overview of how data should be 
 prepared before being modeled.
 
 __HowToGalaxy__

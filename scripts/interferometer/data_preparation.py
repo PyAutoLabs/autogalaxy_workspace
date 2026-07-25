@@ -81,7 +81,7 @@ aplt.plot_grid(grid=visibilities.in_grid, title="Grid")
 These visibilities conforms to **PyAutoGalaxy** standards, because they come from a standard CASA data reduction
 procedure.
 
-More details of this procedure are given in the `examples/casa_reduction.ipynb` notebook.
+More details of this procedure are given in the `interferometer/casa_reduction.ipynb` notebook.
 
 __Noise-Map__
 
@@ -118,7 +118,7 @@ aplt.plot_grid(grid=uv_wavelengths, title="Grid")
 These uv wavelengths conform to **PyAutoGalaxy** standards, because they come from a standard CASA data reduction
 procedure.
 
-More details of this procedure are given in the `examples/casa_reduction.ipynb` notebook.
+More details of this procedure are given in the `interferometer/casa_reduction.ipynb` notebook.
 
 __Real Space Mask__
 
@@ -168,8 +168,8 @@ lens light and / or mass centre to help the non-linear search find a good model.
 
 **Links / Resources:**
 
-- `data_preparation/examples/optional/lens_light_centre.py`: input the galaxy light centre manually into a Python script.
-- `data_preparation/gui/lens_light_centre.ipynb` use a Graphical User Interface (GUI) to mask the galaxy light centre.
+- `data_preparation/examples/optional/light_centre.py`: input the galaxy light centre manually into a Python script.
+- `data_preparation/gui/light_centre.ipynb` use a Graphical User Interface (GUI) to mask the galaxy light centre.
 
 
 __Extra Galaxies (Optional)__
@@ -196,7 +196,7 @@ analysis. It is still a choice whether their mass is included in the model.
 - `data_preparation/examples/optional/extra_galaxies_centres.py`: input the extra galaxy centres manually into a
   Python script.
 - `data_preparation/gui/extra_galaxies_centres.ipynb`: use a Graphical User Interface (GUI) to mark the extra galaxy centres.
-- `features/extra_galaxies.py` how to use extra galaxies in a model-fit, including loading the extra galaxy centres.
+- `features/extra_galaxies/modeling.py` how to use extra galaxies in a model-fit, including loading the extra galaxy centres.
 
 
 __Mask Extra Galaxies (Optional)__
@@ -223,8 +223,8 @@ may be a better approach.
 **Links / Resources:**
 
 - `data_preparation/examples/optional/mask_extra_galaxies.py`: create the extra galaxies mask manually via a Python script.
-- `data_preparation/gui/extra_galaxies_mask.ipynb` use a Graphical User Interface (GUI) to create the extra galaxies mask.
-- `features/extra_galaxies.py` how to use the extra galaxies mask in a model-fit.
+- `data_preparation/gui/mask_extra_galaxies.ipynb` use a Graphical User Interface (GUI) to create the extra galaxies mask.
+- `features/extra_galaxies/modeling.py` how to use the extra galaxies mask in a model-fit.
 
 
 __Info (Optional)__

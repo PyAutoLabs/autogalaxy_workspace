@@ -130,7 +130,7 @@ For a new user, the details of over-sampling are not important, therefore just b
 all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
 
 Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 for dataset in dataset_list:
     over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(

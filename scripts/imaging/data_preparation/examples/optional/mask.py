@@ -17,9 +17,6 @@ script and omit this data preparation tutorial.
 
 Links / Resources:
 
-The `examples/mask.ipynb` scripts shows how to create customize masked (e.g. annular, ellipses)
-which are tailored to match the galaxy or lensed source emission of your data.
-
 The script `data_preparation/gui/mask.ipynb` shows how to use a Graphical User Interface (GUI) to create an even
 more custom mask.
 
@@ -150,6 +147,6 @@ aplt.fits_array(array=mask, file_path=Path(dataset_path, "mask.fits"), overwrite
 
 """
 The workspace also includes a GUI for drawing a mask, which can be found at
-`autogalaxy_workspace/*/data_preparation/imaging/gui/mask.py`. This tools allows you to draw the mask via a `spray paint` mouse
+`autogalaxy_workspace/*/imaging/data_preparation/gui/mask.py`. This tools allows you to draw the mask via a `spray paint` mouse
 icon, such that you can draw irregular masks more tailored to the source's light.
 """

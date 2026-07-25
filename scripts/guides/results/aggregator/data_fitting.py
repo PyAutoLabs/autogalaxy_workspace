@@ -95,7 +95,7 @@ compose our own `Imaging` object. For large datasets, this would require us to u
 memory-light, which are cumbersome to write.
 
 This example therefore uses the `ImagingAgg` object, which conveniently loads the `Imaging` objects of every fit via 
-generators for us. Explicit examples of how to do this via generators is given in the `advanced/manual_generator.py` 
+generators for us. Explicit examples of how to do this via generators is given in the `aggregator/samples_via_aggregator.py` 
 tutorial.
 
 We get a dataset generator via the `ag.agg.ImagingAgg` object, where this `dataset_gen` contains the maximum log
@@ -196,7 +196,7 @@ for fit_list in fit_gen:  # Only Max LH sample so fit_list contains 1 lists of f
 """
 __Errors (Random draws from PDF)__
 
-In the `examples/models.py` example we showed how `Galaxies` objects could be randomly drawn form the Probability 
+In the `aggregator/models.py` example we showed how `Galaxies` objects could be randomly drawn form the Probability 
 Distribution Function, in order to quantity things such as errors.
 
 The same approach can be used with `FitImaging` objects, to investigate how the properties of the fit vary within
