@@ -15,6 +15,9 @@ Python: 3.11. Core dependencies: `autogalaxy`, `autofit`, `numba`.
   - `interferometer/` — ALMA / JVLA uv-plane modeling
   - `multi/` — Multi-wavelength simultaneous modeling
   - `ellipse/` — Ellipse fitting (non-parametric morphology)
+  - `multi_galaxy/` — 2+ blended galaxies modeled simultaneously (one free light model each)
+  - `cluster/` — Cluster fields: BCG + catalogue-driven member population (light is the subject —
+    unlike autolens's cluster package, which fits point-source positions and no lens light)
   - `guides/` — API guides: `modeling/`, `results/`, `plot/`, `profiles/`, `units/`, `hpc/`,
     `advanced/`, plus `galaxies.py` and `data_structures.py`
 - `notebooks/` — Jupyter notebook versions, generated from `scripts/` (do not edit directly)
