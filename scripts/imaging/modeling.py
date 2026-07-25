@@ -93,6 +93,7 @@ dataset = ag.Imaging.from_fits(
     psf_path=dataset_path / "psf.fits",
     noise_map_path=dataset_path / "noise_map.fits",
     pixel_scales=0.1,
+    convolve_over_sample_size_lp=1,  # Increase for PSF Oversampling
 )
 
 """
