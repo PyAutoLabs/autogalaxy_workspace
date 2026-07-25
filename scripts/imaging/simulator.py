@@ -82,7 +82,7 @@ resolution of 32x32, transitioning to 8x8 in intermediate areas, and 2x2 in the 
 accurate image simulation while focusing computational resources on the bright regions that demand higher oversampling.
 
 Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=grid,
@@ -288,6 +288,6 @@ Note: eager `simulator_jax.via_galaxies_from(galaxies, grid)` (no `@jax.jit`)
 already runs on JAX and is sufficient for one-off simulations. The
 `@jax.jit` wrap is only beneficial when you call the function many times.
 
-See `scripts/guides/api/data_structures.py` for the broader "JIT-it-
+See `scripts/guides/data_structures.py` for the broader "JIT-it-
 yourself" pattern.
 """

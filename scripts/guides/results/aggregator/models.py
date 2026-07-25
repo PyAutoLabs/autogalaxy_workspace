@@ -71,7 +71,7 @@ compose our own `Galaxies` object. For large datasets, this would require us to 
 which are cumbersome to write.
 
 This example therefore uses the `GalaxiesAgg` object, which conveniently loads the `Galaxies` objects of every fit via 
-generators for us. Explicit examples of how to do this via generators is given in the `advanced/manual_generator.py` 
+generators for us. Explicit examples of how to do this via generators is given in the `aggregator/samples_via_aggregator.py` 
 tutorial.
 
 We get a galaxies generator via the `ag.agg.GalaxiesAgg` object, where this `galaxies_gen` contains the maximum log

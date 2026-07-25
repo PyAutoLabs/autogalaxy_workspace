@@ -31,7 +31,7 @@ __JAX__
 analysis-driven path — where `AnalysisInterferometer` auto-enables
 `use_jax=True` and the search driver handles the JIT — see `start_here.py`
 / `modeling.py`. For the JIT-it-yourself path around individual library
-methods, see `scripts/guides/api/data_structures.py`.
+methods, see `scripts/guides/data_structures.py`.
 
 """
 

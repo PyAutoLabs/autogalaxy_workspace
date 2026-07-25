@@ -9,8 +9,10 @@ This script shows you how to model such a galaxy using **PyAutoGalaxy** with as 
 as possible. In about 15 minutes you’ll be able to point the code at your own FITS files and
 fit your first galaxy.
 
-We focus on a *galaxy-scale* target (a single galaxy). If you have multiple galaxies,
-see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
+We focus on a *galaxy-scale* target (a single galaxy). If your data contains additional galaxies
+whose emission blends with it, see the `interferometer/features/extra_galaxies` examples. Group
+and cluster scale systems are strong lensing analyses, covered by the `group` and `cluster`
+examples of the `autolens_workspace`.
 
 __JAX__
 

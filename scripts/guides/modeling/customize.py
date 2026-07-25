@@ -13,7 +13,7 @@ __Contents__
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `imaging/modeling.ipynb` notebook.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()
@@ -91,7 +91,7 @@ to the source emission than the annular masks above.
 
 To create the .fits file of a mask, we use a GUI tool which is described in the following script:
 
- `autolens_workspace/*/data_preparation/imaging/gui/mask.py`
+ `autogalaxy_workspace/*/imaging/data_preparation/gui/mask.py`
  
 We reload the data to restore it to its original shape, as the previous cell applied a mask to it which changed its
 shape to prepare for the fast Fourier transforms.

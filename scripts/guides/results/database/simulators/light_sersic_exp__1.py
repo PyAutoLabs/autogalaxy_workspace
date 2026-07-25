@@ -68,7 +68,7 @@ resolution of 32x32, transitioning to 8x8 in intermediate areas, and 2x2 in the 
 accurate image simulation while focusing computational resources on the bright regions that demand higher oversampling.
 
 Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=grid,

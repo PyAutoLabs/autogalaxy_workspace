@@ -119,7 +119,7 @@ This script fits an `Imaging` dataset of a galaxy with a model where:
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `interferometer/modeling.ipynb` notebook.
 
 __High Resolution Dataset__
 

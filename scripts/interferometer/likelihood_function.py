@@ -406,5 +406,5 @@ chi-squared you derived above, use `Fitness._vmap(jnp.array([parameters]))`.
 
 For the canonical Analysis-driven path (zero JAX code on your side),
 see `start_here.py` / `modeling.py`. For JIT-ing library methods directly,
-see `scripts/guides/api/data_structures.py`.
+see `scripts/guides/data_structures.py`.
 """

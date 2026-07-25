@@ -36,12 +36,12 @@ For operated light profiles, there is no `fit.py` example found for standard lig
 and other examples.
 
 This is done purely to keep the number of examples in the workspace manageable. to perform a fit with operated light
-profiles, simply follow one of the other `modeling/imaging/fit.py` examples and replace the light profiles
+profiles, simply follow one of the other `imaging/fit.py` examples and replace the light profiles
 with operated light profiles using the API described below.
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `imaging/modeling.ipynb` notebook.
 
 __Contents__
 
@@ -118,7 +118,7 @@ aplt.subplot_imaging_dataset(dataset=dataset)
 __Over Sampling__
 
 Apply adaptive over sampling to ensure the calculation is accurate, you can read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,
@@ -252,5 +252,5 @@ aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
 
 """
-Checkout `autogalaxy_workspace/*/modeling/imaging/results.py` for a full description of the result object.
+Checkout `autogalaxy_workspace/*/guides/results/start_here.py` for a full description of the result object.
 """
