@@ -8,7 +8,7 @@ This allows us to visualize and interpret its results.
 The galaxies and fit API is described fully in the guides:
 
  - `autogalaxy_workspace/*/guides/galaxies.ipynb`
- - `autogalaxy_workspace/*/guides/fit.ipynb`
+ - `autogalaxy_workspace/*/imaging/fit.ipynb`
 
 This result example only explains specific functionality for using a `Result` object to inspect galaxies or a fit
 and therefore you should read these guides in detail first.
@@ -25,7 +25,7 @@ __Units__
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in
 arc seconds, luminosities in electrons per second and mass quantities (e.g. convergence) are dimensionless.
 
-The results example `units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
+The results example `guides/units/cosmology.ipynb` illustrates how to convert these quantities to physical units like
 kiloparsecs, magnitudes and solar masses.
 
 __Data Structures__
@@ -38,7 +38,7 @@ This tutorial will only use the `slim` properties which show results in 1D numpy
 shape [total_unmasked_pixels]. This is a slimmed-down representation of the data in 1D that contains only the
 unmasked data points
 
-These are documented fully in the `autogalaxy_workspace/*/guides/data_structure.ipynb` guide.
+These are documented fully in the `autogalaxy_workspace/*/guides/data_structures.ipynb` guide.
 
 __Start Here Notebook__
 
@@ -80,7 +80,7 @@ The code below performs a model-fit using nautilus. The helper above already wro
 ``output/results_folder/``, so the ``search.fit(...)`` call below resumes from that checkpoint and
 returns the in-memory ``Result`` object without redoing the search.
 
-You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one.
+You should be familiar with modeling already, if not read the `imaging/modeling.py` script before reading this one.
 """
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name

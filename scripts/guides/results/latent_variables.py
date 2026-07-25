@@ -247,7 +247,7 @@ consider submitting it to the library. The flow is:
  2. Register it in the module-level ``LATENT_FUNCTIONS`` dict.
  3. Add an entry to ``autogalaxy/config/latent.yaml`` defaulting it to ``false`` (the workspace yaml will
     opt users in).
- 4. Add a unit test under ``test_autogalaxy/imaging/test_latent.py``.
+ 4. Add a unit test under ``test_autogalaxy/imaging/model/test_latent.py``.
  5. Open a PR.
 
 Pipeline-specific latents that require non-standard kwargs (PSF-relative aperture fluxes, dataset-specific

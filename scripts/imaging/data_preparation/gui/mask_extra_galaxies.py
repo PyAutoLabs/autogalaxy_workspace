@@ -6,7 +6,7 @@ There may be regions of an image that have signal near the galaxy that is from o
 main galaxy we are studying. The emission from these images will impact our model fitting and needs to be removed from
 the analysis.
 
-The example `data_preparation/imaging/example/optional/extra_galaxies_mask.py` provides a full description of
+The example `data_preparation/examples/optional/mask_extra_galaxies.py` provides a full description of
 what the extra galaxies are and how they are used in the model-fit. You should read this script first before
 using this script.
 

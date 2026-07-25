@@ -5,7 +5,7 @@ This script provides a step-by-step guide of the `log_likelihood_function` which
 a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.
 
 You should be familiar with the `log_likelihood_function` of a linear light profile before reading this script,
-which is described in the `log_likelihood_function/imaging/linear_light_profile/likelihood_function.ipynb` notebook.
+which is described in the `imaging/features/linear_light_profiles/likelihood_function.ipynb` notebook.
 
 This script has the following aims:
 
@@ -22,8 +22,8 @@ __Prerequisites__
 The likelihood function of a multi Gaussian expansion builds on that used for standard light profiles and
 linear light profiles, therefore you must read the following notebooks before this script:
 
-- `light_profile/likelihood_function.ipynb`.
-- `linear_light_profile/likelihood_function.ipynb`.
+- `imaging/likelihood_function.ipynb`.
+- `imaging/features/linear_light_profiles/likelihood_function.ipynb`.
 
 __Contents__
 
@@ -65,7 +65,7 @@ import autogalaxy.plot as aplt
 """
 __Dataset__
 
-Following the `linear_light_profile/log_likelihood_function.py` script, we load and mask an `Imaging` dataset and
+Following the `imaging/features/linear_light_profiles/likelihood_function.py` script, we load and mask an `Imaging` dataset and
 set oversampling to 1.
 
 This example fits a simulated galaxy where galaxy has an asymmetric light distribution, which cannot be accurately 
@@ -117,7 +117,7 @@ __Masked Image Grid__
 To perform galaxy calculations we used a 2D image-plane grid of (y,x) coordinates, which evaluated the
 emission of galaxy light profiles created as `LightProfile` objects.
 
-The code below repeats that used in `light_profile/log_likelihood_function.py` to show how this was done.
+The code below repeats that used in `imaging/likelihood_function.py` to show how this was done.
 """
 bulge = ag.lp.Sersic(
     centre=(0.0, 0.0),
@@ -242,7 +242,7 @@ print("This will raise an exception")
 __Comparison To Linear Light Profiles Example__
 
 The text below, for steps 1 through to 10, is nearly identical to 
-the `linear_light_profile/likelihood_function.ipynb` example, because the linear algebra and likelihood function
+the `imaging/features/linear_light_profiles/likelihood_function.ipynb` example, because the linear algebra and likelihood function
 of a multi-Gaussian expansion is essentially identical to that of a single linear light profile.
 
 The key difference between the linear light profile and multi-Gaussian expansion calculation is essentially the

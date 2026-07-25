@@ -14,7 +14,7 @@ An example use case might be analysing undithered HST images before they are com
 to remove correlated noise in the data.
 
 It is common for dithered datasets to be observed with small shifts (e.g. half a pixel), which needs to be
-modelled in the analysis. The example `multi/modeling/features/dataset_offset.py` demonstrates how to do this.
+modelled in the analysis. The example `multi/features/dataset_offsets/modeling.py` demonstrates how to do this.
 
 This is an advanced script and assumes previous knowledge of the core **PyAutoGalaxy** API for galaxy modeling. Thus,
 certain parts of code are not documented to ensure the script is concise.

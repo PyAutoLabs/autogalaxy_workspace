@@ -5,7 +5,7 @@ Start Here: Multi Wavelength
 Galaxies are often observed with CCD imaging, for example using HST, JWST,
 or ground-based telescopes.
 
-The examples `start_here_imaging.ipynb` illustrate how to perform galaxy modeling of CCD imaging
+The example `imaging/start_here.ipynb` illustrates how to perform galaxy modeling of CCD imaging
 of single galaxies; it is recommended you read that example before reading this one.
 
 This script shows you how to model multiple images of a galaxy, taken at different wavelengths,
@@ -16,8 +16,10 @@ Multi-wavelength galaxy modeling is an advanced feature and it is recommended yo
 **PyAutoGalaxy** and galaxy modeling before using it for your own science. Nevertheless, this script
 should make it quick and easy to at least have a go doing multi-wavelength modeling of your own data.
 
-We focus on a *galaxy-scale* target (a single galaxy). If you have multiple galaxies,
-see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
+We focus on a *galaxy-scale* target (a single galaxy). If your images contain additional galaxies
+whose light blends with it, see the `imaging/features/extra_galaxies` examples. Group and cluster
+scale systems are strong lensing analyses, covered by the `group` and `cluster` examples of the
+`autolens_workspace`.
 
 __JAX__
 
@@ -388,7 +390,7 @@ A few things to note, with full details on data preparation provided in the main
 
 __Simulator__
 
-In the example `start_here_imaging.ipynb`, we showed how to simulate CCD imaging of a galaxy.
+In the example `imaging/start_here.ipynb`, we showed how to simulate CCD imaging of a galaxy.
 
 We do not give a full description of the simulation API for multi wavelength imaging here,
 but it is fully described in the main workspace documentation.

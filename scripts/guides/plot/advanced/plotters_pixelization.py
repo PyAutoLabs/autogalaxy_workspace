@@ -10,7 +10,7 @@ asymmetric clumpy star formation, see `scripts/imaging/features/pixelization/mod
 
 __Start Here Notebook__
 
-You should refer to the `plots/start_here.ipynb` notebook first for a description of how plotters work and the default
+You should refer to the `guides/plot/start_here.ipynb` notebook first for a description of how plotters work and the default
 behaviour of plotting visuals.
 
 __Contents__

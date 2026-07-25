@@ -25,8 +25,8 @@ __Prerequisites__
 The likelihood function of a pixelization builds on that used for standard parametric light profiles and
 linear light profiles, therefore you must read the following notebooks before this script:
 
-- `light_profile/likelihood_function.ipynb`.
-- `linear_light_profile/likelihood_function.ipynb`.
+- `imaging/likelihood_function.ipynb`.
+- `imaging/features/linear_light_profiles/likelihood_function.ipynb`.
 
 __Contents__
 
@@ -151,7 +151,7 @@ Over sampling evaluates a light profile using multiple samples of its intensity 
 
 For simplicity, we disable over sampling in this guide by setting `sub_size=1`. 
 
-a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
+a full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/advanced/over_sampling.py`.
 """
 masked_dataset = masked_dataset.apply_over_sampling(
     over_sample_size_lp=1, over_sample_size_pixelization=1

@@ -38,7 +38,7 @@ In this guide, all quantities use **PyAutoGalaxy**'s internal unit coordinates: 
 coordinates in arc-seconds, luminosities in electrons per second, and mass quantities (e.g.
 convergence) are dimensionless.
 
-The `guides/units_and_cosmology.ipynb` guide illustrates how to convert these to physical
+The `guides/units/cosmology.ipynb` guide illustrates how to convert these to physical
 quantities (kiloparsecs, magnitudes, solar masses).
 
 __Data Structures__

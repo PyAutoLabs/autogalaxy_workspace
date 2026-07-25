@@ -89,17 +89,17 @@ __Configs__
 
 All matplotlib defaults can be customized via the config files, such that those values are used every time.
 
-Checkout the `mat_wrap.yaml` file in `autogalaxy_workspace/config/visualize/mat_wrap`.
+Checkout the `general.yaml` file in `autogalaxy_workspace/config/visualize`.
 
-All default matplotlib values are here. There are a lot of entries, so lets focus on whats important for displaying
+All default visualization values are here. There are a lot of entries, so lets focus on whats important for displaying
 figures:
 
- - mat_wrap.yaml -> Figure -> figure: -> figsize
- - mat_wrap.yaml -> YLabel -> figure: -> fontsize
- - mat_wrap.yaml -> XLabel -> figure: -> fontsize
- - mat_wrap.yaml -> TickParams -> figure: -> labelsize
- - mat_wrap.yaml -> YTicks -> figure: -> labelsize
- - mat_wrap.yaml -> XTicks -> figure: -> labelsize
+ - general.yaml -> subplot_shape_to_figsize_factor
+ - general.yaml -> colormap
+ - general.yaml -> ticks -> number_of_ticks_2d
+ - general.yaml -> colorbar -> labelsize
+ - general.yaml -> colorbar -> labelsize_subplot
+ - general.yaml -> units -> cb_unit
 
 __Subplots__
 

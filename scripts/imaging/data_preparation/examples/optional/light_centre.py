@@ -88,7 +88,7 @@ ag.output_to_json(
 
 """
 The workspace also includes a GUI for drawing lens light centres, which can be found at
-`autogalaxy_workspace/*/data_preparation/imaging/gui/light_centres.py`.
+`autogalaxy_workspace/*/imaging/data_preparation/gui/light_centre.py`.
 
 This tools allows you `click` on the image where the galaxy light centres are, and it uses the brightest
 pixel within a 5x5 box of pixels to select the coordinate.

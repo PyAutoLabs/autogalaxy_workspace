@@ -224,6 +224,6 @@ Two notes:
 - Eager `simulator_jax.via_image_from(image)` already runs on JAX without
   the `@jax.jit` wrap; the JIT only matters for repeated calls.
 
-See `scripts/guides/api/data_structures.py` for the broader "JIT-it-
+See `scripts/guides/data_structures.py` for the broader "JIT-it-
 yourself" pattern.
 """

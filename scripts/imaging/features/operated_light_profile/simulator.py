@@ -14,7 +14,7 @@ simulators not in the `advanced` folder for more detailed comments.
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `simulators/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `imaging/simulator.ipynb` notebook.
 
 __Contents__
 

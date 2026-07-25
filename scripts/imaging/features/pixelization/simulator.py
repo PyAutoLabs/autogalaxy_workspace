@@ -89,7 +89,7 @@ An adaptive oversampling scheme is implemented, evaluating each bright region (t
 centre) at a resolution of 32x32, transitioning to 8x8 in intermediate areas, and 2x2 in the outskirts.
 
 Once you are more experienced, you should read up on over-sampling in more detail via
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_centres = [(0.0, 0.0)] + clump_centres
 

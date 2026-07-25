@@ -7,7 +7,7 @@ This example illustrates the API for customizing the appearance of figures using
 
 __Start Here Notebook__
 
-You should refer to the `plots/start_here.ipynb` notebook first for a description of how visuals work and the default
+You should refer to the `guides/plot/start_here.ipynb` notebook first for a description of how visuals work and the default
 behaviour of plotting.
 
 __Contents__
@@ -19,7 +19,7 @@ __Contents__
 - **Color Map**: Customize the colormap, color scale limits and log10 normalization.
 - **Log10**: Plot quantities in log10 space.
 - **Contours**: Overlay contour lines on a figure.
-- **Ticks / Colorbar / Legend / Annotate / Text / Axis**: Config-file-only styling.
+- **Ticks / Colorbar / Contours / Units**: Config-file-only styling.
 
 __Setup__
 
@@ -144,21 +144,19 @@ aplt.plot_array(array=image, title="Image with Contours")
 aplt.plot_array(array=image, title="Image with Fewer Contours")
 
 """
-__Ticks / Colorbar / Legend / Annotate / Text / Axis__
+__Ticks / Colorbar / Contours / Units__
 
-The following aspects of figure appearance are controlled via the config files in
-`autogalaxy_workspace/config/visualize/mat_wrap/` rather than via runtime Python arguments:
+The following aspects of figure appearance are controlled via the config file
+`autogalaxy_workspace/config/visualize/general.yaml` rather than via runtime Python arguments:
 
- - Tick label sizes, fonts and formatting (`TickParams`, `YTicks`, `XTicks` in `mat_wrap.yaml`)
- - Colorbar styling (`Colorbar`, `ColorbarTickParams` in `mat_wrap.yaml`)
- - Legend appearance (`Legend` in `mat_wrap.yaml`)
- - Annotations (`Annotate` in `mat_wrap.yaml`)
- - Text overlays (`Text` in `mat_wrap.yaml`)
- - Axis extent (`Axis` in `mat_wrap.yaml`)
- - Scatter marker styling for overlays like origins, positions and borders
-   (`OriginScatter`, `MaskScatter`, `BorderScatter`, etc. in `mat_wrap_2d.yaml`)
+ - Tick placement and count (`ticks` -> `extent_factor_2d`, `number_of_ticks_2d`)
+ - Colorbar styling (`colorbar` -> `fraction`, `pad`, `labelrotation`, `labelsize`, `labelsize_subplot`)
+ - Contour levels drawn over log10 plots (`contour` -> `total_contours`, `include_values`)
+ - The default colormap of 2D figures (`colormap`)
+ - Spatial and colorbar unit labels (`units` -> `use_scaled`, `cb_unit`, `scaled_symbol`, `unscaled_symbol`)
+ - Subplot layout and figure sizing (`subplot_shape`, `subplot_shape_to_figsize_factor`)
 
-To change these defaults, edit the corresponding YAML config file and restart the Python session
+To change these defaults, edit the YAML config file and restart the Python session
 (or Jupyter kernel) for the changes to take effect.
 
 Finish.

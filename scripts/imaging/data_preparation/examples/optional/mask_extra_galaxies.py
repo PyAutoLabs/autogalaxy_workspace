@@ -26,7 +26,7 @@ way is appropriate for the model being fitted.
 
 __Links / Resources__
 
-The script `data_preparation/gui/extra_galaxies_mask.ipynb` shows how to use a Graphical User Interface (GUI) to create
+The script `data_preparation/gui/mask_extra_galaxies.ipynb` shows how to use a Graphical User Interface (GUI) to create
 the extra galaxies mask.
 
 The script `features/extra_galaxies/modeling` shows how to use this mask in different ways in a model-fit.
@@ -139,7 +139,7 @@ aplt.fits_array(
 
 """
 The workspace also includes a GUI for image and noise-map scaling, which can be found at
-`autogalaxy_workspace/*/data_preparation/imaging/gui/mask_extra_galaxies.py`.
+`autogalaxy_workspace/*/imaging/data_preparation/gui/mask_extra_galaxies.py`.
 
 This tools allows you `spray paint` on the image where an you want to scale, allow irregular patterns (i.e. not
 rectangles) to be scaled.

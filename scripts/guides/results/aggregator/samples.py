@@ -33,7 +33,7 @@ __Units__
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in
 arc seconds, luminosities in electrons per second and mass quantities (e.g. convergence) are dimensionless.
 
-The guide `guides/units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
+The guide `guides/units/cosmology.ipynb` illustrates how to convert these quantities to physical units like
 kiloparsecs, magnitudes and solar masses.
 
 __Start Here Notebook__
@@ -76,7 +76,7 @@ The code below performs a model-fit using nautilus. The helper above already wro
 ``output/results_folder/``, so the ``search.fit(...)`` call below resumes from that checkpoint and
 returns the in-memory ``Result`` object without redoing the search.
 
-You should be familiar with modeling already, if not read the `modeling/start_here.py` script before reading this one!
+You should be familiar with modeling already, if not read the `imaging/modeling.py` script before reading this one!
 """
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
