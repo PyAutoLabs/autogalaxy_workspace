@@ -134,6 +134,7 @@ Python >= 3.12. When it is not installed (e.g. the NumPy-only CI matrix), skip
 this example gracefully rather than erroring on the data-simulation step.
 """
 import importlib.util
+import sys
 
 if importlib.util.find_spec("nufftax") is None:
     print(
