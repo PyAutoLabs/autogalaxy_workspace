@@ -10,7 +10,7 @@ functions that are simpler to call and require less boilerplate code.
 
 __Start Here Notebook__
 
-You should refer to the `plots/start_here.ipynb` notebook first for a description of how plotting works and the default
+You should refer to the `guides/plot/start_here.ipynb` notebook first for a description of how plotting works and the default
 behaviour of plotting visuals.
 
 __Contents__

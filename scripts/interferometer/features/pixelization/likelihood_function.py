@@ -19,8 +19,8 @@ The likelihood function of pixelizations is the most complicated likelihood func
 The likelihood function of a pixelization builds on that used for standard parametric light profiles and
 linear light profiles, therefore you must read the following notebooks before this script:
 
-- `light_profile/likelihood_function.ipynb`.
-- `linear_light_profile/likelihood_function.ipynb`.
+- `interferometer/likelihood_function.ipynb`.
+- `interferometer/features/linear_light_profiles/likelihood_function.ipynb`.
 
 This script repeats all text and code examples in the above likelihood function examples. It therefore can be used to
 learn about the linear light profile likelihood function without reading other likelihood scripts.

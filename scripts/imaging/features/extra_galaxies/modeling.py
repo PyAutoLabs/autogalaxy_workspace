@@ -25,16 +25,16 @@ To perform modeling which accounts for extra galaxies, a mask of their emission 
 galaxy are used to set up the model-fit. For the example dataset used here, these tasks have already been performed and
 the metadata (`mask_extra_galaxies.fits` and `extra_galaxies_centres.json` are already included in results folder.
 
-The tutorial `autogalaxy_workspace/*/data_preparation/imaging/optional/extra_galaxies_centres.py`
+The tutorial `autogalaxy_workspace/*/imaging/data_preparation/examples/optional/extra_galaxies_centres.py`
 describes how to create these centres and output them to a `.json` file.
 
 To mask the emission of extra galaxies and omit them from the fit, a `mask_extra_galaxies.fits` file is required.
-The `data_preparation` tutorial `autogalaxy_workspace/*/data_preparation/imaging/optional/mask_extra_galaxies.py`
+The `data_preparation` tutorial `autogalaxy_workspace/*/imaging/data_preparation/examples/optional/mask_extra_galaxies.py`
 describes how to create this mask.
 
 __Start Here Notebook__
 
-If any code in this script is unclear, refer to the `modeling/start_here.ipynb` notebook.
+If any code in this script is unclear, refer to the `imaging/modeling.ipynb` notebook.
 
 __Contents__
 
@@ -136,7 +136,7 @@ Crucially, this over sampling is applied at the centre of both extra galaxies, e
 sampled correctly.
 
 Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,

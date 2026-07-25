@@ -24,7 +24,7 @@ The `PLotter` API is described in the script `autogalaxy_workspace/*/guides/plot
 __Simulation__
 
 This script fits a simulated `Imaging` dataset of a galaxy, which is produced in the
-script `autogalaxy_workspace/*/simulators/imaging/start_here.py`
+script `autogalaxy_workspace/*/imaging/simulator.py`
 
 __Data Preparation__
 
@@ -32,7 +32,7 @@ The `Imaging` dataset fitted in this example confirms to a number of standard th
 **PyAutoGalaxy**.
 
 If you are intending to fit your own data, you will need to ensure it conforms to these standards, which are
-described in the script `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb`.
+described in the script `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb`.
 
 __Contents__
 
@@ -153,7 +153,7 @@ If we plot the masked data, the mask removes the exterior regions of the image w
 galaxy.
 
 The mask used to fit the data can be customized, as described in 
-the script `autogalaxy_workspace/*/modeling/imaging/customize/custom_mask.py`
+the script `autogalaxy_workspace/*/guides/modeling/customize.py`
 """
 aplt.subplot_imaging_dataset(dataset=dataset)
 
@@ -167,7 +167,7 @@ For a new user, the details of over-sampling are not important, therefore just b
 all calculations use an adaptive over sampling scheme which ensures high accuracy and precision.
 
 Once you are more experienced, you should read up on over-sampling in more detail via 
-the `autogalaxy_workspace/*/guides/over_sampling.ipynb` notebook.
+the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,
@@ -183,7 +183,7 @@ The imaging subplot updates the bottom two panels to reflect the update to over 
 values in the centre.
 
 Whilst you may not yet understand the details of over-sampling, you can at least track it visually in the plots
-and later learnt more about it in the `over_sampling.ipynb` guide.
+and later learnt more about it in the `guides/advanced/over_sampling.ipynb` guide.
 """
 aplt.subplot_imaging_dataset(dataset=dataset)
 
@@ -206,7 +206,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/imaging/features/linear_light_profiles/modeling.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -231,7 +231,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -543,7 +543,7 @@ sounds useful, but for most users you can get by without using these forms of cu
 __Data Preparation__
 
 If you are looking to fit your own CCD imaging data of a galaxy, checkout  
-the `autogalaxy_workspace/*/data_preparation/imaging/start_here.ipynb` script for an overview of how data should be 
+the `autogalaxy_workspace/*/imaging/data_preparation/start_here.ipynb` script for an overview of how data should be 
 prepared before being modeled.
 
 __HowToGalaxy__

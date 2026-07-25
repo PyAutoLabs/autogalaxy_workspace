@@ -136,7 +136,7 @@ Over sampling evaluates a light profile using multiple samples of its intensity 
 
 For simplicity, we disable over sampling in this guide by setting `sub_size=1`. 
 
-A full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/over_sampling.py`.
+A full description of over sampling and how to use it is given in `autogalaxy_workspace/*/guides/advanced/over_sampling.py`.
 """
 masked_dataset = masked_dataset.apply_over_sampling(over_sample_size_lp=1)
 
@@ -441,5 +441,5 @@ log_l_jax = fitness._vmap(jnp.array([instance_parameters]))[0]
 For the canonical Analysis-driven modeling path (zero JAX code on your
 side), see `start_here.py` / `modeling.py`. For JIT-ing library methods
 directly without going through `FitImaging`, see
-`scripts/guides/api/data_structures.py`.
+`scripts/guides/data_structures.py`.
 """

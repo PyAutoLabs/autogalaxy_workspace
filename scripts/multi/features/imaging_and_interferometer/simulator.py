@@ -6,7 +6,7 @@ This script simulates `Interferometer` data of a galaxy where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.
 
-This dataset is paired with the script `multi/simulators/simple.py` and therefore
+This dataset is paired with the script `multi/simulator.py` and therefore
 provides interferometer observations of the same galaxy.
 
 It is used to demonstrate the combination of imaging and interferometer datasets.

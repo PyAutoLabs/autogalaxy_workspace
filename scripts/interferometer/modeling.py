@@ -137,7 +137,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/imaging/features/linear_light_profiles/modeling.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -148,7 +148,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
  - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
+ - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
 disk = af.Model(ag.lp_linear.Exponential)
@@ -391,7 +391,7 @@ forms of customization!
 __Data Preparation__
 
 If you are looking to fit your own interferometer data of a galaxy, check out
-the `autogalaxy_workspace/*/interferometer/data_preparation/start_here.ipynb` script for an overview of how data
+the `autogalaxy_workspace/*/interferometer/data_preparation.ipynb` script for an overview of how data
 should be prepared before being modeled.
 
 __HowToGalaxy__

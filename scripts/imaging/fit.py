@@ -9,7 +9,7 @@ __Units__
 In this example, all quantities are **PyAutoGalaxy**'s internal unit coordinates, with spatial coordinates in
 arc seconds, luminosities in electrons per second and mass quantities (e.g. convergence) are dimensionless.
 
-The guide `guides/units_and_cosmology.ipynb` illustrates how to convert these quantities to physical units like
+The guide `guides/units/cosmology.ipynb` illustrates how to convert these quantities to physical units like
 kiloparsecs, magnitudes and solar masses.
 
 __Data Structures__
@@ -30,8 +30,8 @@ This tutorial does not use a pixelized galaxy reconstruction or linear light pro
 functionality that interfaces with the `FitImaging` object. See `imaging/features/pixelization/fit.py` for the
 canonical bulge + pixelization fit example.
 
-This is described in the dedicated example scripts `modeling/features/linear_light_profiles.py`
-and `modeling/features/pixelizaiton.py`.
+This is described in the dedicated example scripts `imaging/features/linear_light_profiles/modeling.py`
+and `imaging/features/pixelization/modeling.py`.
 
 __Contents__
 
@@ -63,7 +63,7 @@ For the standard analysis-driven modeling path — where `AnalysisImaging`
 auto-enables `use_jax=True` and the search driver handles the JIT — see
 `start_here.py` / `modeling.py`. For the advanced path where you wrap your
 own `@jax.jit` around `FitImaging` construction, see `likelihood_function.py`'s
-`__JAX__` section and the `scripts/guides/api/data_structures.py` guide.
+`__JAX__` section and the `scripts/guides/data_structures.py` guide.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()

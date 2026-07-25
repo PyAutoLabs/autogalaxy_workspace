@@ -268,7 +268,7 @@ Anything reached via `from_json(...)` in the simple-loading section above can al
 aggregator below — both APIs return the same PyAutoFit / PyAutoGalaxy objects. After reading this section,
 the sibling files in `aggregator/` provide deeper examples for samples, fits, queries and database use.
 
-If you are not familiar with the modeling API, see `autogalaxy_workspace/*/examples/modeling/` first.
+If you are not familiar with the modeling API, see `autogalaxy_workspace/*/imaging/modeling.ipynb` first.
 
 __Loading From Hard-disk__
 
@@ -483,7 +483,7 @@ The guide `autogalaxy_workspace/*/guides/galaxies.py` provides a detailed descri
  - Inspecting mass model components like the convergence, potential and deflection angles.
  - Other lensing quantities like the critical curve and caustics.
 
-The example result script `autogalaxy_workspace/*/results/aggregator/galaxies_fits.py` show how to use
+The example result script `autogalaxy_workspace/*/guides/results/aggregator/galaxies_fit.py` show how to use
 model-fitting results specific functionality of galaxies, including:
 
  - Drawing galaxies from the samples and plotting their images.
@@ -504,13 +504,13 @@ data.
 Following the discussion above, this object contains the correct `intensity` values for the light profiles which
 are already solved via linear algebra.
 
-The guide `autogalaxy_workspace/*/guides/fits.py` provides a detailed description of this object, including:
+The guide `autogalaxy_workspace/*/imaging/fit.py` provides a detailed description of this object, including:
 
  - Performing a fit to data with galaxies.
  - Inspecting the model data, residual-map, chi-squared, noise-map of the fit.
  - Other properties of the fit that inspect how good it is.
 
-The example result script `autogalaxy_workspace/*/results/aggregator/galaxies_fits.py` show how to use
+The example result script `autogalaxy_workspace/*/guides/results/aggregator/galaxies_fit.py` show how to use
 model-fitting results specific functionality of galaxies, including:
 
  - Repeating fits using the results contained in the samples.
@@ -528,7 +528,7 @@ __Units and Cosmological Quantities__
 
 The maximum likelihood model includes cosmological quantities, which can be computed via the result.
 
-The guide `autogalaxy_workspace/*/guides/units_and_cosmology.py` provides a detailed description of this object,
+The guide `autogalaxy_workspace/*/guides/units/cosmology.py` provides a detailed description of this object,
 including:
 
  - Calculating the Einstein radius of the galaxy.
@@ -559,7 +559,7 @@ This includes Basis objects such as a Multi-Gaussian expansion of Shapelets.
 These objects mostly behave identically to ordinary light profiles, but due to the linear algebra have their own
 specific functionality.
 
-The example script `autogalaxy_workspace/*/modeling/imaging/linear_light_profiles.py` provides a detailed description of
+The example script `autogalaxy_workspace/*/imaging/features/linear_light_profiles/modeling.py` provides a detailed description of
 using linear light profile results including:
 
  - Extracting individual quantities from the linear light profile, such as the coefficients of the basis functions.
@@ -570,7 +570,7 @@ __Pixelization__
 
 The model can reconstruct the galaxy using a pixelization, for example on a Voronoi mesh.
 
-The example script `autogalaxy_workspace/*/results/aggregator/pixelizations.py` describes using pixelization
+The example script `autogalaxy_workspace/*/imaging/features/pixelization/galaxy_reconstruction.py` describes using pixelization
 results including:
 
  - Producing galaxy reconstructions using the Voronoi mesh, Delaunay triangulation or whichever mesh is used.
