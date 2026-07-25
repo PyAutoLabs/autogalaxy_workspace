@@ -15,6 +15,9 @@ Python: 3.11. Core dependencies: `autogalaxy`, `autofit`, `numba`.
   - `interferometer/` — ALMA / JVLA uv-plane modeling
   - `multi/` — Multi-wavelength simultaneous modeling
   - `ellipse/` — Ellipse fitting (non-parametric morphology)
+  - `multi_galaxy/` — 2+ blended galaxies modeled simultaneously (one free light model each)
+  - `cluster/` — Cluster fields: BCG + catalogue-driven member population (light is the subject —
+    unlike autolens's cluster package, which fits point-source positions and no lens light)
   - `guides/` — API guides: `modeling/`, `results/`, `plot/`, `profiles/`, `units/`, `hpc/`,
     `advanced/`, plus `galaxies.py` and `data_structures.py`
 - `notebooks/` — Jupyter notebook versions, generated from `scripts/` (do not edit directly)
@@ -22,8 +25,10 @@ Python: 3.11. Core dependencies: `autogalaxy`, `autofit`, `numba`.
 - `dataset/` — Example imaging and interferometer datasets
 - `output/` — Model-fit results (generated at runtime, not committed)
 
-There are no group/cluster/point-source/weak-lensing or SLaM directories — those are lensing
-concepts that live in `autolens_workspace`, not here. The HowToGalaxy tutorial lecture series is a
+There are no group/point-source/weak-lensing or SLaM directories — those are lensing concepts
+that live in `autolens_workspace`. The `cluster/` and `multi_galaxy/` packages here model those
+systems' **light** (a BCG + catalogue-driven member population; blended galaxy pairs), not lensing
+— see the structure list above and the deliberate autolens divergence noted there. The HowToGalaxy tutorial lecture series is a
 **separate repo** (https://github.com/PyAutoLabs/HowToGalaxy), not part of this workspace.
 
 ## Running Scripts

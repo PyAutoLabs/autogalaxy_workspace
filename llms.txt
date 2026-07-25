@@ -4,8 +4,9 @@ If your AI can't browse GitHub, paste this entire file into the chat as context.
 
 > Example and tutorial scripts (and generated notebooks) for modelling the morphologies and
 > structures of galaxies — light and mass profiles, single-plane galaxies — with **PyAutoGalaxy**.
-> This is galaxy morphology, NOT lensing (no ray-tracing, no source reconstruction, no group/cluster
-> scales). This file is a routing layer: given a user's task, point them to the RIGHT existing
+> This is galaxy morphology, NOT lensing (no ray-tracing, no source reconstruction — the
+> `multi_galaxy/` and `cluster/` packages model those systems' LIGHT, e.g. blended pairs and
+> BCG + member-population fields). This file is a routing layer: given a user's task, point them to the RIGHT existing
 > script/notebook/guide in this workspace instead of inventing code. Every path below is a real file
 > in this repository; scripts are run from the repo root (e.g. `python scripts/imaging/start_here.py`).
 
@@ -19,6 +20,8 @@ If your AI can't browse GitHub, paste this entire file into the chat as context.
 - [scripts/imaging/start_here.py](scripts/imaging/start_here.py): Model a single galaxy in CCD imaging (HST/JWST/ground-based) with minimal setup — ~15 min to point at your own FITS files.
 - [scripts/interferometer/start_here.py](scripts/interferometer/start_here.py): Interferometer (e.g. ALMA) entry point — fits complex visibilities in the uv-plane, not CCD images.
 - [scripts/multi/start_here.py](scripts/multi/start_here.py): Multi-wavelength / multi-dataset entry point — simultaneous fit of the same galaxy across datasets taken at different wavelengths.
+- [scripts/multi_galaxy/start_here.py](scripts/multi_galaxy/start_here.py): Blended multi-galaxy systems (interacting/close pairs) — one free light model per galaxy, fitted simultaneously.
+- [scripts/cluster/start_here.py](scripts/cluster/start_here.py): Cluster fields — a BCG modeled individually plus a catalogue-driven member population (one shared free normalization).
 
 ## I want to…
 
@@ -29,6 +32,8 @@ If your AI can't browse GitHub, paste this entire file into the chat as context.
 - **Pixelized / inversion reconstruction of irregular light** → [scripts/imaging/features/pixelization/modeling.py](scripts/imaging/features/pixelization/modeling.py): Reconstruct a galaxy's clumpy/irregular light on a regularized pixel-grid mesh (bulge Sersic + pixelization); export the reconstruction via [galaxy_reconstruction.py](scripts/imaging/features/pixelization/galaxy_reconstruction.py).
 - **Model interferometer / ALMA (uv-plane) data** → [scripts/interferometer/modeling.py](scripts/interferometer/modeling.py): Detailed uv-plane modeling API fitting complex visibilities directly.
 - **Multi-wavelength / multi-dataset modeling** → [scripts/multi/modeling.py](scripts/multi/modeling.py): Detailed API for jointly fitting multiple datasets of one galaxy.
+- **Model 2+ blended galaxies simultaneously** → [scripts/multi_galaxy/modeling.py](scripts/multi_galaxy/modeling.py): One free MGE per galaxy via the list-based `galaxy_0`/`galaxy_1` API; per-galaxy decomposition and photometry of the blend.
+- **Model a cluster field's light (BCG + members from a catalogue)** → [scripts/cluster/modeling.py](scripts/cluster/modeling.py): Members loaded from `scaling_galaxies.csv` with intensities tied to catalogue luminosities through one shared free normalization; refinements (shared free shapes, promoting bright members).
 - **Ellipse fitting (non-parametric morphology)** → [scripts/ellipse/modeling.py](scripts/ellipse/modeling.py): Fit a distribution of ellipses to a galaxy's isophotes — non-parametric morphology, no light-profile model; see also [multipoles.py](scripts/ellipse/multipoles.py) and [fit.py](scripts/ellipse/fit.py).
 - **Load & inspect results from `output/`** → [scripts/guides/results/start_here.py](scripts/guides/results/start_here.py): Load a completed fit back into Python (`Galaxies`, `Model`, samples, model images) from a fit's `output/...` folder, via `.json` and `.fits` files or the database.
 - **Compute galaxy quantities (luminosity, flux, sizes)** → [scripts/guides/galaxies.py](scripts/guides/galaxies.py): Extract and visualize a fitted galaxy's light profiles and derived quantities; for absolute flux / magnitude / luminosity calibration see [scripts/guides/units/flux.py](scripts/guides/units/flux.py).
