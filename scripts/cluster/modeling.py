@@ -23,7 +23,7 @@ __Contents__
 - **Member Catalogue:** Load centres + luminosities via `ag.galaxy_table_from_csv`.
 - **Model:** BCG MGE + catalogue tier with shared free normalization AND shared free shape.
 - **Promoted Members:** The two brightest members given their own free models.
-- **Search + Analysis / Fit.**
+- **Search + Analysis:** Configure the search and analysis, and fit.
 - **Truth Comparison:** Recovered `intensity_scale` vs the simulator truth of 1.0.
 
 __Simulation__
@@ -98,9 +98,9 @@ __Model__
 
 As `start_here.py`, plus the first refinement: the member tier's SHAPE parameters (effective radius,
 Sersic index) are promoted from fixed values to parameters SHARED by the whole tier. Every member still
-inherits them from the same two priors, so 10 members contribute 3 free parameters
-(`intensity_scale` + shared `effective_radius` + shared `sersic_index`) — and would still contribute 3
-with 200 members.
+inherits them from the same two priors, so the member tier contributes 3 free parameters
+(`intensity_scale` + shared `effective_radius` + shared `sersic_index`) regardless of its size — 8
+members here after the promotion below, and still 3 parameters with 200.
 
 __Promoted Members__
 
@@ -120,7 +120,8 @@ bulge = ag.model_util.mge_model_from(
 
 galaxy_dict = {"bcg": af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)}
 
-# Promoted members (the two brightest catalogue rows): own free models.
+# Promoted members: own free models. (The shipped CSV is sorted brightest-first, so rows 0-1 are
+# the brightest; for your own catalogue, sort by luminosity first or select rows explicitly.)
 
 n_promote = 2
 
