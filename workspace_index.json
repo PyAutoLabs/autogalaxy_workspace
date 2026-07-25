@@ -1,6 +1,63 @@
 [
   {
     "contents": [
+      "Dataset & Mask",
+      "Member Catalogue",
+      "Model",
+      "Promoted Members",
+      "Search + Analysis",
+      "Truth Comparison"
+    ],
+    "cross_refs": [
+      "/cluster/simulator.py",
+      "start_here.py"
+    ],
+    "notebook": "notebooks/cluster/modeling.ipynb",
+    "path": "scripts/cluster/modeling.py",
+    "summary": "This script models the simulated cluster field (1 BCG + 10 catalogue members) with the modeling API spelled out, and shows the refinements a real cluster analysis reaches for once the `start_here.py` composition converges:",
+    "title": "Cluster: Modeling"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid / PSF / Simulator",
+      "BCG",
+      "Member Galaxies",
+      "Dataset",
+      "Member Catalogue CSV",
+      "Galaxies json + Centres"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/cluster/simulator.ipynb",
+    "path": "scripts/cluster/simulator.py",
+    "summary": "This script simulates `Imaging` of a 'cluster' field: a brightest cluster galaxy (BCG) surrounded by ten lower-luminosity member galaxies. It is the top rung of PyAutoGalaxy's regime ladder \u2014 the point where modeling every galaxy with its own free light model (the `multi_galaxy` approach) stops scaling, and the member population is instead driven by a **catalogue**: a CSV of member centres and luminosities whose photometry pins the faint galaxies while only shared normalizations stay free.",
+    "title": "Simulator: Cluster"
+  },
+  {
+    "contents": [
+      "JAX",
+      "Google Colab Setup",
+      "Imports",
+      "Dataset",
+      "Member Catalogue",
+      "Masking",
+      "Model",
+      "Model Fit",
+      "Result",
+      "Model Your Own Cluster",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "cluster/modeling.py",
+      "cluster/simulator.py"
+    ],
+    "notebook": "notebooks/cluster/start_here.ipynb",
+    "path": "scripts/cluster/start_here.py",
+    "summary": "Cluster fields contain a **brightest cluster galaxy (BCG) plus tens-to-hundreds of member galaxies**, far too many to give each its own free light model. The cluster regime therefore changes how the model is composed: the BCG (and any other dominant galaxies) are modeled individually, while the member population is driven by a **catalogue** \u2014 a CSV of centres and luminosities whose photometry pins the faint members, leaving only shared normalizations free. Adding a member is a row append; the model dimensionality does not grow with the population.",
+    "title": "Start Here: Cluster"
+  },
+  {
+    "contents": [
       "Aggregator",
       "Ellipses via Aggregator",
       "Fits via Aggregator",
@@ -2722,5 +2779,64 @@
     "path": "scripts/multi/start_here.py",
     "summary": "Galaxies are often observed with CCD imaging, for example using HST, JWST, or ground-based telescopes.",
     "title": "Start Here: Multi Wavelength"
+  },
+  {
+    "contents": [
+      "Dataset & Mask",
+      "Model",
+      "Linear Light Profiles",
+      "Search + Analysis",
+      "Result",
+      "Photometry"
+    ],
+    "cross_refs": [
+      "/multi_galaxy/simulator.py",
+      "imaging/modeling.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/modeling.ipynb",
+    "path": "scripts/multi_galaxy/modeling.py",
+    "summary": "This script models an example 'multi galaxy' system \u2014 two galaxies whose light blends together, each with its own free light model \u2014 with the full modeling API spelled out.",
+    "title": "Multi Galaxy: Modeling"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid / PSF / Simulator",
+      "Galaxies",
+      "Dataset",
+      "Galaxies json + Centres"
+    ],
+    "cross_refs": [
+      "start_here.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/simulator.ipynb",
+    "path": "scripts/multi_galaxy/simulator.py",
+    "summary": "This script simulates `Imaging` of a 'multi galaxy' system: two galaxies close enough on the sky that their light blends together, so both must be modeled simultaneously. Neither galaxy is a minor contaminant to mask or subtract \u2014 they are co-equal subjects of the fit, and every one of them gets its own free light model.",
+    "title": "Simulator: Multi Galaxy"
+  },
+  {
+    "contents": [
+      "JAX",
+      "Google Colab Setup",
+      "Imports",
+      "Dataset",
+      "Galaxy Centres",
+      "Masking",
+      "Model",
+      "Model Fit",
+      "Result",
+      "Model Your Own System",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/group/start_here.ipynb",
+      "cluster/start_here.ipynb",
+      "imaging/start_here.ipynb",
+      "multi_galaxy/simulator.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/start_here.ipynb",
+    "path": "scripts/multi_galaxy/start_here.py",
+    "summary": "Multi-galaxy systems have **two or more galaxies whose light blends together on the sky**, so that all of them must be modeled simultaneously \u2014 every galaxy is a co-equal subject of the fit, with its own free light model.",
+    "title": "Start Here: Multi Galaxy"
   }
 ]
