@@ -54,7 +54,7 @@ conf.instance["output"]["samples_weight_threshold"] = None
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
-if not dataset_path.exists():
+if ag.util.dataset.should_simulate(str(dataset_path)):
     import subprocess
 
     subprocess.run(
