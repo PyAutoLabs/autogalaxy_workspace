@@ -60,9 +60,9 @@ database.
 
 __Dataset__
 
-For each dataset we load it from hard-disc, set up its `Analysis` class and fit it with a non-linear search. 
+For each dataset we load it from hard-disc, set up its `Analysis` class and fit it with a non-linear search.
 
-The 3 datasets are in the `autogalaxy_workspace/dataset/database` folder.
+The 3 datasets are in the `autogalaxy_workspace/dataset/imaging` folder.
 
 We want each results to be stored in the database with an entry specific to the dataset. We'll use the `Dataset`'s name 
 string to do this, so lets create a list of the 3 dataset names.
