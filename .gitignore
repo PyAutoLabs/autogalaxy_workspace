@@ -2,10 +2,9 @@ root.log
 .idea/
 dataset/**
 !dataset/.gitignore
+# uv_wavelengths/sma.fits is REAL SMA uv baseline coverage — a read-only input to the
+# interferometer simulators, with no writer anywhere. It is NOT regenerable; never purge it.
 !dataset/interferometer/uv_wavelengths/**
-!dataset/database/simple__0/**
-!dataset/database/simple__1/**
-!dataset/database/simple__2/**
 output/
 test_report.md
 test_results/
