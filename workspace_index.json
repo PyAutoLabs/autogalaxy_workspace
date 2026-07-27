@@ -670,63 +670,6 @@
   },
   {
     "contents": [
-      "Dataset Paths",
-      "Grid",
-      "Over Sampling",
-      "Galaxies",
-      "Output",
-      "Visualize",
-      "Plane Output",
-      "Info"
-    ],
-    "cross_refs": [
-      "/guides/advanced/over_sampling.ipynb"
-    ],
-    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__0.ipynb",
-    "path": "scripts/guides/results/database/simulators/light_sersic_exp__0.py",
-    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
-    "title": "Simulator: Sersic + Exp"
-  },
-  {
-    "contents": [
-      "Dataset Paths",
-      "Grid",
-      "Over Sampling",
-      "Galaxies",
-      "Output",
-      "Visualize",
-      "Plane Output",
-      "Info"
-    ],
-    "cross_refs": [
-      "/guides/advanced/over_sampling.ipynb"
-    ],
-    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__1.ipynb",
-    "path": "scripts/guides/results/database/simulators/light_sersic_exp__1.py",
-    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
-    "title": "Simulator: Sersic + Exp"
-  },
-  {
-    "contents": [
-      "Dataset Paths",
-      "Grid",
-      "Over Sampling",
-      "Galaxies",
-      "Output",
-      "Visualize",
-      "Plane Output",
-      "Info"
-    ],
-    "cross_refs": [
-      "/guides/advanced/over_sampling.ipynb"
-    ],
-    "notebook": "notebooks/guides/results/database/simulators/light_sersic_exp__2.ipynb",
-    "path": "scripts/guides/results/database/simulators/light_sersic_exp__2.py",
-    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
-    "title": "Simulator: Sersic + Exp"
-  },
-  {
-    "contents": [
       "Unique Identifiers",
       "Dataset",
       "Results From Hard Disk",
