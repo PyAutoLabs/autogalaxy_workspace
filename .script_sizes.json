@@ -15,7 +15,7 @@
   "scripts/guides/data_structures.py": 15826,
   "scripts/guides/galaxies.py": 18186,
   "scripts/guides/hpc/__init__.py": 0,
-  "scripts/guides/hpc/example_cpu_and_gpu.py": 13563,
+  "scripts/guides/hpc/example_cpu_and_gpu.py": 13489,
   "scripts/guides/modeling/__init__.py": 0,
   "scripts/guides/modeling/bug_fix.py": 5296,
   "scripts/guides/modeling/chaining.py": 13234,

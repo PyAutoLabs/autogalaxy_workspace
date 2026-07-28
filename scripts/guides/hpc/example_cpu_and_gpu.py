@@ -1,9 +1,10 @@
 # %%
 """
-HPC: Example CPU
-================
+HPC: Example CPU and GPU
+========================
 
-This example illustrates how to set up galaxy modeling on a High Performance Computing (HPC) system using multiple CPUs.
+This example illustrates how to set up galaxy modeling on a High Performance Computing (HPC) system, using either
+multiple CPUs or a GPU.
 
 It illustrates two different forms of parallelization:
 
@@ -40,8 +41,8 @@ __Contents__
 - **HPC Dataset Path:** Set the path where datasets are stored on the HPC.
 - **HPC Home Path:** Set the home directory path and config path on the HPC.
 - **Batch Script: Many Datasets (Array Job):** Configure a SLURM array job to fit many datasets in parallel.
+- **Dataset:** Load the dataset this job has been asked to fit.
 - **Batch Script: Single Dataset with Multiple CPUs:** Configure a parallelized single-dataset Nautilus fit.
-- **Dataset:** Load the dataset for the HPC model-fit.
 - **Nautilus CPUs:** Configure Nautilus to use multiple CPU cores for parallelized sampling.
 - **Galaxy Modeling:** Perform a standard galaxy model-fit on the HPC.
 - **GPU Jobs:** Run GPU-accelerated model-fits using the GPU batch script.
@@ -66,27 +67,18 @@ hpc_output_path = Path("/") / "hpc" / "data" / "hpc_username" / "output"
 """
 __HPC Dataset Path__
 
-We next set the `hpc_dataset_path`, which is the path where datasets are stored on the hpc.
+We next set the `hpc_dataset_path`, which is the root folder where datasets are stored on the hpc.
 
 This may be the same as your output path, or you may have been advised to store datasets in a different location,
 especially if they are large in file size.
 
 We therefore define it separately from the `hpc_output_path`.
 
-Below, we set `hpc_dataset_path=/hpc/data/hpc_username/dataset/example/simple`.
+Note that this is the *root* dataset folder, not the folder of any one dataset. The specific dataset this job fits
+is appended to it further below, once the batch script has told us which dataset to load. Below, we set
+`hpc_dataset_path=/hpc/data/hpc_username/dataset`.
 """
-dataset_folder = "example"
-dataset_name = "simple"
-
-hpc_dataset_path = (
-    Path("/")
-    / "hpc"
-    / "data"
-    / "hpc_username"
-    / "dataset"
-    / dataset_folder
-    / dataset_name
-)
+hpc_dataset_path = Path("/") / "hpc" / "data" / "hpc_username" / "dataset"
 
 """
 __HPC Home Path__
@@ -137,10 +129,11 @@ The modern approach uses a SLURM array job, where a single sbatch submission lau
 per dataset. The key directives are:
 
  `#SBATCH --cpus-per-task=8` - Number of CPU cores per job. Increase this to speed up Nautilus sampling.
- `#SBATCH --mem=64gb` - Memory per job. Increase for large pixelized source reconstructions.
- `#SBATCH --time=18:00:00` - Wall-clock time limit; the job is killed if it overruns.
- `#SBATCH --array=0-2` - Launch one job per dataset. SLURM sets $SLURM_ARRAY_TASK_ID to 0, 1, 2 in
-                          separate jobs. Update the upper bound to match the number of datasets.
+ `#SBATCH --mem=64gb` - Memory per job. Increase for large pixelized reconstructions.
+ `#SBATCH -t 18:00:00` - Wall-clock time limit; the job is killed if it overruns.
+ `#SBATCH --array=0-0` - Launch one job per dataset. SLURM sets $SLURM_ARRAY_TASK_ID to a different
+                          value in each job. The shipped script fits the single example dataset, so it
+                          uses `0-0`; for three datasets you would write `--array=0-2`.
  `#SBATCH -o output/output.%A_%a.out` - Stdout log, named with the job ID and array index.
  `#SBATCH -e error/error.%A_%a.err` - Stderr log, one file per array task.
 
@@ -149,7 +142,7 @@ Before submitting, set PROJECT_PATH so the batch script can find the workspace:
     export PROJECT_PATH=/path/to/autogalaxy_workspace
     sbatch scripts/guides/hpc/batch_cpu/submit
 
-The following lines activate the PyAutoGalaxy virtual environment for this run:
+The following line activates the PyAutoGalaxy virtual environment for this run:
 
     source $PROJECT_PATH/activate.sh
 
@@ -170,80 +163,50 @@ The dataset is selected using the array index:
 
     datasets=(dataset_0 dataset_1 dataset_2)
     dataset="${datasets[$SLURM_ARRAY_TASK_ID]}"
-    python3 $PROJECT_PATH/scripts/example.py --dataset=$dataset
+    python3 $PROJECT_PATH/scripts/guides/hpc/example_cpu_and_gpu.py --dataset=$dataset
 
 Each array job is fully independent — it loads a different dataset and writes to a separate output path.
 Adding more datasets to the list and updating --array is all that is required to scale to larger samples.
 
-The integer that was previously passed via sys.argv[1] (the old srun approach) is now replaced by the
---dataset argument passed from the batch script. Below, we use argparse to receive it.
+The dataset name chosen by the batch script arrives here as the `--dataset` argument, which we read below
+with argparse. We use `parse_known_args` rather than `parse_args` so this script also runs as a notebook,
+where the Jupyter kernel adds command line arguments of its own.
 """
 import argparse
-import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--dataset", type=str, help="Name of the dataset subdirectory to fit."
+    "--dataset",
+    type=str,
+    default="simple",
+    help="Name of the dataset subdirectory to fit.",
 )
-args = parser.parse_args()
+args, _ = parser.parse_known_args()
 
-"""
-The dataset name passed from the batch script selects which dataset this job fits.
-Each array job receives a different value, so all datasets are fitted in parallel.
-"""
-
-dataset_type = "imaging"
-pixel_scales = 0.1
-
-dataset_name = args.dataset or "example_image_1"
-
-"""
-We now create the path to the dataset this specific job fits, for example:
-
-  /hpc/data/hpc_username/dataset/imaging/example_image_1
-"""
-dataset_path = Path(hpc_dataset_path, dataset_type, dataset_name)
-
-if not dataset_path.exists():
-    local_dataset_path = Path.cwd()
-    dataset_type = "imaging"
-    dataset_path = Path(local_dataset_path, "dataset", dataset_type, dataset_name)
-
-"""
-You now have all the code you need to set up many single-CPU jobs on the hpc!
-
-You would simply append the batch scripts and Python code aboves to the galaxy modeling script script you are using,
-which is given below for completeness.
-
-However, first we describe how to set up a single multi-CPU Nautilus job on the hpc.
-
-__Batch Script: Single Dataset with Multiple CPUs__
-
-The same batch script (scripts/guides/hpc/batch_cpu/submit) handles this case by setting --array=0-0
-(a single-element array) and increasing --cpus-per-task. The dataset list then contains only one entry.
-
-The key difference is that Nautilus is given the number of cores via `number_of_cores`, which it uses
-to distribute likelihood evaluations across CPUs. Below, we show how to load the dataset and configure
-Nautilus for a parallelized single-dataset run.
-"""
 import autofit as af
 import autogalaxy as ag
 
 """
 __Dataset__
 
-Load and plot the galaxy dataset `example_image_1` via .fits files, which we will fit with the galaxy model.
+The dataset name passed from the batch script selects which dataset this job fits. Each array job receives a
+different value, so all datasets are fitted in parallel.
 """
-dataset_folder = "example"
-dataset_name = "simple"
+dataset_type = "imaging"
+dataset_name = args.dataset
 
-dataset_path = Path(hpc_dataset_path, dataset_folder, dataset_name)
+"""
+We now create the path to the dataset this specific job fits, which for `--dataset=simple` is:
+
+ `/hpc/data/hpc_username/dataset/imaging/simple`
+
+If that path does not exist we are not running on the HPC, so we fall back to the `dataset` folder of your local
+workspace. This means you can run this script end-to-end on your laptop before submitting it to the HPC.
+"""
+dataset_path = Path(hpc_dataset_path, dataset_type, dataset_name)
 
 if not dataset_path.exists():
-    local_dataset_path = Path.cwd()
-    dataset_folder = "imaging"
-    dataset_path = Path(local_dataset_path, "dataset", dataset_folder, dataset_name)
-
+    dataset_path = Path(Path.cwd(), "dataset", dataset_type, dataset_name)
 
 """
 __Dataset Auto-Simulation__
@@ -268,6 +231,21 @@ dataset = ag.Imaging.from_fits(
 )
 
 """
+You now have all the code you need to set off many single-CPU jobs on the hpc!
+
+You would simply append the batch scripts and Python code above to the galaxy modeling script you are using,
+which is given below for completeness.
+
+However, first we describe how to set up a single multi-CPU Nautilus job on the hpc.
+
+__Batch Script: Single Dataset with Multiple CPUs__
+
+The same batch script (scripts/guides/hpc/batch_cpu/submit) handles this case by leaving --array=0-0
+(a single-element array) and increasing --cpus-per-task. The dataset list then contains only one entry.
+
+The key difference is that Nautilus is given the number of cores via `number_of_cores`, which it uses
+to distribute likelihood evaluations across CPUs.
+
 __Nautilus CPUs__
 
 For a parallelized single-dataset run, we tell Nautilus how many CPU cores to use. This is read from
