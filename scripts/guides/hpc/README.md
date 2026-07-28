@@ -58,7 +58,7 @@ There are two supported ways to install PyAutoGalaxy on an HPC system.
 ### Option 2: Clone the GitHub repositories
 
 - Useful if you are developing PyAutoGalaxy itself
-- Follow the instructions in `README_Repos.rst` instead of this guide
+- Follow the instructions in `README_Repos.md` instead of this guide
 
 This document assumes **Option 1**.
 
@@ -196,12 +196,13 @@ $HOME/autogalaxy_workspace
 
 The workspace contains an `hpc` folder (`scripts/guides/hpc`) with:
 
-- `batch_cpu/` — SLURM submission scripts for CPU jobs
-- `batch_gpu/` — SLURM submission scripts for GPU jobs
+- `batch_cpu/` — SLURM submission script for CPU jobs, plus its `output/` and
+  `error/` log folders
+- `batch_gpu/` — SLURM submission script for GPU jobs, plus its `output/` and
+  `error/` log folders
 - `sync` — bash script for transferring files to and from the HPC
 - `sync.conf.example` — configuration template for the sync script
-- `config/` — HPC-specific configuration (e.g. `general.yaml` with
-  `hpc_mode: true`)
+- `example_cpu_and_gpu.py` — the Python walkthrough of an HPC model-fit
 
 ## Data and Output Directories
 
@@ -309,8 +310,8 @@ bash scripts/guides/hpc/sync status   # dry run — show what would transfer
 
 The script uses different rsync strategies per directory type:
 
-- **Code and config** (`scripts/`, `slam_pipeline/`, `config/`) —
-  `--update`: changed files are overwritten, new files are added.
+- **Code and config** (`scripts/`, `config/`) — changed files are overwritten,
+  new files are added.
 - **Dataset** — `--ignore-existing`: any `.fits` file already on the HPC
   is never re-transferred, which avoids checksumming a large archive on
   every sync.
@@ -343,8 +344,10 @@ key SLURM directives are:
   Nautilus sampling
 - `--mem=64gb` — memory per job; increase for large pixelized reconstructions
 - `--time=18:00:00` — wall-clock time limit; job is killed if it overruns
-- `--array=0-2` — launch one job per dataset; SLURM sets
-  `$SLURM_ARRAY_TASK_ID` to 0, 1, 2 in separate jobs
+- `--array=0-0` — launch one job per dataset; SLURM sets
+  `$SLURM_ARRAY_TASK_ID` to a different value in each job. The shipped script
+  fits the single example dataset, so it uses `0-0`; for three datasets you
+  would write `--array=0-2`
 
 The array index selects the dataset:
 
@@ -353,7 +356,10 @@ datasets=(dataset_0 dataset_1 dataset_2)
 dataset="${datasets[$SLURM_ARRAY_TASK_ID]}"
 ```
 
-This is the standard pattern for fitting many lenses simultaneously: each
+Add entries to `datasets=(...)` and widen `--array` to match — those two edits
+are all that is needed to scale from one galaxy to a large sample.
+
+This is the standard pattern for fitting many galaxies simultaneously: each
 array job is independent, runs on its own CPU allocation, and fits a
 different dataset.
 

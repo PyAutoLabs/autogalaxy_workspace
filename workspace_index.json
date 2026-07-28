@@ -249,12 +249,12 @@
   {
     "contents": [],
     "cross_refs": [
-      "PROJECT_PATH/scripts/example.py"
+      "PROJECT_PATH/scripts/guides/hpc/example_cpu_and_gpu.py"
     ],
     "notebook": "notebooks/guides/hpc/example_cpu_and_gpu.ipynb",
     "path": "scripts/guides/hpc/example_cpu_and_gpu.py",
-    "summary": "This example illustrates how to set up galaxy modeling on a High Performance Computing (HPC) system using multiple CPUs.",
-    "title": "HPC: Example CPU"
+    "summary": "This example illustrates how to set up galaxy modeling on a High Performance Computing (HPC) system, using either multiple CPUs or a GPU.",
+    "title": "HPC: Example CPU and GPU"
   },
   {
     "contents": [
