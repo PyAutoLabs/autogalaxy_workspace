@@ -1774,7 +1774,6 @@
     ],
     "cross_refs": [
       "/guides/advanced/over_sampling.ipynb",
-      "guides/advanced/over_sampling.py",
       "imaging/fit.py",
       "imaging/likelihood_function.py",
       "imaging/modeling.py",
