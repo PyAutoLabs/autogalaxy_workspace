@@ -12,9 +12,15 @@ Welcome to the **PyAutoGalaxy** Workspace!
 
 ## Getting Started
 
-### PyAutoGalaxy AI Assistant
+### AI Assistant
 
-The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its full scope and instructions.
+A dedicated PyAutoGalaxy assistant does not exist yet. In the meantime the
+[**PyAutoLens AI Assistant**](https://github.com/PyAutoLabs/autolens_assistant)
+is the closest available: it supports conversation agents such as ChatGPT and
+coding agents such as Claude Code and Codex, and its literature wiki covers
+light profiles, multi-Gaussian expansion, regularisation and bulge/disk
+decomposition. Note that it is **lensing-focused**, so treat its lensing-specific
+guidance as out of scope for galaxy modeling.
 
 ### Human-Readable Documentation and Examples
 
@@ -62,12 +68,13 @@ The examples in the `notebooks` and `scripts` folders are structured as follows:
 - `interferometer`: Examples for galaxies observed with an interferometer (e.g. ALMA, JVLA).
 - `multi`: Examples for modeling galaxies observed in multiple wavebands.
 - `multi_galaxy`: Examples for modeling 2+ blended galaxies simultaneously, each with its own free light model.
+- `ellipse`: Examples for ellipse fitting (non-parametric morphology).
 - `cluster`: Examples for modeling a cluster field's light — a BCG plus a catalogue-driven member population.
 
 The dataset packages (e.g. `imaging`, `interferometer` and `multi`) include the following types of examples:
 
 - `modeling`: Performing galaxy modeling using that type of data.
-- `simulators`: Simulating galaxy images.
+- `simulator`: Simulating galaxy images.
 - `fit`: How to compute residuals, chi-squared maps, and likelihoods.
 - `data_preparation`: Preparing real datasets for **PyAutoGalaxy** analysis.
 - `features`: Advanced modeling features (e.g. Multi Gaussian Expansion, priors, constraints).
