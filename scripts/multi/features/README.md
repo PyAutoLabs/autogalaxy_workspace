@@ -1,4 +1,4 @@
-The `advanced/modeling` folder contains example scripts showing how to analyse multiple datasets simultaneously.
+The `multi/features` folder contains example scripts showing how to analyse multiple datasets simultaneously.
 
 This combines all other dataset types, so it could be multple imaging datasets (e.g. multi wavelength) observations,
 imaging and interferometry, etc.
