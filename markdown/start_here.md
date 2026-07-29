@@ -34,21 +34,21 @@ running the code will still check correctly that your environment is set up and 
 
 ```python
 
-import subprocess
-import sys
-
 try:
     import google.colab
+except ImportError:
+    from autogalaxy import setup_colab as _setup_colab
+else:
+    import importlib
+    import subprocess
+    import sys
 
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", "autonerves", "--no-deps"]
     )
-except ImportError:
-    pass
+    _setup_colab = importlib.import_module("autonerves.setup_colab")
 
-from autonerves import setup_colab
-
-setup_colab.for_autogalaxy(
+_setup_colab.for_autogalaxy(
     raise_error_if_not_gpu=False  # Switch to False for CPU Google Colab
 )
 ```
@@ -71,8 +71,6 @@ You'll see these imports in the majority of workspace examples.
 
 
 ```python
-# %matplotlib inline
-
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
@@ -140,7 +138,7 @@ plt.imshow(image.native)  # Dont worry about the use of .native for now.
 
 
 
-    <matplotlib.image.AxesImage at 0x7fe4e6abf6e0>
+    <matplotlib.image.AxesImage at 0x7f990a738e00>
 
 
 
@@ -251,80 +249,22 @@ __JAX__
 
 **PyAutoGalaxy** runs on either **NumPy** (the default) or **JAX** (Google's
 array library with GPU support and just-in-time compilation). JAX makes
-galaxy model-fitting 10-100x faster on large grids, so the library uses it
-automatically wherever it helps.
+galaxy model-fitting 10-100x faster on large grids — sometimes more on GPU.
 
-You do not have to do anything to opt in. If you installed `autogalaxy`
+You do not have to do anything to use it. If you installed `autogalaxy`
 with the JAX extra (`pip install autogalaxy[jax]` on Python 3.11+), the
-`AnalysisImaging` and `AnalysisInterferometer` classes you'll meet in the
-`__Galaxy Modeling__` section below default to `use_jax=True`. The
-non-linear search driver (Nautilus, dynesty, ...) batches parameter
-vectors and evaluates the likelihood through `jax.vmap(jax.jit(...))`
-internally. You'll see a one-time log line like `JAX: Applying vmap and
-jit to likelihood function -- may take a few seconds.` the first time a
-search starts; after that, evaluations re-use the compiled trace.
+analysis objects you'll meet in the `__Galaxy Modeling__` section below use
+JAX automatically. The first time a model-fit starts you'll see a one-time
+log line like `JAX: Applying vmap and jit to likelihood function -- may
+take a few seconds.` — that's JAX compiling the likelihood function, after
+which every evaluation re-uses the compiled code. If JAX is not installed,
+the analysis warns once and falls back to NumPy automatically.
 
-If JAX is not installed, the analysis warns once and falls back to NumPy
-automatically. You can force NumPy explicitly with
-`ag.AnalysisImaging(dataset=dataset, use_jax=False)` or by setting
-`PYAUTO_DISABLE_JAX=1` — useful when debugging, where NumPy stack traces
-are easier to read than JAX traces.
+That is all a new user needs to know: install the extra, and model-fitting
+is fast. Everything else — disabling JAX, writing `@jax.jit` code yourself
+and how JAX changes the arrays inside results — is covered in the
+`scripts/guides/using_jax.py` guide.
 
-__When you write `@jax.jit` yourself__
-
-Pass `use_jax=True` to a simulator constructor and wrap your call in
-`@jax.jit` when you want to render many datasets fast — parameter sweeps,
-mock-data studies, batch figure generation:
-
-```python
-import jax
-
-simulator = ag.SimulatorImaging(
-    exposure_time=300.0, psf=psf, background_sky_level=0.1, use_jax=True
-)
-
-@jax.jit
-def simulate(galaxies):
-    return simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
-```
-
-The per-dataset-type `simulator.py` scripts (`scripts/imaging/simulator.py`,
-`scripts/interferometer/simulator.py`) each show this pattern in their
-`__JAX Variant__` section.
-
-For the advanced path — JIT-ing library methods directly
-(`galaxy.image_2d_from`, etc.) without going through a `Simulator` or
-`Analysis` — see the `scripts/guides/api/data_structures.py` guide. That
-covers the "JIT-it-yourself" pattern, including pytree registration the
-user does once before the first `@jax.jit`.
-
-__Return-type contract__
-
-When `use_jax=True`, the data structures you get back (`Imaging`,
-`FitImaging`, `Galaxies.image_2d_from(...)` results, ...) carry
-`jax.Array` data inside instead of `numpy.ndarray`. For nearly everything
-you'd do in a workspace — plotting, saving to `.fits`, comparing fit
-residuals — this is transparent: the plotters and FITS writers call
-`numpy.asarray()` internally and you see the same images and numbers you
-would on the NumPy path.
-
-What changes:
-
-- Arithmetic on JAX arrays stays on the JAX path. Direct calls into NumPy
-  (`np.sqrt(fit.residual_map.array)`) will host-transfer the array off
-  the GPU; not wrong, but slower than `jnp.sqrt(...)` if you're inside a
-  hot loop. For one-off analysis code, don't worry about it.
-- The `.array` property of `aa.Array2D` etc. is the raw backing array —
-  a `numpy.ndarray` on the NumPy path, a `jax.Array` on the JAX path.
-
-The `scripts/guides/api/data_structures.py` guide covers the wrapper-vs-
-raw-array distinction in detail.
-
-
-```python
-
-# %%
-'''
 __Units__
 
 The units used throughout the galaxy structure literature vary, therefore lets quickly describe the units used in
@@ -345,15 +285,6 @@ light profiles and many galaxy objects can be combined into a galaxies object.
 
 To further illustrate this, we create a merging galaxy system with 4 star forming clumps of light, using a 
 `SersicSph` profile to make each spherical.
-'''
-```
-
-
-
-
-    "\n__Units__\n\nThe units used throughout the galaxy structure literature vary, therefore lets quickly describe the units used in\n**PyAutoGalaxy**.\n\nMost distance quantities, like an `effective_radius` are quantities in terms of angles, which are defined in units\nof arc-seconds. To convert these to physical units (e.g. kiloparsecs), we use the redshift of the galaxy and an \ninput cosmology. A run through of all normal unit conversions is given in guides in the workspace outlined below.\n\nThe use of angles in arc-seconds has an important property, it means that calculations are independent of\nthe galaxy's redshifts and the input cosmology. This has a number of benefits, for example it makes it straight\nforward to compare the properties of different galaxies even when the redshifts of the galaxies are unknown.\n\n__Extensibility__\n\nAll of the objects we've introduced so far are highly extensible, for example a galaxy can be made up of any number of\nlight profiles and many galaxy objects can be combined into a galaxies object.\n\nTo further illustrate this, we create a merging galaxy system with 4 star forming clumps of light, using a \n`SersicSph` profile to make each spherical.\n"
-
-
 
 
 ```python
@@ -404,7 +335,7 @@ aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Galaxies Image")
 
 
     
-![png](start_here_files/start_here_20_0.png)
+![png](start_here_files/start_here_19_0.png)
     
 
 
@@ -443,6 +374,16 @@ __Wrap Up__
 
 This completes the introduction to **PyAutoGalaxy**, including a brief overview of the core API for galaxy light
 profiles, galaxy modeling, and data simulation.
+
+__PyAutoGalaxy AI Assistant__
+
+The [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such
+as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about
+galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its
+full scope and instructions.
+
+The rest of this guide is human-readable documentation: we begin by answering a simple question to find your most
+appropriate starting point.
 
 __What Data Type?__
 
@@ -624,8 +565,3 @@ __Other:__
 
 - Automated pipelines / database tools.
 - Graphical models.
-
-
-```python
-
-```

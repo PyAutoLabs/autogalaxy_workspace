@@ -293,6 +293,16 @@ __Wrap Up__
 This completes the introduction to **PyAutoGalaxy**, including a brief overview of the core API for galaxy light
 profiles, galaxy modeling, and data simulation.
 
+__PyAutoGalaxy AI Assistant__
+
+The [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such
+as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about
+galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its
+full scope and instructions.
+
+The rest of this guide is human-readable documentation: we begin by answering a simple question to find your most
+appropriate starting point.
+
 __What Data Type?__
 
 If you are interested in modeling galaxies, you now need to decide what type of imaging data you want to work with:
