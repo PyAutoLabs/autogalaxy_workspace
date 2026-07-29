@@ -48,6 +48,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "autogalaxy_workspace/scripts/cluster/modeling.py",
       "cluster/modeling.py",
       "cluster/simulator.py"
     ],
@@ -1842,7 +1843,9 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "autogalaxy_workspace/scripts/imaging/modeling.py",
       "autogalaxy_workspace/start_here.py",
+      "modeling.py",
       "scripts/imaging/simulator.py"
     ],
     "notebook": "notebooks/imaging/start_here.ipynb",
@@ -2432,7 +2435,9 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "autogalaxy_workspace/scripts/interferometer/modeling.py",
       "autogalaxy_workspace/start_here.py",
+      "modeling.py",
       "scripts/interferometer/simulator.py"
     ],
     "notebook": "notebooks/interferometer/start_here.ipynb",
@@ -2656,7 +2661,8 @@
       "Wrap Up"
     ],
     "cross_refs": [
-      "/guides/advanced/over_sampling.ipynb"
+      "/guides/advanced/over_sampling.ipynb",
+      "start_here.py"
     ],
     "notebook": "notebooks/multi/modeling.ipynb",
     "path": "scripts/multi/modeling.py",
@@ -2715,6 +2721,8 @@
     "cross_refs": [
       "autogalaxy_workspace/start_here.py",
       "imaging/start_here.ipynb",
+      "imaging/start_here.py",
+      "modeling.py",
       "scripts/imaging/simulator.py"
     ],
     "notebook": "notebooks/multi/start_here.ipynb",
@@ -2733,7 +2741,8 @@
     ],
     "cross_refs": [
       "/multi_galaxy/simulator.py",
-      "imaging/modeling.py"
+      "imaging/modeling.py",
+      "start_here.py"
     ],
     "notebook": "notebooks/multi_galaxy/modeling.ipynb",
     "path": "scripts/multi_galaxy/modeling.py",
@@ -2772,6 +2781,7 @@
     ],
     "cross_refs": [
       "/group/start_here.ipynb",
+      "autogalaxy_workspace/scripts/multi_galaxy/modeling.py",
       "cluster/start_here.ipynb",
       "imaging/start_here.ipynb",
       "multi_galaxy/simulator.py"

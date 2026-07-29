@@ -192,16 +192,34 @@ print(model.info)
 """
 __Model Fit__
 
-Fit the data using the nested sampling algorithm Nautilus via an `AnalysisImaging` object — the same
-analysis used for single galaxies; only the model composition changed.
+Fit the data using `MultiStartProdigy`, a multi-start gradient optimizer, via an `AnalysisImaging` object — the
+same analysis used for single galaxies; only the model composition changed.
+
+__Multi Start Gradient Optimization__
+
+`MultiStartProdigy` launches `n_starts` independent optimizations from broad starting points spread across the
+parameter space, all of which descend the likelihood in parallel via `jax.vmap`, and returns the best one. A
+single starting point would frequently get stuck in a local maximum, which is especially likely here because
+several co-dominant galaxies give a highly multi-modal parameter space. Running a wide population of starts is
+what makes a gradient optimizer reliable (the GIGA-Lens approach, Gu, Huang et al. 2022, arXiv:2202.07663).
+Prodigy is *learning-rate free* (Mishchenko & Defazio 2024, arXiv:2306.06101), so there is nothing to tune.
+
+__Posterior__
+
+`MultiStartProdigy` is a maximum a posteriori (MAP) optimizer: it returns the **single best-fit galaxy model** and
+nothing else — no posterior, no error bars, no covariances between parameters.
+
+To get uncertainties, run `autogalaxy_workspace/scripts/multi_galaxy/modeling.py`, which fits this same model
+with the nested sampling algorithm `Nautilus` and returns the **full posterior**. Use the fast optimizer here to
+check your model and data are sensible, then `Nautilus` when you need results you can quote.
 """
-search = af.Nautilus(
+search = af.MultiStartProdigy(
     path_prefix=Path("multi_galaxy"),
     name="start_here",
     unique_tag=dataset_name,
-    n_live=150,
-    n_batch=50,
-    iterations_per_quick_update=1000,
+    n_starts=48,
+    n_steps=300,
+    iterations_per_quick_update=50,
     live_visual_update=False,
 )
 
