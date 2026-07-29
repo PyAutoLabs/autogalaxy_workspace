@@ -155,6 +155,11 @@ print(model.info)
 
 """
 __Search + Analysis__
+
+This example uses `Nautilus` because it returns the **full posterior** — every parameter's errors and the
+covariances between them. The folder's `start_here.py` instead fits with `af.MultiStartProdigy`, a multi-start
+gradient optimizer which is far faster but returns only a single best-fit model with no errors at all. Use that
+one to check a model quickly, and this one when you need results you can quote.
 """
 search = af.Nautilus(
     path_prefix=Path("cluster"),

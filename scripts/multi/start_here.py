@@ -314,6 +314,16 @@ We now fit the data with the galaxy model using the non-linear fitting method an
 
 This uses the factor graph defined above.
 
+__Why Not MultiStartProdigy?__
+
+The single-band `imaging/start_here.py` example fits with `af.MultiStartProdigy`, a much faster multi-start
+gradient optimizer, and uses `Nautilus` only in `modeling.py` where the full posterior is needed.
+
+Multi-wavelength fits stay on `Nautilus` for now. Each waveband here has its own pixel scale, so the bands do not
+share a common grid shape, and JAX must compile a separate large kernel for every band's gradient. Compiling the
+gradient of the joint multi-band likelihood is currently prohibitively slow on CPU as a result — far slower than
+the sampling it would be trying to save. Once that compile cost is addressed, this example will switch too.
+
 **Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
 an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
 

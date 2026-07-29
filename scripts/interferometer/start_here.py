@@ -73,7 +73,7 @@ __Contents__
 - **Dataset:** Loading interferometer data from FITS files.
 - **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
 - **Model:** Composing a Multi Gaussian Expansion galaxy model.
-- **Model Fit:** Fitting the model to data using Nautilus nested sampling.
+- **Model Fit:** Fitting the model to data using the MultiStartProdigy gradient optimizer.
 - **Live Visual Update:** Push the quick-update image to a live display surface.
 - **Result:** Inspecting the results of the model fit.
 - **Model Your Own Galaxy:** Tips for applying this workflow to your own interferometer data.
@@ -247,10 +247,30 @@ print(model.info)
 """
 __Model Fit__
 
-We now fit the data with the galaxy model using the non-linear fitting method and nested sampling algorithm Nautilus.
+We now fit the data with the galaxy model using `MultiStartProdigy`, a multi-start gradient optimizer which finds
+the best-fit galaxy model quickly.
 
 We fit the visibilities with `AnalysisInterferometer`, which defines the `log_likelihood_function` used by
-Nautilus to fit the model to the interferometer data.
+the search to fit the model to the interferometer data.
+
+__Multi Start Gradient Optimization__
+
+`MultiStartProdigy` launches `n_starts` independent optimizations from broad starting points spread across the
+parameter space, all of which descend the likelihood in parallel via `jax.vmap`, and returns the best one.
+Descending from a single starting point would frequently get stuck in a local maximum, because galaxy model
+parameter spaces are complex and multi-modal — running a wide population of starts is what makes a gradient
+optimizer reliable here (the GIGA-Lens approach, Gu, Huang et al. 2022, arXiv:2202.07663). Prodigy is
+*learning-rate free* (Mishchenko & Defazio 2024, arXiv:2306.06101), estimating its own step size as it runs, so
+there is nothing to tune.
+
+__Posterior__
+
+`MultiStartProdigy` is a maximum a posteriori (MAP) optimizer: it returns the **single best-fit galaxy model** and
+nothing else — no posterior, no error bars, no covariances between parameters.
+
+To get uncertainties, run `autogalaxy_workspace/scripts/interferometer/modeling.py`, which fits this same model
+with the nested sampling algorithm `Nautilus` and returns the **full posterior**. Use the fast optimizer here to
+check your model and data are sensible, then `Nautilus` when you need results you can quote.
 
 __JAX__
 
@@ -275,13 +295,13 @@ live display surface:
 The disk write (`fit.png`) always happens regardless of this flag. Set it to `False` (the default) if you just
 want the on-disk output, or if you are running in a headless environment (e.g. an HPC cluster).
 """
-search = af.Nautilus(
+search = af.MultiStartProdigy(
     path_prefix=Path("interferometer"),  # The path where results and output are stored.
     name="start_here",  # The name of the fit and folder results are output to.
     unique_tag=dataset_name,  # A unique tag which also defines the folder.
-    n_live=75,  # The number of Nautilus "live" points, increase for more complex models.
-    n_batch=50,  # GPU galaxy fits are batched and run simultaneously, see modeling examples for details.
-    iterations_per_quick_update=10000,  # Every N iterations the max likelihood model is visualized and output.
+    n_starts=48,  # The number of independent optimizations run in parallel, increase for more complex models.
+    n_steps=300,  # The maximum gradient steps per start; the search stops early once the best fit stops improving.
+    iterations_per_quick_update=50,  # Every N steps the max likelihood model is visualized and output.
     live_visual_update=False,  # Set True to open a live matplotlib window (script) or refresh a Jupyter cell (notebook).
 )
 
@@ -291,7 +311,9 @@ analysis = ag.AnalysisInterferometer(
 )
 
 """
-The code below begins the model-fit. This will take around 10 minutes with a GPU, or 20-30 minutes with a CPU.
+The code below begins the model-fit. All 48 starts descend together, so this is much faster than the nested
+sampling fit in `modeling.py` — expect a couple of minutes on a GPU and under ten on a CPU. The first evaluation
+is slower than the rest, because JAX compiles the likelihood and its gradient before the first step.
 
 **Run Time Error:** On certain operating systems (e.g. Windows, Linux) and Python versions, the code below may produce
 an error. If this occurs, see the `autogalaxy_workspace/guides/modeling/bug_fix` example for a fix.
