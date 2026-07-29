@@ -188,10 +188,12 @@ print(result.info)
 
 instance = result.max_log_likelihood_instance
 
-recovered_scale = (
-    instance.galaxies.member_2.bulge.intensity / float(member_luminosities[2])
+recovered_scale = instance.galaxies.member_2.bulge.intensity / float(
+    member_luminosities[2]
 )
-print(f"Recovered member-tier intensity_scale = {float(recovered_scale):.3f} (truth: 1.0)")
+print(
+    f"Recovered member-tier intensity_scale = {float(recovered_scale):.3f} (truth: 1.0)"
+)
 
 aplt.subplot_fit_imaging(fit=result.max_log_likelihood_fit)
 
