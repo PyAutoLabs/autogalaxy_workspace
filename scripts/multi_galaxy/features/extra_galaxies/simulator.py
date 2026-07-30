@@ -267,7 +267,3 @@ ag.output_to_json(
     obj=ag.Grid2DIrregular(extra_galaxy_centres),
     file_path=dataset_path / "extra_galaxies_centres.json",
 )
-
-"""
-Finished.
-"""

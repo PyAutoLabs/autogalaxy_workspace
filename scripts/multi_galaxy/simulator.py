@@ -144,7 +144,3 @@ ag.output_to_json(
     obj=ag.Grid2DIrregular(galaxy_centres),
     file_path=dataset_path / "galaxy_centres.json",
 )
-
-"""
-Finished.
-"""

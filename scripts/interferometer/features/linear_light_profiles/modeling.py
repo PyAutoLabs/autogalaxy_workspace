@@ -443,7 +443,3 @@ galaxies = fit.model_obj_linear_light_profiles_to_light_profiles
 print(
     f"Intensity via Galaxies with Ordinary Light Profiles = {galaxies[0].bulge.intensity}"
 )
-
-"""
-Finish.
-"""

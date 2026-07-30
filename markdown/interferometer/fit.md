@@ -526,10 +526,3 @@ aplt.fits_array(
     overwrite=True,
 )
 ```
-
-Finish.
-
-
-```python
-
-```

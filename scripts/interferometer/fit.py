@@ -307,7 +307,3 @@ aplt.fits_array(
     file_path=dataset_path / "galaxy_model_image.fits",
     overwrite=True,
 )
-
-"""
-Finish.
-"""

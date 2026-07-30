@@ -197,8 +197,6 @@ vectors = ag.VectorYX2DIrregular(
 aplt.plot_array(array=data, title="Image with Vector Field")
 
 """
-Finish.
-
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.
