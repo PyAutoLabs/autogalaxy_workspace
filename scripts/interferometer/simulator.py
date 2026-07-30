@@ -228,7 +228,6 @@ so what a fit uses) are both JAX-traceable. Only the legacy pynufft-backed
 `autolens_workspace_test/scripts/interferometer/nufft.py` for the parity
 work.
 
-See `scripts/guides/using_jax.py` for the full picture and
-`scripts/guides/data_structures.py` for the broader "JIT-it-yourself"
-pattern.
+See `scripts/guides/using_jax.py` for the full picture, including the
+broader "JIT-it-yourself" pattern.
 """

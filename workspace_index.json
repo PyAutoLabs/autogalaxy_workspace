@@ -236,6 +236,7 @@
   },
   {
     "contents": [
+      "JAX",
       "Units",
       "API",
       "Grids",
@@ -249,8 +250,8 @@
       "Vector Quantities"
     ],
     "cross_refs": [
-      "autolens_workspace/scripts/guides/lens_calc.py",
-      "guides/units/cosmology.ipynb"
+      "guides/units/cosmology.ipynb",
+      "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/guides/data_structures.ipynb",
     "path": "scripts/guides/data_structures.py",
@@ -259,6 +260,7 @@
   },
   {
     "contents": [
+      "JAX",
       "Units",
       "Data Structures",
       "Grids",
@@ -277,11 +279,10 @@
     ],
     "cross_refs": [
       "/guides/data_structures.ipynb",
-      "autolens_workspace/scripts/guides/lens_calc.py",
       "galaxies_fit.py",
       "guides/data_structures.py",
       "guides/units/cosmology.ipynb",
-      "scripts/guides/data_structures.py"
+      "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/guides/galaxies.ipynb",
     "path": "scripts/guides/galaxies.py",
@@ -851,13 +852,15 @@
       "Writing @jax.jit Yourself",
       "Custom Likelihood Functions",
       "JIT-ing Library Methods",
+      "Pytree Registration",
+      "The Pairing Rule",
+      "Grids Stay Outside the Boundary",
+      "Bound Methods and the JIT Cache",
       "Return-Type Contract"
     ],
     "cross_refs": [
       "autofit.jax.py",
-      "data_structures.py",
       "likelihood_function.py",
-      "scripts/guides/data_structures.py",
       "scripts/imaging/likelihood_function.py",
       "scripts/imaging/simulator.py",
       "scripts/interferometer/likelihood_function.py",
@@ -1713,7 +1716,7 @@
       "imaging/features/pixelization/modeling.py",
       "likelihood_function.py",
       "modeling.py",
-      "scripts/guides/data_structures.py",
+      "scripts/guides/using_jax.py",
       "start_here.py"
     ],
     "notebook": "notebooks/imaging/fit.ipynb",
@@ -1827,7 +1830,6 @@
       "imaging/fit.py",
       "imaging/likelihood_function.py",
       "imaging/modeling.py",
-      "scripts/guides/data_structures.py",
       "scripts/guides/using_jax.py",
       "scripts/interferometer/simulator.py"
     ],
@@ -2378,7 +2380,7 @@
     ],
     "cross_refs": [
       "modeling.py",
-      "scripts/guides/data_structures.py",
+      "scripts/guides/using_jax.py",
       "start_here.py"
     ],
     "notebook": "notebooks/interferometer/fit.ipynb",
@@ -2480,7 +2482,6 @@
     ],
     "cross_refs": [
       "autolens_workspace_test/scripts/interferometer/nufft.py",
-      "scripts/guides/data_structures.py",
       "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/interferometer/simulator.ipynb",

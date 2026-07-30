@@ -63,7 +63,7 @@ For the standard analysis-driven modeling path — where `AnalysisImaging`
 auto-enables `use_jax=True` and the search driver handles the JIT — see
 `start_here.py` / `modeling.py`. For the advanced path where you wrap your
 own `@jax.jit` around `FitImaging` construction, see `likelihood_function.py`'s
-`__JAX__` section and the `scripts/guides/data_structures.py` guide.
+`__JAX__` section and the `scripts/guides/using_jax.py` guide.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()

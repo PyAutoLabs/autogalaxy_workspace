@@ -303,7 +303,6 @@ The eager call `simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)`
 **Interferometer is different:** the jitted simulator path does *not* yet
 work there — see `scripts/interferometer/simulator.py`.
 
-See `scripts/guides/using_jax.py` for the full picture and
-`scripts/guides/data_structures.py` for the broader "JIT-it-yourself"
-pattern.
+See `scripts/guides/using_jax.py` for the full picture, including the
+broader "JIT-it-yourself" pattern.
 """
