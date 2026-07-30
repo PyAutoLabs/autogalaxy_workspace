@@ -21,7 +21,9 @@ __Contents__
 - **Fit:** Set up galaxies and fit the dataset with a `FitImaging` object.
 - **Fit Figures:** Plot the fit's model image, residuals and chi-squared maps individually.
 - **Galaxy Images:** Plot the model image of each individual galaxy in the fit.
+- **Galaxy Subplots:** Plot a multi-panel subplot for each galaxy of the fit.
 - **Fit Subplot:** Plot all fit quantities in one multi-panel subplot.
+- **Outputting to FITS:** Write the dataset to a FITS file instead of an image.
 - **Visualizer:** How these figures are output automatically during a model-fit.
 """
 
@@ -148,12 +150,43 @@ aplt.plot_array(
 )
 
 """
+__Galaxy Subplots__
+
+`aplt.subplot_fit_imaging_of_galaxy()` produces a full subplot for a single galaxy of the fit,
+showing the data with the other galaxies subtracted alongside that galaxy's model image and
+residuals. The galaxy is selected with `galaxy_index`.
+"""
+aplt.subplot_fit_imaging_of_galaxy(fit=fit, galaxy_index=0)
+aplt.subplot_fit_imaging_of_galaxy(fit=fit, galaxy_index=1)
+
+"""
 __Fit Subplot__
 
 A multi-panel fit subplot is produced with `aplt.subplot_fit_imaging()`, combining the data, model
 image, residual-map and chi-squared map in one figure.
+
+Pass `use_log10=True` to plot the image panels on a `log10` colour scale, which makes faint
+extended emission visible.
 """
 aplt.subplot_fit_imaging(fit=fit)
+aplt.subplot_fit_imaging(fit=fit, use_log10=True)
+
+"""
+__Outputting to FITS__
+
+Figures are images, but the dataset itself can be written to a FITS file with
+`aplt.fits_imaging()`. Passing `file_path` writes a single multi-HDU file with named extensions
+(`mask`, `data`, `psf`, `noise_map`); passing `data_path` / `psf_path` / `noise_map_path` instead
+writes each component to its own file.
+"""
+output_path = Path("output") / "plot" / "imaging"
+output_path.mkdir(parents=True, exist_ok=True)
+
+aplt.fits_imaging(
+    dataset=dataset,
+    file_path=output_path / "dataset.fits",
+    overwrite=True,
+)
 
 """
 __Visualizer__

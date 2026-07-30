@@ -1796,7 +1796,9 @@
       "Fit",
       "Fit Figures",
       "Galaxy Images",
+      "Galaxy Subplots",
       "Fit Subplot",
+      "Outputting to FITS",
       "Visualizer"
     ],
     "cross_refs": [
@@ -2454,6 +2456,9 @@
       "Fit",
       "Fit Figures",
       "Fit Subplot",
+      "Fit Dirty Images Subplot",
+      "Real Space Subplot",
+      "Outputting to FITS",
       "Visualizer"
     ],
     "cross_refs": [

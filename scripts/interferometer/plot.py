@@ -19,6 +19,9 @@ __Contents__
 - **Fit:** Set up a galaxy and fit the dataset with a `FitInterferometer` object.
 - **Fit Figures:** Plot the fit's dirty-image quantities individually.
 - **Fit Subplot:** Plot all fit quantities in one multi-panel subplot.
+- **Fit Dirty Images Subplot:** Plot the fit's dirty images in one multi-panel subplot.
+- **Real Space Subplot:** Plot the fit's real-space image and reconstruction.
+- **Outputting to FITS:** Write the dataset to a FITS file instead of an image.
 - **Visualizer:** How these figures are output automatically during a model-fit.
 """
 
@@ -133,6 +136,39 @@ A multi-panel fit subplot is produced with `aplt.subplot_fit_interferometer()`, 
 dirty image, dirty model image, dirty residual-map and dirty chi-squared map in one figure.
 """
 aplt.subplot_fit_interferometer(fit=fit)
+
+"""
+__Fit Dirty Images Subplot__
+
+`aplt.subplot_fit_dirty_images()` collects the fit's dirty images — data, model data, residuals and
+chi-squared — into a single subplot, the fit-level counterpart of the dataset subplot above.
+"""
+aplt.subplot_fit_dirty_images(fit=fit)
+
+"""
+__Real Space Subplot__
+
+`aplt.subplot_fit_real_space()` plots the fit's real-space quantities: the image of the galaxies
+evaluated on the `real_space_mask`, and the reconstruction. These are the quantities being Fourier
+transformed to the uv-plane, so they show what the model actually looks like on the sky.
+"""
+aplt.subplot_fit_real_space(fit=fit)
+
+"""
+__Outputting to FITS__
+
+The dataset itself can be written to a FITS file with `aplt.fits_interferometer()`. Passing
+`file_path` writes a single multi-HDU file; passing `data_path` / `noise_map_path` /
+`uv_wavelengths_path` instead writes each component to its own file.
+"""
+output_path = Path("output") / "plot" / "interferometer"
+output_path.mkdir(parents=True, exist_ok=True)
+
+aplt.fits_interferometer(
+    dataset=dataset,
+    file_path=output_path / "dataset.fits",
+    overwrite=True,
+)
 
 """
 __Visualizer__
