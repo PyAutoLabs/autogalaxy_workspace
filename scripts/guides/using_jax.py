@@ -39,27 +39,28 @@ or `print` statement into code that JAX would otherwise trace and compile.
 
 __Writing @jax.jit Yourself__
 
-Pass `use_jax=True` to a simulator constructor and wrap your call in `@jax.jit` when you want to render many
-datasets fast — parameter sweeps, mock-data studies, batch figure generation:
+Pass `use_jax=True` to a simulator constructor to run the image calculation through JAX, for parameter sweeps,
+mock-data studies or batch figure generation:
 
 ```python
-import jax
-
 simulator = ag.SimulatorImaging(
     exposure_time=300.0, psf=psf, background_sky_level=0.1, use_jax=True
 )
 
-@jax.jit
-def simulate(galaxies):
-    return simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
+dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 ```
 
-The simulator handles pytree registration internally, so you write nothing JAX-specific beyond the decorator.
-Note that eager `simulator.via_galaxies_from(galaxies, grid)` (no `@jax.jit`) already runs on JAX and is
-sufficient for one-off simulations — the `@jax.jit` wrap only pays off when you call the function many times.
+**Wrapping that call in `@jax.jit` does not currently work.** Two things stop it, and it is worth knowing which
+is which:
 
-The per-dataset-type `simulator.py` scripts (`scripts/imaging/simulator.py`,
-`scripts/interferometer/simulator.py`) each show this pattern in their `__JAX Variant__` section.
+- **You must register the pytrees yourself first.** Nothing in the library does it for you, and nothing can: JAX
+  flattens a jitted function's arguments at trace time, *before* entering the callee, so a simulator that
+  registered internally would already be too late. The one-time call is
+  `autogalaxy.jax.register_galaxies_classes(galaxies)`.
+- **Even with that, the jitted simulator call fails inside autoarray** on array sites that do not yet thread
+  `xp` — see PyAutoLabs/PyAutoArray for the tracked issue. Until it is fixed, use the eager call above.
+
+Note the eager call returns a dataset whose `.data.array` is a `numpy.ndarray`, not a `jax.Array`.
 
 __Custom Likelihood Functions__
 
@@ -112,8 +113,10 @@ def log_likelihood(instance):
 Omit `xp=jnp` and the fit falls back to NumPy internals, raising `TracerArrayConversionError` the moment JAX
 traces it.
 
-For interferometer data the same shape applies with `ag.FitInterferometer`, with one constraint: use
-`TransformerDFT` (the default). `TransformerNUFFT` is not JAX-traceable.
+For interferometer data the same shape applies with `ag.FitInterferometer`. Both `TransformerDFT` and the
+nufftax-backed `TransformerNUFFT` are JAX-traceable, so either works; only the legacy pynufft-backed
+`TransformerNUFFTPyNUFFT` is not. Note the defaults differ by class: `Interferometer` (what a fit uses) defaults
+to `TransformerNUFFT`, while `SimulatorInterferometer` defaults to `TransformerDFT`.
 
 **Via `Fitness` — the production path.** A non-linear search does not call your function; it calls a `Fitness`
 object, which maps a raw parameter vector to a model instance, calls the analysis, and returns the figure of

@@ -251,14 +251,11 @@ The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple`.
 
 __JAX Variant__
 
-For an order-of-magnitude speedup on large or repeated simulations
-(parameter sweeps, mock-data studies, batch figure generation), construct
-the simulator with `use_jax=True` and wrap your call in `@jax.jit`. The
-simulator handles pytree registration internally.
+For large or repeated simulations (parameter sweeps, mock-data studies,
+batch figure generation), construct the simulator with `use_jax=True` so
+the image calculation runs through JAX:
 
 ```python
-import jax
-
 simulator_jax = ag.SimulatorImaging(
     exposure_time=300.0,
     psf=psf,
@@ -267,20 +264,23 @@ simulator_jax = ag.SimulatorImaging(
     use_jax=True,
 )
 
-@jax.jit
-def simulate(galaxies):
-    return simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)
-
-dataset_jax = simulate(galaxies)   # Imaging with jax.Array data
+dataset_jax = simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)
 ```
 
-The `dataset_jax.data.array` is a `jax.Array`; `aplt.fits_imaging` and the
-plotters call `numpy.asarray()` internally, so saving / plotting works
-without manual conversion.
+The returned `dataset_jax.data.array` is a `numpy.ndarray`. `aplt.fits_imaging`
+and the plotters call `numpy.asarray()` internally, so saving / plotting
+works either way.
 
-Note: eager `simulator_jax.via_galaxies_from(galaxies, grid)` (no `@jax.jit`)
-already runs on JAX and is sufficient for one-off simulations. The
-`@jax.jit` wrap is only beneficial when you call the function many times.
+**Wrapping the call in `@jax.jit` does not currently work.** Two separate
+things stop it:
+
+- **Pytree registration is yours to do, before the first jitted call** —
+  `autogalaxy.jax.register_galaxies_classes(galaxies)`. Nothing in the
+  library does it for you, and nothing can: JAX flattens a jitted
+  function's arguments at trace time, before entering the callee.
+- **Even with that, the jitted call fails inside autoarray** on array sites
+  that do not yet thread `xp`. Tracked in PyAutoArray; until it is fixed,
+  use the eager call above.
 
 See `scripts/guides/data_structures.py` for the broader "JIT-it-
 yourself" pattern.
