@@ -843,13 +843,18 @@
       "Auto-Enabled Modeling",
       "Disabling JAX",
       "Writing @jax.jit Yourself",
+      "Custom Likelihood Functions",
       "JIT-ing Library Methods",
       "Return-Type Contract"
     ],
     "cross_refs": [
+      "autofit.jax.py",
       "data_structures.py",
+      "likelihood_function.py",
       "scripts/guides/data_structures.py",
+      "scripts/imaging/likelihood_function.py",
       "scripts/imaging/simulator.py",
+      "scripts/interferometer/likelihood_function.py",
       "scripts/interferometer/simulator.py",
       "simulator.py",
       "start_here.py"
@@ -1696,6 +1701,7 @@
   },
   {
     "contents": [
+      "JAX",
       "Dataset",
       "Dataset Auto-Simulation",
       "Mask",
@@ -1716,9 +1722,7 @@
     "cross_refs": [
       "/guides/advanced/over_sampling.py",
       "contributor_guide.py",
-      "modeling.py",
-      "scripts/guides/data_structures.py",
-      "start_here.py"
+      "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/imaging/likelihood_function.ipynb",
     "path": "scripts/imaging/likelihood_function.py",
@@ -2337,6 +2341,7 @@
   },
   {
     "contents": [
+      "JAX",
       "Mask",
       "Dataset",
       "Dataset Auto-Simulation",
@@ -2356,9 +2361,7 @@
     ],
     "cross_refs": [
       "contributor_guide.py",
-      "modeling.py",
-      "scripts/guides/data_structures.py",
-      "start_here.py"
+      "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/interferometer/likelihood_function.ipynb",
     "path": "scripts/interferometer/likelihood_function.py",
