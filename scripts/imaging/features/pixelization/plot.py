@@ -2,15 +2,15 @@
 Plots: Pixelization
 ===================
 
-This example illustrates the API for plotting pixelized galaxy reconstructions using the new function-based
-plotting API and dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.
+This example illustrates the API for plotting pixelized galaxy reconstructions, using dedicated functions like
+`subplot_of_mapper` for mesh-specific visualizations.
 
 For the canonical end-to-end example of when to use a pixelization on a galaxy with a smooth bulge plus
 asymmetric clumpy star formation, see `scripts/imaging/features/pixelization/modeling.py`.
 
 __Start Here Notebook__
 
-You should refer to the `guides/plot/start_here.ipynb` notebook first for a description of how plotters work and the default
+You should refer to the `guides/plot/start_here.py` script first for a description of how plotters work and the default
 behaviour of plotting visuals.
 
 __Contents__
@@ -21,7 +21,6 @@ __Contents__
 - **Inversion Plots:** Plot diagnostic subplots of the inversion properties using subplot_of_mapper.
 - **Mapper:** Plot the mapper that maps image-plane pixels to the pixelization mesh.
 - **Mesh Grids:** Plot the image and reconstruction plane mesh grids.
-- **Delaunay:** Customize the filling of Delaunay mesh plots.
 
 __Setup__
 
@@ -133,11 +132,6 @@ The `Mapper` can also be plotted with a subplot showing the original image along
 subplot_image_and_mapper(mapper=mapper, image=dataset.data)
 
 """
-The indexes of `Mapper` plots can be highlighted to show how certain image pixels map to the pixelization mesh.
-"""
-subplot_image_and_mapper(mapper=mapper, image=dataset.data)
-
-"""
 __Mesh Grids__
 
 The image and reconstruction plane mesh grids, showing the centre of every reconstruction pixel, can be
@@ -148,15 +142,6 @@ image_plane_mesh_grid = mapper.mask.derive_grid.unmasked
 subplot_image_and_mapper(
     mapper=mapper, image=dataset.data, mesh_grid=image_plane_mesh_grid
 )
-
-"""
-__Delaunay__
-
-We can customize the filling of object which wraps the method `matplotlib.fill()`:
-
-https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.fill.html
-"""
-subplot_of_mapper(inversion=inversion, mapper_index=0)
 
 """
 __Env__ (Developer Only)

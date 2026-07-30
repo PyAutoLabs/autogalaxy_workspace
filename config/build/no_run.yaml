@@ -26,5 +26,5 @@
 - gui/extra_galaxies_centres # GUI scripts cannot be run
 - fits_make # Test mode does not output .fits images.
 - png_make # Test mode does not output .png images.
-- examples/searches # Test mode breaks search visualization.
+- guides/plot/searches # Test mode breaks search visualization.
 - imaging/features/shapelets/modeling # SLOW 2026-07-14 - real-search JAX shapelet fit exceeds the 1800s mode=release cap (>30min); speedup tracked by the Profiling Agent (PyAutoHeart#72). Not a bug.

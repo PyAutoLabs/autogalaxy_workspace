@@ -167,7 +167,7 @@ except Exception:
 __Visualization Customization__
 
 The benefit of inspecting fits using the aggregator, rather than the files outputs to the hard-disk, is that we can
-customize the plots using the PyAutoGalaxy `mat_plot`.
+customize the plots using the plotting API described in `guides/plot/start_here.py`.
 
 We create a new function to apply as a generator to do this. However, we use a convenience method available
 in the aggregator package to set up the fit.

@@ -16,6 +16,7 @@ the pixelization absorbs whatever the Sersic cannot describe on a flexible pixel
 - `fit`: Performs a single hand-tuned bulge + pixelization fit and inspects the inversion internals.
 - `likelihood_function`: A step-by-step guide of the pixelization likelihood function on the clumpy dataset.
 - `galaxy_reconstruction`: How to export the pixelized galaxy reconstruction to a .csv file which can be loaded to analyse the reconstruction without PyAutoGalaxy.
+- `plot`: How to plot pixelized galaxy reconstructions, mappers and mesh grids.
 
 # Results
 

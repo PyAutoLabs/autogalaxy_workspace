@@ -28,6 +28,7 @@ New users should read the `start_here` example, which gives an overview of all e
 - `start_here`: A simple example illustrating how to model a blended pair of galaxies.
 - `modeling`: Detailed example of the modeling API, per-galaxy decomposition and photometry.
 - `simulator`: How the example dataset was simulated.
+- `plot`: How to plot the dataset and fits to it.
 
 # Folders
 

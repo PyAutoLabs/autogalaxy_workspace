@@ -182,7 +182,7 @@ The light distributions of galaxies are closer to a log10 distribution than a li
 This means that when we plot an image of a light profile, its appearance is better highlighted when we take the
 logarithm of its values and plot it in log10 space.
 
-The `MatPlot2D` object has an input `use_log10`, which will do this automatically when we call the `figures_2d` method.
+The `plot_array` function has an input `use_log10`, which does this automatically.
 Below, we can see that the image plotted now appears more clearly, with the outskirts of the light profile more visible.
 """
 aplt.plot_array(array=galaxies.image_2d_from(grid=grid), title="Image", use_log10=True)

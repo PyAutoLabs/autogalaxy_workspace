@@ -19,6 +19,7 @@ New users should read the `start_here` example, which gives an overview of all e
 - `modeling`: Detailed example of performing lens modeling of CCD imaging data.
 - `simulator`: Detailed example of how to simulate strong lens CCD imaging data.
 - `data_preparation`: See `imaging/data_preparation` and `interferometer/data_preparation`, which contain all tools for preparing multiple datasets.
+- `plot`: How to plot multiple datasets and fits together in one combined subplot.
 
 # Folders
 

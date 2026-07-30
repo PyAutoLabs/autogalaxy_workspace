@@ -14,6 +14,7 @@ New users should read the `start_here` example, which gives an overview of all e
 - `fit`: How to interferometer data to compute quantities like the residuals, chi squared and likelihood.
 - `likelihood_function`: A step-by-step guide of the interferometer data likelihood function.
 - `casa_reduction`: How to reduce real interferometer data for modeling.
+- `plot`: How to plot the dataset and fits to it.
 
 # Folders
 

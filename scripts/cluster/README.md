@@ -26,3 +26,4 @@ New users should read the `start_here` example, which gives an overview of all e
 - `modeling`: Refinements — shared free member shapes, promoting bright members to their own free models,
   truth comparison.
 - `simulator`: How the example field (1 BCG + 10 members) and its `scaling_galaxies.csv` were simulated.
+- `plot`: How to plot the dataset and fits to it.

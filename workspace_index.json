@@ -19,6 +19,26 @@
   },
   {
     "contents": [
+      "Dataset",
+      "Dataset Figures",
+      "Dataset Subplot",
+      "Fit",
+      "Fit Figures",
+      "Galaxy Images",
+      "Fit Subplot",
+      "Visualizer"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "scripts/imaging/plot.py"
+    ],
+    "notebook": "notebooks/cluster/plot.ipynb",
+    "path": "scripts/cluster/plot.py",
+    "summary": "This example shows how to plot an `Imaging` dataset and a `FitImaging` fit of a cluster field \u2014 a brightest cluster galaxy (BCG) plus a catalogue-driven member population \u2014 figure by figure and via multi-panel subplots.",
+    "title": "Plots: Cluster"
+  },
+  {
+    "contents": [
       "Dataset Paths",
       "Grid / PSF / Simulator",
       "BCG",
@@ -68,6 +88,7 @@
     ],
     "cross_refs": [
       "aggregator/samples_via_aggregator.py",
+      "guides/plot/start_here.py",
       "guides/results/aggregator/models.py",
       "start_here.py"
     ],
@@ -157,6 +178,26 @@
     "path": "scripts/ellipse/multipoles.py",
     "summary": "This guide shows how to perform ellipse fitting and modeling with multipoles modeling.",
     "title": "Multipoles"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Figures",
+      "Dataset Subplot",
+      "Fit",
+      "Fit Figures",
+      "Fit Subplot",
+      "Multiple Ellipses",
+      "Visualizer"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/ellipse/plot.ipynb",
+    "path": "scripts/ellipse/plot.py",
+    "summary": "This example shows how to plot an `Imaging` dataset and a `FitEllipse` fit, figure by figure and via multi-panel subplots.",
+    "title": "Plots: Ellipse"
   },
   {
     "contents": [
@@ -358,64 +399,22 @@
   {
     "contents": [
       "Setup",
-      "Fit Imaging",
-      "Reconstruction",
-      "Inversion Plots",
-      "Mapper",
-      "Mesh Grids",
-      "Delaunay"
-    ],
-    "cross_refs": [
-      "//matplotlib.org/stable/api/_as_gen/matplotlib.py",
-      "guides/plot/start_here.ipynb",
-      "scripts/imaging/features/pixelization/modeling.py"
-    ],
-    "notebook": "notebooks/guides/plot/advanced/plotters_pixelization.ipynb",
-    "path": "scripts/guides/plot/advanced/plotters_pixelization.py",
-    "summary": "This example illustrates the API for plotting pixelized galaxy reconstructions using the new function-based plotting API and dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.",
-    "title": "Plots: Pixelization"
-  },
-  {
-    "contents": [
-      "Setup",
-      "Output",
-      "Figure Size and Aspect",
-      "Labels",
-      "Color Map",
-      "Log10",
-      "Contours",
-      "Ticks / Colorbar / Contours / Units"
-    ],
-    "cross_refs": [
-      "guides/plot/start_here.ipynb"
-    ],
-    "notebook": "notebooks/guides/plot/examples/mat_plot.ipynb",
-    "path": "scripts/guides/plot/examples/mat_plot.py",
-    "summary": "This example illustrates the API for customizing the appearance of figures using arguments passed directly to `plot_array` (and related functions like `plot_grid`).",
-    "title": "Plots: Mat Plot"
-  },
-  {
-    "contents": [
-      "Setup",
-      "Array2D",
-      "Grid2D",
       "Light Profile",
       "Galaxy",
       "Galaxies",
-      "Imaging",
-      "Fit Imaging",
       "Log10",
       "One Dimensional Plots",
-      "Output",
       "Probability Density Function (PDF) Plots"
     ],
     "cross_refs": [
-      "guides/plot/start_here.ipynb"
+      "guides/plot/start_here.py",
+      "plot.py",
+      "scripts/imaging/plot.py"
     ],
-    "notebook": "notebooks/guides/plot/examples/plotters.ipynb",
-    "path": "scripts/guides/plot/examples/plotters.py",
-    "summary": "This example illustrates the API for plotting using standalone functions, which enable quick visualization of all key quantities.",
-    "title": "Plots: Plotters"
+    "notebook": "notebooks/guides/plot/plotters.ipynb",
+    "path": "scripts/guides/plot/plotters.py",
+    "summary": "This example illustrates how to plot each key PyAutoGalaxy object \u2014 light profiles, galaxies and collections of galaxies \u2014 figure by figure.",
+    "title": "Plots: Objects"
   },
   {
     "contents": [
@@ -428,30 +427,10 @@
     "cross_refs": [
       "guides/plot/start_here.ipynb"
     ],
-    "notebook": "notebooks/guides/plot/examples/searches.ipynb",
-    "path": "scripts/guides/plot/examples/searches.py",
+    "notebook": "notebooks/guides/plot/searches.ipynb",
+    "path": "scripts/guides/plot/searches.py",
     "summary": "This example illustrates the API for plotting the results of different non-linear searches.",
     "title": "Plots: Searches"
-  },
-  {
-    "contents": [
-      "Setup",
-      "Light Profile Centres",
-      "Mask",
-      "Origin",
-      "Grid",
-      "Border",
-      "Array Overlay",
-      "Patch Overlay",
-      "Vector Field"
-    ],
-    "cross_refs": [
-      "guides/plot/start_here.ipynb"
-    ],
-    "notebook": "notebooks/guides/plot/examples/visuals.ipynb",
-    "path": "scripts/guides/plot/examples/visuals.py",
-    "summary": "This example illustrates the API for adding visuals to plots.",
-    "title": "Plots: Visuals"
   },
   {
     "contents": [
@@ -473,19 +452,42 @@
   {
     "contents": [
       "Dataset",
-      "Figures",
+      "plot_array",
+      "plot_grid",
       "Customization",
-      "Log10",
-      "Configs",
-      "Subplots",
-      "Visuals",
-      "Searches"
+      "Output",
+      "Config Defaults",
+      "Overlays",
+      "subplot_* Functions",
+      "Where To Next"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "plot.py",
+      "scripts/guides/plot/plotters.py",
+      "scripts/guides/plot/searches.py",
+      "scripts/guides/plot/visuals.py",
+      "scripts/imaging/plot.py",
+      "scripts/interferometer/plot.py"
+    ],
     "notebook": "notebooks/guides/plot/start_here.ipynb",
     "path": "scripts/guides/plot/start_here.py",
-    "summary": "This example illustrates the API for plotting.",
+    "summary": "This example introduces the PyAutoGalaxy plotting API.",
     "title": "Plots: Start Here"
+  },
+  {
+    "contents": [
+      "Setup",
+      "Light Profile Centres",
+      "Origin",
+      "Grid"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.ipynb"
+    ],
+    "notebook": "notebooks/guides/plot/visuals.ipynb",
+    "path": "scripts/guides/plot/visuals.py",
+    "summary": "This example illustrates the API for adding visuals to plots.",
+    "title": "Plots: Visuals"
   },
   {
     "contents": [
@@ -536,6 +538,7 @@
     "cross_refs": [
       "aggregator/models.py",
       "aggregator/samples_via_aggregator.py",
+      "guides/plot/start_here.py",
       "start_here.py"
     ],
     "notebook": "notebooks/guides/results/aggregator/data_fitting.ipynb",
@@ -1510,6 +1513,24 @@
   },
   {
     "contents": [
+      "Setup",
+      "Fit Imaging",
+      "Reconstruction",
+      "Inversion Plots",
+      "Mapper",
+      "Mesh Grids"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "scripts/imaging/features/pixelization/modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/plot.ipynb",
+    "path": "scripts/imaging/features/pixelization/plot.py",
+    "summary": "This example illustrates the API for plotting pixelized galaxy reconstructions, using dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.",
+    "title": "Plots: Pixelization"
+  },
+  {
+    "contents": [
       "Dataset Paths",
       "Grid",
       "Over Sampling",
@@ -1766,6 +1787,27 @@
     "path": "scripts/imaging/modeling.py",
     "summary": "This script is the starting point for modeling of CCD imaging data (E.g. Hubble Space Telescope, Euclid) with **PyAutoGalaxy** and it provides an overview of the modeling API.",
     "title": "Modeling: Start Here"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Figures",
+      "Dataset Subplot",
+      "Fit",
+      "Fit Figures",
+      "Galaxy Images",
+      "Fit Subplot",
+      "Visualizer"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "modeling.py",
+      "scripts/multi/plot.py"
+    ],
+    "notebook": "notebooks/imaging/plot.ipynb",
+    "path": "scripts/imaging/plot.py",
+    "summary": "This example shows how to plot an `Imaging` dataset and a `FitImaging` fit, figure by figure and via multi-panel subplots.",
+    "title": "Plots: Imaging"
   },
   {
     "contents": [
@@ -2406,6 +2448,25 @@
   },
   {
     "contents": [
+      "Dataset",
+      "Dataset Subplot",
+      "Dirty Images Subplot",
+      "Fit",
+      "Fit Figures",
+      "Fit Subplot",
+      "Visualizer"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "scripts/imaging/plot.py"
+    ],
+    "notebook": "notebooks/interferometer/plot.ipynb",
+    "path": "scripts/interferometer/plot.py",
+    "summary": "This example shows how to plot an `Interferometer` dataset and a `FitInterferometer` fit, figure by figure and via multi-panel subplots.",
+    "title": "Plots: Interferometer"
+  },
+  {
+    "contents": [
       "Grid",
       "Galaxies",
       "Output",
@@ -2678,19 +2739,24 @@
   },
   {
     "contents": [
-      "Imaging Dataset Subplot",
-      "Fit Imaging Subplot",
-      "Galaxies Subplot",
-      "Output",
-      "Wrap Up"
+      "Dataset",
+      "Single Dataset Subplots",
+      "Combined Dataset Subplot",
+      "Fits",
+      "Combined Fit Subplot",
+      "Multi Fits",
+      "Visualizer"
     ],
     "cross_refs": [
-      "plot/start_here.ipynb"
+      "guides/plot/start_here.py",
+      "scripts/imaging/plot.py",
+      "scripts/multi/modeling.py",
+      "scripts/multi/simulator.py"
     ],
     "notebook": "notebooks/multi/plot.ipynb",
     "path": "scripts/multi/plot.py",
-    "summary": "This example illustrates how to produce multiple subplot figures from different data objects, using the function-based plotting API.",
-    "title": "Plots: MultiSubPlots"
+    "summary": "This example shows how to plot multiple datasets \u2014 and fits to multiple datasets \u2014 together, with every dataset appearing in one combined subplot.",
+    "title": "Plots: Multi"
   },
   {
     "contents": [
@@ -2811,6 +2877,26 @@
     "path": "scripts/multi_galaxy/modeling.py",
     "summary": "This script models an example 'multi galaxy' system \u2014 two galaxies whose light blends together, each with its own free light model \u2014 with the full modeling API spelled out.",
     "title": "Multi Galaxy: Modeling"
+  },
+  {
+    "contents": [
+      "Dataset",
+      "Dataset Figures",
+      "Dataset Subplot",
+      "Fit",
+      "Fit Figures",
+      "Galaxy Images",
+      "Fit Subplot",
+      "Visualizer"
+    ],
+    "cross_refs": [
+      "guides/plot/start_here.py",
+      "scripts/imaging/plot.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/plot.ipynb",
+    "path": "scripts/multi_galaxy/plot.py",
+    "summary": "This example shows how to plot an `Imaging` dataset and a `FitImaging` fit of a multi-galaxy system, figure by figure and via multi-panel subplots.",
+    "title": "Plots: Multi Galaxy"
   },
   {
     "contents": [
