@@ -163,5 +163,5 @@ ag.output_to_json(
 )
 
 """
-The dataset can be viewed in the folder `autogalaxy_workspace/imaging/no_galaxy_light/simple`.
+The dataset can be viewed in the folder `autogalaxy_workspace/dataset/imaging/no_galaxy_light/simple`.
 """

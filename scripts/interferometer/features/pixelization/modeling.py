@@ -34,7 +34,7 @@ minutes. Fitting a higher resolution dataset will only take an hour to a few hou
 
 If your dataset contains many visibilities (e.g. millions), setting up the matrices for pixelized reconstruction
 which speed up the linear algebra may take tens of minutes, or hours. Once you are comfortable with the API introduced
-in this example, the `feature/pixelization/many_visibilities_preparation` explains how this initial setup can be
+in this example, the `features/pixelization/many_visibilities_preparation` explains how this initial setup can be
 performed before galaxy modeling and saved to hard disk for fast loading before the model fit.
 
 __Contents__

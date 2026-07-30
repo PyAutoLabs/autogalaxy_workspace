@@ -147,7 +147,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
+ - Reduce your data so that the centre is (`autogalaxy_workspace/*/imaging/data_preparation`). 
  - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
@@ -165,7 +165,7 @@ The `info` attribute shows the model in a readable format.
 names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
 common issue in Jupyter notebooks.
 
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
+The`info_whitespace_length` parameter in the file `config/general.yaml` in the [output] section can be changed to 
 increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
 appear in a notebook).]
 """
@@ -184,8 +184,8 @@ one to check a model quickly, and this one when you need results you can quote.
 
 The folders: 
 
- - `autogalaxy_workspace/*/modeling/imaging/searches`.
- - `autogalaxy_workspace/*/modeling/imaging/customize`
+ - `autogalaxy_workspace/*/guides/modeling/searches`.
+ - `autogalaxy_workspace/*/guides/modeling/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
 model-fit, including the priors on the model. 

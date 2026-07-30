@@ -206,5 +206,5 @@ ag.output_to_json(
 )
 
 """
-The dataset can be viewed in the folder `autogalaxy_workspace/imaging/multi/same_wavelength/simple`.
+The dataset can be viewed in the folder `autogalaxy_workspace/dataset/imaging/multi/same_wavelength/simple`.
 """

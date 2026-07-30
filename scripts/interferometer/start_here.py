@@ -492,7 +492,7 @@ but maybe you want to try and model your own galaxy first!
 The following locations of the workspace are good places to check out next:
 
 - `autogalaxy_workspace/*/interferometer/modeling`: A full description of the galaxy modeling API and how to customize your model-fits.
-- `autogalaxy_workspace/*/interferometer/simulators`: A full description of the galaxy simulation API and how to customize your simulations.
+- `autogalaxy_workspace/*/interferometer/simulator`: A full description of the galaxy simulation API and how to customize your simulations.
 - `autogalaxy_workspace/*/interferometer/data_preparation`: How to load and prepare your own interferometer data for galaxy modeling.
 - `autogalaxy_workspace/guides/results`: How to load and analyze the results of your galaxy model fits, including tools for large samples.
 - `autogalaxy_workspace/guides`: A complete description of the API and information on calculations and units.

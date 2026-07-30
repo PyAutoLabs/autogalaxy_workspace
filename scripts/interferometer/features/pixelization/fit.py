@@ -26,7 +26,7 @@ visibilities.
 
 If your dataset contains many visibilities (e.g. millions), setting up the matrices for pixelized galaxy reconstruction
 which speed up the linear algebra may take tens of minutes, or hours. Once you are comfortable with the API introduced
-in this example, the `feature/pixelization/many_visibilities_preparation` explains how this initial setup can be
+in this example, the `features/pixelization/many_visibilities_preparation` explains how this initial setup can be
 performed before galaxy modeling and saved to hard disk for fast loading before the model fit.
 
 This script's default setup uses an adaptive 20 x 20 rectangular mesh (400 pixels), which is relatively low resolution

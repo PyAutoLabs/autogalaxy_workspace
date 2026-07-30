@@ -32,7 +32,7 @@ __CPU Run Times__
 JAX is not natively designed to provide significant CPU speed up, therefore users using CPUs to perform pixelization
 analysis will not see fast run times using JAX (unlike GPUs).
 
-The example `pixelization/cpu_fast_modeling` shows how to set up a pixelization to use efficient CPU calculations
+The example `autolens_workspace/*/imaging/features/pixelization/cpu_fast_modeling` shows how to set up a pixelization to use efficient CPU calculations
 via the library `numba`.
 
 __Contents__

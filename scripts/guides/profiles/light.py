@@ -329,7 +329,7 @@ sersic_model = af.Model(ag.lp.Sersic)
 """
 The `af.Model` wraps the profile class.  Every constructor argument that has a numerical
 default now becomes a *prior* — by default the priors are `UniformPriors` covering a sensible
-range for each parameter (see `autogalaxy/config/priors/light.yaml` for the configured
+range for each parameter (see `autogalaxy_workspace/config/priors/light` for the configured
 ranges).
 
 You can override individual priors before fitting:

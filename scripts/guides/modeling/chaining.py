@@ -35,8 +35,7 @@ __Contents__
 __This Example__
 
 This script gives an overview of the API for search chaining, a description of how the priors on parameters are used
-to pass information between searches as well as tools for customizing prior passing. The examples in the
-`chaining/examples` show specific examples where for modeling search chaining can improve the model-fit.
+to pass information between searches as well as tools for customizing prior passing.
 
 More details on search chaining can be found in Chapter 3 of the HowToGalaxy lectures.
 """
