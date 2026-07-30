@@ -87,7 +87,7 @@ The `galaxies_gen` returns a list of `Galaxies` objects, as opposed to just a si
 only a single `Analysis` class was used in the model-fit, meaning there was only one imaging dataset that was
 fit. 
 
-The `multi` package of the workspace illustrates model-fits which fit multiple datasets 
+The `multi_dataset` package of the workspace illustrates model-fits which fit multiple datasets 
 simultaneously, (e.g. multi-wavelength imaging)  by summing `Analysis` objects together, where the `galaxies_list` 
 would contain multiple `Galaxies` objects.
 

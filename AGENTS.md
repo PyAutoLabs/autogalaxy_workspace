@@ -13,7 +13,7 @@ Python: 3.11. Core dependencies: `autogalaxy`, `autofit`, `numba`.
 - `scripts/` — Runnable Python scripts, organised by topic:
   - `imaging/` — CCD imaging (HST, JWST, Euclid) galaxy modeling
   - `interferometer/` — ALMA / JVLA uv-plane modeling
-  - `multi/` — Multi-wavelength simultaneous modeling
+  - `multi_dataset/` — Multi-wavelength simultaneous modeling
   - `ellipse/` — Ellipse fitting (non-parametric morphology)
   - `multi_galaxy/` — 2+ blended galaxies modeled simultaneously (one free light model each)
   - `cluster/` — Cluster fields: BCG + catalogue-driven member population (light is the subject —
@@ -40,7 +40,7 @@ correctly:
 python scripts/imaging/start_here.py
 ```
 
-Most topic folders (`imaging/`, `interferometer/`, `multi/`) have a `start_here.py` that is the
+Most topic folders (`imaging/`, `interferometer/`, `multi_dataset/`) have a `start_here.py` that is the
 canonical, always-current reference for that topic. Some other scripts in a folder depend on
 results produced by its `start_here.py`.
 

@@ -66,12 +66,12 @@ The examples in the `notebooks` and `scripts` folders are structured as follows:
 - `guides`: Guides which introduce the core features of **PyAutoGalaxy**, including the core galaxy modeling API.
 - `imaging`: Examples for galaxy modeling using CCD imaging (e.g. Hubble, James Webb, Euclid).
 - `interferometer`: Examples for galaxies observed with an interferometer (e.g. ALMA, JVLA).
-- `multi`: Examples for modeling galaxies observed in multiple wavebands.
+- `multi_dataset`: Examples for modeling galaxies observed in multiple wavebands.
 - `multi_galaxy`: Examples for modeling 2+ blended galaxies simultaneously, each with its own free light model.
 - `ellipse`: Examples for ellipse fitting (non-parametric morphology).
 - `cluster`: Examples for modeling a cluster field's light — a BCG plus a catalogue-driven member population.
 
-The dataset packages (e.g. `imaging`, `interferometer` and `multi`) include the following types of examples:
+The dataset packages (e.g. `imaging`, `interferometer` and `multi_dataset`) include the following types of examples:
 
 - `modeling`: Performing galaxy modeling using that type of data.
 - `simulator`: Simulating galaxy images.

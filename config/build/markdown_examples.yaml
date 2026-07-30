@@ -25,11 +25,11 @@
   max_minutes: 45
 - script: scripts/interferometer/modeling.py
   max_minutes: 300
-- script: scripts/multi/start_here.py
+- script: scripts/multi_dataset/start_here.py
   max_minutes: 120
-- script: scripts/multi/simulator.py
+- script: scripts/multi_dataset/simulator.py
   max_minutes: 45
-- script: scripts/multi/modeling.py
+- script: scripts/multi_dataset/modeling.py
   max_minutes: 240
 # ellipse/modeling.py deliberately excluded: its "Multiple Ellipses" section runs
 # many sequential DynestyStatic/Drawer fits (>2h, blows the per-cell timeout) —

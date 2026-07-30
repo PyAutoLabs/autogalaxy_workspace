@@ -255,7 +255,7 @@ but certain parameters are free to vary across the datasets.
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/start_here.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/start_here.ipynb
 
 __Relations (Advanced)__
 
@@ -264,7 +264,7 @@ We can compose models where the free parameter(s) vary according to a user-speci
 
 The following example notebooks show how to compose and fit these models:
 
-https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/features/wavelength_dependence/modeling.ipynb
+https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/modeling.ipynb
 
 __PyAutoFit API__
 
