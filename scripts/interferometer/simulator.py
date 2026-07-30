@@ -191,39 +191,44 @@ The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple`.
 __JAX Variant__
 
 For fast repeated interferometer simulations, construct the simulator
-with `use_jax=True` and wrap the call in `@jax.jit`. The simulator
-handles pytree registration internally.
+with `use_jax=True` so the image calculation and transform run through
+JAX:
 
 ```python
-import jax
 import jax.numpy as jnp
 
 simulator_jax = ag.SimulatorInterferometer(
     uv_wavelengths=uv_wavelengths,
     exposure_time=300.0,
     noise_sigma=0.1,
-    transformer_class=ag.TransformerDFT,  # NUFFT (pynufft) is not JAX-traceable
     use_jax=True,
 )
 
-@jax.jit
-def simulate(galaxies):
-    galaxy_obj = ag.Galaxies(galaxies=galaxies)
-    image = galaxy_obj.image_2d_from(grid=real_space_grid, xp=jnp)
-    return simulator_jax.via_image_from(image=image)
-
-dataset_jax = simulate(galaxies)   # Interferometer with jax.Array visibilities
+image = ag.Galaxies(galaxies=galaxies).image_2d_from(
+    grid=real_space_grid, xp=jnp
+)
+dataset_jax = simulator_jax.via_image_from(image=image)
 ```
 
-Two notes:
+**Wrapping the call in `@jax.jit` does not currently work.** Two separate
+things stop it:
 
-- Use `TransformerDFT` (the default) under JAX. `TransformerNUFFT`
-  (pynufft) is faster on large UV sets but is not JAX-traceable; the
-  `nufftax` replacement is a research path (see
-  `autolens_workspace_test/scripts/interferometer/nufft.py`).
-- Eager `simulator_jax.via_image_from(image)` already runs on JAX without
-  the `@jax.jit` wrap; the JIT only matters for repeated calls.
+- **Pytree registration is yours to do, before the first jitted call** —
+  `autogalaxy.jax.register_galaxies_classes(galaxies)`. Nothing in the
+  library does it for you, and nothing can: JAX flattens a jitted
+  function's arguments at trace time, before entering the callee.
+- **Even with that, the jitted call fails inside autoarray** on array
+  sites that do not yet thread `xp`. Tracked in PyAutoArray; until it is
+  fixed, use the eager call above.
 
-See `scripts/guides/data_structures.py` for the broader "JIT-it-
-yourself" pattern.
+On transformers: `TransformerDFT` (the `SimulatorInterferometer` default)
+and the nufftax-backed `TransformerNUFFT` (the `Interferometer` default,
+so what a fit uses) are both JAX-traceable. Only the legacy pynufft-backed
+`TransformerNUFFTPyNUFFT` is not — see
+`autolens_workspace_test/scripts/interferometer/nufft.py` for the parity
+work.
+
+See `scripts/guides/using_jax.py` for the full picture and
+`scripts/guides/data_structures.py` for the broader "JIT-it-yourself"
+pattern.
 """

@@ -27,4 +27,4 @@ A full guide to result analysis is given at `autogalaxy_workspace/*/guides/resul
 
 # Imaging Equivalent
 
-For the CCD-imaging version of these scripts, see `autogalaxy_workspace/*/imaging/features/shapelets`.
+For the CCD-imaging version of these scripts, see `scripts/imaging/features/shapelets`.

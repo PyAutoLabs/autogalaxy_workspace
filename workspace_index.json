@@ -853,10 +853,7 @@
       "likelihood_function.py",
       "scripts/guides/data_structures.py",
       "scripts/imaging/likelihood_function.py",
-      "scripts/imaging/simulator.py",
       "scripts/interferometer/likelihood_function.py",
-      "scripts/interferometer/simulator.py",
-      "simulator.py",
       "start_here.py"
     ],
     "notebook": "notebooks/guides/using_jax.ipynb",
@@ -2411,7 +2408,8 @@
     ],
     "cross_refs": [
       "autolens_workspace_test/scripts/interferometer/nufft.py",
-      "scripts/guides/data_structures.py"
+      "scripts/guides/data_structures.py",
+      "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/interferometer/simulator.ipynb",
     "path": "scripts/interferometer/simulator.py",
