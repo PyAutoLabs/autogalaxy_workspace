@@ -412,7 +412,7 @@ so you can check it is the right software for you before going through the insta
 - [interferometer/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.7.29.2/notebooks/interferometer/start_here.ipynb):
   Galaxy modeling with interferometer data (e.g. ALMA), fitting directly in the uv-plane.
 
-- [multi_band/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.7.29.2/notebooks/multi/start_here.ipynb):
+- [multi_band/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.7.29.2/notebooks/multi_dataset/start_here.ipynb):
   Multi-band galaxy modeling to study colour gradients and wavelength-dependent structure.
   
 __Still Unsure?__
@@ -472,7 +472,7 @@ The appearance of the galaxy changes as a function of wavelength, therefore mult
 more about the different components in a galaxy (e.g a redder bulge and bluer disk) or when imaging and interferometer
 data are combined, we can compare the emission from stars and dust.
 
-Checkout the `autogalaxy_workspace/*/multi` package to get started, however combining datasets is a more advanced
+Checkout the `autogalaxy_workspace/*/multi_dataset` package to get started, however combining datasets is a more advanced
 feature and it is recommended you first get to grips with the core API.
 
 

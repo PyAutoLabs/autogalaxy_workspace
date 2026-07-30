@@ -350,8 +350,8 @@
       "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/advanced/guides/modeling/chaining.ipynb",
       "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb",
       "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/modeling.ipynb",
-      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/features/wavelength_dependence/modeling.ipynb",
-      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi/start_here.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/start_here.ipynb",
       "imaging/modeling.ipynb"
     ],
     "notebook": "notebooks/guides/modeling/cookbook.ipynb",
@@ -1804,7 +1804,7 @@
     "cross_refs": [
       "guides/plot/start_here.py",
       "modeling.py",
-      "scripts/multi/plot.py"
+      "scripts/multi_dataset/plot.py"
     ],
     "notebook": "notebooks/imaging/plot.ipynb",
     "path": "scripts/imaging/plot.py",
@@ -2535,10 +2535,10 @@
       "Result"
     ],
     "cross_refs": [
-      "multi/modeling.ipynb"
+      "multi_dataset/modeling.ipynb"
     ],
-    "notebook": "notebooks/multi/features/dataset_offsets/modeling.ipynb",
-    "path": "scripts/multi/features/dataset_offsets/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/dataset_offsets/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/dataset_offsets/modeling.py",
     "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
     "title": "Modeling Features: Dataset Offsets"
   },
@@ -2554,8 +2554,8 @@
       "Galaxies json"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/features/dataset_offsets/simulator.ipynb",
-    "path": "scripts/multi/features/dataset_offsets/simulator.py",
+    "notebook": "notebooks/multi_dataset/features/dataset_offsets/simulator.ipynb",
+    "path": "scripts/multi_dataset/features/dataset_offsets/simulator.py",
     "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
     "title": "Simulator: Dataset Offsets"
   },
@@ -2573,8 +2573,8 @@
       "Result"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/features/imaging_and_interferometer/modeling.ipynb",
-    "path": "scripts/multi/features/imaging_and_interferometer/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/imaging_and_interferometer/modeling.py",
     "summary": "This script fits an `Imaging` dataset of a galaxy with a model where:",
     "title": "Modeling: Imaging & Interferometer"
   },
@@ -2587,10 +2587,10 @@
       "Galaxies json"
     ],
     "cross_refs": [
-      "multi/simulator.py"
+      "multi_dataset/simulator.py"
     ],
-    "notebook": "notebooks/multi/features/imaging_and_interferometer/simulator.ipynb",
-    "path": "scripts/multi/features/imaging_and_interferometer/simulator.py",
+    "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/simulator.ipynb",
+    "path": "scripts/multi_dataset/features/imaging_and_interferometer/simulator.py",
     "summary": "This script simulates `Interferometer` data of a galaxy where:",
     "title": "Simulator: Mutli Interferometer"
   },
@@ -2611,10 +2611,10 @@
       "Second Dataset Offset"
     ],
     "cross_refs": [
-      "multi/modeling.ipynb"
+      "multi_dataset/modeling.ipynb"
     ],
-    "notebook": "notebooks/multi/features/one_by_one/modeling.ipynb",
-    "path": "scripts/multi/features/one_by_one/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/one_by_one/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/one_by_one/modeling.py",
     "summary": "Multi-wavelength analysis does not necessarily require us to fit all datasets simultaneously. Instead, we can fit one dataset first in order to infer a robust galaxy model, and then fit the next dataset, using the inferred model as the starting point.",
     "title": "Modeling Features: One By One"
   },
@@ -2635,8 +2635,8 @@
     "cross_refs": [
       "scripts/imaging/features/pixelization/modeling.py"
     ],
-    "notebook": "notebooks/multi/features/pixelization/modeling.ipynb",
-    "path": "scripts/multi/features/pixelization/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/pixelization/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/pixelization/modeling.py",
     "summary": "This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:",
     "title": "Modeling: Pixelized"
   },
@@ -2653,10 +2653,10 @@
       "Result"
     ],
     "cross_refs": [
-      "multi/features/dataset_offsets/modeling.py"
+      "multi_dataset/features/dataset_offsets/modeling.py"
     ],
-    "notebook": "notebooks/multi/features/same_wavelength/modeling.ipynb",
-    "path": "scripts/multi/features/same_wavelength/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/same_wavelength/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/same_wavelength/modeling.py",
     "summary": "This script fits a multiple `Imaging` datasets observed at the same wavelength of a galaxy with a model where:",
     "title": "Modeling: Same Wavelength"
   },
@@ -2670,8 +2670,8 @@
       "Galaxies json"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/features/same_wavelength/simulator.ipynb",
-    "path": "scripts/multi/features/same_wavelength/simulator.py",
+    "notebook": "notebooks/multi_dataset/features/same_wavelength/simulator.ipynb",
+    "path": "scripts/multi_dataset/features/same_wavelength/simulator.py",
     "summary": "This script simulates multiple `Imaging` datasets of a galaxy where:",
     "title": "Simulator: Same Wavelength"
   },
@@ -2691,8 +2691,8 @@
       "Result"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/features/wavelength_dependence/modeling.ipynb",
-    "path": "scripts/multi/features/wavelength_dependence/modeling.py",
+    "notebook": "notebooks/multi_dataset/features/wavelength_dependence/modeling.ipynb",
+    "path": "scripts/multi_dataset/features/wavelength_dependence/modeling.py",
     "summary": "This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:",
     "title": "Modeling: Wavelength Dependence"
   },
@@ -2709,8 +2709,8 @@
       "Galaxies json"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/features/wavelength_dependence/simulator.ipynb",
-    "path": "scripts/multi/features/wavelength_dependence/simulator.py",
+    "notebook": "notebooks/multi_dataset/features/wavelength_dependence/simulator.ipynb",
+    "path": "scripts/multi_dataset/features/wavelength_dependence/simulator.py",
     "summary": "This script simulates multi-wavelength `Imaging` of a galaxy where:",
     "title": "Simulator: Wavelength Dependent"
   },
@@ -2737,8 +2737,8 @@
       "/guides/advanced/over_sampling.ipynb",
       "start_here.py"
     ],
-    "notebook": "notebooks/multi/modeling.ipynb",
-    "path": "scripts/multi/modeling.py",
+    "notebook": "notebooks/multi_dataset/modeling.ipynb",
+    "path": "scripts/multi_dataset/modeling.py",
     "summary": "This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:",
     "title": "Modeling: Multi Modeling"
   },
@@ -2755,11 +2755,11 @@
     "cross_refs": [
       "guides/plot/start_here.py",
       "scripts/imaging/plot.py",
-      "scripts/multi/modeling.py",
-      "scripts/multi/simulator.py"
+      "scripts/multi_dataset/modeling.py",
+      "scripts/multi_dataset/simulator.py"
     ],
-    "notebook": "notebooks/multi/plot.ipynb",
-    "path": "scripts/multi/plot.py",
+    "notebook": "notebooks/multi_dataset/plot.ipynb",
+    "path": "scripts/multi_dataset/plot.py",
     "summary": "This example shows how to plot multiple datasets \u2014 and fits to multiple datasets \u2014 together, with every dataset appearing in one combined subplot.",
     "title": "Plots: Multi"
   },
@@ -2774,8 +2774,8 @@
       "Galaxies json"
     ],
     "cross_refs": [],
-    "notebook": "notebooks/multi/simulator.ipynb",
-    "path": "scripts/multi/simulator.py",
+    "notebook": "notebooks/multi_dataset/simulator.ipynb",
+    "path": "scripts/multi_dataset/simulator.py",
     "summary": "This script simulates multi-wavelength `Imaging` of a galaxy where:",
     "title": "Simulator: Multi Light Sersic"
   },
@@ -2803,8 +2803,8 @@
       "modeling.py",
       "scripts/imaging/simulator.py"
     ],
-    "notebook": "notebooks/multi/start_here.ipynb",
-    "path": "scripts/multi/start_here.py",
+    "notebook": "notebooks/multi_dataset/start_here.ipynb",
+    "path": "scripts/multi_dataset/start_here.py",
     "summary": "Galaxies are often observed with CCD imaging, for example using HST, JWST, or ground-based telescopes.",
     "title": "Start Here: Multi Wavelength"
   },

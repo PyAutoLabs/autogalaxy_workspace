@@ -13,9 +13,9 @@ Every page below is the corresponding example script **fully executed**, rendere
 - [Log Likelihood Function: Parametric](interferometer/likelihood_function.md) — from `scripts/interferometer/likelihood_function.py`
 - [Fits](interferometer/fit.md) — from `scripts/interferometer/fit.py`
 - [Modeling: Start Here](interferometer/modeling.md) — from `scripts/interferometer/modeling.py`
-- [Start Here: Multi Wavelength](multi/start_here.md) — from `scripts/multi/start_here.py`
-- [Simulator: Multi Light Sersic](multi/simulator.md) — from `scripts/multi/simulator.py`
-- [Modeling: Multi Modeling](multi/modeling.md) — from `scripts/multi/modeling.py`
+- [Start Here: Multi Wavelength](multi/start_here.md) — from `scripts/multi_dataset/start_here.py`
+- [Simulator: Multi Light Sersic](multi/simulator.md) — from `scripts/multi_dataset/simulator.py`
+- [Modeling: Multi Modeling](multi/modeling.md) — from `scripts/multi_dataset/modeling.py`
 - [Simulator: Ellipse](ellipse/simulator.md) — from `scripts/ellipse/simulator.py`
 - [Fits](ellipse/fit.md) — from `scripts/ellipse/fit.py`
 - [Galaxies](guides/galaxies.md) — from `scripts/guides/galaxies.py`
