@@ -275,5 +275,5 @@ This can be loaded via the method `galaxies = ag.from_json()`.
 ]
 
 """
-The dataset can be viewed in the folder `autogalaxy_workspace/imaging/multi/simple`.
+The dataset can be viewed in the folder `autogalaxy_workspace/dataset/imaging/multi/simple`.
 """

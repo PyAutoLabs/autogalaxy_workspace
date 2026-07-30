@@ -43,7 +43,7 @@ Pixelized inversions require operations on **very large, highly sparse matrices*
 
 As a result, CPU execution can outperform JAX even on powerful GPUs for high-resolution datasets.
 
-The example `pixelization/cpu_fast_modeling` shows how to set up a pixelization to use efficient CPU calculations
+The example `autolens_workspace/*/imaging/features/pixelization/cpu_fast_modeling` shows how to set up a pixelization to use efficient CPU calculations
 via the library `numba`.
 
 __Rule of Thumb__
@@ -318,7 +318,7 @@ a likelihood evaluation.
 
 Assuming the use of a 20 x 20 mesh grid above means this is the case, the run times of this model-fit on a GPU
 should take under 10 minutes. If VRAM is exceeded, the run time will be significantly longer (3+ hours). CPU run
-times are also of order hours, but can be sped up using the `numba` library (see the `pixelization/cpu` example).
+times are also of order hours, but can be sped up using the `numba` library (see the `autolens_workspace/*/imaging/features/pixelization/cpu_fast_modeling` example).
 
 The run times of pixelizations slow down as the data becomes higher resolution. In this example, data with a pixel
 scale of 0.1" gives of order 10 minute run times (when VRAM is under control), for a pixel scale of 0.05" this

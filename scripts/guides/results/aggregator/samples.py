@@ -327,7 +327,7 @@ visualization tools.
 This fit used `nautilus` therefore we use the `corner_anesthetic` function for visualization, which wraps
 the anesthetic library's corner plotting tools.
 
-The `autofit_workspace/*/plots` folder illustrates other packages that can be used to make these plots using
+The `autofit_workspace/*/plot` folder illustrates other packages that can be used to make these plots using
 the standard output results formats (e.g. `GetDist.py`).
 
 __Maximum Likelihood__
@@ -407,7 +407,7 @@ you can copy to your .tex document.
 
 By combining this with the filtering tools below, specific parameters can be included or removed from the latex.
 
-Remember that the superscripts of a parameter are loaded from the config file `notation/label.yaml`, providing high
+Remember that the superscripts of a parameter are loaded from the config file `notation.yaml`, providing high
 levels of customization for how the parameter names appear in the latex table. This is especially useful if your model
 uses the same model components with the same parameter, which therefore need to be distinguished via superscripts.
 """

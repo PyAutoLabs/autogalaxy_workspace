@@ -231,7 +231,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
+ - Reduce your data so that the centre is (`autogalaxy_workspace/*/imaging/data_preparation`). 
  - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 bulge = af.Model(ag.lp_linear.Sersic)
@@ -249,7 +249,7 @@ The `info` attribute shows the model in a readable format.
 names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
 common issue in Jupyter notebooks.
 
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
+The`info_whitespace_length` parameter in the file `config/general.yaml` in the [output] section can be changed to 
 increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
 appear in a notebook).]
 """
@@ -340,7 +340,7 @@ the `Imaging` dataset.
 
 It is not vital that you as a user understand the details of how the `log_likelihood_function` fits a model to 
 data, but interested readers can find a step-by-step guide of the likelihood 
-function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
+function at ``autogalaxy_workspace/*/imaging/likelihood_function`
 
 __JAX__
 
@@ -529,7 +529,7 @@ So, what next?
 
 __Features__
 
-The examples in the `autogalaxy_workspace/*/modeling/imaging/features` package illustrate other modeling features. 
+The examples in the `autogalaxy_workspace/*/imaging/features` package illustrate other modeling features. 
 
 We recommend you checkout the following features, because the make modeling in general more reliable and 
 efficient (you will therefore benefit from using these features irrespective of the quality of your data and 
@@ -542,7 +542,7 @@ We recommend you now checkout the following feature:
 All other features may be useful to specific users with specific datasets and scientific goals, but are not useful
 for general modeling.
 
-The folders `autogalaxy_workspace/*/modeling/imaging/searches` and `autogalaxy_workspace/*/modeling/imaging/customize`
+The folders `autogalaxy_workspace/*/guides/modeling/searches` and `autogalaxy_workspace/*/guides/modeling/customize`
 provide guides on how to customize many other aspects of the model-fit. Check them out to see if anything
 sounds useful, but for most users you can get by without using these forms of customization!
   

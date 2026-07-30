@@ -247,7 +247,7 @@ ag.output_to_json(
 )
 
 """
-The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple`.
+The dataset can be viewed in the folder `autogalaxy_workspace/dataset/imaging/simple`.
 
 __JAX Variant__
 

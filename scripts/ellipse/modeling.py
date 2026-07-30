@@ -183,7 +183,7 @@ The model fitting default settings assume that the galaxy centre is near the coo
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
+ - Reduce your data so that the centre is (`autogalaxy_workspace/*/imaging/data_preparation`). 
  - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 """
 ellipse = af.Model(ag.Ellipse)
@@ -205,7 +205,7 @@ The `info` attribute shows the model in a readable format.
 names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
 common issue in Jupyter notebooks.
 
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
+The`info_whitespace_length` parameter in the file `config/general.yaml` in the [output] section can be changed to 
 increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
 appear in a notebook).]
 """
@@ -304,7 +304,7 @@ the `Imaging` dataset.
 
 It is not vital that you as a user understand the details of how the `log_likelihood_function` fits a model to 
 data, but interested readers can find a step-by-step guide of the likelihood 
-function at ``autogalaxy_workspace/*/imaging/log_likelihood_function`
+function at ``autogalaxy_workspace/*/imaging/likelihood_function`
 
 __JAX__
 
