@@ -18,8 +18,6 @@
 #   banner. Investigate the failure, fix the underlying bug, and remove
 #   the NEEDS_FIX marker.
 
-- guides/results/workflow/csv_make # SLOW 2026-04-10 - exceeds 60s test timeout; unsets TEST_MODE for downstream examples
-- guides/results/database/start_here # SLOW 2026-04-10 - previously failed fast on a broken aggregator query; now runs the real aggregator and exceeds 60s
 - gui/light_centre # GUI scripts cannot be run
 - gui/mask_extra_galaxies # GUI scripts cannot be run
 - gui/mask # GUI scripts cannot be run
@@ -28,3 +26,4 @@
 - png_make # Test mode does not output .png images.
 - guides/plot/searches # Test mode breaks search visualization.
 - imaging/features/shapelets/modeling # SLOW 2026-07-14 - real-search JAX shapelet fit exceeds the 1800s mode=release cap (>30min); speedup tracked by the Profiling Agent (PyAutoHeart#72). Not a bug.
+- guides/results/database/start_here # NEEDS_FIX 2026-07-30 - fails fast in a clean checkout (FileNotFoundError dataset/imaging/simple/info.json - needs simulator outputs); was mis-parked as SLOW against the 60s-cap myth
