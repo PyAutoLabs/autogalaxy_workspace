@@ -16,6 +16,7 @@ packages are called when the likelihood is evaluated.
 
 __Contents__
 
+- **JAX:** Model-fits run this likelihood function through JAX — see `scripts/guides/using_jax.py`.
 - **Dataset:** Loading the imaging dataset for likelihood evaluation.
 - **Dataset Auto-Simulation:** Automatically simulating the dataset if it does not already exist.
 - **Mask:** Defining and applying a circular mask to the data.
@@ -32,6 +33,12 @@ __Contents__
 - **Fit:** Performing the same likelihood evaluation using the FitImaging object.
 - **Galaxy Modeling:** Brief description of how the likelihood is sampled by a non-linear search.
 - **Wrap Up:** Summary and links to additional guides.
+
+__JAX__
+
+Model-fits evaluate this likelihood function through JAX rather than NumPy, which is what makes galaxy modeling
+fast — `scripts/guides/using_jax.py` shows this likelihood function JAX-compiled via both the `Analysis` object
+and the `Fitness` object a non-linear search drives.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()
@@ -401,45 +408,4 @@ are described in additional notebooks found in the `guides` package:
 
  - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually
  ray-traced to the source-plane and used to evaluate the light profile more accurately.
-
-__JAX__
-
-The step-by-step likelihood you've just walked through can be JAX-
-accelerated by wrapping the whole construction in `@jax.jit`:
-
-```python
-import jax
-import jax.numpy as jnp
-
-# Triggering pytree registration: the easiest path is to instantiate an
-# AnalysisImaging at the top of the script, which runs its internal
-# _register_fit_imaging_pytrees() as a side effect.
-_ = ag.AnalysisImaging(dataset=dataset, use_jax=True)
-
-@jax.jit
-def my_log_likelihood(instance):
-    galaxies = ag.Galaxies(galaxies=instance.galaxies)
-    fit = ag.FitImaging(dataset=dataset, galaxies=galaxies)
-    return fit.log_likelihood
-```
-
-To validate the JAX path matches the NumPy chi-squared, use
-`Fitness._vmap` (production validation pattern — single `jax.jit(fn)(concrete)`
-hides un-threaded `xp` sites that `vmap(jit(call))` exposes):
-
-```python
-from autofit.non_linear.fitness import Fitness
-
-fitness = Fitness(
-    model=model,
-    analysis=ag.AnalysisImaging(dataset=dataset),
-    fom_is_log_likelihood=True,
-)
-log_l_jax = fitness._vmap(jnp.array([instance_parameters]))[0]
-```
-
-For the canonical Analysis-driven modeling path (zero JAX code on your
-side), see `start_here.py` / `modeling.py`. For JIT-ing library methods
-directly without going through `FitImaging`, see
-`scripts/guides/data_structures.py`.
 """

@@ -16,6 +16,7 @@ packages are called when the likelihood is evaluated.
 
 __Contents__
 
+- **JAX:** Model-fits run this likelihood function through JAX — see `scripts/guides/using_jax.py`.
 - **Mask:** Defining the real-space mask for the interferometer grid.
 - **Dataset:** Loading the interferometer dataset from FITS files.
 - **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
@@ -32,6 +33,12 @@ __Contents__
 - **Fit:** Performing the likelihood evaluation using the FitInterferometer object.
 - **Galaxy Modeling:** Overview of how the likelihood function is sampled by a non-linear search.
 - **Wrap Up:** Summary and pointers to additional resources.
+
+__JAX__
+
+Model-fits evaluate this likelihood function through JAX rather than NumPy, which is what makes galaxy modeling
+fast — `scripts/guides/using_jax.py` shows this likelihood function JAX-compiled via both the `Analysis` object
+and the `Fitness` object a non-linear search drives.
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()
@@ -380,31 +387,4 @@ are described in additional notebooks found in the `guides` package:
 
  - `over_sampling`: Oversampling the image grid into a finer grid of sub-pixels, which are all individually
  ray-traced to the source-plane and used to evaluate the light profile more accurately.
-
-__JAX__
-
-The step-by-step interferometer likelihood you've just walked through
-can be JAX-accelerated by wrapping construction in `@jax.jit`:
-
-```python
-import jax
-import jax.numpy as jnp
-
-# Triggering pytree registration via Analysis init as a side effect.
-_ = ag.AnalysisInterferometer(dataset=dataset, use_jax=True)
-
-@jax.jit
-def my_log_likelihood(instance):
-    galaxies = ag.Galaxies(galaxies=instance.galaxies)
-    fit = ag.FitInterferometer(dataset=dataset, galaxies=galaxies)
-    return fit.log_likelihood
-```
-
-Use `TransformerDFT` (the default) under JAX — `TransformerNUFFT` is not
-JAX-traceable. To validate the JAX log-likelihood matches the NumPy
-chi-squared you derived above, use `Fitness._vmap(jnp.array([parameters]))`.
-
-For the canonical Analysis-driven path (zero JAX code on your side),
-see `start_here.py` / `modeling.py`. For JIT-ing library methods directly,
-see `scripts/guides/data_structures.py`.
 """
