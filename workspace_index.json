@@ -336,16 +336,19 @@
   },
   {
     "contents": [
+      "Nautilus",
+      "MultiStartProdigy",
       "Dynesty",
       "Emcee",
       "Zeus",
       "LBFGS",
-      "MultiStartAdam",
       "Start Point",
       "Search Cookbook"
     ],
     "cross_refs": [
-      "imaging/modeling.ipynb"
+      "imaging/modeling.ipynb",
+      "modeling.py",
+      "start_here.py"
     ],
     "notebook": "notebooks/guides/modeling/searches.ipynb",
     "path": "scripts/guides/modeling/searches.py",
