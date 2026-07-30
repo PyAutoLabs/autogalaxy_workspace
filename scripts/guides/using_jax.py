@@ -50,17 +50,31 @@ simulator = ag.SimulatorImaging(
 dataset = simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
 ```
 
-**Wrapping that call in `@jax.jit` does not currently work.** Two things stop it, and it is worth knowing which
-is which:
+Wrapping that call in `@jax.jit` works for **imaging**, with one setup line you must write yourself:
 
-- **You must register the pytrees yourself first.** Nothing in the library does it for you, and nothing can: JAX
-  flattens a jitted function's arguments at trace time, *before* entering the callee, so a simulator that
-  registered internally would already be too late. The one-time call is
-  `autogalaxy.jax.register_galaxies_classes(galaxies)`.
-- **Even with that, the jitted simulator call fails inside autoarray** on array sites that do not yet thread
-  `xp` — see PyAutoLabs/PyAutoArray for the tracked issue. Until it is fixed, use the eager call above.
+```python
+import jax
+from autogalaxy.jax import register_galaxies_classes
 
-Note the eager call returns a dataset whose `.data.array` is a `numpy.ndarray`, not a `jax.Array`.
+register_galaxies_classes(galaxies)   # one-time, before the first jitted call
+
+@jax.jit
+def simulate(galaxies):
+    return simulator.via_galaxies_from(galaxies=galaxies, grid=grid)
+
+dataset_jax = simulate(galaxies)      # .data.array is a jax.Array
+```
+
+The library cannot do that registration for you, and this is not an oversight: JAX flattens a jitted function's
+arguments at trace time, *before* entering the callee, so a simulator that registered internally would already be
+too late.
+
+`scripts/imaging/simulator.py` runs this exact block, and is in `smoke_tests.txt` — so CI executes the recipe
+rather than this guide merely asserting it works.
+
+**Interferometer is the exception.** The jitted simulator path does not yet work there: `TransformerDFT` fails at
+the jit boundary because `Interferometer` is not a registered pytree, and `TransformerNUFFT` fails inside its own
+transform. Tracked in PyAutoLabs/PyAutoArray. Use the eager call for interferometer simulations.
 
 __Custom Likelihood Functions__
 

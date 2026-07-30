@@ -11,3 +11,4 @@ cluster/modeling.py
 # ellipse/modeling.py  # disabled: bypass mode tuple-path KeyError on ellipse models (rhayes777/PyAutoFit#1179)
 guides/galaxies.py
 guides/modeling/cookbook.py
+imaging/simulator.py
