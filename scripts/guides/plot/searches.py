@@ -87,7 +87,7 @@ We set up the Dynesty non-linear search and perform the fit to get the samples w
 """
 search = af.DynestyStatic(
     path_prefix=Path("plot"),
-    name="DynestyPlotter",
+    name="searches",
     unique_tag=dataset_name,
     n_live=100,
 )
@@ -394,57 +394,11 @@ __Zeus__
 For Zeus MCMC searches, the `search_internal` attribute contains the zeus sampler object
 which can be used for search-specific visualization. The `search_internal` attribute is only
 available if the zeus sampler results are output to hard-disk via hdf5.
+
+The walker plots shown above in the Emcee section (2D walker trajectories, likelihood vs step
+number, and parameter values per walker per step) work identically for Zeus, using the same
+`search_internal.get_chain()` and `search_internal.get_log_prob()` API.
 """
-search_internal = result.search_internal
-
-if search_internal is not None:
-    """
-    The method below shows a 2D projection of the walker trajectories.
-    """
-    fig, axes = plt.subplots(result.model.prior_count, figsize=(10, 7))
-
-    for i in range(result.model.prior_count):
-        for walker_index in range(search_internal.get_log_prob().shape[1]):
-            ax = axes[i]
-            ax.plot(
-                search_internal.get_chain()[:, walker_index, i],
-                search_internal.get_log_prob()[:, walker_index],
-                alpha=0.3,
-            )
-
-        ax.set_ylabel("Log Likelihood")
-        ax.set_xlabel(result.model.parameter_labels_with_superscripts_latex[i])
-
-    plt.show()
-
-    """
-    This method shows the likelihood as a series of steps.
-    """
-    fig, axes = plt.subplots(1, figsize=(10, 7))
-
-    for walker_index in range(search_internal.get_log_prob().shape[1]):
-        axes.plot(search_internal.get_log_prob()[:, walker_index], alpha=0.3)
-
-    axes.set_ylabel("Log Likelihood")
-    axes.set_xlabel("step number")
-
-    plt.show()
-
-    """
-    This method shows the parameter values of every walker at every step.
-    """
-    fig, axes = plt.subplots(
-        result.samples.model.prior_count, figsize=(10, 7), sharex=True
-    )
-
-    for i in range(result.samples.model.prior_count):
-        ax = axes[i]
-        ax.plot(search_internal.get_chain()[:, :, i], alpha=0.3)
-        ax.set_ylabel(result.model.parameter_labels_with_superscripts_latex[i])
-
-    axes[-1].set_xlabel("step number")
-
-    plt.show()
 
 """
 __GetDist__

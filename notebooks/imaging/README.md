@@ -14,6 +14,7 @@ New users should read the `start_here` example, which gives an overview of all e
 - `data_preparation`: How to prepare CCD imaging data for lens modeling, including the image, RMS noise map and Point Spread Function.
 - `fit`: How to CCD imaging data to compute quantities like the residuals, chi squared and likelihood.
 - `likelihood_function`: A step-by-step guide of the CCD imaging data likelihood function.
+- `plot`: How to plot the dataset and fits to it.
 
 # Folders
 

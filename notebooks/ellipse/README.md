@@ -13,6 +13,7 @@ New users should read the `start_here` example, which gives an overview of all e
 - `fit`: How to CCD imaging data to compute quantities like the residuals, chi squared and likelihood.
 - `multipoles`: Extending ellipse isophote fitting to include multipole expansions.
 - `database` How to use database tools to load results from model-fits.
+- `plot`: How to plot the dataset and fits to it.
 
 # Folders
 

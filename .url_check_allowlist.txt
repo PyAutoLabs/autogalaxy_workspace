@@ -17,6 +17,6 @@ https://github.com/PyAutoLabs/autolens_workspace_large_files  # scripts/interfer
 https://pyautogalaxy.readthedocs.io/en/latest/api/mass.html  # scripts/guides/modeling/cookbook.py:203
 
 # Third-party readthedocs (dynesty / nautilus / sphinx / etc.)
-https://dynesty-sampler.readthedocs.io/en/latest/api.html#module-Dynesty.plotting  # scripts/guides/plot/examples/searches.py:104
-https://dynesty-sampler.readthedocs.io/en/latest/quickstart.html  # scripts/guides/plot/examples/searches.py:103
+https://dynesty-sampler.readthedocs.io/en/latest/api.html#module-Dynesty.plotting  # scripts/guides/plot/searches.py:104
+https://dynesty-sampler.readthedocs.io/en/latest/quickstart.html  # scripts/guides/plot/searches.py:103
 https://nautilus.readthedocs.io/en/latest/  # scripts/multi/features/pixelization/modeling.py:191

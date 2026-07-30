@@ -6,9 +6,6 @@ dataset/**
 # interferometer simulators, with no writer anywhere. It is NOT regenerable; never purge it.
 !dataset/interferometer/uv_wavelengths/**
 output/
-# guides/plot examples write example.png here via output_path=Path("notebooks")/"plot"/"plots";
-# generated, never tracked. Matches autolens_workspace/.gitignore.
-notebooks/plot/
 test_report.md
 test_results/
 __pycache__/
