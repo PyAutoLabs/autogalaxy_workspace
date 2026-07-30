@@ -252,10 +252,20 @@ The dataset can be viewed in the folder `autogalaxy_workspace/imaging/simple`.
 __JAX Variant__
 
 For large or repeated simulations (parameter sweeps, mock-data studies,
-batch figure generation), construct the simulator with `use_jax=True` so
-the image calculation runs through JAX:
+batch figure generation), construct the simulator with `use_jax=True` and
+wrap the call in `@jax.jit`.
 
-```python
+One setup line is required first, and it is yours to write:
+`register_galaxies_classes` registers `Galaxies` + `Galaxy` + the profile
+classes as JAX pytrees. The library cannot do this for you — JAX flattens a
+jitted function's arguments at trace time, *before* entering the callee, so
+a simulator that registered internally would already be too late.
+"""
+import jax
+from autogalaxy.jax import register_galaxies_classes
+
+register_galaxies_classes(galaxies)
+
 simulator_jax = ag.SimulatorImaging(
     exposure_time=300.0,
     psf=psf,
@@ -264,24 +274,36 @@ simulator_jax = ag.SimulatorImaging(
     use_jax=True,
 )
 
-dataset_jax = simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)
-```
 
-The returned `dataset_jax.data.array` is a `numpy.ndarray`. `aplt.fits_imaging`
-and the plotters call `numpy.asarray()` internally, so saving / plotting
-works either way.
+@jax.jit
+def simulate(galaxies):
+    return simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)
 
-**Wrapping the call in `@jax.jit` does not currently work.** Two separate
-things stop it:
 
-- **Pytree registration is yours to do, before the first jitted call** —
-  `autogalaxy.jax.register_galaxies_classes(galaxies)`. Nothing in the
-  library does it for you, and nothing can: JAX flattens a jitted
-  function's arguments at trace time, before entering the callee.
-- **Even with that, the jitted call fails inside autoarray** on array sites
-  that do not yet thread `xp`. Tracked in PyAutoArray; until it is fixed,
-  use the eager call above.
+dataset_jax = simulate(galaxies)
 
-See `scripts/guides/data_structures.py` for the broader "JIT-it-
-yourself" pattern.
+"""
+The call above is executed, not shown as inert prose, and this script is in
+`smoke_tests.txt` — so CI runs this recipe on every pull request. That is
+deliberate: the previous version of this section documented a `@jax.jit`
+pattern that did not work, and it went unnoticed precisely because nothing
+ever ran it.
+
+`dataset_jax.data.array` is a `jax.Array`. `aplt.fits_imaging` and the
+plotters call `numpy.asarray()` internally, so saving and plotting work
+without manual conversion.
+"""
+print(f"JAX-jitted simulation: data backing type is {type(dataset_jax.data.array).__name__}")
+
+"""
+The eager call `simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)`
+(no `@jax.jit`) also works and is simpler for one-off simulations; the
+`@jax.jit` wrap pays off when you call the function many times.
+
+**Interferometer is different:** the jitted simulator path does *not* yet
+work there — see `scripts/interferometer/simulator.py`.
+
+See `scripts/guides/using_jax.py` for the full picture and
+`scripts/guides/data_structures.py` for the broader "JIT-it-yourself"
+pattern.
 """

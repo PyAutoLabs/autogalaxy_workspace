@@ -853,6 +853,7 @@
       "likelihood_function.py",
       "scripts/guides/data_structures.py",
       "scripts/imaging/likelihood_function.py",
+      "scripts/imaging/simulator.py",
       "scripts/interferometer/likelihood_function.py",
       "start_here.py"
     ],
@@ -1779,7 +1780,9 @@
       "imaging/fit.py",
       "imaging/likelihood_function.py",
       "imaging/modeling.py",
-      "scripts/guides/data_structures.py"
+      "scripts/guides/data_structures.py",
+      "scripts/guides/using_jax.py",
+      "scripts/interferometer/simulator.py"
     ],
     "notebook": "notebooks/imaging/simulator.ipynb",
     "path": "scripts/imaging/simulator.py",
