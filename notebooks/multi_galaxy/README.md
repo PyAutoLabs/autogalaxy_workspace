@@ -29,5 +29,11 @@ New users should read the `start_here` example, which gives an overview of all e
 - `modeling`: Detailed example of the modeling API, per-galaxy decomposition and photometry.
 - `simulator`: How the example dataset was simulated.
 
+# Folders
+
+- `features`: Extensions of the multi-galaxy model. Currently `extra_galaxies`, which adds a lower tier of
+  galaxies — companions in the field which must be accounted for but are not themselves subjects of the
+  measurement, either scaled out of the fit or modeled with a fixed centre.
+
 Standard single-galaxy features (linear light profiles, MGE variations, sky subtraction — see
 `imaging/features`) apply per-galaxy here unchanged.

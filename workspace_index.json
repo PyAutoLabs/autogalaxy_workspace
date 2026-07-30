@@ -2735,6 +2735,62 @@
   },
   {
     "contents": [
+      "Dataset",
+      "Mask",
+      "Over Sampling",
+      "Extra Galaxies Noise Scaling",
+      "Extra Galaxies Dataset",
+      "Centres",
+      "Model",
+      "Extra Galaxies Model: Two Options",
+      "Search + Analysis",
+      "Run Time",
+      "Model-Fit",
+      "Result",
+      "Approaches to Extra Galaxies",
+      "Choosing a Tier",
+      "Wrap Up"
+    ],
+    "cross_refs": [
+      "/guides/advanced/over_sampling.ipynb",
+      "imaging/features/extra_galaxies/modeling.ipynb",
+      "imaging/features/extra_galaxies/modeling.py",
+      "multi_galaxy/modeling.py",
+      "multi_galaxy/start_here.ipynb",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/features/extra_galaxies/modeling.ipynb",
+    "path": "scripts/multi_galaxy/features/extra_galaxies/modeling.py",
+    "summary": "A blended pair of galaxies rarely sits alone in the field. There are usually other, fainter galaxies whose emission falls inside the mask, and which will bias the decomposition of the pair if nothing is done about them.",
+    "title": "Modeling Features (Multi Galaxy): Extra Galaxies"
+  },
+  {
+    "contents": [
+      "Model",
+      "Other Scripts",
+      "Dataset Paths",
+      "Grid / PSF / Simulator",
+      "Galaxies",
+      "Extra Galaxies",
+      "Dataset",
+      "Mask Extra Galaxies",
+      "Galaxies json + Centres"
+    ],
+    "cross_refs": [
+      "/imaging/data_preparation/examples/optional/extra_galaxies_centres.py",
+      "/multi_galaxy/features/extra_galaxies/modeling.ipynb",
+      "multi_galaxy/modeling.py",
+      "multi_galaxy/simulator.ipynb",
+      "multi_galaxy/simulator.py",
+      "multi_galaxy/start_here.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/features/extra_galaxies/simulator.ipynb",
+    "path": "scripts/multi_galaxy/features/extra_galaxies/simulator.py",
+    "summary": "A multi-galaxy system \u2014 two galaxies whose light blends together and which are co-equal subjects of the fit \u2014 frequently sits in a field with other, fainter galaxies. Those extra galaxies are not part of the blend being decomposed, but their emission still falls inside the mask and will bias the fit if nothing is done about it.",
+    "title": "Simulator: Extra Galaxies (Multi Galaxy)"
+  },
+  {
+    "contents": [
       "Dataset & Mask",
       "Model",
       "Linear Light Profiles",
