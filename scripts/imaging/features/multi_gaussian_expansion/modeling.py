@@ -402,6 +402,4 @@ focused on the supported MGE workflow. If you want to experiment with adding a r
     autolens_workspace_developer/basis_regularization/mge_galaxy.py
 
 That script is self-contained and runs the same regularized fit that used to live here.
-
-__Finish__
 """

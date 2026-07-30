@@ -161,8 +161,6 @@ have to run the conversion in post. If you enable the `_mujy` latent but forget 
 column is populated with NaN and a single warning per process notes that the conversion was skipped — the fit
 itself is unaffected.
 
-Finish.
-
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

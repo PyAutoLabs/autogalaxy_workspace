@@ -159,8 +159,6 @@ The following aspects of figure appearance are controlled via the config file
 To change these defaults, edit the YAML config file and restart the Python session
 (or Jupyter kernel) for the changes to take effect.
 
-Finish.
-
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

@@ -110,7 +110,3 @@ ag.output_to_json(
     obj=light_centres,
     file_path=Path(dataset_path, "light_centre.json"),
 )
-
-"""
-Finish.
-"""

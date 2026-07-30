@@ -159,8 +159,6 @@ https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.fill.html
 subplot_of_mapper(inversion=inversion, mapper_index=0)
 
 """
-Finish.
-
 __Env__ (Developer Only)
 
 Not user documentation: this section configures the automated test harness.

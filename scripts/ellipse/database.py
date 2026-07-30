@@ -283,7 +283,3 @@ try:
         aplt.plot_array(array=dataset.data, title="Data")
 except Exception:
     pass
-
-"""
-Finished.
-"""

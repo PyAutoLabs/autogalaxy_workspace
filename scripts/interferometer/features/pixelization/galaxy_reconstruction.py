@@ -193,7 +193,3 @@ interpolation_grid = ag.Grid2D.from_extent(
 )
 
 interpolated_array = griddata(points=points, values=values, xi=interpolation_grid)
-
-"""
-Finish.
-"""

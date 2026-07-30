@@ -181,7 +181,3 @@ ag.output_to_json(
     obj=ag.Grid2DIrregular([bcg_centre]),
     file_path=dataset_path / "bcg_centres.json",
 )
-
-"""
-Finished.
-"""
