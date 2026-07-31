@@ -398,9 +398,7 @@ available if the zeus sampler results are output to hard-disk via hdf5.
 The walker plots shown above in the Emcee section (2D walker trajectories, likelihood vs step
 number, and parameter values per walker per step) work identically for Zeus, using the same
 `search_internal.get_chain()` and `search_internal.get_log_prob()` API.
-"""
 
-"""
 __GetDist__
 
 This example illustrates how to plot visualization summarizing the results of model-fit using any non-linear search
