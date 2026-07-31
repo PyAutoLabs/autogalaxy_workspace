@@ -34,7 +34,7 @@ Examples throughout the workspace use a default over-sampling set up that should
 analysis you have done.
 
 - When evaluating the image of a galaxy, an adaptive over sampling grid is used which uses sub grids of size 8 x 8
-in the central regions of the image, 4x4 further out and 1x1 beyond that.
+in the central regions of the image, 4x4 further out and 2x2 beyond that.
 
 This guide will explain why these choices were made for the default over-sampling behaviour.
 """
