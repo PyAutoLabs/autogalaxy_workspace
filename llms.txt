@@ -94,4 +94,7 @@ galaxy-specific context will replace this pointer later.
 
 ---
 
-For the full per-script listing, see the generated companion catalogue `llms-full.txt` (added in a later phase).
+For the full per-script listing, see the generated companion catalogue `llms-full.txt`. It is large
+(tens of thousands of tokens and growing) — intended for local coding agents that can grep it. In a
+browser chat (GitHub connector), do NOT fetch it wholesale: route from this file's lists and read only
+the specific script you need.
