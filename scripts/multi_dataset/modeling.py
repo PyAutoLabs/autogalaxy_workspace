@@ -135,7 +135,7 @@ the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 for dataset in dataset_list:
     over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
         grid=dataset.grid,
-        sub_size_list=[8, 4, 1],
+        sub_size_list=[8, 4, 2],
         radial_list=[0.3, 0.6],
         centre_list=[(0.0, 0.0)],
     )

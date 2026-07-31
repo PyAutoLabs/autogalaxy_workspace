@@ -140,7 +140,7 @@ the `autogalaxy_workspace/*/guides/advanced/over_sampling.ipynb` notebook.
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,
-    sub_size_list=[4, 2, 1],
+    sub_size_list=[4, 2, 2],
     radial_list=[0.3, 0.6],
     centre_list=[(0.0, 0.0), (1.0, 3.5), (-2.0, -3.5)],
 )
@@ -286,7 +286,7 @@ of (0.0", 0.0").
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,
-    sub_size_list=[4, 2, 1],
+    sub_size_list=[4, 2, 2],
     radial_list=[0.3, 0.6],
     centre_list=[(0.0, 0.0)] + extra_galaxies_centres.in_list,
 )

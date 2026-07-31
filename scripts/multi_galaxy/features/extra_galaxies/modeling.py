@@ -159,7 +159,7 @@ Once you are more experienced, read up on over-sampling via
 """
 over_sample_size = ag.util.over_sample.over_sample_size_via_radial_bins_from(
     grid=dataset.grid,
-    sub_size_list=[4, 2, 1],
+    sub_size_list=[4, 2, 2],
     radial_list=[0.3, 0.6],
     centre_list=list(galaxy_centres) + extra_galaxies_centres.in_list,
 )
