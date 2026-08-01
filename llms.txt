@@ -83,7 +83,9 @@ scripts / tracebacks / plots, and draft code. It CANNOT run fits, inspect the us
 `output/` folder, or guarantee code against their installed PyAutoGalaxy version. To actually run
 something, the user should execute the script locally from the repo root, or in Google Colab (the
 `start_here` scripts ship Colab setup cells). For sustained editing, execution, and project state,
-point them to a local coding agent (Claude Code / Codex).
+point them to a local coding agent (Claude Code / Codex) or the
+[autogalaxy_assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) science-assistant
+workspace.
 
 ## Scientific context
 
