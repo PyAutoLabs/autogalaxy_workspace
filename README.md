@@ -14,13 +14,13 @@ Welcome to the **PyAutoGalaxy** Workspace!
 
 ### AI Assistant
 
-A dedicated PyAutoGalaxy assistant does not exist yet. In the meantime the
-[**PyAutoLens AI Assistant**](https://github.com/PyAutoLabs/autolens_assistant)
-is the closest available: it supports conversation agents such as ChatGPT and
-coding agents such as Claude Code and Codex, and its literature wiki covers
-light profiles, multi-Gaussian expansion, regularisation and bulge/disk
-decomposition. Note that it is **lensing-focused**, so treat its lensing-specific
-guidance as out of scope for galaxy modeling.
+The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant)
+supports conversation agents such as ChatGPT and coding agents such as Claude
+Code and Codex. You can get started simply by asking it a question about galaxy
+structure or describing the task you would like to perform with **PyAutoGalaxy**
+— it ships task skills for the full modelling loop, a curated API reference, and
+a bundled real JWST dataset to learn on. See the assistant for its full scope
+and instructions.
 
 ### Human-Readable Documentation and Examples
 
