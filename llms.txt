@@ -89,10 +89,11 @@ workspace.
 
 ## Scientific context
 
-INTERIM: there is no galaxy-specific science wiki yet. For background, consult the autolens_assistant
-literature wiki ([github.com/PyAutoLabs/autolens_assistant](https://github.com/PyAutoLabs/autolens_assistant),
-`wiki/literature/` — concepts, entities, sources). Note it is currently **lensing-focused**; a
-galaxy-specific context will replace this pointer later.
+For scientific background — Sersic profiles, bulge–disk decomposition, MGE, isophote analysis,
+scaling relations, high-z structure and more — consult the
+[autogalaxy_assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) literature wiki
+(`wiki/literature/` — concept pages, survey/instrument entities, per-topic annotated
+bibliographies, every citation verified). Start from its `wiki/literature/index.md`.
 
 ---
 

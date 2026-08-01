@@ -138,13 +138,13 @@ same diff. Prefer targeted edits over whole-file writes; after a bulk pass, run
 
 ## Scientific Context
 
-There is no galaxy-specific science wiki yet. As **interim** background, consult the
-`autolens_assistant` literature wiki at https://github.com/PyAutoLabs/autolens_assistant
-(`wiki/literature/` — concepts, entities, sources); if cloned as a sibling, read it locally at
-`../autolens_assistant/wiki/literature/`. Note it is currently **lensing-focused** — a
-galaxy-specific context will replace this pointer later. Pull from it on demand when an example or
-narrative script would benefit from background (light profiles + MGE, regularisation,
-bulge/disk decomposition, kinematics).
+For scientific background, consult the `autogalaxy_assistant` literature wiki at
+https://github.com/PyAutoLabs/autogalaxy_assistant (`wiki/literature/` — concept pages,
+survey/instrument entities, per-topic annotated bibliographies, every citation verified); if
+cloned as a sibling, read it locally at `../autogalaxy_assistant/wiki/literature/`. Pull from
+it on demand when an example or narrative script would benefit from background (Sersic
+profiles, light profiles + MGE, bulge/disk decomposition, isophotes, scaling relations,
+kinematics).
 
 ## Related Repos
 
