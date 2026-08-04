@@ -177,6 +177,7 @@ for i, centre in enumerate(galaxy_centres):
         total_gaussians=20,
         centre_prior_is_uniform=True,
         centre=(centre[0], centre[1]),
+        sigma_min=dataset.pixel_scales[0] / 10.0,
     )
 
     galaxy_dict[f"galaxy_{i}"] = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)

@@ -116,6 +116,7 @@ bulge = ag.model_util.mge_model_from(
     total_gaussians=20,
     centre_prior_is_uniform=True,
     centre=(bcg_centres[0][0], bcg_centres[0][1]),
+    sigma_min=dataset.pixel_scales[0] / 10.0,
 )
 
 galaxy_dict = {"bcg": af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)}

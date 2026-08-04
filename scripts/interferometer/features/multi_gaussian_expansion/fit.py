@@ -41,7 +41,7 @@ __Model__
 This script fits an `Interferometer` dataset of a galaxy with a model where:
 
  - The galaxy's bulge is a multi-Gaussian expansion of 5 linear `Gaussian` profiles, all sharing the
-   same centre and `ell_comps`, with `sigma` values spanning 0.01" to the mask radius in log-spaced
+   same centre and `ell_comps`, with `sigma` values spanning a tenth of the pixel scale to the mask radius in log-spaced
    increments.
 
 __Start Here Notebook__
@@ -107,7 +107,7 @@ aplt.subplot_interferometer_dirty_images(dataset=dataset)
 __Basis__
 
 We build a `Basis` of 5 linear `Gaussian` profiles, all sharing the same centre and `ell_comps`, with
-`sigma` values spanning 0.01" to the mask radius in log-spaced increments.
+`sigma` values spanning a tenth of the pixel scale to the mask radius in log-spaced increments.
 
 We use linear light profile Gaussians (`lp_linear.Gaussian`), which solve for each Gaussian's `intensity`
 analytically via the inversion. This is essential for MGE — a wide range of positive `intensity` values
@@ -118,8 +118,8 @@ familiarize yourself with that example before using the multi-Gaussian expansion
 """
 total_gaussians = 5
 
-# The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius.
-log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
+# The sigma values of the Gaussians will be fixed to values spanning a tenth of the pixel scale to the mask radius.
+log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians)
 
 bulge_gaussian_list = []
 for i in range(total_gaussians):
