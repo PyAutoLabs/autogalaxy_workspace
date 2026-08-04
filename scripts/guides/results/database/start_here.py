@@ -21,6 +21,7 @@ __Contents__
 - **Unique Identifiers:** How unique identifiers ensure separate results for each dataset.
 - **Dataset:** Load datasets and fit them with a non-linear search.
 - **Results From Hard Disk:** Output results to hard-disk and build the database from them.
+- **Sample Retention:** Keep every sample of the short fits below, so indexed sample access works.
 - **Building a Database File From an Output Folder:** Create a .sqlite database from output folders.
 - **Writing Directly To Database:** Write results directly to the database, skipping hard-disk output.
 - **Files:** The output files stored in the database and accessible via the aggregator.
@@ -39,10 +40,10 @@ The search fits each galaxy with:
 
 # from autogalaxy import setup_notebook; setup_notebook()
 
-import json
 from pathlib import Path
 import autofit as af
 import autogalaxy as ag
+from autogalaxy import conf
 
 """
 __Unique Identifiers__
@@ -69,6 +70,15 @@ string to do this, so lets create a list of the 3 dataset names.
 """
 dataset_names = ["simple", "simple__sersic", "sersic_x2"]
 
+"""
+The simulator script which creates each dataset, used below to simulate any dataset not already on your hard-disk.
+"""
+simulator_paths = {
+    "simple": "scripts/imaging/simulator.py",
+    "simple__sersic": "scripts/imaging/simulator_sersic.py",
+    "sersic_x2": "scripts/guides/plot/simulator.py",
+}
+
 pixel_scales = 0.1
 
 """
@@ -84,6 +94,19 @@ space. This will be acheived by setting `session` to something that is not `None
 """
 session = None
 
+"""
+__Sample Retention__
+
+The fits below are capped at 300 likelihood evaluations so this example runs quickly. Nested sampling concentrates
+nearly all of the weight of such a short run in a handful of samples, and the `samples_weight_threshold` in
+`config/output.yaml` drops every sample below that weight from `samples.csv`. Too few samples would then remain for
+the indexed sample access demonstrated at the end of this script.
+
+Disabling the threshold keeps every sample. A full-length fit retains plenty of samples above the threshold, so you
+do not need this line in your own analysis.
+"""
+conf.instance["output"]["samples_weight_threshold"] = None
+
 for dataset_name in dataset_names:
     """
     __Paths__
@@ -93,8 +116,23 @@ for dataset_name in dataset_names:
     dataset_path = Path("dataset") / "imaging" / dataset_name
 
     """
+    __Dataset Auto-Simulation__
+
+    If the dataset does not already exist on your system, it will be created by running the corresponding
+    simulator script. This ensures that all example scripts can be run without manually simulating data first.
+    """
+    if ag.util.dataset.should_simulate(str(dataset_path)):
+        import subprocess
+        import sys
+
+        subprocess.run(
+            [sys.executable, simulator_paths[dataset_name]],
+            check=True,
+        )
+
+    """
     __Dataset__
-    
+
     Using the dataset path, load the data (image, noise-map, PSF) as an `Imaging` object from .fits files.
     
     This `Imaging` object will be available via the aggregator. Note also that we give the dataset a `name` via the
@@ -124,13 +162,18 @@ for dataset_name in dataset_names:
     Information about the model-fit that is not part included in the model-fit itself can be made accessible via the 
     database by passing an `info` dictionary. 
     
-    Below we write info on the dataset`s (hypothetical) data of observation and exposure time, which we will later show
-    the database can access. 
-    
+    Below we define (hypothetical) information about the galaxy, which we will later show the database can access.
+
+    The example `imaging/data_preparation/examples/optional/info.py` shows how to store this alongside your dataset
+    as an `info.json` file, which you would then load here instead of defining it inline.
+
     For fits to large datasets this ensures that all relevant information for interpreting results is accessible.
     """
-    with open(Path(dataset_path, "info.json")) as json_file:
-        info = json.load(json_file)
+    info = {
+        "redshift": 0.5,
+        "date_of_observation": "2021-04-12",
+        "exposure_time": 1000.0,
+    }
 
     """
     __Model__
@@ -161,6 +204,7 @@ for dataset_name in dataset_names:
         session=session,  # This can instruct the search to write to the .sqlite database.
         n_batch=50,
         n_live=100,
+        n_like_max=300,  # Caps the search so this example runs quickly; omit it for a real fit.
     )
 
     analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
