@@ -111,13 +111,13 @@ aplt.subplot_interferometer_dirty_images(dataset=dataset)
 __Galaxy MGE Basis__
 
 We build a `Basis` of 5 linear `Gaussian` profiles for the galaxy bulge, all sharing the same centre and
-`ell_comps`, with `sigma` values spanning 0.01" to the mask radius in log-spaced increments.
+`ell_comps`, with `sigma` values spanning a tenth of the pixel scale to the mask radius in log-spaced increments.
 
 Each Gaussian is a linear light profile — its `intensity` is solved for analytically via the inversion
 below. Internally each linear profile carries `intensity=1.0`, which the inversion later rescales.
 """
 total_gaussians = 5
-log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
+log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians)
 
 bulge_gaussian_list = []
 for i in range(total_gaussians):

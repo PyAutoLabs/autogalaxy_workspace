@@ -166,9 +166,9 @@ The number of free parameters and therefore the dimensionality of non-linear par
 total_gaussians = 30
 gaussian_per_basis = 2
 
-# The sigma values of the Gaussians will be fixed to values spanning 0.01 to the mask radius, 3.0".
+# The sigma values of the Gaussians will be fixed to values spanning a tenth of the pixel scale to the mask radius, 3.0".
 mask_radius = 3.0
-log10_sigma_list = np.linspace(-2, np.log10(mask_radius), total_gaussians)
+log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians)
 
 # By defining the centre here, it creates two free parameters that are assigned below to all Gaussians.
 
@@ -329,9 +329,9 @@ pixel_scales = 0.1
 
 total_point_gaussians = 10
 
-# Sigma values span 0.01" (10**-2) up to twice the pixel scale, keeping the basis compact and point-like.
+# Sigma values span a tenth of the pixel scale up to twice the pixel scale, keeping the basis compact and point-like.
 
-log10_sigma_list = np.linspace(-2, np.log10(2.0 * pixel_scales), total_point_gaussians)
+log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(2.0 * pixel_scales), total_point_gaussians)
 
 # The centre is the only free parameter, shared by every Gaussian and given a +/- 0.1" uniform prior.
 
@@ -375,6 +375,7 @@ point = ag.model_util.mge_point_model_from(
     pixel_scales=0.1,
     total_gaussians=10,
     centre=(0.0, 0.0),
+    sigma_min=dataset.pixel_scales[0] / 10.0,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, point=point)

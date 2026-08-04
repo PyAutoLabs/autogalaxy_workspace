@@ -235,7 +235,8 @@ the galaxy modeling. Slightly further down in the script we will tell autogalaxy
 to make a difference between each dataset.
 """
 bulge = ag.model_util.mge_model_from(
-    mask_radius=mask_radius, total_gaussians=20, centre_prior_is_uniform=True
+    mask_radius=mask_radius, total_gaussians=20, centre_prior_is_uniform=True,
+    sigma_min=dataset_list[0].pixel_scales[0] / 10.0,
 )
 
 galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge)
