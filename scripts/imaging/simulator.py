@@ -293,7 +293,9 @@ ever ran it.
 plotters call `numpy.asarray()` internally, so saving and plotting work
 without manual conversion.
 """
-print(f"JAX-jitted simulation: data backing type is {type(dataset_jax.data.array).__name__}")
+print(
+    f"JAX-jitted simulation: data backing type is {type(dataset_jax.data.array).__name__}"
+)
 
 """
 The eager call `simulator_jax.via_galaxies_from(galaxies=galaxies, grid=grid)`

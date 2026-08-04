@@ -201,7 +201,9 @@ grid = ag.Grid2D.uniform(shape_native=(100, 100), pixel_scales=0.05)
 
 galaxy = ag.Galaxy(
     redshift=0.5,
-    bulge=ag.lp.Sersic(centre=(0.0, 0.0), intensity=1.0, effective_radius=0.5, sersic_index=2.0),
+    bulge=ag.lp.Sersic(
+        centre=(0.0, 0.0), intensity=1.0, effective_radius=0.5, sersic_index=2.0
+    ),
 )
 galaxies = ag.Galaxies(galaxies=[galaxy])
 
@@ -253,7 +255,9 @@ def galaxy_image(galaxy):
 
 image = galaxy_image(galaxy)
 
-print(f"jitted galaxy image: type={type(image).__name__}, total flux={float(image.sum()):.4f}")
+print(
+    f"jitted galaxy image: type={type(image).__name__}, total flux={float(image.sum()):.4f}"
+)
 
 """
 Because `galaxy` is a traced argument, a different galaxy (same classes, different parameter values) re-uses the

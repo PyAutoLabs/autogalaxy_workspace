@@ -177,9 +177,7 @@ extra_galaxy_1 = ag.Galaxy(
     ),
 )
 
-galaxies = ag.Galaxies(
-    galaxies=[galaxy_0, galaxy_1, extra_galaxy_0, extra_galaxy_1]
-)
+galaxies = ag.Galaxies(galaxies=[galaxy_0, galaxy_1, extra_galaxy_0, extra_galaxy_1])
 
 """
 __Dataset__
