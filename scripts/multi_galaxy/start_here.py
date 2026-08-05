@@ -219,6 +219,7 @@ search = af.MultiStartProdigy(
     name="start_here",
     unique_tag=dataset_name,
     n_starts=48,
+    batch_size=None,  # Starts evaluated at once: `None` vmaps all 48 together, which is fastest but allocates the whole batched gradient; set an integer (e.g. 4) if you hit an out-of-memory error.
     n_steps=300,
     iterations_per_quick_update=50,
     live_visual_update=False,
