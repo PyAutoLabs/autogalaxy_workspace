@@ -37,7 +37,7 @@ __This Example__
 This script gives an overview of the API for search chaining, a description of how the priors on parameters are used
 to pass information between searches as well as tools for customizing prior passing.
 
-More details on search chaining can be found in Chapter 3 of the HowToGalaxy lectures.
+More details on search chaining can be found at the end of Chapter 2 of the HowToGalaxy lectures (tutorials 9-10).
 """
 
 # from autogalaxy import setup_notebook; setup_notebook()

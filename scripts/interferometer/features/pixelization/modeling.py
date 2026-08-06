@@ -20,7 +20,7 @@ pixelization model that is more useful for CCD imaging.
 You may wish to first read the pixelization/fit.py example, which demonstrates how a pixelized galaxy
 reconstruction is applied to a single dataset.
 
-Pixelizations are covered in detail in Chapter 4 of the HowToGalaxy lecture series.
+Pixelizations are covered in detail in Chapter 3 of the HowToGalaxy lecture series.
 
 __Run Time Overview__
 
@@ -416,12 +416,12 @@ Modeling using a pixelization can be more efficient, robust and automated using 
 compose a pipeline which begins by fitting a simpler model using a parametric galaxy.
 
 More information on chaining is provided in the `autogalaxy_workspace/notebooks/guides/modeling/chaining` folder,
-chapter 3 of the **HowToGalaxy** lectures.
+the end of chapter 2 of the **HowToGalaxy** lectures (tutorials 9-10).
 
 __HowToGalaxy__
 
 A full description of how pixelizations work, which comes down to a lot of linear algebra, Bayesian statistics and
-2D geometry, is provided in chapter 4 of the **HowToGalaxy** lectures.
+2D geometry, is provided in chapter 3 of the **HowToGalaxy** lectures.
 
 __Future Ideas / Contributions__
 

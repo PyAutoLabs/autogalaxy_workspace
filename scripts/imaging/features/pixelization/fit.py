@@ -15,7 +15,7 @@ absorbs whatever the Sersic cannot describe on a flexible pixel grid.
 See `modeling.py` for the same model fit via a non-linear search, and `galaxy_reconstruction.py` for how to export
 the reconstructed clumpy component to a CSV for downstream science.
 
-Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
+Pixelizations are covered in detail in chapter 3 of the **HowToGalaxy** lectures.
 
 __JAX GPU Run Times__
 
@@ -374,7 +374,7 @@ print(inversion.reconstruction)
 
 """
 The (y,x) grid of coordinates associated with these values is given by the `Inversion`'s `Mapper` (which are
-described in chapter 4 of **HowToGalaxy**).
+described in chapter 3 of **HowToGalaxy**).
 
 Note above how we showed that the first entry of the `linear_obj_list` contains the inversion's `Mapper`.
 """

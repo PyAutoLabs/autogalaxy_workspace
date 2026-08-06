@@ -11,7 +11,7 @@ The matching imaging tutorial pairs a parametric `Sersic` bulge with the pixeliz
 the pixelization can absorb both the bulge and clumps cleanly, so this example reconstructs the entire galaxy
 on the mesh.
 
-Pixelizations are covered in detail in chapter 4 of the **HowToGalaxy** lectures.
+Pixelizations are covered in detail in chapter 3 of the **HowToGalaxy** lectures.
 
 __JAX GPU Run Times__
 
