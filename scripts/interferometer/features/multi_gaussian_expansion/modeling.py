@@ -194,7 +194,9 @@ total_gaussians = 5
 gaussian_per_basis = 2
 
 # The sigma values of the Gaussians will be fixed to values spanning a tenth of the pixel scale to the mask radius.
-log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians)
+log10_sigma_list = np.linspace(
+    np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians
+)
 
 # By defining the centre here, it creates two free parameters that are assigned below to all Gaussians.
 

@@ -119,7 +119,9 @@ familiarize yourself with that example before using the multi-Gaussian expansion
 total_gaussians = 5
 
 # The sigma values of the Gaussians will be fixed to values spanning a tenth of the pixel scale to the mask radius.
-log10_sigma_list = np.linspace(np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians)
+log10_sigma_list = np.linspace(
+    np.log10(dataset.pixel_scales[0] / 10.0), np.log10(mask_radius), total_gaussians
+)
 
 bulge_gaussian_list = []
 for i in range(total_gaussians):

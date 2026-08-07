@@ -219,7 +219,9 @@ hides the API to make the code in this introduction example ready to read. We th
 use the PyAutoGalaxy Model API to compose the galaxy model.
 """
 bulge = ag.model_util.mge_model_from(
-    mask_radius=mask_radius, total_gaussians=20, centre_prior_is_uniform=True,
+    mask_radius=mask_radius,
+    total_gaussians=20,
+    centre_prior_is_uniform=True,
     sigma_min=dataset.pixel_scales[0] / 10.0,
 )
 
