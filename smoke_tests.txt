@@ -13,3 +13,4 @@ guides/galaxies.py
 guides/using_jax.py
 guides/modeling/cookbook.py
 imaging/simulator.py
+imaging/features/point_source/simulator.py
