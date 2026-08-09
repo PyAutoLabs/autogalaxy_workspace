@@ -1566,6 +1566,21 @@
   },
   {
     "contents": [
+      "Dataset Paths",
+      "Grid",
+      "PSF",
+      "Galaxies",
+      "Simulation",
+      "Output"
+    ],
+    "cross_refs": [],
+    "notebook": "notebooks/imaging/features/point_source/simulator.ipynb",
+    "path": "scripts/imaging/features/point_source/simulator.py",
+    "summary": "This script simulates an `Imaging` dataset containing a galaxy with:",
+    "title": "Simulator: Point Source"
+  },
+  {
+    "contents": [
       "Advantages & Disadvantages",
       "Dataset & Mask",
       "Basis",
