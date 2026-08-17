@@ -442,27 +442,31 @@ Below, we compute the axis-ratio of every accepted model sampled by the non-line
 of the axis-ratio. When combining the axis-ratio's we weight each value by its `weight`. For Nautilus, a nested sampling 
 algorithm, the weight of every sample is different and thus must be included.
 
-In order to pass these samples to the function `marginalize`, which marginalizes over the PDF of the axis-ratio to 
+Older stored results can contain points that newer model validation rejects. The
+`valid_sample_instance_pairs` method skips only points rejected via PyAutoFit's `FitException` contract, while letting
+programming errors propagate. Pairing each surviving sample with its instance also keeps the weights aligned.
+
+In order to pass these samples to the function `marginalize`, which marginalizes over the PDF of the axis-ratio to
 compute its error, we also pass the weight list of the samples.
 """
+sample_instance_pairs = samples.valid_sample_instance_pairs(ignore_assertions=True)
+
 axis_ratio_list = []
 
-for sample in samples.sample_list:
-    instance = sample.instance_for_model(model=samples.model, ignore_assertions=True)
-
+for sample, instance in sample_instance_pairs:
     ell_comps = instance.galaxies.galaxy.bulge.ell_comps
 
     axis_ratio = ag.convert.axis_ratio_from(ell_comps=ell_comps)
 
     axis_ratio_list.append(axis_ratio)
 
-try:
-    median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
-        parameter_list=axis_ratio_list, sigma=3.0, weight_list=samples.weight_list
-    )
-    print(f"axis_ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
-except Exception:
-    pass
+median_axis_ratio, lower_axis_ratio, upper_axis_ratio = af.marginalize(
+    parameter_list=axis_ratio_list,
+    sigma=3.0,
+    weight_list=[sample.weight for sample, _ in sample_instance_pairs],
+)
+
+print(f"axis_ratio = {median_axis_ratio} ({upper_axis_ratio} {lower_axis_ratio}")
 
 """
 The calculation above could be computationally expensive, if there are many samples and the derived quantity is
