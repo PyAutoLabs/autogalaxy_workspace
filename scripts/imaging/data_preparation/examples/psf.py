@@ -37,6 +37,8 @@ __Contents__
 - **PSF Normalization:** Normalizing the PSF kernel so all values sum to unity.
 """
 
+# from autogalaxy import setup_notebook; setup_notebook()
+
 # %matplotlib
 # %matplotlib
 from pathlib import Path
