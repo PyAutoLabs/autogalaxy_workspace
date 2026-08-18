@@ -19,6 +19,8 @@ of (2, n_spw, n_c, n_v, 2) where n_spw in the number of spectral windows, n_c is
 number of visibilities. The first two rows of this array correspond to the 2 different polarisations.
 """
 
+# from autogalaxy import setup_notebook; setup_notebook()
+
 import numpy as np
 import os
 
