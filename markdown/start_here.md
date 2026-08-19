@@ -251,10 +251,9 @@ __JAX__
 array library with GPU support and just-in-time compilation). JAX makes
 galaxy model-fitting 10-100x faster on large grids — sometimes more on GPU.
 
-You do not have to do anything to use it. If you installed `autogalaxy`
-with the JAX extra (`pip install autogalaxy[jax]` on Python 3.11+), the
-analysis objects you'll meet in the `__Galaxy Modeling__` section below use
-JAX automatically. The first time a model-fit starts you'll see a one-time
+You do not have to do anything to use it. JAX installs with `autogalaxy`
+by default (`pip install autogalaxy`), and the analysis objects you'll
+meet in the `__Galaxy Modeling__` section below use JAX automatically. The first time a model-fit starts you'll see a one-time
 log line like `JAX: Applying vmap and jit to likelihood function -- may
 take a few seconds.` — that's JAX compiling the likelihood function, after
 which every evaluation re-uses the compiled code. If JAX is not installed,

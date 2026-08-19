@@ -16,8 +16,8 @@ examples of the `autolens_workspace`.
 
 __JAX__
 
-PyAutoGalaxy runs interferometer model-fits on JAX by default. If you
-installed `autogalaxy[jax]`, `ag.AnalysisInterferometer(dataset=dataset)`
+PyAutoGalaxy runs interferometer model-fits on JAX by default (JAX
+installs with `autogalaxy` itself) — `ag.AnalysisInterferometer(dataset=dataset)`
 below auto-enables `use_jax=True`. Use `TransformerDFT` (the default)
 under JAX — `TransformerNUFFT` (pynufft) is faster on large UV sets but
 is not JAX-traceable; the `nufftax` replacement (see `__NUFFT (nufftax)__`
