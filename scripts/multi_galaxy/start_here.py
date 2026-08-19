@@ -47,8 +47,8 @@ __Contents__
 
 __JAX__
 
-PyAutoGalaxy runs model-fits on JAX by default — `ag.AnalysisImaging` auto-enables `use_jax=True` if you
-installed `autogalaxy[jax]`. Two blended MGE models fit comfortably on a GPU in minutes.
+PyAutoGalaxy runs model-fits on JAX by default — `ag.AnalysisImaging` auto-enables `use_jax=True` (JAX
+installs with `autogalaxy` itself). Two blended MGE models fit comfortably on a GPU in minutes.
 
 __Google Colab Setup__
 

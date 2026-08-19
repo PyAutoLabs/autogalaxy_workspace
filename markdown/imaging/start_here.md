@@ -17,8 +17,8 @@ see the `start_here_group.ipynb` and `start_here_cluster.ipynb` examples.
 
 __JAX__
 
-PyAutoGalaxy runs imaging model-fits on JAX by default. If you installed
-`autogalaxy[jax]`, the `ag.AnalysisImaging(dataset=dataset)` line below
+PyAutoGalaxy runs imaging model-fits on JAX by default (JAX installs with
+`autogalaxy` itself) — the `ag.AnalysisImaging(dataset=dataset)` line below
 auto-enables `use_jax=True`; expect 10-30 minutes on CPU, 1-10 minutes on
 GPU, vs 1-2 hours on pure NumPy. If you do not have a GPU locally, Google
 Colab provides free GPUs.

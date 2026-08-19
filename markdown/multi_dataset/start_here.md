@@ -28,8 +28,8 @@ PyAutoGalaxy runs multi-wavelength galaxy fits on JAX by default. The
 per-band `ag.AnalysisImaging(dataset=dataset, use_jax=True)` instances
 below auto-enable JAX, and the `af.FactorGraphModel(*analysis_factor_list,
 use_jax=True)` further down stitches them into the joint multi-band
-likelihood with JAX-aware broadcasting. If you installed
-`autogalaxy[jax]`, expect 1-10 minutes per band on GPU vs hours on CPU.
+likelihood with JAX-aware broadcasting. Expect 1-10 minutes per band on
+GPU vs hours on CPU.
 
 For the broader JAX principles see the top-level
 `autogalaxy_workspace/start_here.py` `__JAX__` section. Per-band
