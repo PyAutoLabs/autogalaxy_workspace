@@ -31,14 +31,18 @@
   max_minutes: 45
 - script: scripts/multi_dataset/modeling.py
   max_minutes: 240
-# ellipse/modeling.py deliberately excluded: its "Multiple Ellipses" section runs
-# many sequential DynestyStatic/Drawer fits (>2h, blows the per-cell timeout) —
-# disproportionate for one gallery page. Tracked as a follow-up. ellipse/simulator
-# + ellipse/fit already showcase the ellipse dataset and a fit.
 - script: scripts/ellipse/simulator.py
   max_minutes: 45
 - script: scripts/ellipse/fit.py
   max_minutes: 45
+# The "Multiple Ellipses" + "Masking" sections are the two heaviest cells here:
+# 10 and 11 sequential DynestyStatic/Drawer fits respectively. Measured 2026-08-20
+# on 1 core: ~32s per fit, flat in major_axis (0.3" and 3.6" both 32s), so the
+# worst cell is ~6 min and the whole page ~13 min. An earlier attempt was
+# abandoned on a 7200s CellTimeoutError and recorded as "genuinely multi-hour" —
+# that diagnosis does not reproduce; 120 is ~20x headroom over the measured cell.
+- script: scripts/ellipse/modeling.py
+  max_minutes: 120
 - script: scripts/guides/galaxies.py
   max_minutes: 45
 - script: scripts/guides/data_structures.py
