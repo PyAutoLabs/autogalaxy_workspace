@@ -386,7 +386,7 @@ print(
     f"Mapping between image pixel 0 and Gaussian linear light profile pixel 1 = {mapping_matrix[0, 1]}"
 )
 
-"""
+r"""
 __Data Vector (D)__
 
 To solve for the linear light profile intensities we now pose the problem as a linear inversion.
@@ -440,7 +440,7 @@ print("Data Vector:")
 print(data_vector)
 print(data_vector.shape)
 
-"""
+r"""
 __Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
@@ -471,7 +471,7 @@ plt.colorbar()
 plt.show()
 plt.close()
 
-"""
+r"""
 __Reconstruction (Positive-Negative)__
 
 The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
@@ -595,7 +595,7 @@ mapped_reconstructed_operated_data = ag.Array2D(
 
 aplt.plot_array(array=mapped_reconstructed_operated_data, title="Image")
 
-"""
+r"""
 __Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.

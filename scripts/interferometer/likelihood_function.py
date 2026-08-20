@@ -140,7 +140,7 @@ aplt.plot_grid(grid=dataset.grids.lp, title="Grid")
 print(f"(y,x) coordinates of first ten unmasked image-pixels {dataset.grid[0:9]}")
 
 
-"""
+r"""
 To perform light profile calculations we convert this 2D (y,x) grid of coordinates to elliptical coordinates:
 
  $\eta = \sqrt{(x - x_c)^2 + (y - y_c)^2/q^2}$
@@ -173,7 +173,7 @@ print(
     f"transformed coordinates of first ten unmasked image-pixels {transformed_grid[0:9]}"
 )
 
-"""
+r"""
 Using these transformed (y',x') values we compute the elliptical coordinates $\eta = \sqrt{(x')^2 + (y')^2/q^2}$
 """
 elliptical_radii = profile.elliptical_radii_grid_from(grid=transformed_grid)
@@ -182,7 +182,7 @@ print(
     f"elliptical coordinates of first ten unmasked image-pixels {elliptical_radii[0:9]}"
 )
 
-"""
+r"""
 __Light Profiles (Setup)__
 
 To perform a likelihood evaluation we now compose our galaxy model.
@@ -286,7 +286,7 @@ fully understand how this likelihood function works.
 aplt.plot_grid(grid=visibilities.in_grid, title="Grid")
 
 
-"""
+r"""
 __Likelihood Function__
 
 We now quantify the goodness-of-fit of our galaxy model.
