@@ -445,7 +445,7 @@ are the first entry of `mapping_matrix` whereas for $f$ they are the second inde
 """
 print(f"Mapping between visibility 0 and rectangular pixel 2 = {mapping_matrix[0, 2]}")
 
-"""
+r"""
 __Data Vector (D)__
 
 To solve for the rectangular pixel fluxes we now pose the problem as a linear inversion.
@@ -494,7 +494,7 @@ print("Data Vector:")
 print(data_vector)
 print(data_vector.shape)
 
-"""
+r"""
 __Curvature Matrix (F)__
 
 The `curvature_matrix` $F$ is the second matrix and it has 
@@ -556,7 +556,7 @@ visibilities = ag.Visibilities(
 
 aplt.plot_grid(grid=visibilities.in_grid, title="Visibilities")
 
-"""
+r"""
 The following chi-squared is minimized when we perform the inversion and reconstruct the galaxy:
 
 $\chi^2 = \sum_{\rm  j=1}^{J} \bigg[ \frac{(\sum_{\rm  i=1}^{I} s_{i} f_{ij}) - d_{j}}{\sigma_{j}} \bigg]$
@@ -590,7 +590,7 @@ ill-posed. We need to apply some form of smoothing on the reconstruction to avoi
 """
 plot_mapper(mapper=mapper, solution_vector=reconstruction)
 
-"""
+r"""
 __Regularization Matrix (H)__
 
 Regularization adds a linear regularization term $G_{\rm L}$ to the $\chi^2$ we solve for giving us a new merit 
@@ -693,7 +693,7 @@ aplt.plot_grid(
 )
 
 
-"""
+r"""
 __Likelihood Function__
 
 We now quantify the goodness-of-fit of our pixelization galaxy reconstruction. 
@@ -758,7 +758,7 @@ chi_squared_map = ag.Visibilities(visibilities=chi_squared_map)
 
 aplt.plot_grid(grid=chi_squared_map.in_grid, title="Chi-Squared Map")
 
-"""
+r"""
 __Regularization Term__
 
 The second term, $s^{T} H s$, corresponds to the $\lambda $G_{\rm L}$ regularization term we added to our merit 
@@ -777,7 +777,7 @@ regularization_term = np.matmul(
 
 print(regularization_term)
 
-"""
+r"""
 __Complexity Terms__
 
 Up to this point, it is unclear why we chose a value of `regularization_coefficient=1.0`. 
