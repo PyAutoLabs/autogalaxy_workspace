@@ -11,3 +11,7 @@ The following example scripts illustrating modeling where:
 - `operated_light_profile`: There are light profiles which are assumed to already be convolved with the instrumental PSF (e.g. point sources), commonly used for modeling bright AGN in the centre of a galaxy.
 - `pixelization`: The galaxy is reconstructed using a rectangular pixel grid.
 - `sky_background`: Including the background sky in the model.
+
+# Folders
+
+- `point_source`: Simulating an imaging dataset of a galaxy containing an unresolved point source (a delta function in the image plane, e.g. bright AGN emission) alongside its extended host light.
