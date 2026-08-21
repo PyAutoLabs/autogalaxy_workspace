@@ -81,7 +81,7 @@ mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
+    mesh=ag.mesh.RectangularBilinearAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.MaternKernel,
 )
 
