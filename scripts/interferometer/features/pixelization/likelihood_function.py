@@ -327,7 +327,7 @@ The `RectangularUniform` mesh pretty much works exactly the same, its just that 
 describe here) works out how to make a grid of rectangular pixels that adapt to the data density and thus
 vary in size.
 
-There is also a `RectangularRTUAdaptImage` mesh which uses the image of the galaxy to adapt
+There is also a `RectangularBilinearAdaptImage` mesh which uses the image of the galaxy to adapt
 the rectangular pixel sizes. This often puts even smaller pixels in the brightest regions of the galaxy,
 even if it lies offset or away from the caustic.
 
