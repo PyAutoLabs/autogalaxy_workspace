@@ -486,3 +486,48 @@ in having a go at adding them contact me on SLACK! :)
 - Gradient calculations of the reconstructed light distribution.
 - Quantifying spatial variations in galaxy structure across the image.
 """
+
+"""
+__Advanced: RTU Rectangular Meshes__
+
+The model fitted in this example uses the default `RectangularBilinearAdaptDensity` mesh (with
+`RectangularBilinearAdaptImage` its adapt-image counterpart), which is the right choice for the vast majority
+of users: its empirical rank-CDF transform has no extra parameters and is the fastest rectangular mesh on CPUs.
+
+An advanced alternative is the ray-guided transformed uniform (RTU) mesh family, `RectangularRTUAdaptDensity`
+and `RectangularRTUAdaptImage`, which warp the pixel grid via a smooth kernel-density CDF instead of the rank
+CDF — the RTU grid formulation of Enzi et al. (2026), https://arxiv.org/abs/2606.30620, which should be cited
+when using these meshes.
+
+Two properties distinguish the RTU meshes:
+
+- **Fast on GPUs only**: their kernel-CDF evaluation is a bottleneck on CPUs, so CPU users should stay with
+  the Bilinear default; on GPUs the kernel evaluation is not a bottleneck and the RTU meshes run fast.
+
+- **May have smoother gradients**: the kernel CDF is smooth in the model parameters, whereas the Bilinear
+  rank CDF is piecewise-constant at the default `over_sample_size_pixelization=1` (zero gradients), so
+  gradient-based (JAX) samplers may benefit from the RTU meshes. Imaging users can alternatively set
+  `over_sample_size_pixelization >= 4`; interferometer gradient fitting requires the RTU meshes, as
+  interferometer datasets have no over-sampling.
+
+Composing an RTU model is identical to the fit performed in this example, swapping only the mesh — shown as
+code below but not run here, because the full model-fit would repeat everything above:
+
+    pixelization = af.Model(
+        ag.Pixelization,
+        mesh=ag.mesh.RectangularRTUAdaptDensity(shape=mesh_shape),
+        regularization=ag.reg.GaussianKernel,
+    )
+
+    galaxy = af.Model(
+        ag.Galaxy,
+        redshift=0.5,
+        bulge=ag.lp_linear.Sersic,
+        pixelization=pixelization,
+    )
+
+    model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
+
+Note the Enzi et al. paper pairs the RTU grid with a Gaussian-process source prior, whereas these examples use
+PyAutoGalaxy's own regularization schemes (`reg.Constant` / `reg.GaussianKernel` / `reg.Adapt`).
+"""
