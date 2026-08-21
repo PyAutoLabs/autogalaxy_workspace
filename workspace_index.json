@@ -2189,6 +2189,53 @@
   },
   {
     "contents": [
+      "Mask",
+      "Dataset",
+      "Dataset Auto-Simulation",
+      "Over Sampling",
+      "Model",
+      "Search",
+      "Analysis",
+      "VRAM",
+      "Run Time",
+      "Model-Fit",
+      "Result"
+    ],
+    "cross_refs": [
+      "/guides/results/start_here.py",
+      "/imaging/features/operated_light_profile/modeling.py",
+      "fit.py",
+      "interferometer/fit.py",
+      "interferometer/modeling.py",
+      "interferometer/start_here.ipynb"
+    ],
+    "notebook": "notebooks/interferometer/features/operated_light_profile/modeling.ipynb",
+    "path": "scripts/interferometer/features/operated_light_profile/modeling.py",
+    "summary": "It is common for galaxies to have point-source emission, for example bright emission right at their centre due to an active galactic nuclei or a very compact knot of star formation.",
+    "title": "Modeling Features: Operated Light Profiles (Interferometer)"
+  },
+  {
+    "contents": [
+      "Dataset Paths",
+      "Grid",
+      "uv-wavelengths",
+      "Simulator",
+      "Galaxies",
+      "Output",
+      "Visualize",
+      "Galaxies json"
+    ],
+    "cross_refs": [
+      "interferometer/simulator.ipynb",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/operated_light_profile/simulator.ipynb",
+    "path": "scripts/interferometer/features/operated_light_profile/simulator.py",
+    "summary": "This script simulates `Interferometer` data of a galaxy using light profiles where:",
+    "title": "Simulator: Operated Light Profiles (Interferometer)"
+  },
+  {
+    "contents": [
       "Advantages",
       "Disadvantages",
       "Positive Only Solver",
