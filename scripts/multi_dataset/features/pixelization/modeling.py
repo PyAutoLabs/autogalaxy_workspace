@@ -144,7 +144,7 @@ __Model__
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this 
 example we fit a galaxy model where:
 
- - The galaxy's light uses a `RectangularAdaptDensity` meshwhose resolution is free to vary [2 parameters]. 
+ - The galaxy's light uses a `RectangularBilinearAdaptDensity` meshwhose resolution is free to vary [2 parameters]. 
 
  - This pixelization is regularized using a `Constant` scheme which smooths every pixel 
  equally, where its `regularization_coefficient` varies across the datasets [2 parameter]. 
@@ -153,7 +153,7 @@ The number of free parameters and therefore the dimensionality of non-linear par
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=af.Model(ag.mesh.RectangularAdaptDensity, shape=mesh_shape),
+    mesh=af.Model(ag.mesh.RectangularBilinearAdaptDensity, shape=mesh_shape),
     regularization=ag.reg.Constant,
 )
 

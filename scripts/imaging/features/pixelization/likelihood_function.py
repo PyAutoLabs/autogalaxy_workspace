@@ -2,7 +2,7 @@
 __Log Likelihood Function: Pixelization__
 
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
-`Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization
+`Imaging` data with a pixelization (specifically a `RectangularBilinearAdaptDensity` mesh and `Constant` regularization
 scheme).
 
 The dataset is the `clumpy` galaxy used throughout the pixelization package — a smooth central bulge plus
@@ -183,7 +183,7 @@ The galaxy includes the rectangular mesh and constant regularization scheme, whi
 to reconstruct its star forming clumps.
 """
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.RectangularAdaptDensity(shape=(30, 30)),
+    mesh=ag.mesh.RectangularBilinearAdaptDensity(shape=(30, 30)),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 
@@ -192,7 +192,7 @@ galaxy = ag.Galaxy(redshift=0.5, pixelization=pixelization)
 """
 __Galaxy Pixelization and Regularization__
 
-The galaxy is reconstructed using a pixel-grid, in this example a `RectangularAdaptDensity` mesh, which accounts for
+The galaxy is reconstructed using a pixel-grid, in this example a `RectangularBilinearAdaptDensity` mesh, which accounts for
 irregularities and asymmetries in the galaxy's surface brightness — exactly the kind of clumpy structure visible
 in this dataset.
 
@@ -333,13 +333,23 @@ __Alternative Meshes__
 We can briefly consider how this step differs for other mesh types. Above, we simply overlaid a uniform rectangular
 grid to define the reconstruction pixel centres and then mapped image pixels to these reconstruction pixels.
 
-The `RectangularAdaptDensity` mesh pretty much works exactly the same, its just that a calculation (which we don't
+The `RectangularBilinearAdaptDensity` mesh pretty much works exactly the same, its just that a calculation (which we don't
 describe here) works out how to make a grid of rectangular pixels that adapt to the data density and thus
 vary in size. 
 
-There is also a `RectangularAdaptImage` mesh which uses the image of the galaxy to adapt
+There is also a `RectangularBilinearAdaptImage` mesh which uses the image of the galaxy to adapt
 the rectangular pixel sizes. This often puts even smaller pixels in the brightest regions of the galaxy,
 even if it lies offset or away from the caustic.
+
+The adaptive rectangular meshes come in two variants which differ only in the transform used to warp the
+uniform grid: the default `RectangularBilinear` meshes use the empirical rank CDF of the traced points (a sort
+and a cumulative sum — no extra parameters, fastest on CPUs), whereas the advanced `RectangularRTU` meshes use
+a smooth kernel-density CDF — the ray-guided transformed uniform (RTU) grid formulation of Enzi et al. (2026),
+https://arxiv.org/abs/2606.30620, which should be cited when using those meshes (the paper pairs the RTU grid
+with a Gaussian-process source prior, whereas these examples use PyAutoGalaxy's own regularization schemes such
+as `reg.Constant` / `reg.Adapt`). The RTU meshes are recommended on GPUs and for gradient-based (JAX) samplers:
+the Bilinear likelihood is exactly piecewise-constant at the default `over_sample_size_pixelization=1` (zero
+gradients) — gradient users set `over_sample_size_pixelization >= 4` or use RTU.
 
 There is also a `Delaunay` mesh which uses a Delaunay triangulation to define an irregular grid of reconstruction pixels.
 This is described fully in the `delaunay` example including a likelihood function guide.

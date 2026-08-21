@@ -70,7 +70,7 @@ mask = ag.Mask2D.circular(
 dataset = dataset.apply_mask(mask=mask)
 
 pixelization = ag.Pixelization(
-    mesh=ag.mesh.RectangularAdaptDensity(shape=(25, 25)),
+    mesh=ag.mesh.RectangularBilinearAdaptDensity(shape=(25, 25)),
     regularization=ag.reg.Constant(coefficient=1.0),
 )
 

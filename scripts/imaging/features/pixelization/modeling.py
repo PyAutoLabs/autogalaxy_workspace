@@ -10,7 +10,7 @@ The dataset (`dataset/imaging/clumpy`) shows a galaxy with two very different ki
  - **Asymmetric clumpy star formation** spread irregularly across the galaxy, which no parametric profile (or even a
    combination of profiles) can fit cleanly.
 
-We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularAdaptDensity`
+We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularBilinearAdaptDensity`
 mesh and `GaussianKernel` regularization scheme) for the clumpy component. The Sersic captures the smooth bulge with
 just a handful of parameters; the pixelization reconstructs whatever the Sersic cannot fit on a flexible pixel grid.
 
@@ -128,7 +128,7 @@ This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's smooth central bulge is fit with a linear `Sersic` light profile.
  - The galaxy's asymmetric clumpy star formation is reconstructed using a pixelization with a
-   `RectangularAdaptDensity` mesh and `GaussianKernel` regularization scheme.
+   `RectangularBilinearAdaptDensity` mesh and `GaussianKernel` regularization scheme.
 
 __Start Here Notebook__
 
@@ -235,7 +235,7 @@ a single galaxy with two components:
    `intensity` is solved for via the same linear inversion that solves for the pixelization reconstruction, removing
    one non-linear parameter and avoiding the bulge/pixelization brightness degeneracy.
 
- - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularAdaptDensity` mesh
+ - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularBilinearAdaptDensity` mesh
    [0 parameters], regularized with a `GaussianKernel` scheme that smooths the reconstruction [2 parameters].
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=8.
@@ -246,7 +246,7 @@ a 20+ parameter approach that would still struggle with truly irregular substruc
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
+    mesh=ag.mesh.RectangularBilinearAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 
@@ -366,7 +366,7 @@ disk, which can then be fitted using the same search and analysis objects introd
 """
 pixelization = af.Model(
     ag.Pixelization,
-    mesh=ag.mesh.RectangularAdaptDensity(shape=mesh_shape),
+    mesh=ag.mesh.RectangularBilinearAdaptDensity(shape=mesh_shape),
     regularization=ag.reg.GaussianKernel,
 )
 
