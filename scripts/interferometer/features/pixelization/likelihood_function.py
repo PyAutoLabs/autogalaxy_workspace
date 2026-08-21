@@ -189,7 +189,7 @@ The pixelization is used to create the rectangular mesh which is used to reconst
 The function below does this by overlaying the rectangular mesh over the masked image grid, such that the edges of
 the rectangular mesh touch the ask grid's edges.
 """
-from autoarray.inversion.mesh.mesh.rectangular_adapt_density import (
+from autoarray.inversion.mesh.mesh.rectangular_rtu_adapt_density import (
     overlay_grid_from,
 )
 

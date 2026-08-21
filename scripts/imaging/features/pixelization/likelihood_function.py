@@ -198,7 +198,7 @@ in this dataset.
 
 A constant regularization scheme is applied which applies a smoothness prior on the reconstruction.
 """
-from autoarray.inversion.mesh.mesh.rectangular_adapt_density import (
+from autoarray.inversion.mesh.mesh.rectangular_rtu_adapt_density import (
     overlay_grid_from,
 )
 
