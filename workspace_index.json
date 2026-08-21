@@ -1496,7 +1496,7 @@
     ],
     "notebook": "notebooks/imaging/features/pixelization/likelihood_function.ipynb",
     "path": "scripts/imaging/features/pixelization/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Imaging` data with a pixelization (specifically a `RectangularAdaptDensity` mesh and `Constant` regularization scheme).",
+    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Imaging` data with a pixelization (specifically a `RectangularBilinearAdaptDensity` mesh and `Constant` regularization scheme).",
     "title": "__Log Likelihood Function: Pixelization__"
   },
   {
