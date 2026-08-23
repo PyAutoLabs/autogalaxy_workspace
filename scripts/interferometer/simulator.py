@@ -223,10 +223,7 @@ things stop it:
 
 On transformers: `TransformerDFT` (the `SimulatorInterferometer` default)
 and the nufftax-backed `TransformerNUFFT` (the `Interferometer` default,
-so what a fit uses) are both JAX-traceable. Only the legacy pynufft-backed
-`TransformerNUFFTPyNUFFT` is not — see
-`autolens_workspace_test/scripts/interferometer/nufft.py` for the parity
-work.
+so what a fit uses) are both JAX-traceable, so either works under JAX.
 
 See `scripts/guides/using_jax.py` for the full picture, including the
 broader "JIT-it-yourself" pattern.
