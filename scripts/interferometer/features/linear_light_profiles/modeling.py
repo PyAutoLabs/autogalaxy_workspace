@@ -76,9 +76,9 @@ that does the inversion and chi-squared sum. There is no host round-trip between
 N linear light profiles costs only N forward-NUFFTs per iteration on the GPU — fast enough that linear
 inversions in the visibility plane are now routinely practical.
 
-If `nufftax` is not installed, install it via `pip install nufftax`. A legacy pynufft-backed transformer
-(`TransformerNUFFTPyNUFFT`) is available as a non-JAX fallback but is not recommended for linear light
-profiles.
+If `nufftax` is not installed, install it via `pip install nufftax`. Note that `nufftax` requires JAX;
+where JAX is unavailable (notably Intel macOS, for which JAX ships no wheels) use `TransformerDFT`, which
+is exact and pure-numpy but scales as O(N_vis x N_pix).
 
 __Positive Only Solver__
 

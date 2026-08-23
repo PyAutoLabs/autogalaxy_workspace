@@ -139,9 +139,9 @@ rather than passed across its boundary. That call is for the `__JIT-ing Library 
 `Galaxy` is an argument.
 
 For interferometer data the same shape applies with `ag.FitInterferometer`. Both `TransformerDFT` and the
-nufftax-backed `TransformerNUFFT` are JAX-traceable, so either works; only the legacy pynufft-backed
-`TransformerNUFFTPyNUFFT` is not. Note the defaults differ by class: `Interferometer` (what a fit uses) defaults
-to `TransformerNUFFT`, while `SimulatorInterferometer` defaults to `TransformerDFT`.
+nufftax-backed `TransformerNUFFT` are JAX-traceable, so either works. Note the defaults differ by class:
+`Interferometer` (what a fit uses) defaults to `TransformerNUFFT`, while `SimulatorInterferometer` defaults
+to `TransformerDFT`.
 
 **Via `Fitness` — the production path.** A non-linear search does not call your function; it calls a `Fitness`
 object, which maps a raw parameter vector to a model instance, calls the analysis, and returns the figure of

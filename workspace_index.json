@@ -2554,7 +2554,6 @@
       "Plane Output"
     ],
     "cross_refs": [
-      "autolens_workspace_test/scripts/interferometer/nufft.py",
       "scripts/guides/using_jax.py"
     ],
     "notebook": "notebooks/interferometer/simulator.ipynb",
