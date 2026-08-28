@@ -250,8 +250,9 @@ Adding extra galaxies increases VRAM usage modestly, because each additional lin
 a column to the visibility-plane mapping matrix. For 2-5 extra galaxies this is negligible (each adds
 ~5-15 MB per batched likelihood). For dozens of extras you may need to monitor VRAM more carefully.
 
-VRAM on interferometer datasets is driven primarily by the visibility count and the real-space mask
-size, not the number of galaxies in the field.
+Without the sparse operator, VRAM on interferometer datasets is driven primarily by the visibility count and
+the real-space mask size, not the number of galaxies in the field. With `apply_sparse_operator()` applied
+(which now supports linear light profiles as well as pixelizations) it depends on the real-space mask alone.
 
 __Run Time__
 
