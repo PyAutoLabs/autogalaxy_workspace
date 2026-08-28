@@ -81,7 +81,7 @@ galaxy = af.Model(
     redshift=0.5,
     pixelization=af.Model(
         ag.Pixelization,
-        mesh=af.Model(ag.mesh.RectangularUniform, shape=mesh_shape),
+        mesh=af.Model(ag.mesh.RectangularBilinearAdaptDensity, shape=mesh_shape),
         regularization=af.Model(ag.reg.MaternKernel),
     ),
 )
@@ -167,8 +167,8 @@ print(reconstruction_dict["noise_map"])
 You can now use standard libraries to performed calculations with the reconstruction on the mesh, again avoiding
 the need to use autogalaxy.
 
-For example, we can create a RectangularUniform mesh using the scipy.spatial library, which is a triangulation
-of the y and x coordinates of the pixelization mesh. This is useful for visualizing the pixelization
+For example, we can create a Delaunay triangulation of the y and x coordinates of the pixelization mesh using
+the scipy.spatial library. This is useful for visualizing the pixelization
 and performing calculations on the mesh.
 """
 import scipy
