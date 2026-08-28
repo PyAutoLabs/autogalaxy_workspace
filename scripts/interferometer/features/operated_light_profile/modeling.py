@@ -204,8 +204,10 @@ NUFFT'd mapping matrix column. For 1-10 linear light profiles this is a tiny amo
 batched likelihood). Even for large batch sizes you almost certainly will not use enough VRAM to require
 monitoring.
 
-VRAM on interferometer datasets is driven primarily by the visibility count and the real-space mask size, not
-the number of operated light profiles in the model.
+Without the sparse operator, VRAM on interferometer datasets is driven primarily by the visibility count and
+the real-space mask size, not the number of operated light profiles in the model. With `apply_sparse_operator()`
+applied (which now supports linear light profiles as well as pixelizations) it depends on the real-space
+mask alone.
 
 __Run Time__
 
