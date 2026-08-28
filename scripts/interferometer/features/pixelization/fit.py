@@ -2,14 +2,21 @@
 Features: Pixelization Fit
 ==========================
 
-This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset — a
-galaxy with a smooth central bulge plus asymmetric clumpy star formation. The fit uses a pixelization with a
-rectangular mesh and constant regularization scheme to reconstruct the galaxy's surface brightness on a pixel
-grid.
+This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset — the
+Fourier transform of a galaxy with two very different kinds of light:
 
-The matching imaging tutorial pairs a parametric `Sersic` bulge with the pixelization. For interferometer data
-the pixelization can absorb both the bulge and clumps cleanly, so this example reconstructs the entire galaxy
-on the mesh.
+ - A smooth central **bulge**, captured by a linear `Sersic` light profile.
+ - **Asymmetric clumpy star formation**, reconstructed on a pixelization with a rectangular mesh and constant
+   regularization scheme.
+
+This is the same hybrid model as the matching imaging tutorial: a parametric profile for the smooth component,
+a pixelization for everything the profile cannot describe. Both components are fitted simultaneously through the
+sparse-operator inversion, which since PyAutoArray #500 supports linear light profiles alongside a pixelization.
+
+The bulge is a *linear* light profile (`ag.lp_linear.Sersic`) rather than a standard `lp.Sersic`, because its
+`intensity` is then solved for by the same linear inversion that solves for the mesh pixel fluxes. The two
+components therefore share a single linear solve on the sparse path, which both removes a non-linear parameter
+and avoids the bulge / pixelization brightness degeneracy.
 
 Pixelizations are covered in detail in chapter 3 of the **HowToGalaxy** lectures.
 
@@ -48,12 +55,13 @@ __Contents__
 - **Over Sampling:** Why over sampling is not needed for interferometer data.
 - **Mesh Shape:** Defining the number of pixels used by the rectangular mesh.
 - **Pixelization:** Creating the pixelization with a mesh and regularization scheme.
-- **Fit:** Performing a fit to a dataset using a pixelization and visualizing results.
+- **Bulge:** Creating the linear `Sersic` light profile which fits the galaxy's smooth central component.
+- **Fit:** Performing a fit combining a linear `Sersic` bulge with a pixelization, and visualizing results.
 - **Wrap Up:** Summary of when pixelizations are most useful.
-- **Linear Objects:** Inspecting the linear objects used in the inversion.
+- **Linear Objects:** Inspecting the two linear objects (bulge and mapper) used in the inversion.
 - **Grids:** Accessing image-plane and reconstruction-plane grids from the mapper.
-- **Reconstruction:** Accessing the reconstructed pixel values as a 1D array.
-- **Mapped Reconstructed Images:** Accessing the reconstruction mapped back to the image plane.
+- **Reconstruction:** Accessing the reconstructed pixel values and bulge intensity as 1D arrays.
+- **Mapped Reconstructed Images:** Accessing each reconstruction mapped back to the image plane.
 - **Linear Algebra Matrices (Advanced):** Accessing the curvature, regularization and combined matrices.
 - **Evidence Terms (Advanced):** Accessing individual Bayesian evidence terms from the inversion.
 - **Simulated Interferometer:** Simulating an interferometer dataset from the pixelized reconstruction.
@@ -69,7 +77,9 @@ Even alternative basis-function approaches, such as shapelets or multi-Gaussian 
 reconstruct galaxies with highly complex morphologies or multiple distinct components.
 
 Pixelized galaxy models are also essential for robustly constraining detailed components of a galaxy’s light
-distribution. By fitting all of the galaxy light, they reduce degeneracies between different components of the model.
+distribution. By pairing a parametric profile for the smooth bulge with a pixelization for the rest, we can
+specifically estimate how much light is in the irregular components of a galaxy (e.g. spiral arms, star forming
+clumps) compared to its smooth components, whilst reducing degeneracies between them.
 
 Finally, many science applications aim to study the galaxy itself in detail, in order to learn about distant and
 intrinsically faint galaxies. Pixelizations reconstruct the intrinsic galaxy emission, enabling detailed studies of
@@ -243,15 +253,37 @@ regularization = ag.reg.Constant(coefficient=1.0)
 pixelization = ag.Pixelization(mesh=mesh, regularization=regularization)
 
 """
+__Bulge__
+
+The galaxy's smooth central component is fitted with an elliptical `Sersic` light profile.
+
+Because this script performs a single fit with no non-linear search, the bulge's geometry is set to the truth
+used by `simulator.py` (the same thing the imaging `fit.py` does with its hand-tuned bulge), so that the
+reconstruction we inspect below is the one the pixelization produces when the smooth component is described
+correctly.
+
+Note that no `intensity` is input. A `lp_linear` profile has no `intensity` parameter, because its intensity is
+solved for linearly, in the same inversion that solves for the mesh pixel fluxes.
+"""
+bulge = ag.lp_linear.Sersic(
+    centre=(0.0, 0.0),
+    ell_comps=ag.convert.ell_comps_from(axis_ratio=0.9, angle=45.0),
+    effective_radius=0.6,
+    sersic_index=2.5,
+)
+
+"""
 __Fit__
 
-This is to illustrate the API for performing a fit via a pixelization using standard objects like
-the `Galaxy` and `FitInterferometer`.
+This is to illustrate the API for performing a fit combining a linear light profile with a pixelization, using
+standard objects like the `Galaxy` and `FitInterferometer`.
 
-We simply create a `Pixelization` and pass it to the galaxy, which then gets input into the fit.
+We pass both the `bulge` and the `Pixelization` to the galaxy, which then gets input into the fit. The sparse
+operator formalism applied to the dataset above handles both of them in a single linear solve.
 """
 galaxy = ag.Galaxy(
     redshift=0.5,
+    bulge=bulge,
     pixelization=pixelization,
 )
 
@@ -263,10 +295,17 @@ fit = ag.FitInterferometer(
 )
 
 """
-By plotting the fit, we see that the pixelized reconstruction does a good job at capturing the appearance of the galaxy
-and fitting the data to roughly the noise level.
+By plotting the fit, we see that the bulge captures the smooth central component whilst the pixelization absorbs
+the clumpy off-centre light, together fitting the data to roughly the noise level.
+
+The model image therefore now contains both components. The inversion can separate them for us, via the
+`mapped_reconstructed_data_dict` property, which gives the real-space image of each linear object individually
+(the linear objects themselves are described in the "Linear Objects" section below).
 """
 aplt.subplot_fit_interferometer(fit=fit)
+
+for linear_obj, image in fit.inversion.mapped_reconstructed_data_dict.items():
+    aplt.plot_array(array=image, title=f"{type(linear_obj).__name__} Image")
 
 """
 Pixelizations have bespoke visualizations which show more details about the reconstruction, image-mesh
@@ -292,7 +331,8 @@ resolved anyway.
 
 However, modeling complex galaxy light distributions requires this level of flexibility. Furthermore, if you are
 interested in studying the properties of the galaxy itself, you won't find a better way to do this than using a
-pixelization.
+pixelization. The combination of a linear parametric bulge with a pixelization for the irregular component — as
+in the fit performed above — is the canonical **PyAutoGalaxy** approach.
 
 __Linear Objects__
 
@@ -307,8 +347,10 @@ This list may include the following objects:
 - `Mapper`: The linear objected used by a `Pixelization` to reconstruct data via an `Inversion`, where the `Mapper`
 is specific to the `Pixelization`'s `Mesh`.
 
-In this example, the only linear object used to fit the data was a `Pixelization`, thus the `linear_obj_list`
-contains just one entry corresponding to a `Mapper`:
+In this example, both a linear light profile (the `Sersic` bulge) and a `Pixelization` were used to fit the
+data, so the `linear_obj_list` contains two entries. The linear light profiles come first, followed by the
+mappers, therefore entry 0 is the `LightProfileLinearObjFuncList` containing the bulge and entry 1 is the
+`Mapper` of the pixelization:
 """
 print(inversion.linear_obj_list)
 
@@ -319,7 +361,15 @@ we with to use.
 Thus, knowing what linear objects are contained in the `linear_obj_list` and what indexes they correspond to
 is important.
 """
-print(f"Mapper = {inversion.linear_obj_list[0]}")
+print(f"Light Profiles = {inversion.linear_obj_list[0]}")
+print(f"Mapper = {inversion.linear_obj_list[1]}")
+
+"""
+The visualization functions used above index amongst a specific type of linear object rather than the full
+`linear_obj_list`. The `mapper_index` of `subplot_of_mapper` counts through the inversion's mappers only, and the
+`pixelization_index` of `subplot_mappings` counts through its pixelizations only, therefore both remain 0 in this
+example even though the pixelization's `Mapper` is entry 1 of the `linear_obj_list`.
+"""
 
 """
 __Grids__
@@ -332,7 +382,7 @@ reconstruction-plane).
 
 All grids are available in a mapper via its `mapper` property.
 """
-mapper = inversion.linear_obj_list[0]
+mapper = inversion.linear_obj_list[1]
 
 # Centre of each masked image pixel in the image-plane.
 print(mapper.image_plane_data_grid)
@@ -349,14 +399,23 @@ print(mapper.source_plane_mesh_grid)
 """
 __Reconstruction__
 
-The reconstruction is also available as a 1D numpy array of values representative of the pixelization.
+The reconstruction is also available as a 1D numpy array, which contains the solved values of every linear
+object stacked together. In this example that is the bulge's `intensity` followed by the flux of every
+pixelization pixel.
 """
 print(inversion.reconstruction)
 
 """
-The (y,x) grid of coordinates associated with these values is given by the `Inversion`'s `Mapper`.
+The `reconstruction_dict` splits this array up by linear object, which is normally what you want. The entry of
+the pixelization's `Mapper` is the 1D array of values representative of the pixelization.
 """
-mapper = inversion.linear_obj_list[0]
+print(inversion.reconstruction_dict[inversion.linear_obj_list[0]])  # Bulge intensity.
+print(inversion.reconstruction_dict[inversion.linear_obj_list[1]])  # Mesh pixel fluxes.
+
+"""
+The (y,x) grid of coordinates associated with the pixelization values is given by the `Inversion`'s `Mapper`.
+"""
+mapper = inversion.linear_obj_list[1]
 print(mapper.source_plane_mesh_grid)
 
 """
@@ -367,9 +426,11 @@ print(mapper.source_plane_data_grid)
 """
 __Mapped Reconstructed Images__
 
-The reconstruction(s) are mapped to the image-plane in order to fit the model.
+The reconstruction(s) are mapped to the image-plane and Fourier transformed in order to fit the model.
 
-These mapped reconstructed images are also accessible via the `Inversion`.
+These mapped reconstructed visibilities are also accessible via the `Inversion`, where the property below sums
+the contribution of every linear object (the bulge and the pixelization). The `mapped_reconstructed_data_dict`
+used after the fit above instead gives the real-space image of each linear object separately.
 """
 print(inversion.mapped_reconstructed_operated_data.native)
 
@@ -410,12 +471,15 @@ We load the galaxy image from the pixelized inversion of a previous fit, which w
 Since irregular meshes cannot be directly used to simulate images, we interpolate the reconstruction onto a uniform
 grid with shape `interpolated_pixelized_shape`. This grid should have a high resolution (e.g., 1000 × 1000) to preserve
 all resolved structure from the original mesh.
+
+Note that we take the reconstruction of the pixelization's `Mapper` from the `reconstruction_dict`, because the
+inversion's full `reconstruction` array also contains the bulge's solved intensity.
 """
 from scipy.interpolate import griddata
 
 interpolation_grid = ag.Grid2D.uniform(shape_native=(200, 200), pixel_scales=0.05)
 
-reconstruction = inversion.reconstruction
+reconstruction = inversion.reconstruction_dict[mapper]
 source_plane_mesh_grid = mapper.source_plane_mesh_grid
 
 interpolated_reconstruction = griddata(

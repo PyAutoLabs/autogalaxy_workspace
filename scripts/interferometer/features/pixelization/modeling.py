@@ -11,14 +11,18 @@ The `clumpy` interferometer dataset is the Fourier transform of a galaxy with tw
  - **Asymmetric clumpy star formation** spread irregularly across the galaxy, which no parametric profile (or
    combination of profiles) can fit cleanly.
 
-For simplicity this interferometer example reconstructs the entire galaxy on the pixelization mesh (no parametric
-bulge in the model). On interferometer data the pixelization absorbs both the bulge and clumps cleanly, and adding
-a separate bulge component is rarely necessary for science. The imaging counterpart in
-`autogalaxy_workspace/scripts/imaging/features/pixelization/modeling.py` demonstrates the hybrid bulge +
-pixelization model that is more useful for CCD imaging.
+We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularUniform`
+mesh and `GaussianKernel` regularization scheme) for the clumpy component. The Sersic captures the smooth bulge
+with just a handful of parameters; the pixelization reconstructs whatever the Sersic cannot fit on a flexible
+pixel grid.
 
-You may wish to first read the pixelization/fit.py example, which demonstrates how a pixelized galaxy
-reconstruction is applied to a single dataset.
+This split is the canonical use-case for a pixelization in galaxy modeling, and mirrors the imaging counterpart in
+`autogalaxy_workspace/scripts/imaging/features/pixelization/modeling.py`. It relies on the sparse operator
+formalism supporting linear light profiles alongside a pixelization, so that the bulge `intensity` and the mesh
+pixel fluxes are solved for together in a single linear solve on the sparse path.
+
+You may wish to first read the `pixelization/fit.py` example, which demonstrates how a bulge plus pixelization
+galaxy reconstruction is applied to a single dataset.
 
 Pixelizations are covered in detail in Chapter 3 of the HowToGalaxy lecture series.
 
@@ -42,7 +46,7 @@ __Contents__
 - **Advantages:** Benefits of using pixelizations to model galaxy light.
 - **Disadvantages:** Drawbacks and additional complexity of pixelized galaxy modeling.
 - **Positive Only Solver:** How a positive solution to pixel fluxes is ensured, and why it is often disabled for interferometer data.
-- **Model:** Description of the pixelized galaxy model fitted in this example.
+- **Model:** Description of the hybrid bulge plus pixelization galaxy model fitted in this example.
 - **Mask:** Defining the real-space mask for the interferometer grid.
 - **Dataset:** Loading the interferometer dataset from FITS files.
 - **Dataset Auto-Simulation:** Automatically simulating data if it does not exist.
@@ -50,13 +54,13 @@ __Contents__
 - **Settings:** Disabling the positive-only solver for interferometer data.
 - **Over Sampling:** Why over sampling is not needed for interferometer data.
 - **Mesh Shape:** Defining the number of pixels used by the rectangular mesh.
-- **Model:** Composing a pixelized galaxy model with a mesh and regularization scheme.
+- **Model:** Composing the model, a linear `Sersic` bulge plus a pixelization with a mesh and regularization scheme.
 - **Search:** Configuring the Nautilus nested sampling non-linear search.
 - **Analysis:** Setting up the AnalysisInterferometer object with JAX acceleration.
 - **VRAM:** Estimating GPU VRAM requirements for pixelized modeling.
 - **Run Time:** Profiling run times for pixelized modeling and how they scale.
 - **Model-Fit:** Running the non-linear search to fit the model to data.
-- **Result:** Inspecting the result object and maximum likelihood pixelized reconstruction.
+- **Result:** Inspecting the result object and maximum likelihood bulge and pixelized reconstruction.
 - **Wrap Up:** Summary of when pixelizations are most useful.
 - **Chaining:** Using non-linear search chaining to improve pixelized galaxy modeling.
 - **HowToGalaxy:** Pointers to detailed pixelization tutorials in the lecture series.
@@ -72,7 +76,9 @@ Even alternative basis-function approaches, such as shapelets or multi-Gaussian 
 reconstruct galaxies with highly complex morphologies or multiple distinct components.
 
 Pixelized galaxy models are also essential for robustly constraining detailed components of a galaxy’s light
-distribution. By fitting all of the galaxy light, they reduce degeneracies between different components of the model.
+distribution. By pairing a parametric profile for the smooth bulge with a pixelization for the rest, we can
+specifically estimate how much light is in the irregular components of a galaxy (e.g. spiral arms, star forming
+clumps) compared to its smooth components, whilst reducing degeneracies between them.
 
 Finally, many science applications aim to study the galaxy itself in detail, in order to learn about distant and
 intrinsically faint galaxies. Pixelizations reconstruct the intrinsic galaxy emission, enabling detailed studies of
@@ -111,11 +117,11 @@ but you may want to consider if using the positive-only solver is appropriate fo
 
 __Model__
 
-This script fits an `Imaging` dataset of a galaxy with a model where:
+This script fits an `Interferometer` dataset of a galaxy with a model where:
 
- - The galaxy’s light is modeled using a pixelization.
- - The galaxy’s surface-brightness is reconstructed using a `RectangularUniform` mesh
-   and `Constant` regularization scheme.
+ - The galaxy's smooth central bulge is fit with a linear `Sersic` light profile.
+ - The galaxy's asymmetric clumpy star formation is reconstructed using a pixelization with a
+   `RectangularUniform` mesh and `GaussianKernel` regularization scheme.
 
 __Start Here Notebook__
 
@@ -261,27 +267,35 @@ mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 __Model__
 
 We compose our galaxy model using `Model` objects, which represent the galaxies we fit to our data. In this
-example fits a model where:
+example we fit a single galaxy with two components:
 
- - The galaxy's light uses a 20 x 20 `RectangularUniform` mesh [0 parameters].
+ - The galaxy's smooth central **bulge** is fit with a linear elliptical `Sersic` light profile [6 parameters:
+   centre, ell_comps, effective_radius, sersic_index]. Using `lp_linear.Sersic` rather than `lp.Sersic` means the
+   bulge's `intensity` is solved for via the same linear inversion that solves for the pixelization
+   reconstruction, removing one non-linear parameter and avoiding the bulge / pixelization brightness degeneracy.
 
- - This pixelization is regularized using a `Constant` scheme which smooths every pixel equally [1 parameter].
+ - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularUniform` mesh
+   [0 parameters], regularized with a `GaussianKernel` scheme that smooths the reconstruction [2 parameters].
 
-The number of free parameters and therefore the dimensionality of non-linear parameter space is N=1.
+The number of free parameters and therefore the dimensionality of non-linear parameter space is N=8.
 
-It is worth noting the pixelization fits the galaxy using significantly fewer parameters (1 parameter for
-regularization) than fitting the galaxy using light profiles or an MGE (4+ parameters).
+It is worth noting how parsimonious the pixelization is. The clumpy component costs just the 2 regularization
+parameters, however irregular it turns out to be, whereas describing the same clumps with light profiles or an
+MGE would mean adding profile after profile (a 20+ parameter model) and would still struggle with truly
+asymmetric substructure.
 
-The model therefore includes a mesh and regularization scheme, which are used together to create the
-pixelization.
+The model therefore includes a light profile, plus a mesh and regularization scheme which are used together to
+create the pixelization.
 """
 # Galaxy:
+bulge = af.Model(ag.lp_linear.Sersic)
+
 mesh = af.Model(ag.mesh.RectangularUniform, shape=mesh_shape)
 regularization = af.Model(ag.reg.GaussianKernel)
 
 pixelization = af.Model(ag.Pixelization, mesh=mesh, regularization=regularization)
 
-galaxy = af.Model(ag.Galaxy, redshift=0.5, pixelization=pixelization)
+galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, pixelization=pixelization)
 
 # Overall Model:
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
@@ -290,7 +304,8 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 The `info` attribute shows the model in a readable format (if this does not display clearly on your screen refer to
 `start_here.ipynb` for a description of how to fix this).
 
-This confirms that the galaxy has a mesh and regularization scheme, which are combined into a pixelization.
+This confirms that the galaxy has a linear `Sersic` bulge, plus a mesh and regularization scheme which are
+combined into a pixelization.
 """
 print(model.info)
 
@@ -327,10 +342,10 @@ __VRAM__
 The `modeling` example explains how VRAM is used during GPU-based fitting and how to print the estimated VRAM
 required by a model.
 
-Any model fitted through an inversion — a pixelization, linear light profiles, or both together — uses a lot
-less VRAM once the sparse operator formalism is applied (as it is above). In this mode, datasets with tens of
-millions of visibilities and real space masks with pixel scales below 0.05" can be stored in just GB's of
-VRAM, which is remarkable given how much data they contain.
+Any model fitted through an inversion — a pixelization, linear light profiles, or both together (as in this
+example) — uses a lot less VRAM once the sparse operator formalism is applied (as it is above). In this mode,
+datasets with tens of millions of visibilities and real space masks with pixel scales below 0.05" can be stored
+in just GB's of VRAM, which is remarkable given how much data they contain.
 
 In sparse operator mode, the **amount of VRAM used is independent of the number of visibilities in the dataset**.
 This is because the sparse operator method compresses all the visibility information into sparse operator matrices,
@@ -360,8 +375,10 @@ not the number of visibilities in the dataset. The calculation also runs the sam
 the real space mask is circular, or irregularly shaped, therefore using a circlular mask is recommended as it is
 simpler to set up.
 
-Assuming the use of a 20 x 20 mesh grid above means this is the case, the run times of this model-fit on a GPU
-should take under 10 minutes. Increasing the batch size will speed up the fit, provided VRAM allows it.
+Assuming the use of a 28 x 28 mesh grid above means this is the case, the run times of this model-fit on a GPU
+should take under 10 minutes. Adding the linear `Sersic` bulge to the model does not change this materially: it
+contributes one more column to the same linear solve, and its 6 non-linear parameters are cheap compared to the
+likelihood evaluation itself. Increasing the batch size will speed up the fit, provided VRAM allows it.
 
 __Model-Fit__
 
@@ -376,18 +393,25 @@ __Result__
 The search returns a result object, which whose `info` attribute shows the result in a readable format (if this
 does not display clearly on your screen refer to `start_here.ipynb` for a description of how to fix this):
 
-This confirms that the galaxy has a mesh and regularization scheme, which are combined into a pixelization.
+This confirms that the galaxy has a linear `Sersic` bulge, plus a mesh and regularization scheme which are
+combined into a pixelization.
 """
 print(result.info)
 
 """
-We plot the maximum likelihood fit and posteriors inferred via Nautilus.
+We plot the maximum likelihood fit, galaxy images and posteriors inferred via Nautilus.
+
+The reconstructed bulge image and the pixelized reconstruction of the clumps should together reproduce the data
+to roughly the noise level, with the bulge absorbing the smooth central light and the pixelization absorbing the
+off-centre clumpy structure.
 
 The end of this example provides a detailed description of all result options for a pixelization.
 """
 print(result.max_log_likelihood_instance)
 
 aplt.subplot_fit_dirty_images(fit=result.max_log_likelihood_fit)
+
+aplt.subplot_galaxies(galaxies=result.max_log_likelihood_galaxies, grid=result.grids.lp)
 
 
 """
@@ -408,7 +432,8 @@ resolved anyway.
 
 However, modeling complex galaxy light distributions requires this level of flexibility. Furthermore, if you are
 interested in studying the properties of the galaxy itself, you won't find a better way to do this than using a
-pixelization.
+pixelization. The combination of a linear parametric bulge with a pixelization for the irregular component — as in
+the model fitted above — is the canonical **PyAutoGalaxy** approach.
 
 __Chaining__
 

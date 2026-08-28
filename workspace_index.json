@@ -2247,6 +2247,7 @@
       "Over Sampling",
       "Mesh Shape",
       "Pixelization",
+      "Bulge",
       "Fit",
       "Wrap Up",
       "Linear Objects",
@@ -2259,11 +2260,12 @@
       "Future Ideas / Contributions"
     ],
     "cross_refs": [
-      "pixelization/many_visibilities_preparation.py"
+      "pixelization/many_visibilities_preparation.py",
+      "simulator.py"
     ],
     "notebook": "notebooks/interferometer/features/pixelization/fit.ipynb",
     "path": "scripts/interferometer/features/pixelization/fit.py",
-    "summary": "This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset \u2014 a galaxy with a smooth central bulge plus asymmetric clumpy star formation. The fit uses a pixelization with a rectangular mesh and constant regularization scheme to reconstruct the galaxy's surface brightness on a pixel grid.",
+    "summary": "This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset \u2014 the Fourier transform of a galaxy with two very different kinds of light:",
     "title": "Features: Pixelization Fit"
   },
   {
