@@ -11,7 +11,7 @@ The `clumpy` interferometer dataset is the Fourier transform of a galaxy with tw
  - **Asymmetric clumpy star formation** spread irregularly across the galaxy, which no parametric profile (or
    combination of profiles) can fit cleanly.
 
-We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularUniform`
+We therefore use a hybrid model: a linear `Sersic` for the bulge, and a pixelization (with a `RectangularBilinearAdaptDensity`
 mesh and `GaussianKernel` regularization scheme) for the clumpy component. The Sersic captures the smooth bulge
 with just a handful of parameters; the pixelization reconstructs whatever the Sersic cannot fit on a flexible
 pixel grid.
@@ -121,7 +121,7 @@ This script fits an `Interferometer` dataset of a galaxy with a model where:
 
  - The galaxy's smooth central bulge is fit with a linear `Sersic` light profile.
  - The galaxy's asymmetric clumpy star formation is reconstructed using a pixelization with a
-   `RectangularUniform` mesh and `GaussianKernel` regularization scheme.
+   `RectangularBilinearAdaptDensity` mesh and `GaussianKernel` regularization scheme.
 
 __Start Here Notebook__
 
@@ -274,8 +274,12 @@ example we fit a single galaxy with two components:
    bulge's `intensity` is solved for via the same linear inversion that solves for the pixelization
    reconstruction, removing one non-linear parameter and avoiding the bulge / pixelization brightness degeneracy.
 
- - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularUniform` mesh
+ - The galaxy's asymmetric **clumpy star formation** is reconstructed with a 28 x 28 `RectangularBilinearAdaptDensity` mesh
    [0 parameters], regularized with a `GaussianKernel` scheme that smooths the reconstruction [2 parameters].
+
+The `RectangularBilinearAdaptDensity` mesh adapts the size of its pixels to the density of the coordinates it
+reconstructs, via the empirical rank CDF of those coordinates, which costs no extra parameters and makes it the
+fastest rectangular mesh on CPUs.
 
 The number of free parameters and therefore the dimensionality of non-linear parameter space is N=8.
 
@@ -290,7 +294,7 @@ create the pixelization.
 # Galaxy:
 bulge = af.Model(ag.lp_linear.Sersic)
 
-mesh = af.Model(ag.mesh.RectangularUniform, shape=mesh_shape)
+mesh = af.Model(ag.mesh.RectangularBilinearAdaptDensity, shape=mesh_shape)
 regularization = af.Model(ag.reg.GaussianKernel)
 
 pixelization = af.Model(ag.Pixelization, mesh=mesh, regularization=regularization)
