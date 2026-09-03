@@ -276,19 +276,25 @@ all image-pixels which are not masked.
 subplot_image_and_mapper(mapper=mapper, image=dataset.dirty_image)
 
 """
-The reverse mappings of pixelization pixels to image-pixels can also be used.
+The reverse mapping, from a reconstruction pixel to the image-pixels which map into it, is given by
+`mapper.mappings_from`. It takes a list of reconstruction pixel index groups and returns one `Mapping` per group,
+carrying the outline of the reconstruction cell (`source_contours`) and the outlines of the image-pixel regions which
+map into it (`image_contours`), both as polygons in arc-seconds.
+
+Passing the mappings to `subplot_image_and_mapper` as `regions=` draws them in matched colours, the cell on the right
+and the image-pixels it owns on the left.
 """
-pix_indexes = [[200]]
+pix_indexes = [[min(200, mapper.pixels - 1)]]
 
-indexes = mapper.slim_indexes_for_pix_indexes(pix_indexes=pix_indexes)
+mappings = mapper.mappings_from(pix_indexes=pix_indexes)
 
-subplot_image_and_mapper(mapper=mapper, image=dataset.dirty_image)
+subplot_image_and_mapper(mapper=mapper, image=dataset.dirty_image, regions=mappings)
 
 """
 __Interpolation__
 
-The right hand plot shows more laying over reconstruction pixel 200 than its retangular black lines. Pixels further 
-out than the pixel appear to be mapped to this reconstruction pixel. 
+The left hand plot shows a region wider than the handful of image pixels which land strictly inside reconstruction
+pixel 200. Pixels further out than the pixel are also mapped to this reconstruction pixel.
 
 This is because of the interpolation mapping scheme whereby each image pixel is paired with four reconstruction
 pixels.
