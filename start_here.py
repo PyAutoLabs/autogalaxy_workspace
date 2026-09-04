@@ -490,6 +490,6 @@ as ChatGPT and coding agents such as Claude Code and Codex. You can get started 
 galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its
 full scope and instructions.
 
-**The PyAutoGalaxy AI Assistant currently only supports AI coding agents which require a paid subscription, either Claude Code or Codex. Work is ongoing to support free AI coding agents and conversation agents like ChatGPT.**
+**The PyAutoGalaxy AI Assistant currently requires a paid subscription: Claude Code or Codex as a coding agent, or ChatGPT or Claude on a paid plan as a conversation assistant. Free options are being tested.**
 
 """
