@@ -138,7 +138,7 @@ plt.imshow(image.native)  # Dont worry about the use of .native for now.
 
 
 
-    <matplotlib.image.AxesImage at 0x7f990a738e00>
+    <matplotlib.image.AxesImage at 0x7f4c2bca7cb0>
 
 
 
@@ -374,16 +374,6 @@ __Wrap Up__
 This completes the introduction to **PyAutoGalaxy**, including a brief overview of the core API for galaxy light
 profiles, galaxy modeling, and data simulation.
 
-__PyAutoGalaxy AI Assistant__
-
-The [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such
-as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about
-galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its
-full scope and instructions.
-
-The rest of this guide is human-readable documentation: we begin by answering a simple question to find your most
-appropriate starting point.
-
 __What Data Type?__
 
 If you are interested in modeling galaxies, you now need to decide what type of imaging data you want to work with:
@@ -453,7 +443,7 @@ Modeling interferometer data from submillimeter (e.g. ALMA) and radio (e.g. LOFA
 
 Visibilities data is fitted directly in the uv-plane, circumventing issues that arise when fitting a dirty image
 such as correlated noise. This uses the non-uniform fast fourier transform algorithm
-[PyNUFFT](https://github.com/jyhmiinlin/pynufft) to efficiently map the galaxy model images to the uv-plane.
+[nufftax](https://github.com/GragasLab/nufftax) to efficiently map the galaxy model images to the uv-plane.
 
 Checkout the`autogalaxy_workspace/*/interferometer` package to get started.
 
@@ -560,7 +550,26 @@ Checkout `autogalaxy_workspace/notebooks/features/pixelizations.ipynb` to learn 
 this is a more advanced feature and it is recommended you first get to grips with the core API.
 
 
-__Other:__
+__Graphical Models__
 
-- Automated pipelines / database tools.
-- Graphical models.
+The examples above fit each galaxy dataset one-by-one. However, many galaxy properties are shared across a
+sample (e.g. the population's distribution of Sersic indices or sizes), and fitting galaxies independently does
+not exploit this shared structure.
+
+Graphical models fit multiple datasets simultaneously, explicitly defining which parameters are unique to each
+galaxy and which are shared across the sample. Hierarchical extensions assume parameters are drawn from a parent
+distribution, whose properties are inferred from the full sample, extracting significantly more information
+than one-by-one fitting. This is a powerful tool for galaxy evolution studies of large samples, for example
+measuring how the galaxy population's structural properties vary with mass or redshift.
+
+Checkout `autofit_workspace/*/features/graphical_models.py` to learn how to compose and fit a graphical model;
+the API applies directly to the galaxy fits shown throughout this workspace.
+
+__PyAutoGalaxy AI Assistant__
+
+The [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) supports conversation agents such
+as ChatGPT and coding agents such as Claude Code and Codex. You can get started simply by asking it a question about
+galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the assistant for its
+full scope and instructions.
+
+**The PyAutoGalaxy AI Assistant currently only supports AI coding agents which require a paid subscription, either Claude Code or Codex. Work is ongoing to support free AI coding agents and conversation agents like ChatGPT.**
