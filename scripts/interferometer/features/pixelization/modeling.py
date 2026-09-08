@@ -36,10 +36,11 @@ many visibilities (E.g. tens of millions).
 This example fits the dataset with 273 visibilities used throughout the workspace, so the modeling runs in under 10
 minutes. Fitting a higher resolution dataset will only take an hour to a few hours.
 
-If your dataset contains many visibilities (e.g. millions), setting up the matrices for pixelized reconstruction
-which speed up the linear algebra may take tens of minutes, or hours. Once you are comfortable with the API introduced
-in this example, the `features/pixelization/many_visibilities_preparation` explains how this initial setup can be
-performed before galaxy modeling and saved to hard disk for fast loading before the model fit.
+If your dataset contains many visibilities (e.g. millions), the matrices which speed up this linear algebra are
+built as a type-1 NUFFT and take seconds, as of the next `autoarray` release. Once you are comfortable with the API
+introduced in this example, the `features/pixelization/many_visibilities_preparation` explains how this setup can
+also be performed before galaxy modeling and saved to hard disk, and what to watch for memory-wise on the largest
+datasets.
 
 __Contents__
 
@@ -221,16 +222,13 @@ You do not need to understand the full details of the method, but the key point 
 To enable this feature, we call `apply_sparse_operator()` on the dataset. This computes and stores a NUFFT operator 
 matrix.
 
-On GPU via JAX, this computation is fast even for large datasets with many visibilities, with profiling
-of high resolution datasets with over 1 million visibilities showing that computation takes under 20 seconds. For
-10s or 100s of millions of visibilities computation on a GPU may stretch to minutes, but this is still very fast.
+As of the next `autoarray` release this matrix is built as a type-1 NUFFT and takes seconds, even for datasets with
+over 100000 visibilities and many pixels in their real-space mask (for the small dataset loaded above it is
+milliseconds). It previously took 10 minutes or hours on such datasets.
 
-On CPU, for datasets with over 100000 visibilities and many pixels in their real-space mask, this computation
-can take 10 minutes or hours (for the small dataset loaded above its miliseconds). The `show_progress` input outputs
-a progress bar to the terminal so you can monitor the computation, which is useful when it is slow.
-
-When computing it is slow, it is recommend you compute it once, save it to hard-disk, and load it
-before modeling. The example `pixelization/many_visibilities_preparation.py` illustrates how to do this.
+You can therefore compute it at the start of every fit. Saving it to hard-disk and loading it before modeling is
+still supported, and the example `pixelization/many_visibilities_preparation.py` illustrates how, along with the
+memory chunking that matters at millions of visibilities.
 """
 dataset = dataset.apply_sparse_operator(use_jax=True, show_progress=True)
 
