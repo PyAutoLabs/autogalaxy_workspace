@@ -10,22 +10,18 @@ amount of memory or VRAM is used.
 The details can be found in the source code, but you do not need to know them to do science with the code,
 nevertheless this ultimately means datasets exceeding millions of visibilities can be modeled in under an hour on a GPU.
 
-The time to compute this matrix can vary between seconds and hours, depending on the number of visibilities in the
-dataset, the number of image pixels in the real space mask and if a CPU or GPU is used. If this matrix is not saved
-and loaded from hard disk, this recalculation would need to be performed before every model-fit, which if for your
-setup and hardware takes hours would be prohibitive.
+As of the next `autoarray` release this matrix is built as a type-1 (adjoint) NUFFT, which takes seconds. It was
+previously computed by brute force, which took minutes to hours on large datasets: for an ALMA dataset with 1
+million visibilities the build went from around 35 minutes to under 10 seconds, and 5 million visibilities now takes
+around 20 seconds. These are CPU times, so you no longer need a GPU, or a preparation step like this one, to compute
+the matrix at the start of every model-fit.
 
-On HPC GPUs via JAX, this computation is fast even for large datasets with many visibilities, with profiling
-of high resolution datasets with over 1 million visibilities showing that computation takes under 20 seconds. For
-10s or 100s of millions of visibilities computation on a GPU may stretch to minutes, but this is still very fast.
-If you are lucky enough to have a modern enough GPU, you can therefore compute this matrix on-the-fly during modeling.
+Saving the matrix to hard-disk is still supported, and this example still shows how, but it is no longer necessary
+for run time. Matrices saved by earlier versions remain valid, because the array itself is unchanged.
 
-On consumer laptop GPUs or CPU, for datasets with over 100000 visibilities and many pixels in their real-space mask, this
-computation may take 10 minutes or hours (for the small dataset loaded above its miliseconds). Computing it once,
-in this script, saving it to hard-disk, and loading it for modeling is therefore recommended.
-
-On CPU, the `show_progress` input outputs  a progress bar to the terminal so you can monitor the computation,
-which is useful when it is slow.
+What does still matter is memory. Building the matrix in one shot at millions of visibilities needs tens of GB, so
+the calculation is chunked over visibilities. The chunk size is taken from the transformer's own `chunk_size` input,
+so there is nothing to set by hand unless you want a lower memory ceiling.
 
 This example therefore creates the `nufft_precision_operator` matrix using independent Python code and saves it to hard-disk
 for modeling. The `cpu_fast_modeling` example loads this matrix from hard-disk if it is available,
@@ -92,14 +88,14 @@ dataset = ag.Interferometer.from_fits(
 __Profiling Dataset__
 
 The code above loads a dataset with very few visibilities and a low resolution real space mask, so the
-`nufft_precision_operator` computation is fast.
+`nufft_precision_operator` computation is near instant.
 
-Real datasets often have 100,000+ visibilities, and a high resolution real space mask, which makes the
-`nufft_precision_operator` computation much slower.
+Real datasets often have 100,000+ visibilities, and a high resolution real space mask, which takes longer -- though
+seconds, not the minutes to hours it used to.
 
-It may therefore be useful to profile the run times for different dataset sizes using the code below, which overwrites
-the dataset above. This will allow you to plan ahead how long the `nufft_precision_operator` computation will take for your
-dataset, and whether doing it on a HPC is necessary.
+It may therefore still be useful to profile the run times and memory use for different dataset sizes using the code
+below, which overwrites the dataset above. This lets you check ahead of time that the computation fits in your
+machine's memory for your dataset.
 
 This code is commented out by default, so your dataset is used instead, but you can uncomment it to run the profiling.
 """
@@ -146,19 +142,20 @@ You do not need to understand the full details of the method, but the key point 
 To enable this feature, we call `apply_sparse_operator()` on the dataset. This computes and stores a NUFFT operator 
 matrix.
 
-As discussed above, the computation of this matrix can take a long time for datasets with many visibilities
-and high resolution real-space masks, unless a modern GPU is used.
-
-We comment out the calculation below as we are going to illustrate how you can compute it on CPU.
+As discussed above, this matrix is built as a type-1 NUFFT and takes seconds, even for datasets with many
+visibilities and high resolution real-space masks.
 
 The code has the following inputs:
 
-- `chunk_k`: The chunk size of visibilities to process at a time. Decreasing this value decreases the memory
-  requirements of the computation, but increases the run time. You should set this as high as your system's
-  memory allows.
+- `use_jax`: The NUFFT builder always runs via JAX, so this input does not change which builder is used. It selects
+  between the two reference brute-force builders, and is kept here so this script also works on `autoarray`
+  releases which predate the NUFFT builder.
 
-- `show_progress`: Whether to output a progress bar to the terminal, which is on here as for runs which take over
-  an hour this is useful to monitor.
+- `chunk_k`: The chunk size of visibilities used by the brute-force builders. The NUFFT builder chunks at the
+  transformer's own `chunk_size` instead, which is what keeps memory bounded at millions of visibilities.
+
+- `show_progress`: Whether to output a progress bar to the terminal. This applies to the brute-force builders; the
+  NUFFT builder finishes too quickly to need one.
 
 - `show_memory`: Whether to output memory usage to the terminal, which is useful to ensure your system has enough
   memory to complete the computation.
@@ -174,7 +171,8 @@ dataset = dataset.apply_sparse_operator(
 __Curvature Preload Output__
 
 We now output the `nufft_precision_operator` object to hard-disk, so it can be loaded quickly in the 
-`cpu_fast_modeling` example.
+`cpu_fast_modeling` example. This is optional now the matrix builds in seconds, but it still saves recomputing it
+for every fit.
 
 We save it using a numpy `npy` file, which compresses the data to save hard-disk space, and put it in the 
 dataset folder so it can be easily found. 
@@ -203,5 +201,6 @@ nufft_precision_operator = np.load(
 __Wrap Up__
 
 This example has demonstrated how to set up the linear algebra to perform fast pixelized galaxy modeling on
-interferometer datasets with many visibilities.
+interferometer datasets with many visibilities, and how to save the `nufft_precision_operator` matrix to hard-disk.
+Since the matrix now builds in seconds, saving it is a convenience rather than a requirement.
 """
