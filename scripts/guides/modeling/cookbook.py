@@ -50,13 +50,28 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 print(model.info)
 
 """
+The same model can also be drawn as a figure, which shows its structure at a glance.
+
+The figure is the **map** and `model.info` is the **legend**. The map shows the shape of the model: which component 
+owns which parameter, and what state every parameter is in (free, fixed, shared with another component, related to 
+one by an expression, solved during the fit or missing from your configuration). The legend gives the numbers: the 
+prior on every parameter and the value of every fixed one. The dashed `intensity · solved` pill in the figure is the 
+parameter `model.info` does not print, because it is not part of the model: the `intensity` of a linear light profile 
+is solved for by the inversion at every likelihood evaluation.
+"""
+af.ModelPlotter(model).figure()
+
+"""
 The model `total_free_parameters` tells us the total number of free parameters (which are fitted for via a 
-non-linear search), which in this case is 7.
+non-linear search), which in this case is 6. The `intensity` of a linear light profile is not one of them: it is 
+solved for by a linear inversion during every likelihood evaluation.
 """
 print(f"Model Total Free Parameters = {model.total_free_parameters}")
 
 """
 If we print the `info` attribute of the model we get information on all of the parameters and their priors.
+
+This is the same model as above, so it draws the same figure; nothing new to see.
 """
 print(model.info)
 
@@ -74,6 +89,14 @@ galaxy = af.Model(ag.Galaxy, redshift=0.5, bulge=bulge, disk=disk, bar=bar)
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 print(model.info)
+
+"""
+The `bulge` and the `bar` are both `Sersic` profiles, so the figure collapses them into a single dashed plate badged 
+`2 components` rather than drawing two identical cards, while the `Exponential` disk keeps its own card. Each of the 
+three linear profiles carries its own dashed `intensity · solved` pill, which the footer counts as 3 parameters 
+solved during fitting.
+"""
+af.ModelPlotter(model).figure()
 
 """
 The use of the words `bulge`, `disk` and `bar` above are arbitrary. They can be replaced with any name you
@@ -107,6 +130,13 @@ model = af.Collection(
 print(model.info)
 
 """
+The two galaxies are identical in structure, so the figure draws them once inside a dashed plate badged 
+`2 components` rather than twice. Their parameters are badged `independent`: two separate priors with the same 
+configuration, which is not the same thing as one shared prior.
+"""
+af.ModelPlotter(model).figure()
+
+"""
 __Concise API__
 
 If a light profile is passed directly to the `af.Model` of a galaxy, it is automatically assigned to be a `af.Model` 
@@ -125,6 +155,12 @@ galaxy = af.Model(
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 print(model.info)
+
+"""
+The figure is identical to the one drawn the long way round, which is the point: the concise API is a shorthand for 
+writing the model, not a different model.
+"""
+af.ModelPlotter(model).figure()
 
 """
 __Prior Customization__
@@ -147,6 +183,13 @@ galaxy = af.Model(
 model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 
 print(model.info)
+
+"""
+Customizing a prior does not change a parameter's state: every parameter above is still sampled, so the figure is 
+unchanged by the customization and is the same map as the simple model at the top of this cookbook. Print 
+`model.info`, or call `af.ModelPlotter(model).figure(detail="priors")`, to see the prior on each parameter.
+"""
+af.ModelPlotter(model).figure()
 
 """
 __Model Customization__
@@ -194,6 +237,14 @@ model.add_assertion(model.galaxies.galaxy.bulge.effective_radius < 3.0)
 print(model.info)
 
 """
+This is the stage where the figure earns its keep: the paired `centre` is drawn once on the `bulge` badged 
+`shared ×2`, with a blue link from the `disk` that reuses it (`↗ bulge.centre`), the fixed `sersic_index` is a grey 
+pill, the offset `effective_radius` carries its defining expression on the pill, and each assertion is a compact 
+dashed-orange label naming both of its operands.
+"""
+af.ModelPlotter(model).figure()
+
+"""
 __Available Model Components__
 
 The light profiles, mass profiles and other components that can be used for galaxy modeling are given at the following
@@ -227,6 +278,8 @@ model = af.Model.from_json(file=model_file)
 print(model.info)
 
 """
+The reloaded model is the same model, so `af.ModelPlotter(model).figure()` draws the identical figure.
+
 This means in **PyAutoGalaxy** one can write a model in a script, save it to hard disk and load it elsewhere, as well
 as manually customize it in the .json file directory.
 
