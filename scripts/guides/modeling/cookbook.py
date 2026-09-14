@@ -50,14 +50,15 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 print(model.info)
 
 """
-The same model can also be drawn as a figure, which shows its structure at a glance.
+The same model can also be visualized as a figure, making its structure easier to understand at a glance.
 
-The figure is the **map** and `model.info` is the **legend**. The map shows the shape of the model: which component 
-owns which parameter, and what state every parameter is in (free, fixed, shared with another component, related to 
-one by an expression, solved during the fit or missing from your configuration). The legend gives the numbers: the 
-prior on every parameter and the value of every fixed one. The dashed `intensity · solved` pill in the figure is the 
-parameter `model.info` does not print, because it is not part of the model: the `intensity` of a linear light profile 
-is solved for by the inversion at every likelihood evaluation.
+The figure shows how the model is organized: which parameters belong to each component, and whether they are free, 
+fixed, shared, linked by an expression, solved during the fit, or not configured. `model.info` provides the 
+corresponding numerical details, including the prior assigned to each free parameter and the value of each fixed 
+parameter.
+
+The `intensity` of a linear light profile is not a free parameter of the model and therefore does not appear in 
+`model.info`: it is solved for by the inversion at every likelihood evaluation.
 """
 af.ModelPlotter(model).figure()
 
@@ -91,10 +92,9 @@ model = af.Collection(galaxies=af.Collection(galaxy=galaxy))
 print(model.info)
 
 """
-The `bulge` and the `bar` are both `Sersic` profiles, so the figure collapses them into a single dashed plate badged 
-`2 components` rather than drawing two identical cards, while the `Exponential` disk keeps its own card. Each of the 
-three linear profiles carries its own dashed `intensity · solved` pill, which the footer counts as 3 parameters 
-solved during fitting.
+The `bulge` and the `bar` are both `Sersic` profiles, whereas the disk is an `Exponential`. Each of the three 
+linear light profiles has its own `intensity`, which is solved for by the inversion rather than sampled, three solved 
+parameters in total.
 """
 af.ModelPlotter(model).figure()
 
@@ -130,9 +130,8 @@ model = af.Collection(
 print(model.info)
 
 """
-The two galaxies are identical in structure, so the figure draws them once inside a dashed plate badged 
-`2 components` rather than twice. Their parameters are badged `independent`: two separate priors with the same 
-configuration, which is not the same thing as one shared prior.
+The two galaxies are identical in structure, but their parameters are independent: two separate priors with the 
+same configuration, which is not the same thing as one shared prior.
 """
 af.ModelPlotter(model).figure()
 
@@ -237,10 +236,9 @@ model.add_assertion(model.galaxies.galaxy.bulge.effective_radius < 3.0)
 print(model.info)
 
 """
-This is the stage where the figure earns its keep: the paired `centre` is drawn once on the `bulge` badged 
-`shared ×2`, with a blue link from the `disk` that reuses it (`↗ bulge.centre`), the fixed `sersic_index` is a grey 
-pill, the offset `effective_radius` carries its defining expression on the pill, and each assertion is a compact 
-dashed-orange label naming both of its operands.
+The `disk` reuses the `bulge`'s `centre` rather than having one of its own, the `sersic_index` is fixed, the 
+`effective_radius` of the disk is defined by an expression offsetting it from the bulge's, and the model carries 
+assertions relating its parameters.
 """
 af.ModelPlotter(model).figure()
 
