@@ -162,6 +162,24 @@ The PyAutoGalaxy stack (all on the `PyAutoLabs` GitHub org):
 For local development, these are typically cloned as siblings of this repo (`../PyAutoGalaxy`,
 `../PyAutoHands`, etc.).
 
+## Local agent skills
+
+Canonical local skills live in `skills/<name>/SKILL.md`. Claude uses the generated
+`.claude/skills/<name>` links; Codex uses generated adapters under
+`.codex/skills/autogalaxy-workspace-<skill>/SKILL.md`. Both point to the same
+instructions. Preserve existing Claude names when adding Codex discovery.
+
+After adding or renaming a skill, regenerate and check both surfaces from the
+PyAutoLabs workspace (or set `PYAUTO_BRAIN` to the Brain checkout):
+
+```bash
+bash "${PYAUTO_BRAIN:-organs/PyAutoBrain}/bin/install.sh" --write-project-discovery autogalaxy_workspace
+bash "${PYAUTO_BRAIN:-organs/PyAutoBrain}/bin/install.sh" --check-project-discovery autogalaxy_workspace
+```
+
+Commit the generated adapters with the canonical skill. Standalone clones use
+these committed adapters; regeneration requires the registered workspace.
+
 ## Task Workflows
 
 **`[API Update]` issues:** read the PR diff, identify every renamed/moved/removed/changed public API,
