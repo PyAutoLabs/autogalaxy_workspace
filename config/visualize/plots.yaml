@@ -27,7 +27,7 @@ fit:                                       # Settings for plots of all fits (e.g
   fits_galaxy_images : true                # Output a .fits file containing the images (e.g. without PSF convolution) of every galaxy?
   fits_model_galaxy_images : true          # Output a .fits file containing the model images (e.g. with PSF convolution) of every galaxy?
 
-fit_imaging {}:                            # Settings for plots of fits to imaging datasets (e.g. FitImagingPlotter).
+fit_imaging: {}                            # Settings for plots of fits to imaging datasets (e.g. FitImagingPlotter).
 
 galaxies:                                  # Settings for plots of galaxies (e.g. GalaxiesPlotter).
   subplot_galaxies: false                  # Plot subplot of all quantities in each galaxies group (e.g. images, convergence)?

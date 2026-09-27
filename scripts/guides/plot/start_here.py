@@ -177,7 +177,7 @@ Key entries in `config/visualize/general.yaml` include:
  - `colorbar` -> `labelsize` / `labelsize_subplot`: The font size of colorbar tick labels.
  - `contour` -> `total_contours`: The contour levels drawn over log10 plots.
  - `units` -> `cb_unit`: The unit label of the colorbar.
- - `subplot_shape_to_figsize_factor`: The scaling of subplot figure sizes.
+ - `mat_plot` -> `figure` -> `subplot_shape_to_figsize_factor`: The scaling of subplot figure sizes.
 
 This allows the default appearance to be controlled project-wide without changing code. To change
 these defaults, edit the YAML config file and restart the Python session (or Jupyter kernel).

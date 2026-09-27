@@ -23,8 +23,6 @@ hpc:
   hpc_mode: false                   # If True, use HPC mode, which disables GUI visualization, logging to screen and other settings which are not suited to running on a super computer.
   iterations_per_quick_update: 10000 #  Non-linear search iterations between every quick update, which just displays the maximum likelihood model fit.
   iterations_per_full_update: 1e99  # Non-linear search iterations between every full update, which outputs all visuals and result fits (e.g. model.result, search.summary), this exits the search and can be slow.
-  quick_update_background: false    # Keep off on HPC: background rendering pulls matplotlib into the sampler process even when no display is attached.
-  live_visual_update: false         # Keep off on HPC: nodes are headless with no GUI and no notebook kernel, so the live display surface has nothing to attach to.
 adapt:
   adapt_minimum_percent: 0.01
   adapt_noise_limit: 100000000.0
@@ -55,7 +53,6 @@ structures:
 test:
   check_likelihood_function: true   # if True, when a search is resumed the likelihood of a previous sample is recalculated to ensure it is consistent with the previous run.
   lh_timeout_seconds:               # If a float is input, the log_likelihood_function call is timed out after this many seconds, to diagnose infinite loops. Default is None, meaning no timeout.
-  disable_positions_lh_inversion_check: true
 version:
   # The compatibility FLOOR: the oldest library release whose API this
   # workspace's scripts require. Preferred over workspace_version
