@@ -90,21 +90,17 @@ The `guides` package contains important subpackages, including:
 
 The `README.md` files distributed throughout the workspace describe what is in each folder.
 
-## Community & Support
+## Community & Contributing
 
-Questions, help with your code or your analysis, and ideas: the
-[PyAutoLabs Discussions](https://github.com/orgs/PyAutoLabs/discussions).
-Bug reports with a reproducer (a snippet, the traceback, your versions):
-an issue on the library's tracker. The Slack is for collaborators, by
-invitation.
+**PyAutoGalaxy** is built in the open by its users: everyone is welcome to ask questions,
+share what they have made with it, and contribute.
 
-The collaborator Slack workspace shares project updates and discussions about galaxy modeling and analysis.
+Questions, ideas and bug reports: the [PyAutoLabs Discussions](https://github.com/orgs/PyAutoLabs/discussions).
+Chat with us on [Slack](https://join.slack.com/t/pyautolens/shared_invite/zt-2cufp4eyf-fXfgMxRGuvg~bMrI3uOAxg).
 
-## Contribution
+Community-built tools and tutorials, and how to contribute: the [**PyAutoGalaxy** community page](https://pyautogalaxy.readthedocs.io/en/latest/general/community.html).
 
-To make changes in the tutorial notebooks, please make changes in the corresponding Python files (`.py`)
-present in the `scripts` folder of each chapter. The marker `# %%` alternates between code cells and
-markdown cells.
+Tutorial notebooks are generated from the `.py` scripts in each `scripts` folder — edit those (the `# %%` marker alternates code and markdown cells), not the notebooks.
 
 ## Build Configuration
 
