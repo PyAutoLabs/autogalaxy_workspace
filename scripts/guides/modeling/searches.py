@@ -333,8 +333,6 @@ We can inspect the model (with customized priors) via its `.info` attribute.
 print(model.info)
 
 """
-__Start Point__
-
 We now define the start point of certain parameters in the model:
 
  - The galaxy is centred near (0.0, 0.0), so we set a start point there.
