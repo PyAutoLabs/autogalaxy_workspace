@@ -436,8 +436,8 @@ There are built in visualization tools for plotting this.
 The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
 parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.
 
-The superscripts of labels correspond to the name each component was given in the model (e.g. for the `Isothermal`
-mass its name `mass` defined when making the `Model` above is used).
+The superscripts of labels are the path of names each component was given in the model (the name the `Ellipse`
+was given when making the `Model` above).
 """
 aplt_af.corner_cornerpy(samples=result.samples)
 
