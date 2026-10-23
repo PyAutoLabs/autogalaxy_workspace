@@ -29,7 +29,7 @@ about galaxy structure or describing the task you would like to perform with
 API reference, and a bundled real JWST dataset to learn on. See the assistant
 for its full scope and instructions.
 
-**The assistant runs inside an AI coding agent: Claude Code or Codex are recommended. Sustained scientific use normally needs paid access to one of them (a personal subscription, institutional access or API billing). OpenCode is an experimental alternative whose client is free but whose model access, cost and capability depend on the provider. Browser chat routes (ChatGPT or Claude with a GitHub connector) are no longer supported.**
+The assistant runs inside an AI coding agent. Claude Code and Codex are recommended; free options and chat use are on the [PyAutoLabs AI options page](https://github.com/PyAutoLabs/PyAutoScientist/blob/main/AI_OPTIONS.md).
 
 ## New Users
 
