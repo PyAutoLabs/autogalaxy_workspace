@@ -4,7 +4,7 @@
 
 [Installation Guide](https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html) |
 [readthedocs](https://pyautogalaxy.readthedocs.io/en/latest/index.html) |
-[Introduction on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.18.1/start_here.ipynb) |
+[Introduction on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.25.1/start_here.ipynb) |
 [Browse Examples With Images](markdown/README.md) |
 [HowToGalaxy](https://github.com/PyAutoLabs/HowToGalaxy)
 
@@ -17,7 +17,7 @@ Welcome to the **PyAutoGalaxy** Workspace!
 The following human-readable documentation and examples are useful for new starters:
 
 - [Installation guide](https://pyautogalaxy.readthedocs.io/): set up **PyAutoGalaxy** on your personal computer.
-- [PyAutoGalaxy on Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.18.1/start_here.ipynb): try **PyAutoGalaxy** in a web browser without installing it.
+- [PyAutoGalaxy on Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.25.1/start_here.ipynb): try **PyAutoGalaxy** in a web browser without installing it.
 
 ### AI Assistant
 
@@ -29,7 +29,7 @@ about galaxy structure or describing the task you would like to perform with
 API reference, and a bundled real JWST dataset to learn on. See the assistant
 for its full scope and instructions.
 
-**The assistant runs inside an AI coding agent: Claude Code or Codex are recommended. Sustained scientific use normally needs paid access to one of them (a personal subscription, institutional access or API billing). OpenCode is an experimental alternative whose client is free but whose model access, cost and capability depend on the provider. Browser chat routes (ChatGPT or Claude with a GitHub connector) are no longer supported.**
+The assistant runs inside an AI coding agent. Claude Code and Codex are recommended; free options and chat use are on the [PyAutoLabs AI options page](https://github.com/PyAutoLabs/PyAutoScientist/blob/main/AI_OPTIONS.md).
 
 ## New Users
 
@@ -38,7 +38,7 @@ overview of **PyAutoGalaxy**'s core features and API.
 
 This can be done via a web browser by going to the following Google Colab link:
 
-https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.18.1/start_here.ipynb
+https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.10.25.1/start_here.ipynb
 
 Then checkout the [new user starting guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html)
 to navigate the workspace for your science case.

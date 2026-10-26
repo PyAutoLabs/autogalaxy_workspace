@@ -370,14 +370,12 @@ is important.
 print(f"Light Profiles = {inversion.linear_obj_list[0]}")
 print(f"Mapper = {inversion.linear_obj_list[1]}")
 
-"""
+r"""
 The visualization functions used above index amongst a specific type of linear object rather than the full
 `linear_obj_list`. The `mapper_index` of `subplot_of_mapper` counts through the inversion's mappers only, and the
 `pixelization_index` of `subplot_mappings` counts through its pixelizations only, therefore both remain 0 in this
 example even though the pixelization's `Mapper` is entry 1 of the `linear_obj_list`.
-"""
 
-"""
 __Grids__
 
 The role of a mapper is to map between the image-plane and reconstruction-plane.

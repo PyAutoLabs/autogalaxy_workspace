@@ -449,7 +449,7 @@ These are documented in the `fit.py` and `galaxy_reconstruction.py` examples.
 """
 inversion = result.max_log_likelihood_fit.inversion
 
-"""
+r"""
 __Wrap Up__
 
 Pixelizations are the most complex but also the most powerful way to model a galaxy's light.
@@ -485,9 +485,7 @@ in having a go at adding them contact me on SLACK! :)
 - More diagnostic quantities for reconstructed galaxy light.
 - Gradient calculations of the reconstructed light distribution.
 - Quantifying spatial variations in galaxy structure across the image.
-"""
 
-"""
 __Advanced: RTU Rectangular Meshes__
 
 The model fitted in this example uses the default `RectangularBilinearAdaptDensity` mesh (with
