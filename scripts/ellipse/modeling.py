@@ -436,8 +436,8 @@ There are built in visualization tools for plotting this.
 The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
 parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.
 
-The superscripts of labels are the path of names each component was given in the model (the name the `Ellipse`
-was given when making the `Model` above).
+The superscripts identify the component's path in the model. Here, the ellipse is the first entry in the
+`ellipses` list, so its labels use the index `0`.
 """
 aplt_af.corner_cornerpy(samples=result.samples)
 

@@ -104,7 +104,7 @@ simulator script. This ensures that all example scripts can be run without manua
 
 
 ```python
-if not dataset_path.exists():
+if ag.util.dataset.should_simulate(str(dataset_path)):
     import subprocess
     import sys
 
@@ -157,7 +157,7 @@ This means it is not a free parameter, reducing the dimensionality of non-linear
 
 Linear light profiles significantly improve the speed, accuracy and reliability of modeling and they are used
 by default in every modeling example. A full description of linear light profiles is provided in the
-`autogalaxy_workspace/*/modeling/imaging/features/linear_light_profiles.py` example.
+`autogalaxy_workspace/*/imaging/features/linear_light_profiles/modeling.py` example.
 
 A standard light profile can be used if you change the `lp_linear` to `lp`, but it is not recommended.
 
@@ -167,8 +167,8 @@ The model fitting default settings assume that the galaxy centre is near the coo
 
 If for your dataset the galaxy is not centred at (0.0", 0.0"), we recommend that you either: 
 
- - Reduce your data so that the centre is (`autogalaxy_workspace/*/preprocess`). 
- - Manually override the model priors (`autogalaxy_workspace/*/modeling/imaging/customize/priors.py`).
+ - Reduce your data so that the centre is (`autogalaxy_workspace/*/imaging/data_preparation`). 
+ - Manually override the model priors (`autogalaxy_workspace/*/guides/modeling/cookbook.py`).
 
 
 ```python
@@ -187,7 +187,7 @@ The `info` attribute shows the model in a readable format.
 names on the left and parameter priors on the right may lead them to appear across multiple lines. This is a
 common issue in Jupyter notebooks.
 
-The`info_whitespace_length` parameter in the file `config/generag.yaml` in the [output] section can be changed to 
+The`info_whitespace_length` parameter in the file `config/general.yaml` in the [output] section can be changed to 
 increase or decrease the amount of whitespace (The Jupyter notebook kernel will need to be reset for this change to 
 appear in a notebook).]
 
@@ -226,13 +226,18 @@ print(model.info)
 
 __Search__
 
-The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm 
+The model is fitted to the data using a non-linear search. In this example, we use the nested sampling algorithm
 Nautilus (https://nautilus.readthedocs.io/en/latest/).
+
+This example uses `Nautilus` because it returns the **full posterior** — every parameter's errors and the
+covariances between them. The folder's `start_here.py` instead fits with `af.MultiStartProdigy`, a multi-start
+gradient optimizer which is far faster but returns only a single best-fit model with no errors at all. Use that
+one to check a model quickly, and this one when you need results you can quote.
 
 The folders: 
 
- - `autogalaxy_workspace/*/modeling/imaging/searches`.
- - `autogalaxy_workspace/*/modeling/imaging/customize`
+ - `autogalaxy_workspace/*/guides/modeling/searches`.
+ - `autogalaxy_workspace/*/guides/modeling/customize`
   
 Give overviews of the  non-linear searches **PyAutoGalaxy** supports and more details on how to customize the
 model-fit, including the priors on the model. 
@@ -322,13 +327,7 @@ models (e.g. pixelized sources) and datasets with more visibilities it can be mu
 analysis.print_vram_use(model=model, batch_size=search.batch_size)
 ```
 
-    2026-07-10 18:54:00,320 - autofit.non_linear.fitness - INFO - JAX: Applying vmap and jit to likelihood function -- may take a few seconds.
-
-
-    2026-07-10 18:54:00,323 - autofit.non_linear.fitness - INFO - JAX: vmap and jit applied in 0.0031037330627441406 seconds.
-
-
-    VRAM USE = 0.590 GB
+    VRAM USE = 0.586 GB (likelihood only, batch_size=50)
 
 
 __Run Times__
@@ -364,122 +363,29 @@ an error. If this occurs, see the `autolens_workspace/guides/modeling/bug_fix` e
 result = search.fit(model=model, analysis=analysis)
 ```
 
-    2026-07-10 18:54:07,096 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with JAX (CPU: cpu).
-
-
-    2026-07-10 18:54:07,140 - start_here - INFO - The output path of this fit is autogalaxy_workspace/output/interferometer/modeling/simple/start_here/04a10f767d1670fbc51acda8dc58239f
-
-
-    2026-07-10 18:54:07,142 - start_here - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-
-
-    2026-07-10 18:54:09,001 - start_here - INFO - Starting new Nautilus non-linear search (no previous samples found).
-
-
-    2026-07-10 18:54:09,004 - autofit.non_linear.fitness - INFO - JAX: Applying vmap and jit to likelihood function -- may take a few seconds.
-
-
-    2026-07-10 18:54:09,005 - autofit.non_linear.fitness - INFO - JAX: vmap and jit applied in 0.0012831687927246094 seconds.
-
-
-    2026-07-10 18:54:09,008 - autofit.non_linear.fitness - INFO - Warming up visualization (one-time JAX compilation)...
-
-
-    2026-07-10 18:54:18,930 - autofit.non_linear.fitness - INFO - Visualization warm-up complete.
-
-
-    2026-07-10 18:54:18,933 - start_here - INFO - Running search with JAX vectorization (parallelization handled by JAX).
-
-
+    2026-10-26 14:08:59,574 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with JAX (CPU: cpu).
+    2026-10-26 14:08:59,575 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model are disabled. Set `updates: iterations_per_quick_update` in config/general.yaml to a finite number of iterations to enable them.
+    2026-10-26 14:08:59,593 - start_here - INFO - The output path of this fit is autogalaxy_workspace/output/interferometer/modeling/simple/start_here/04a10f767d1670fbc51acda8dc58239f
+    2026-10-26 14:08:59,594 - start_here - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:09:01,233 - autofit.non_linear.jax_compile - INFO - JAX jit compiling vectorized (vmap) likelihood function, could take seconds or minutes...
+    2026-10-26 14:09:02,400 - autofit.non_linear.jax_compile - INFO - JAX jit compilation of vectorized (vmap) likelihood function: traced, lowered and compiled in 1.2 seconds; waiting for the result to materialize...
+    2026-10-26 14:09:02,415 - autofit.non_linear.jax_compile - INFO - JAX jit compilation of vectorized (vmap) likelihood function: result materialized in 0.0 seconds.
+    2026-10-26 14:09:02,416 - autofit.non_linear.jax_compile - INFO - JAX jit compilation of vectorized (vmap) likelihood function complete in 1.2 seconds.
+    2026-10-26 14:09:02,417 - autofit.non_linear.fitness - INFO - Warming up visualization (one-time JAX compilation)...
+    2026-10-26 14:09:10,263 - autofit.non_linear.fitness - INFO - Visualization warm-up complete.
+    2026-10-26 14:09:10,265 - start_here - INFO - Resuming Nautilus non-linear search (previous samples found).
+    2026-10-26 14:09:10,266 - start_here - INFO - Running search with JAX vectorization (parallelization handled by JAX).
     Starting the nautilus sampler...
     Please report issues at github.com/johannesulf/nautilus.
     Status    | Bounds | Ellipses | Networks | Calls    | f_live | N_eff | log Z    
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    Finished  | 7      | 1        | 4        | 1250     | N/A    | 555   | -3189.85 
-    2026-07-10 18:55:23,778 - start_here - INFO - Fit Running: Updating results (see output folder).
-
-
-    Starting the nautilus sampler...
-    Please report issues at github.com/johannesulf/nautilus.
-    Status    | Bounds | Ellipses | Networks | Calls    | f_live | N_eff | log Z    
-    Finished  | 7      | 1        | 4        | 1250     | N/A    | 555   | -3189.85 
-    2026-07-10 18:56:44,905 - start_here - INFO - Fit Running: Updating results (see output folder).
-
-
-    2026-07-10 18:56:45,132 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
-
-
-    2026-07-10 18:56:45,205 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
-
-
-    2026-07-10 18:57:51,146 - start_here - INFO - Removing search internal folder.
-
-
-    2026-07-10 18:57:51,152 - start_here - INFO - Removing all files except for .zip file
-
-
-    2026-07-10 18:57:52,197 - start_here - INFO - Search complete, returning result
+    Finished  | 19     | 1        | 4        | 3350     | N/A    | 809   | -3195.11 
+    2026-10-26 14:09:11,713 - start_here - INFO - Fit Running: Updating results (see output folder).
+    2026-10-26 14:09:12,203 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+    2026-10-26 14:09:12,323 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+    Time to compute latent variables: 0.0005774497985839844 seconds for 100 samples.
+    2026-10-26 14:10:14,127 - start_here - INFO - Removing search internal folder.
+    2026-10-26 14:10:14,131 - start_here - INFO - Removing all files except for .zip file
+    2026-10-26 14:10:14,591 - start_here - INFO - Search complete, returning result
 
 
 __Output Folder Layout__
@@ -532,8 +438,8 @@ the `model.info` attribute display optimally on your computer. This attribute al
 print(result.info)
 ```
 
-    Bayesian Evidence                                                               -3189.85410900
-    Maximum Log Likelihood                                                          -3188.26894881
+    Bayesian Evidence                                                               -3195.11298470
+    Maximum Log Likelihood                                                          -3181.22826920
     
     model                                                                           Collection (N=9)
         galaxies                                                                    Collection (N=9)
@@ -543,19 +449,19 @@ print(result.info)
     
     Maximum Log Likelihood Model:
     ... [47 lines of output truncated] ...
-                    ell_comps_0                                                     -0.0005 (-0.3032, 0.2900)
-                    ell_comps_1                                                     -0.0063 (-0.2962, 0.2965)
-                effective_radius                                                    14.5572 (4.4237, 24.8113)
-                sersic_index                                                        2.9484 (1.5175, 4.4020)
+                    ell_comps_0                                                     0.1826 (0.1274, 0.2399)
+                    ell_comps_1                                                     0.0663 (0.0089, 0.1215)
+                effective_radius                                                    2.4032 (1.6688, 3.1011)
+                sersic_index                                                        4.0656 (3.2701, 4.6613)
             bulge - disk
                 centre
-                    centre_0                                                        -0.0114 (-0.2984, 0.3211)
-                    centre_1                                                        -0.0555 (-0.3229, 0.2601)
+                    centre_0                                                        -0.0075 (-0.0253, 0.0108)
+                    centre_1                                                        0.0776 (0.0498, 0.1077)
             disk
                 ell_comps
-                    ell_comps_0                                                     -0.0037 (-0.2972, 0.2953)
-                    ell_comps_1                                                     0.0126 (-0.3078, 0.2892)
-                effective_radius                                                    14.5759 (4.8097, 24.2254)
+                    ell_comps_0                                                     0.0005 (-0.2964, 0.2958)
+                    ell_comps_1                                                     -0.0386 (-0.3403, 0.2847)
+                effective_radius                                                    13.2637 (2.9635, 24.8258)
     
     instances
     
@@ -580,7 +486,7 @@ aplt.subplot_galaxies(
 aplt.subplot_fit_dirty_images(fit=result.max_log_likelihood_fit)
 ```
 
-    <autofit.mapper.model.ModelInstance object at 0x7f61faade030>
+    <autofit.mapper.model.ModelInstance object at 0x7efeafcbde80>
 
 
 
@@ -603,14 +509,9 @@ There are built in visualization tools for plotting this.
 The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
 parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.
 
-The superscripts of labels correspond to the name each component was given in the model (e.g. for the `Isothermal`
-mass its name `mass` defined when making the `Model` above is used).
+The superscripts of labels are the path of names each component was given in the model (e.g. for the `Sersic`
+bulge, `galaxy.bulge`: the galaxy's name `galaxy` and its name `bulge` defined when making the `Model` above).
 
-
-```python
-
-# %%
-'''
 This script gives a concise overview of the basic modeling API, fitting one of the simplest galaxy models possible.
 
 Let’s now consider what features you should read about to improve your galaxy modeling, especially if you are aiming
@@ -634,7 +535,7 @@ forms of customization!
 __Data Preparation__
 
 If you are looking to fit your own interferometer data of a galaxy, check out
-the `autogalaxy_workspace/*/interferometer/data_preparation/start_here.ipynb` script for an overview of how data
+the `autogalaxy_workspace/*/interferometer/data_preparation.ipynb` script for an overview of how data
 should be prepared before being modeled.
 
 __HowToGalaxy__
@@ -660,17 +561,3 @@ The folders `autogalaxy_workspace/*/guides/modeling/searches` give an overview o
 other than Nautilus, that can be used to fit galaxy models.
 
 They also provide details on how to customize the model-fit, for example the priors.
-'''
-```
-
-
-
-
-    '\nThis script gives a concise overview of the basic modeling API, fitting one of the simplest galaxy models possible.\n\nLet’s now consider what features you should read about to improve your galaxy modeling, especially if you are aiming\nto fit more complex models to your data.\n\n__Features__\n\nThe examples in the `autogalaxy_workspace/*/interferometer/features` package illustrate other galaxy modeling\nfeatures.\n\nWe recommend you check out the `pixelization` feature next, which lets you reconstruct galaxies with complex,\nirregular morphology that simple light profiles cannot capture:\n\n- ``pixelization``: The galaxy’s light is reconstructed using an adaptive Rectangular mesh or Delaunay mesh.\n\nThe files `autogalaxy_workspace/*/guides/modeling/searches` and\n`autogalaxy_workspace/*/guides/modeling/customize` provide guides on how to customize many other aspects of the\nmodel-fit. Check them out to see if anything sounds useful, but for most users you can get by without using these\nforms of customization!\n\n__Data Preparation__\n\nIf you are looking to fit your own interferometer data of a galaxy, check out\nthe `autogalaxy_workspace/*/interferometer/data_preparation/start_here.ipynb` script for an overview of how data\nshould be prepared before being modeled.\n\n__HowToGalaxy__\n\nThis `start_here.py` script, and the features examples above, do not explain many details of how galaxy modeling is\nperformed, for example:\n\n- How does PyAutoGalaxy evaluate galaxy light profiles and perform image-plane calculations?\n- How is a galaxy model fitted to data? What quantifies the goodness of fit (e.g. how is a log likelihood computed)?\n- How does Nautilus find the highest likelihood galaxy models? What exactly is a “non-linear search”?\n\nYou do not need to be able to answer these questions in order to fit galaxy models with PyAutoGalaxy and do science.\nHowever, having a deeper understanding of how it all works is both interesting and will benefit you as a scientist.\n\nThis deeper insight is offered by the **HowToGalaxy** Jupyter notebook lectures, which live\nat https://github.com/PyAutoLabs/HowToGalaxy.\n\nI recommend that you check them out if you are interested in more details!\n\n__Modeling Customization__\n\nThe folders `autogalaxy_workspace/*/guides/modeling/searches` give an overview of alternative non-linear searches,\nother than Nautilus, that can be used to fit galaxy models.\n\nThey also provide details on how to customize the model-fit, for example the priors.\n'
-
-
-
-
-```python
-
-```

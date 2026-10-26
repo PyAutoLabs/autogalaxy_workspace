@@ -68,12 +68,6 @@ import autogalaxy as ag
 import autogalaxy.plot as aplt
 ```
 
-    .../PyAutoNerves/autonerves/workspace.py:31: UserWarning: Cannot verify the workspace at autogalaxy_workspace/scripts/ellipse is compatible with the installed library version (2026.8.17.1): no `version.minimum_library_version` or `version.workspace_version` key in config/general.yaml and no version.txt at the workspace root.
-    
-    If you cloned the workspace from `main` rather than a release tag, set `version.workspace_version_check: False` in config/general.yaml to silence this warning. The `main` branch updates more frequently than library releases, so version mismatches are expected and not actionable for `main`-branch users.
-    
-    You can also set the environment variable PYAUTO_SKIP_WORKSPACE_VERSION_CHECK=1 to disable temporarily.
-      warnings.warn(message)
     Working Directory has been set to `autogalaxy_workspace`
 
 
@@ -115,6 +109,12 @@ dataset = ag.Imaging.from_fits(
     pixel_scales=0.1,
 )
 ```
+
+    Figure(700x700)
+    .../PyAutoArray/autoarray/operators/convolver.py:1484: UserWarning: No blurring_image provided. Only the direct image will be convolved. This may change the correctness of the PSF convolution.
+      warnings.warn(
+    Figure(1800x1800)
+
 
 We can use the `Imaging` to plot the image and noise-map of the dataset.
 
@@ -176,7 +176,7 @@ We now combine the imaging dataset with the mask.
 dataset = dataset.apply_mask(mask=mask)
 ```
 
-    2026-08-20 13:39:22,950 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data masked, contains a total of 7860 image-pixels
+    2026-10-26 14:11:08,401 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data masked, contains a total of 7860 image-pixels
 
 
 We now plot the image with the mask applied, where the image automatically zooms around the mask to make the galaxy
@@ -383,6 +383,9 @@ search = af.DynestyStatic(
 )
 ```
 
+    2026-10-26 14:11:11,447 - autofit.non_linear.search.runtime - WARNING - DynestyStatic received the unknown keyword argument 'n_live', which is ignored. Check its spelling against the search's constructor.
+
+
 __Analysis__
 
 We next create an `AnalysisEllipse` object, which can be given many inputs customizing how the model is fitted to the 
@@ -451,20 +454,22 @@ an error. If this occurs, see the `autolens_workspace/guides/modeling/bug_fix` e
 result = search.fit(model=model, analysis=analysis)
 ```
 
-    2026-08-20 13:39:24,411 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 1 cores.
-    2026-08-20 13:39:24,412 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
-    2026-08-20 13:39:24,431 - fit_start - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_start/666d899be5fedd67c27ffa326ccd7875
-    2026-08-20 13:39:24,432 - fit_start - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:39:26,315 - fit_start - INFO - Starting new Dynesty non-linear search (no previous samples found).
-    2026-08-20 13:39:26,445 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
-    2026-08-20 13:39:28,412 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
-    1087it [00:00, 22925.11it/s, +50 | bound: 114 | nc: 1 | ncall: 6460 | eff(%): 17.738 | loglstar:   -inf <  1.937 <    inf | logz: -16.984 +/-  0.576 | dlogz:  0.001 >  0.059]2026-08-20 13:40:28,676 - fit_start - INFO - Fit Running: Updating results (see output folder).
+    2026-10-26 14:11:11,465 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with 1 cores.
+    2026-10-26 14:11:11,466 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
+    2026-10-26 14:11:11,485 - fit_start - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_start/666d899be5fedd67c27ffa326ccd7875
+    2026-10-26 14:11:11,486 - fit_start - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:11:13,881 - fit_start - INFO - Starting new Dynesty non-linear search (no previous samples found).
+    2026-10-26 14:11:13,883 - fit_start - INFO - Running Dynesty single-CPU (number_of_cores=1, no pool).
+    2026-10-26 14:11:14,023 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
+    2026-10-26 14:11:14,571 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
+    1021it [01:06, 15.30it/s, +50 | bound: 104 | nc: 1 | ncall: 6201 | eff(%): 17.412 | loglstar:   -inf <  7.375 <    inf | logz: -10.557 +/-  0.532 | dlogz:  0.001 >  0.059]2026-10-26 14:12:21,318 - fit_start - INFO - Fit Running: Updating results (see output folder).
     
-    2026-08-20 13:40:28,815 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
-    2026-08-20 13:40:28,834 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
-    2026-08-20 13:40:35,574 - fit_start - INFO - Removing search internal folder.
-    2026-08-20 13:40:35,576 - fit_start - INFO - Removing all files except for .zip file
-    2026-08-20 13:40:35,868 - fit_start - INFO - Search complete, returning result
+    2026-10-26 14:12:21,446 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+    2026-10-26 14:12:21,460 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+    Time to compute latent variables: 0.00016379356384277344 seconds for 100 samples.
+    2026-10-26 14:12:30,876 - fit_start - INFO - Removing search internal folder.
+    2026-10-26 14:12:30,879 - fit_start - INFO - Removing all files except for .zip file
+    2026-10-26 14:12:31,173 - fit_start - INFO - Search complete, returning result
 
 
 __Output Folder Layout__
@@ -514,8 +519,8 @@ the `model.info` attribute display optimally on your computer. This attribute al
 print(result.info)
 ```
 
-    Bayesian Evidence                                                               -16.98392973
-    Maximum Log Likelihood                                                          1.93735842
+    Bayesian Evidence                                                               -10.55720701
+    Maximum Log Likelihood                                                          7.37504974
     
     model                                                                           Collection (N=4)
         ellipses                                                                    Collection (N=4)
@@ -525,7 +530,7 @@ print(result.info)
     
     ellipses
     ... [18 lines of output truncated] ...
-                ell_comps_1                                                         0.0097 (-0.0024, 0.0215)
+                ell_comps_1                                                         0.0049 (-0.0043, 0.0141)
     
     
     Summary (1.0 sigma limits):
@@ -533,11 +538,11 @@ print(result.info)
     ellipses
         0
             centre
-                centre_0                                                            -0.0005 (-0.0017, 0.0008)
-                centre_1                                                            -0.0009 (-0.0023, 0.0001)
+                centre_0                                                            0.0001 (-0.0009, 0.0010)
+                centre_1                                                            0.0000 (-0.0012, 0.0004)
             ell_comps
-                ell_comps_0                                                         0.2320 (0.2278, 0.2357)
-                ell_comps_1                                                         0.0097 (0.0056, 0.0137)
+                ell_comps_0                                                         0.2321 (0.2301, 0.2354)
+                ell_comps_1                                                         0.0049 (0.0013, 0.0075)
     
     instances
     
@@ -569,21 +574,21 @@ for i, ellipse in enumerate(result.max_log_likelihood_instance.ellipses):
 ```
 
     Max Log Likelihood Model:
-    <autofit.mapper.model.ModelInstance object at 0x7f0fdbd0e900>
-    First Ellipse Centre: (-0.00081284301439, -0.00082900049674)
-    First Ellipse Elliptical Components: (0.23353648863857, 0.009497811008)
+    <autofit.mapper.model.ModelInstance object at 0x7f20e154b710>
+    First Ellipse Centre: (-0.00023502949211, -0.00046058219336)
+    First Ellipse Elliptical Components: (0.234260275271, 0.0010136868099)
     First Ellipse Major Axis: 0.3
     First Ellipse Axis Ratio: <bound method EllProfile.axis_ratio of Ellipse
-    centre: (-0.00081284301439, -0.00082900049674)
-    ell_comps: (0.23353648863857, 0.009497811008)
+    centre: (-0.00023502949211, -0.00046058219336)
+    ell_comps: (0.234260275271, 0.0010136868099)
     major_axis: 0.3
-    id: 1>
+    id: 0>
     First Ellipse Angle: <bound method EllProfile.angle of Ellipse
-    centre: (-0.00081284301439, -0.00082900049674)
-    ell_comps: (0.23353648863857, 0.009497811008)
+    centre: (-0.00023502949211, -0.00046058219336)
+    ell_comps: (0.234260275271, 0.0010136868099)
     major_axis: 0.3
-    id: 1>
-    Ellipse 0 Minor Axis: 0.18633025180334975
+    id: 0>
+    Ellipse 0 Minor Axis: 0.18612026641831578
 
 
 The maximum log likelihood fit is also available via the result, which can visualize the fit.
@@ -607,25 +612,25 @@ There are built in visualization tools for plotting this.
 The plot is labeled with short hand parameter names (e.g. `sersic_index` is mapped to the short hand 
 parameter `n`). These mappings ate specified in the `config/notation.yaml` file and can be customized by users.
 
-The superscripts of labels correspond to the name each component was given in the model (e.g. for the `Isothermal`
-mass its name `mass` defined when making the `Model` above is used).
+The superscripts identify the component's path in the model. Here, the ellipse is the first entry in the
+`ellipses` list, so its labels use the index `0`.
 
 
 ```python
 aplt_af.corner_cornerpy(samples=result.samples)
 ```
 
-    2026-08-20 13:40:36,258 - arviz - INFO - Found 'auto' as default backend, checking available backends
-    2026-08-20 13:40:36,259 - arviz - INFO - Matplotlib is available, defining as default backend
-    2026-08-20 13:40:36,273 - arviz - INFO - arviz_base 1.0.0 available, exposing its functions as part of the `arviz` namespace
-    2026-08-20 13:40:36,478 - arviz - INFO - arviz_stats 1.0.0 available, exposing its functions as part of the `arviz` namespace
-    2026-08-20 13:40:36,533 - arviz - INFO - arviz_plots 1.0.0 available, exposing its functions as part of the `arviz` namespace
-    2026-08-20 13:40:36,722 - root - WARNING - Too few points to create valid contours
-    2026-08-20 13:40:36,766 - root - WARNING - Too few points to create valid contours
-    2026-08-20 13:40:36,794 - root - WARNING - Too few points to create valid contours
-    2026-08-20 13:40:36,834 - root - WARNING - Too few points to create valid contours
-    2026-08-20 13:40:36,863 - root - WARNING - Too few points to create valid contours
-    2026-08-20 13:40:36,892 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:31,567 - arviz - INFO - Found 'auto' as default backend, checking available backends
+    2026-10-26 14:12:31,568 - arviz - INFO - Matplotlib is available, defining as default backend
+    2026-10-26 14:12:31,576 - arviz - INFO - arviz_base 1.0.0 available, exposing its functions as part of the `arviz` namespace
+    2026-10-26 14:12:31,755 - arviz - INFO - arviz_stats 1.0.0 available, exposing its functions as part of the `arviz` namespace
+    2026-10-26 14:12:31,776 - arviz - INFO - arviz_plots 1.0.0 available, exposing its functions as part of the `arviz` namespace
+    2026-10-26 14:12:31,957 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:32,005 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:32,036 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:32,090 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:32,129 - root - WARNING - Too few points to create valid contours
+    2026-10-26 14:12:32,166 - root - WARNING - Too few points to create valid contours
 
 
 
@@ -679,35 +684,35 @@ for i in range(len(major_axis_list)):
 ```
 
     
-    2026-08-20 13:40:37,265 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 4 cores.
-    2026-08-20 13:40:37,266 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
-    2026-08-20 13:40:37,276 - fit_0 - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_0/7a130e403b404a9055b3cd9f15290a5e
-    2026-08-20 13:40:37,277 - fit_0 - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:40:38,534 - fit_0 - INFO - Starting new Dynesty non-linear search (no previous samples found).
-    2026-08-20 13:40:38,571 - autofit.non_linear.parallel.sneaky - INFO - Creating pool with 4 processes
-    2026-08-20 13:40:38,584 - process 0 - INFO - created
-    2026-08-20 13:40:38,587 - process 1 - INFO - created
-    2026-08-20 13:40:38,589 - process 2 - INFO - created
-    ... [173 lines of output truncated] ...
-    2026-08-20 13:44:29,818 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 4 cores.
-    2026-08-20 13:44:29,819 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
-    2026-08-20 13:44:29,830 - fit_9 - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_9/f6d471f3fc31a0d5c49c309996c32d96
-    2026-08-20 13:44:29,830 - fit_9 - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:44:30,994 - fit_9 - INFO - Starting new Dynesty non-linear search (no previous samples found).
-    2026-08-20 13:44:31,060 - autofit.non_linear.parallel.sneaky - INFO - Creating pool with 4 processes
-    2026-08-20 13:44:31,064 - process 0 - INFO - created
-    2026-08-20 13:44:31,065 - process 1 - INFO - created
-    2026-08-20 13:44:31,067 - process 2 - INFO - created
-    2026-08-20 13:44:31,068 - process 3 - INFO - created
-    2026-08-20 13:44:31,130 - autofit.non_linear.initializer - INFO - Generating initial samples of model using 4 cores
-    2026-08-20 13:44:31,317 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
-    705it [00:00, 19593.19it/s, +50 | bound: 69 | nc: 1 | ncall: 4582 | eff(%): 16.659 | loglstar:   -inf < 777.137 <    inf | logz: 765.682 +/-  0.466 | dlogz:  0.001 >  0.059]2026-08-20 13:44:52,488 - fit_9 - INFO - Fit Running: Updating results (see output folder).
-    2026-08-20 13:44:52,555 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
-    2026-08-20 13:44:52,568 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+    2026-10-26 14:12:32,579 - autofit.non_linear.search.runtime - WARNING - DynestyStatic received the unknown keyword argument 'n_live', which is ignored. Check its spelling against the search's constructor.
+    2026-10-26 14:12:32,581 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with 4 cores.
+    2026-10-26 14:12:32,581 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
+    2026-10-26 14:12:32,594 - fit_0 - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_0/b6cf9248f32415ae3b80a1c202209610
+    2026-10-26 14:12:32,594 - fit_0 - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:12:34,028 - fit_0 - INFO - Starting new Dynesty non-linear search (no previous samples found).
+    2026-10-26 14:12:34,029 - autofit.non_linear.fitness - INFO - Running the likelihood once before forking workers (initialises lazily loaded native libraries, e.g. numba, in the parent)...
+    2026-10-26 14:12:34,040 - autofit.non_linear.fitness - INFO - Likelihood warm-up before forking workers complete.
+    2026-10-26 14:12:34,201 - fit_0 - INFO - ...using pool
+    ... [221 lines of output truncated] ...
+    2026-10-26 14:16:13,635 - fit_9 - INFO - Starting new Dynesty non-linear search (no previous samples found).
+    2026-10-26 14:16:13,636 - autofit.non_linear.fitness - INFO - Running the likelihood once before forking workers (initialises lazily loaded native libraries, e.g. numba, in the parent)...
+    2026-10-26 14:16:13,647 - autofit.non_linear.fitness - INFO - Likelihood warm-up before forking workers complete.
+    2026-10-26 14:16:13,648 - fit_9 - INFO - ...using pool
+    2026-10-26 14:16:13,771 - autofit.non_linear.parallel.sneaky - INFO - Creating pool with 4 processes
+    2026-10-26 14:16:13,776 - process 0 - INFO - created
+    2026-10-26 14:16:13,778 - process 1 - INFO - created
+    2026-10-26 14:16:13,780 - process 2 - INFO - created
+    2026-10-26 14:16:13,782 - process 3 - INFO - created
+    2026-10-26 14:16:13,900 - autofit.non_linear.initializer - INFO - Generating initial samples of model using 4 cores
+    2026-10-26 14:16:14,131 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
+    609it [00:17, 35.62it/s, +50 | bound: 55 | nc: 1 | ncall: 4152 | eff(%): 16.065 | loglstar:   -inf < 774.613 <    inf | logz: 765.153 +/-  0.403 | dlogz:  0.001 >  0.059]2026-10-26 14:16:31,310 - fit_9 - INFO - Fit Running: Updating results (see output folder).
+    2026-10-26 14:16:31,382 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+    2026-10-26 14:16:31,397 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
     
-    2026-08-20 13:44:56,550 - fit_9 - INFO - Removing search internal folder.
-    2026-08-20 13:44:56,552 - fit_9 - INFO - Removing all files except for .zip file
-    2026-08-20 13:44:57,358 - fit_9 - INFO - Search complete, returning result
+    Time to compute latent variables: 0.00016736984252929688 seconds for 100 samples.
+    2026-10-26 14:16:37,264 - fit_9 - INFO - Removing search internal folder.
+    2026-10-26 14:16:37,266 - fit_9 - INFO - Removing all files except for .zip file
+    2026-10-26 14:16:38,014 - fit_9 - INFO - Search complete, returning result
 
 
 __Final Fit__
@@ -732,21 +737,21 @@ search = af.Drawer(
 result = search.fit(model=model, analysis=analysis)
 ```
 
-    2026-08-20 13:44:57,367 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 1 cores.
-    2026-08-20 13:44:57,368 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model are disabled. Set `updates: iterations_per_quick_update` in config/general.yaml to a finite number of iterations to enable them.
-    2026-08-20 13:44:57,378 - fit_all - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_all/be7ee50e7bd34f744c91ae2ca497863b
-    2026-08-20 13:44:57,379 - fit_all - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:44:58,452 - fit_all - INFO - Performing DrawerSearch for a total of 1 points.
-    2026-08-20 13:44:58,453 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
-    2026-08-20 13:44:58,524 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
-    2026-08-20 13:44:58,526 - fit_all - INFO - Drawer complete
-    2026-08-20 13:44:58,527 - fit_all - INFO - Fit Running: Updating results (see output folder).
-    2026-08-20 13:44:58,530 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
-    2026-08-20 13:44:58,532 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
-    2026-08-20 13:44:58,532 - autofit.non_linear.search.updater - INFO - Drawing via PDF not available for this search, using all samples above the samples weight threshold instead.
-    2026-08-20 13:45:03,804 - fit_all - INFO - Removing search internal folder.
-    2026-08-20 13:45:03,805 - fit_all - INFO - Removing all files except for .zip file
-    2026-08-20 13:45:05,547 - fit_all - INFO - Search complete, returning result
+    2026-10-26 14:16:38,028 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with 1 cores.
+    2026-10-26 14:16:38,029 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model are disabled. Set `updates: iterations_per_quick_update` in config/general.yaml to a finite number of iterations to enable them.
+    2026-10-26 14:16:38,043 - fit_all - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse/ellipse/fit_all/c0870bcb1f82c74d46c295913872aba0
+    2026-10-26 14:16:38,044 - fit_all - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:16:39,611 - fit_all - INFO - Performing DrawerSearch for a total of 1 points.
+    2026-10-26 14:16:39,613 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
+    2026-10-26 14:16:39,723 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
+    2026-10-26 14:16:39,727 - fit_all - INFO - Drawer complete
+    2026-10-26 14:16:39,730 - fit_all - INFO - Fit Running: Updating results (see output folder).
+    2026-10-26 14:16:39,734 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+    2026-10-26 14:16:39,737 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+    2026-10-26 14:16:39,739 - autofit.non_linear.search.updater - INFO - Drawing via PDF not available for this search, using all samples above the samples weight threshold instead.
+    2026-10-26 14:16:48,092 - fit_all - INFO - Removing search internal folder.
+    2026-10-26 14:16:48,094 - fit_all - INFO - Removing all files except for .zip file
+    2026-10-26 14:16:49,579 - fit_all - INFO - Search complete, returning result
 
 
 __Masking__
@@ -810,36 +815,36 @@ search = af.Drawer(
 result = search.fit(model=model, analysis=analysis)
 ```
 
-    2026-08-20 13:45:05,565 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data masked, contains a total of 7860 image-pixels
+    2026-10-26 14:16:49,598 - autoarray.dataset.imaging.dataset - INFO - IMAGING - Data masked, contains a total of 7860 image-pixels
     
-    2026-08-20 13:45:05,571 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 4 cores.
-    2026-08-20 13:45:05,572 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
-    2026-08-20 13:45:05,583 - fit_0 - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse_mask/ellipse/fit_0/7a130e403b404a9055b3cd9f15290a5e
-    2026-08-20 13:45:05,584 - fit_0 - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:45:06,656 - fit_0 - INFO - Starting new Dynesty non-linear search (no previous samples found).
-    2026-08-20 13:45:06,731 - autofit.non_linear.parallel.sneaky - INFO - Creating pool with 4 processes
-    2026-08-20 13:45:06,735 - process 0 - INFO - created
-    2026-08-20 13:45:06,738 - process 1 - INFO - created
-    ... [189 lines of output truncated] ...
-    
-    2026-08-20 13:48:58,473 - fit_9 - INFO - Removing search internal folder.
-    2026-08-20 13:48:58,474 - fit_9 - INFO - Removing all files except for .zip file
-    2026-08-20 13:48:59,275 - fit_9 - INFO - Search complete, returning result
-    2026-08-20 13:48:59,278 - autofit.non_linear.search.abstract_search - INFO - Starting non-linear search with 1 cores.
-    2026-08-20 13:48:59,278 - autofit.non_linear.search.abstract_search - INFO - On-the-fly updates of the maximum likelihood model are disabled. Set `updates: iterations_per_quick_update` in config/general.yaml to a finite number of iterations to enable them.
-    2026-08-20 13:48:59,288 - fit_all - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse_mask/ellipse/fit_all/c67449afc3a46378e5a616eea645cc48
-    2026-08-20 13:48:59,288 - fit_all - INFO - Outputting pre-fit files (e.g. model.info, visualization).
-    2026-08-20 13:49:00,166 - fit_all - INFO - Performing DrawerSearch for a total of 1 points.
-    2026-08-20 13:49:00,167 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
-    2026-08-20 13:49:00,227 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
-    2026-08-20 13:49:00,228 - fit_all - INFO - Drawer complete
-    2026-08-20 13:49:00,229 - fit_all - INFO - Fit Running: Updating results (see output folder).
-    2026-08-20 13:49:00,231 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
-    2026-08-20 13:49:00,232 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
-    2026-08-20 13:49:00,233 - autofit.non_linear.search.updater - INFO - Drawing via PDF not available for this search, using all samples above the samples weight threshold instead.
-    2026-08-20 13:49:04,674 - fit_all - INFO - Removing search internal folder.
-    2026-08-20 13:49:04,675 - fit_all - INFO - Removing all files except for .zip file
-    2026-08-20 13:49:05,482 - fit_all - INFO - Search complete, returning result
+    2026-10-26 14:16:49,606 - autofit.non_linear.search.runtime - WARNING - DynestyStatic received the unknown keyword argument 'n_live', which is ignored. Check its spelling against the search's constructor.
+    2026-10-26 14:16:49,608 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with 4 cores.
+    2026-10-26 14:16:49,609 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model every 10000 iterations.
+    2026-10-26 14:16:49,621 - fit_0 - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse_mask/ellipse/fit_0/b6cf9248f32415ae3b80a1c202209610
+    2026-10-26 14:16:49,623 - fit_0 - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:16:51,101 - fit_0 - INFO - Starting new Dynesty non-linear search (no previous samples found).
+    2026-10-26 14:16:51,103 - autofit.non_linear.fitness - INFO - Running the likelihood once before forking workers (initialises lazily loaded native libraries, e.g. numba, in the parent)...
+    2026-10-26 14:16:51,151 - autofit.non_linear.fitness - INFO - Likelihood warm-up before forking workers complete.
+    ... [237 lines of output truncated] ...
+    Time to compute latent variables: 0.0001785755157470703 seconds for 100 samples.
+    2026-10-26 14:20:49,936 - fit_9 - INFO - Removing search internal folder.
+    2026-10-26 14:20:49,938 - fit_9 - INFO - Removing all files except for .zip file
+    2026-10-26 14:20:50,570 - fit_9 - INFO - Search complete, returning result
+    2026-10-26 14:20:50,574 - autofit.non_linear.search.runtime - INFO - Starting non-linear search with 1 cores.
+    2026-10-26 14:20:50,574 - autofit.non_linear.search.runtime - INFO - On-the-fly updates of the maximum likelihood model are disabled. Set `updates: iterations_per_quick_update` in config/general.yaml to a finite number of iterations to enable them.
+    2026-10-26 14:20:50,592 - fit_all - INFO - The output path of this fit is autogalaxy_workspace/output/ellipse_mask/ellipse/fit_all/6f47b91e3842c056644343f1469ee9ec
+    2026-10-26 14:20:50,593 - fit_all - INFO - Outputting pre-fit files (e.g. model.info, visualization).
+    2026-10-26 14:20:51,989 - fit_all - INFO - Performing DrawerSearch for a total of 1 points.
+    2026-10-26 14:20:51,991 - autofit.non_linear.initializer - INFO - Generating initial samples of model using JAX LH Function cores
+    2026-10-26 14:20:52,090 - autofit.non_linear.initializer - INFO - Initial samples generated, starting non-linear search
+    2026-10-26 14:20:52,093 - fit_all - INFO - Drawer complete
+    2026-10-26 14:20:52,095 - fit_all - INFO - Fit Running: Updating results (see output folder).
+    2026-10-26 14:20:52,098 - autofit.non_linear.samples.samples - INFO - Samples with weight less than 1e-10 removed from samples.csv.
+    2026-10-26 14:20:52,101 - autofit.non_linear.search.updater - INFO - Creating latent samples by drawing 100 from the PDF.
+    2026-10-26 14:20:52,103 - autofit.non_linear.search.updater - INFO - Drawing via PDF not available for this search, using all samples above the samples weight threshold instead.
+    2026-10-26 14:20:57,868 - fit_all - INFO - Removing search internal folder.
+    2026-10-26 14:20:57,870 - fit_all - INFO - Removing all files except for .zip file
+    2026-10-26 14:20:58,682 - fit_all - INFO - Search complete, returning result
 
 
 This script gives a concise overview of the ellipse fitting modeling API, fitting one the simplest models possible.
