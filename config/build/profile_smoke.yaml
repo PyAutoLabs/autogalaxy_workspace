@@ -20,6 +20,7 @@ defaults:
   NUMBA_CACHE_DIR: "/tmp/numba_cache"       # Writable cache dir for numba
   MPLCONFIGDIR: "/tmp/matplotlib"           # Writable config dir for matplotlib
 
+# Override or unset default environment variables for matching script paths.
 overrides:
   # The `guides/` PYAUTO_SMALL_DATASETS unset migrated to in-file
   # `# ENV: full_datasets` declarations on each guides/ script (#187 Stage 2).

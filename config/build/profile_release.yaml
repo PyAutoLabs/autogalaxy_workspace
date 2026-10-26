@@ -37,6 +37,7 @@ defaults:
   NUMBA_CACHE_DIR: "/tmp/numba_cache"       # writable cache dir for numba
   MPLCONFIGDIR: "/tmp/matplotlib"           # writable config dir for matplotlib
 
+# Override or unset default environment variables for matching script paths.
 overrides:
   # Non-simulator scripts that load committed FITS data need full-size
   # datasets to avoid shape mismatch with pre-existing 100x100 data.
