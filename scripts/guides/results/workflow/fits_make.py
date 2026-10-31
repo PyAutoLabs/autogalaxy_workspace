@@ -175,7 +175,7 @@ We require a naming convention for the output files. In this example, we have tw
 files are going to be output.
 
 One way to name the .fits files is to use the `unique_tag` of the search, which is unique to every model-fit. For
-the helper-generated `unique_tag` values are `simple_0` and `simple_1`, therefore this will informatively name the .fits
+the helper-generated `unique_tag` values are `simple` and `simple_1`, therefore this will informatively name the .fits
 files the names of the datasets.
 
 We achieve this behaviour by inputting `name="unique_tag"` to the `output_to_folder` method. 
