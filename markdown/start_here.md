@@ -22,6 +22,38 @@ PyAutoGalaxy
 
 This notebook gives an overview of **PyAutoGalaxy**'s API, core features and details of the autogalaxy_workspace.
 
+__Natural Language or Python__
+
+You can use **PyAutoGalaxy** by describing what you want in natural language, or by writing Python yourself. Both routes
+use the same software, and everything in this notebook can be done either way.
+
+To use natural language, open Claude Code, Codex or another AI coding agent and paste in the prompt below. The
+[PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) then takes you through this notebook as a
+conversation (grids, light profiles and bulge-plus-disk galaxies, then simulating and fitting a galaxy image), with you typing each request in plain English. Afterwards it helps you get started on your
+own galaxies:
+
+> I want to study galaxy structure and morphology with PyAutoGalaxy (https://github.com/PyAutoLabs/PyAutoGalaxy)
+> and the autogalaxy_assistant (https://github.com/PyAutoLabs/autogalaxy_assistant). First clone that
+> repository, cd into it and follow its AGENTS.md.
+>
+> Begin the "start here" guide for a new user.
+
+Claude Code and Codex are recommended, and sustained scientific use normally needs paid access to one of them. Free
+options are listed on the [AI Options](https://github.com/PyAutoLabs/PyAutoScientist/blob/main/AI_OPTIONS.md) page.
+
+**Why natural language?** Turning a scientific idea into an analysis has always meant expressing it through the syntax
+of a programming language. That syntax was never the science: it is the interface between your ideas and the
+computer. **PyAutoGalaxy** is designed so you can describe a galaxy analysis in the language you use to think and write about it,
+while you supply the understanding, direction and judgement. The
+[PyAuto AI Policy](https://github.com/PyAutoLabs/PyAutoScientist/blob/main/AI_POLICY.md) explains this approach in
+more detail.
+
+**Python is not going anywhere.** Every **PyAutoGalaxy** feature remains available through its Python API, and the assistant
+writes ordinary **PyAutoGalaxy** code like the code in this notebook, which you can read, run and change. The workspace
+examples are written for people to read, and the [HowToGalaxy](https://github.com/PyAutoLabs/HowToGalaxy) lectures
+teach galaxy structure and galaxy modeling from first principles. That understanding is what lets you direct an analysis with expertise,
+whether you do it in natural language or in Python. The rest of this notebook is the Python overview.
+
 __Google Colab Setup__
 
 Run this cell to install PyAutoGalaxy and download the files needed for this notebook on Google Colab.
@@ -536,12 +568,3 @@ measuring how the galaxy population's structural properties vary with mass or re
 
 Checkout `autofit_workspace/*/features/graphical_models.py` to learn how to compose and fit a graphical model;
 the API applies directly to the galaxy fits shown throughout this workspace.
-
-__PyAutoGalaxy AI Assistant__
-
-The [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) lets you do galaxy structure and
-morphology science in natural language from inside an AI coding agent. You can get started simply by asking it a
-question about galaxy structure or describing the task you would like to perform with **PyAutoGalaxy**. See the
-assistant for its full scope and instructions.
-
-**The assistant runs inside an AI coding agent: Claude Code or Codex are recommended. Sustained scientific use normally needs paid access to one of them (a personal subscription, institutional access or API billing). OpenCode is an experimental alternative whose client is free but whose model access, cost and capability depend on the provider. Browser chat routes (ChatGPT or Claude with a GitHub connector) are no longer supported.**
