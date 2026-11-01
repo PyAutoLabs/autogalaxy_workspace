@@ -100,14 +100,10 @@ __Dataset Auto-Simulation__
 If the dataset does not already exist on your system, it will be created by running the corresponding
 simulator script.
 """
-if ag.util.dataset.should_simulate(str(dataset_path)):
-    import subprocess
-    import sys
-
-    subprocess.run(
-        [sys.executable, "scripts/interferometer/features/extra_galaxies/simulator.py"],
-        check=True,
-    )
+ag.util.dataset.simulate_if_needed(
+    dataset_path,
+    simulator="scripts/interferometer/features/extra_galaxies/simulator.py",
+)
 
 dataset = ag.Interferometer.from_fits(
     data_path=dataset_path / "data.fits",

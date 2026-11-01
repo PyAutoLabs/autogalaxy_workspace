@@ -121,14 +121,9 @@ for dataset_name in dataset_names:
     If the dataset does not already exist on your system, it will be created by running the corresponding
     simulator script. This ensures that all example scripts can be run without manually simulating data first.
     """
-    if ag.util.dataset.should_simulate(str(dataset_path)):
-        import subprocess
-        import sys
-
-        subprocess.run(
-            [sys.executable, simulator_paths[dataset_name]],
-            check=True,
-        )
+    ag.util.dataset.simulate_if_needed(
+        dataset_path, simulator=simulator_paths[dataset_name]
+    )
 
     """
     __Dataset__

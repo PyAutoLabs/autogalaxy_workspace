@@ -47,14 +47,9 @@ __Dataset & Mask__
 dataset_name = "simple"
 dataset_path = Path("dataset", "cluster", dataset_name)
 
-if ag.util.dataset.should_simulate(str(dataset_path)):
-    import subprocess
-    import sys
-
-    subprocess.run(
-        [sys.executable, "scripts/cluster/simulator.py"],
-        check=True,
-    )
+ag.util.dataset.simulate_if_needed(
+    dataset_path, simulator="scripts/cluster/simulator.py"
+)
 
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
