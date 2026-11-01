@@ -56,13 +56,9 @@ conf.instance["output"]["samples_weight_threshold"] = None
 dataset_name = "simple"
 dataset_path = Path("dataset") / "imaging" / dataset_name
 
-if ag.util.dataset.should_simulate(str(dataset_path)):
-    import subprocess
-
-    subprocess.run(
-        [sys.executable, "scripts/imaging/simulator.py"],
-        check=True,
-    )
+ag.util.dataset.simulate_if_needed(
+    dataset_path, simulator="scripts/imaging/simulator.py"
+)
 
 dataset = ag.Imaging.from_fits(
     data_path=dataset_path / "data.fits",
