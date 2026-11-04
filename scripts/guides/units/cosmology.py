@@ -27,7 +27,6 @@ import numpy as np
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
-
 """
 __Galaxy__
 

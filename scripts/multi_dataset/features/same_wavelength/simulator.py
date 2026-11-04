@@ -33,7 +33,6 @@ from pathlib import Path
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
-
 """
 __Dataset Paths__
 """

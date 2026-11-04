@@ -229,13 +229,11 @@ analysis = ag.AnalysisImaging(
     use_jax=True,
 )
 
-print(
-    """
+print("""
     The non-linear search has begun running.
 
     This Jupyter notebook cell will progress once the search has completed - this could take a few minutes!
-    """
-)
+    """)
 
 result = search.fit(model=model, analysis=analysis)
 

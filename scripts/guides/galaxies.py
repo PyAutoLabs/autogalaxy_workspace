@@ -59,7 +59,6 @@ import autofit as af
 import autogalaxy as ag
 import autogalaxy.plot as aplt
 
-
 """
 __Grids__
 
