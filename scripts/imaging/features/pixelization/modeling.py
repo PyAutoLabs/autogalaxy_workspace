@@ -460,7 +460,7 @@ Modeling with a pixelization can be made more efficient, robust, and automated u
 to compose a pipeline that begins by fitting a simpler model using parametric light profiles.
 
 More information on chaining is provided in the
-`autogalaxy_workspace/notebooks/guides/modeling/chaining` folder and at the end of chapter 2 of the **HowToGalaxy** lectures (tutorials 9-10).
+`autogalaxy_workspace/notebooks/guides/modeling/chaining` folder and in chapter 2 of the **HowToGalaxy** lectures (tutorial 6, Search Chaining).
 
 __HowToGalaxy__
 
