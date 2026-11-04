@@ -438,7 +438,7 @@ Modeling using a pixelization can be more efficient, robust and automated using 
 compose a pipeline which begins by fitting a simpler model using a parametric galaxy.
 
 More information on chaining is provided in the `autogalaxy_workspace/notebooks/guides/modeling/chaining` folder,
-the end of chapter 2 of the **HowToGalaxy** lectures (tutorials 9-10).
+the end of chapter 2 of the **HowToGalaxy** lectures (tutorial 6, Search Chaining).
 
 __HowToGalaxy__
 
