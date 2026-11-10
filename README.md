@@ -1,114 +1,51 @@
 # PyAutoGalaxy Workspace
 
-[![JOSS](https://joss.theoj.org/papers/10.21105/joss.02825/status.svg)](https://doi.org/10.21105/joss.02825)
-
-[Installation Guide](https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html) |
-[readthedocs](https://pyautogalaxy.readthedocs.io/en/latest/index.html) |
-[Introduction on Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.9.1/start_here.ipynb) |
-[Browse Examples With Images](markdown/README.md) |
-[HowToGalaxy](https://github.com/PyAutoLabs/HowToGalaxy)
-
-Welcome to the **PyAutoGalaxy** Workspace!
+Example scripts and notebooks for modeling galaxy structure and morphology with **PyAutoGalaxy**. Start with an introductory example, then explore the tools for your own data.
 
 ## Getting Started
 
 ### Explore It Yourself
 
-Start with the installation guide, or try the examples in your browser:
+- **[Try it in your browser](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.9.1/start_here.ipynb)** — run the introductory notebook on Google Colab without installing anything.
+- **[Run it locally](https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html)** — follow the installation guide, then open `start_here.ipynb`.
+- **[Browse examples with images](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/markdown/README.md)** — read worked examples and view their results directly on GitHub.
 
-- [Installation guide](https://pyautogalaxy.readthedocs.io/): set up **PyAutoGalaxy** on your personal computer.
-- [PyAutoGalaxy on Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.9.1/start_here.ipynb): try **PyAutoGalaxy** in a web browser without installing it.
+See [Find Your Examples](#find-your-examples) below to choose where to start.
 
 ### Explore with AI
 
-The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant)
-lets you do galaxy structure and morphology science in natural language from
-inside an AI coding agent. You can get started simply by asking it a question
-about galaxy structure or describing the task you would like to perform with
-**PyAutoGalaxy** — it ships task skills for the full modelling loop, a curated
-API reference, and a bundled real JWST dataset to learn on. See the assistant
-for its full scope and instructions.
+The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant) helps you learn galaxy modeling, run examples and analyse your own data through conversation. Visit its README for setup instructions and a starting prompt.
 
-The assistant runs inside an AI coding agent. Claude Code and Codex are recommended; free options and chat use are on the [PyAutoLabs AI options page](https://github.com/PyAutoLabs/PyAutoScientist/blob/main/AI_OPTIONS.md).
+## Find Your Examples
 
-## New Users
+Examples are available as Python scripts in `scripts/` and Jupyter notebooks in `notebooks/`.
 
-New users should read the `autogalaxy_workspace/start_here.ipynb` notebook, which will give you a concise
-overview of **PyAutoGalaxy**'s core features and API.
+| I want to… | Start here |
+|---|---|
+| Learn the API, customise models or inspect results | [Guides](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/guides) |
+| Model galaxies in imaging data | [Imaging](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/imaging) |
+| Model interferometer observations | [Interferometry](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/interferometer) |
+| Fit observations in multiple wavebands | [Multiple datasets](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/multi_dataset) |
+| Fit several blended galaxies together | [Multiple galaxies](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/multi_galaxy) |
+| Measure galaxy structure by fitting ellipses | [Ellipse fitting](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/ellipse) |
+| Model the light of galaxies in a cluster | [Clusters](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/cluster) |
 
-This can be done via a web browser by going to the following Google Colab link:
+Each folder has a README explaining its examples. You’ll find sample data in `dataset/`; analysis results are written to `output/`.
 
-https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.9.1/start_here.ipynb
+## Learn Galaxy Modeling
 
-Then checkout the [new user starting guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html)
-to navigate the workspace for your science case.
+[**HowToGalaxy**](https://github.com/PyAutoLabs/HowToGalaxy) teaches galaxy modeling and Bayesian inference through worked notebooks. Start here if you’re new to the subject or would like more explanation alongside the workspace examples.
 
-You can also [browse a curated set of examples fully executed, with their output images](markdown/README.md),
-directly on GitHub — no installation required.
+## Community and Contributing
 
-## HowToGalaxy
+Ask questions, suggest improvements and share your work in [PyAutoLabs Discussions](https://github.com/orgs/PyAutoLabs/discussions), or chat with us on [Slack](https://join.slack.com/t/pyautolens/shared_invite/zt-2cufp4eyf-fXfgMxRGuvg~bMrI3uOAxg).
 
-If you are new to galaxy modeling or the statistical techniques it relies on, the **HowToGalaxy** lecture series
-takes you from first principles through to modeling real galaxy imaging data. It now lives in its own repository:
+To contribute examples or explore community projects, visit the [PyAutoGalaxy community page](https://pyautogalaxy.readthedocs.io/en/latest/general/community.html).
 
-https://github.com/PyAutoLabs/HowToGalaxy
+## Citations
 
-## Workspace Structure
+If you use PyAutoGalaxy in your research, see the [citation guide](https://github.com/PyAutoLabs/PyAutoGalaxy/blob/main/CITATIONS.md).
 
-The workspace includes the following main directories:
+## License
 
-- `notebooks`: **PyAutoGalaxy** examples written as Jupyter notebooks.
-- `scripts`: **PyAutoGalaxy** examples written as Python scripts.
-- `config`: Configuration files which customize **PyAutoGalaxy**'s behaviour.
-- `dataset`: Where data is stored, including example datasets.
-- `output`: Where **PyAutoGalaxy** analysis and visualization outputs are written.
-
-The examples in the `notebooks` and `scripts` folders are structured as follows:
-
-- `guides`: Guides which introduce the core features of **PyAutoGalaxy**, including the core galaxy modeling API.
-- `imaging`: Examples for galaxy modeling using CCD imaging (e.g. Hubble, James Webb, Euclid).
-- `interferometer`: Examples for galaxies observed with an interferometer (e.g. ALMA, JVLA).
-- `multi_dataset`: Examples for modeling galaxies observed in multiple wavebands.
-- `multi_galaxy`: Examples for modeling 2+ blended galaxies simultaneously, each with its own free light model.
-- `ellipse`: Examples for ellipse fitting (non-parametric morphology).
-- `cluster`: Examples for modeling a cluster field's light — a BCG plus a catalogue-driven member population.
-
-The dataset packages (e.g. `imaging`, `interferometer` and `multi_dataset`) include the following types of examples:
-
-- `modeling`: Performing galaxy modeling using that type of data.
-- `simulator`: Simulating galaxy images.
-- `fit`: How to compute residuals, chi-squared maps, and likelihoods.
-- `data_preparation`: Preparing real datasets for **PyAutoGalaxy** analysis.
-- `features`: Advanced modeling features (e.g. Multi Gaussian Expansion, priors, constraints).
-- `likelihood_function`: Step-by-step guides to the likelihood function.
-
-The `guides` package contains important subpackages, including:
-
-- `results`: How to load, inspect, and analyze results from many galaxy fits efficiently.
-- `modeling`: Customizing galaxy models and building automated modeling pipelines.
-- `plot`: How to visualize galaxy images, profiles, and residuals.
-
-The `README.md` files distributed throughout the workspace describe what is in each folder.
-
-## Community & Contributing
-
-**PyAutoGalaxy** is built in the open by its users: everyone is welcome to ask questions,
-share what they have made with it, and contribute.
-
-Questions, ideas and bug reports: the [PyAutoLabs Discussions](https://github.com/orgs/PyAutoLabs/discussions).
-Chat with us on [Slack](https://join.slack.com/t/pyautolens/shared_invite/zt-2cufp4eyf-fXfgMxRGuvg~bMrI3uOAxg).
-
-Community-built tools and tutorials, and how to contribute: the [**PyAutoGalaxy** community page](https://pyautogalaxy.readthedocs.io/en/latest/general/community.html).
-
-Tutorial notebooks are generated from the `.py` scripts in each `scripts` folder — edit those (the `# %%` marker alternates code and markdown cells), not the notebooks.
-
-## Build Configuration
-
-The `config/` directory contains two files used by the automated build and test system
-(CI, smoke tests, and pre-release checks). These are not relevant to normal workspace usage.
-
-- `config/build/no_run.yaml` — scripts to skip during automated runs. Each entry is a filename stem
-  or path pattern with an inline comment explaining why it is skipped.
-- `config/build/profile_smoke.yaml` — environment variables applied to each script during automated runs.
-  Defines default values (e.g. test mode, small datasets) and per-script overrides for scripts
-  that need different settings.
+See the [PyAutoGalaxy license](https://github.com/PyAutoLabs/PyAutoGalaxy/blob/main/LICENSE).
