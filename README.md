@@ -12,14 +12,14 @@ Welcome to the **PyAutoGalaxy** Workspace!
 
 ## Getting Started
 
-### Human-Readable Documentation and Examples
+### Explore It Yourself
 
-The following human-readable documentation and examples are useful for new starters:
+Start with the installation guide, or try the examples in your browser:
 
 - [Installation guide](https://pyautogalaxy.readthedocs.io/): set up **PyAutoGalaxy** on your personal computer.
 - [PyAutoGalaxy on Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.9.1/start_here.ipynb): try **PyAutoGalaxy** in a web browser without installing it.
 
-### AI Assistant
+### Explore with AI
 
 The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_assistant)
 lets you do galaxy structure and morphology science in natural language from
