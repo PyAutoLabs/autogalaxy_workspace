@@ -13,24 +13,24 @@ input(
     "### AUTOGALAXY WORKSPACE WORKING DIRECTORY ###\n"
     "############################################\n\n"
     """
-    PyAutoGalaxy assumes that the `autogalaxy_workspace` directory is the Python working directory. 
-    This means that, when you run an example script, you should run it from the `autogalaxy_workspace` 
+    PyAutoGalaxy assumes that the `autogalaxy_workspace` directory is the Python working directory.
+    This means that, when you run an example script, you should run it from the `autogalaxy_workspace`
     as follows:
-    
-    
+
+
     cd path/to/autogalaxy_workspace (if you are not already in the autogalaxy_workspace).
-    python3 scripts/modeling/imaging/light_parametric.py
+    python3 scripts/imaging/start_here.py
 
 
     The reasons for this are so that PyAutoGalaxy can:
-     
+
     - Load configuration settings from config files in the `autogalaxy_workspace/config` folder.
     - Load example data from the `autogalaxy_workspace/dataset` folder.
-    - Output the results of models fits to your hard-disk to the `autogalaxy/output` folder. 
+    - Output the results of models fits to your hard-disk to the `autogalaxy/output` folder.
 
     If you have any errors relating to importing modules, loading data or outputting results it is likely because you
     are not running the script with the `autogalaxy_workspace` as the working directory!
-    
+
     [Press Enter to continue]"""
 )
 
@@ -60,7 +60,7 @@ input(
     backend=Qt5Agg
     backeknd=Qt4Agg
 
-    NOTE: If a matplotlib figure window appears, you may need to close it via the X button and then press 
+    NOTE: If a matplotlib figure window appears, you may need to close it via the X button and then press
     enter to continue the script.
 
     [Press Enter to continue]
@@ -87,8 +87,8 @@ input(
     "## LIGHT PROFILES ###\n"
     "#####################\n\n"
     """
-    The image displayed on your screen shows a `LightProfile`, the object PyAutoGalaxy uses to represent the 
-    luminous emission of galaxies. 
+    The image displayed on your screen shows a `LightProfile`, the object PyAutoGalaxy uses to represent the
+    luminous emission of galaxies.
 
     [Press Enter to continue]
     """
@@ -100,16 +100,16 @@ input(
     "##### WORKSPACE TOUR ######\n"
     "###########################\n\n"
     """
-    PyAutoGalaxy is now set up and you can begin exploring the workspace. 
-    
-    We recommend new users begin by following the 'start_here.ipynb' notebook, which gives an overview 
-    of **PyAutoGalaxy** and the workspace. 
-    
+    PyAutoGalaxy is now set up and you can begin exploring the workspace.
+
+    We recommend new users begin by following the 'start_here.ipynb' notebook, which gives an overview
+    of **PyAutoGalaxy** and the workspace.
+
     This will also guide you through where to go next in the workspace depending on your scientific interests.
-    
+
     A full description of the workspace can be found in the `autogalaxy_workspace/README.md` file and on the
     PyAutoGalaxy readthedocs website.
-    
+
     [Press Enter to continue]
     """
 )
