@@ -2,6 +2,8 @@
 Modeling: Same Wavelength
 =========================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script fits a multiple `Imaging` datasets observed at the same wavelength of a galaxy with a
 model where:
 

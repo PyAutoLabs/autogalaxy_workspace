@@ -2,6 +2,8 @@
 Features: Pixelization Fit
 ==========================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script performs a single, direct fit (no non-linear search) of a galaxy that has two components:
 
  - A smooth central **bulge**, captured by a linear `Sersic` light profile.

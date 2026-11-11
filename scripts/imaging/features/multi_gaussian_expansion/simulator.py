@@ -2,6 +2,8 @@
 Simulator: Light MGE
 ====================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates `Imaging` of a galaxy using light profiles where:
 
  - The galaxy's light is a superposition of 14 `Gaussian` profiles.

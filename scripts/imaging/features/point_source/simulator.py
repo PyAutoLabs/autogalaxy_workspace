@@ -2,6 +2,8 @@
 Simulator: Point Source
 =======================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/point_source/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates an `Imaging` dataset containing a galaxy with:
 
  - An extended `Sersic` host galaxy.

@@ -2,6 +2,8 @@
 Modeling: Imaging & Interferometer
 ==================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script fits an `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.

@@ -2,6 +2,8 @@
 Simulator: Sersic + Exp
 =======================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates `Imaging` of a galaxy using light profiles where:
 
  - The galaxy's bulge is an `Sersic`.

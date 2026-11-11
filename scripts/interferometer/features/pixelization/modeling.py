@@ -2,6 +2,8 @@
 Features: Pixelization
 ======================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.
+
 This is the canonical example of when (and why) you should reach for a pixelization to model interferometer
 visibilities of a galaxy in **PyAutoGalaxy**.
 
@@ -45,7 +47,6 @@ datasets.
 __Contents__
 
 - **Advantages:** Benefits of using pixelizations to model galaxy light.
-- **Disadvantages:** Drawbacks and additional complexity of pixelized galaxy modeling.
 - **Positive Only Solver:** How a positive solution to pixel fluxes is ensured, and why it is often disabled for interferometer data.
 - **Model:** Description of the hybrid bulge plus pixelization galaxy model fitted in this example.
 - **Mask:** Defining the real-space mask for the interferometer grid.
@@ -89,15 +90,6 @@ For CCD imaging, a disadvantage of pixelized reconstructions is they are the mos
 modeling approach. However, for interferometer datasets, the way that JAX and GPUs can exploit the sparsity in the
 linear algebra means pixelized reconstructions are both significantly faster than other approaches (E.g.
 light profiles) and can scale to millions of visibilities.
-
-__Disadvantages__
-
-Galaxy modeling with pixelizations is conceptually more complex. There are additional failure modes, such as
-solutions where the galaxy is reconstructed in an unphysical configuration. These issues are discussed in detail
-later in the workspace.
-
-As a result, learning to successfully fit galaxy models with pixelizations typically requires more time and experience
-than the simpler modeling approaches introduced elsewhere in the workspace.
 
 __Positive Only Solver__
 

@@ -2,6 +2,8 @@
 Simulator: Clumpy Galaxy
 ========================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates `Imaging` of a galaxy whose light has two distinct components:
 
  - A smooth central **bulge**, represented by an elliptical `Sersic` profile.

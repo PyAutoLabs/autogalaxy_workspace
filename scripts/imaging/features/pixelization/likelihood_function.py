@@ -1,6 +1,8 @@
 """
 __Log Likelihood Function: Pixelization__
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
 `Imaging` data with a pixelization (specifically a `RectangularBilinearAdaptDensity` mesh and `Constant` regularization
 scheme).

@@ -2,6 +2,8 @@
 Simulator: Extra Galaxies
 =========================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 Certain galaxies have extra galaxies nearby their emission, which may overlap the emission of the galaxy we are
 interested in.
 

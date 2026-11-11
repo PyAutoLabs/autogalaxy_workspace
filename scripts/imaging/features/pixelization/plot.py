@@ -2,6 +2,8 @@
 Plots: Pixelization
 ===================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This example illustrates the API for plotting pixelized galaxy reconstructions, using dedicated functions like
 `subplot_of_mapper` for mesh-specific visualizations.
 

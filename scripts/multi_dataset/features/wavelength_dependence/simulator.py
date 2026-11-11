@@ -2,6 +2,8 @@
 Simulator: Wavelength Dependent
 ===============================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates multi-wavelength `Imaging` of a galaxy where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.

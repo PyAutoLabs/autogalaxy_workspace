@@ -2,6 +2,8 @@
 Modeling: Light Parametric Operated
 ===================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.
+
  __Operated Fitting__
 
 It is common for galaxies to have point-source emission, for example bright emission right at their centre due to
