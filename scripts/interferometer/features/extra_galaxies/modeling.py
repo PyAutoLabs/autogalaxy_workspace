@@ -2,6 +2,8 @@
 Modeling Features: Extra Galaxies (Interferometer)
 ====================================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 There may be extra galaxies nearby the main galaxy whose light blends with the main galaxy's emission.
 For interferometer data — unlike strong-lensing imaging — we typically *want* to detect these extra
 galaxies and fit their light, because autogalaxy is a morphology-fitting tool for multi-galaxy fields

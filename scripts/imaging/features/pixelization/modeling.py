@@ -2,6 +2,8 @@
 Features: Pixelization Modeling
 ===============================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This is the canonical example of when (and why) you should reach for a pixelization in **PyAutoGalaxy**.
 
 The dataset (`dataset/imaging/clumpy`) shows a galaxy with two very different kinds of light:

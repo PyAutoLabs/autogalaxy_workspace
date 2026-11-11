@@ -2,6 +2,8 @@
 Simulator: Extra Galaxies (Multi Galaxy)
 ========================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 A multi-galaxy system — two galaxies whose light blends together and which are co-equal subjects of the fit —
 frequently sits in a field with other, fainter galaxies. Those extra galaxies are not part of the blend being
 decomposed, but their emission still falls inside the mask and will bias the fit if nothing is done about it.

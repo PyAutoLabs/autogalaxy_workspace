@@ -2,6 +2,8 @@
 Modeling Features: Extra Galaxies
 =================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 There may be extra galaxies nearby the main galaxy, whose emission blends with the main galaxy.
 
 If their emission is significant, and close enough to the main galaxy, we may simply mask it from the data

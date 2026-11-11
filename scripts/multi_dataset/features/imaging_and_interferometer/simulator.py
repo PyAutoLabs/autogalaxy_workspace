@@ -2,6 +2,8 @@
 Simulator: Mutli Interferometer
 ===============================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script simulates `Interferometer` data of a galaxy where:
 
  - The galaxy's light is a parametric `Sersic` bulge and `Exponential` disk.

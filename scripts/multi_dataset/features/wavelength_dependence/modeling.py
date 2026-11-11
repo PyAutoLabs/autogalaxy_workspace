@@ -2,6 +2,8 @@
 Modeling: Wavelength Dependence
 ===============================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:
 
  - The galaxy's light is a linear parametric `Sersic` bulge and `Exponential` disk.

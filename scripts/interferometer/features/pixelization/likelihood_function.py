@@ -1,6 +1,8 @@
 """
 __Log Likelihood Function: Pixelization__
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit
 `Interferometer` data with an inversion (specifically a `RectangularUniform` mesh and `Constant` regularization scheme`).
 

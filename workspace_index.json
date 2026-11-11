@@ -1157,6 +1157,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "/imaging/data_preparation/examples/optional/extra_galaxies_centres.py",
       "/imaging/data_preparation/examples/optional/mask_extra_galaxies.py",
@@ -1166,7 +1167,7 @@
     ],
     "notebook": "notebooks/imaging/features/extra_galaxies/modeling.ipynb",
     "path": "scripts/imaging/features/extra_galaxies/modeling.py",
-    "summary": "There may be extra galaxies nearby the main galaxy, whose emission blends with the main galaxy.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Extra Galaxies"
   },
   {
@@ -1181,6 +1182,7 @@
       "Plane Output"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb",
       "/imaging/data_preparation/examples/optional/extra_galaxies_centres.ipynb",
       "/imaging/data_preparation/examples/optional/mask_extra_galaxies.ipynb",
       "/imaging/features/extra_galaxies/modeling.ipynb",
@@ -1194,13 +1196,25 @@
     ],
     "notebook": "notebooks/imaging/features/extra_galaxies/simulator.ipynb",
     "path": "scripts/imaging/features/extra_galaxies/simulator.py",
-    "summary": "Certain galaxies have extra galaxies nearby their emission, which may overlap the emission of the galaxy we are interested in.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Extra Galaxies"
   },
   {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/extra_galaxies/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/extra_galaxies/start_here.ipynb",
+    "path": "scripts/imaging/features/extra_galaxies/start_here.py",
+    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "title": "Features: Extra Galaxies"
+  },
+  {
     "contents": [
-      "Advantages & Disadvantages",
-      "Positive Only Solver",
+      "Advantages",
       "Dataset & Mask",
       "Fit",
       "Intensities",
@@ -1208,12 +1222,13 @@
       "Linear Objects (Source Code)"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/modeling.ipynb"
     ],
     "notebook": "notebooks/imaging/features/linear_light_profiles/fit.ipynb",
     "path": "scripts/imaging/features/linear_light_profiles/fit.py",
-    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Linear Light Profiles Fit"
   },
   {
@@ -1239,19 +1254,19 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb",
       "contributor_guide.py",
       "imaging/likelihood_function.ipynb",
       "imaging/likelihood_function.py"
     ],
     "notebook": "notebooks/imaging/features/linear_light_profiles/likelihood_function.ipynb",
     "path": "scripts/imaging/features/linear_light_profiles/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with parametric linear light profiles (e.g. a Sersic bulge and Exponential disk).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Linear Light Profile__"
   },
   {
     "contents": [
-      "Advantages & Disadvantages",
-      "Positive Only Solver",
+      "Advantages",
       "Dataset & Mask",
       "Fit",
       "Intensities",
@@ -1264,6 +1279,7 @@
       "Linear Objects (Source Code)"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/modeling.ipynb",
       "start_here.ipynb",
@@ -1271,13 +1287,27 @@
     ],
     "notebook": "notebooks/imaging/features/linear_light_profiles/modeling.ipynb",
     "path": "scripts/imaging/features/linear_light_profiles/modeling.py",
-    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Linear Light Profiles"
   },
   {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/linear_light_profiles/modeling.ipynb",
+      "fit.py",
+      "likelihood_function.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/linear_light_profiles/start_here.ipynb",
+    "path": "scripts/imaging/features/linear_light_profiles/start_here.py",
+    "summary": "A linear light profile has the same spatial form as an ordinary light profile, but its intensity is solved during each likelihood evaluation instead of being sampled by the non-linear search.",
+    "title": "Features: Linear Light Profiles"
+  },
+  {
     "contents": [
-      "Advantages & Disadvantages",
-      "Positive Only Solver",
+      "Advantages",
       "MGE Source Galaxy",
       "Dataset & Mask",
       "Basis",
@@ -1287,13 +1317,14 @@
       "Intensities"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/modeling.ipynb",
       "linear_light_profiles.py"
     ],
     "notebook": "notebooks/imaging/features/multi_gaussian_expansion/fit.ipynb",
     "path": "scripts/imaging/features/multi_gaussian_expansion/fit.py",
-    "summary": "A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via a linear algebra using a process called an \"inversion\" (see the `linear_light_profiles.py` feature for a full description of this).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Multi Gaussian Expansion"
   },
   {
@@ -1321,6 +1352,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
       "contributor_guide.py",
       "imaging/features/linear_light_profiles/likelihood_function.ipynb",
       "imaging/features/linear_light_profiles/likelihood_function.py",
@@ -1329,13 +1361,12 @@
     ],
     "notebook": "notebooks/imaging/features/multi_gaussian_expansion/likelihood_function.ipynb",
     "path": "scripts/imaging/features/multi_gaussian_expansion/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Imaging` data with a multi-Gaussian expansion (MGE), which is a superposition of multiple 2D Gaussian linear light profiles.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Multi Gaussian Expansion__"
   },
   {
     "contents": [
-      "Advantages & Disadvantages",
-      "Positive Only Solver",
+      "Advantages",
       "MGE Source Galaxy",
       "Dataset & Mask",
       "Model",
@@ -1348,6 +1379,7 @@
       "Regularization"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "autolens_workspace_developer/basis_regularization/mge_galaxy.py",
       "imaging/modeling.ipynb",
@@ -1358,7 +1390,7 @@
     ],
     "notebook": "notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb",
     "path": "scripts/imaging/features/multi_gaussian_expansion/modeling.py",
-    "summary": "A multi Gaussian expansion (MGE) decomposes the galaxy light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via a linear algebra using a process called an \"inversion\" (see the `linear_light_profiles.py` feature for a full description of this).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Multi Gaussian Expansion"
   },
   {
@@ -1371,12 +1403,30 @@
       "Plane Output"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
       "imaging/simulator.ipynb"
     ],
     "notebook": "notebooks/imaging/features/multi_gaussian_expansion/simulator.ipynb",
     "path": "scripts/imaging/features/multi_gaussian_expansion/simulator.py",
-    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Light MGE"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/multi_gaussian_expansion/simulator.ipynb",
+      "fit.py",
+      "likelihood_function.py",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
+    "path": "scripts/imaging/features/multi_gaussian_expansion/start_here.py",
+    "summary": "A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the galaxy.",
+    "title": "Features: Multi Gaussian Expansion"
   },
   {
     "contents": [
@@ -1393,6 +1443,7 @@
       "Result"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "/guides/results/start_here.py",
       "fit.py",
@@ -1402,7 +1453,7 @@
     ],
     "notebook": "notebooks/imaging/features/operated_light_profile/modeling.ipynb",
     "path": "scripts/imaging/features/operated_light_profile/modeling.py",
-    "summary": "(no summary in script docstring)",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling: Light Parametric Operated"
   },
   {
@@ -1415,12 +1466,26 @@
       "Plane Output"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb",
       "imaging/simulator.ipynb"
     ],
     "notebook": "notebooks/imaging/features/operated_light_profile/simulator.ipynb",
     "path": "scripts/imaging/features/operated_light_profile/simulator.py",
-    "summary": "This script simulates `Imaging` of a galaxy using light profiles where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Sersic + Exp"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/operated_light_profile/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/operated_light_profile/start_here.ipynb",
+    "path": "scripts/imaging/features/operated_light_profile/start_here.py",
+    "summary": "An operated light profile describes emission after an instrumental operation has already been included in the profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of compact emission.",
+    "title": "Features: Operated Light Profile"
   },
   {
     "contents": [
@@ -1434,13 +1499,14 @@
       "Linear Objects / Grids / Reconstruction"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "galaxy_reconstruction.py",
       "imaging/modeling.ipynb",
       "modeling.py"
     ],
     "notebook": "notebooks/imaging/features/pixelization/fit.ipynb",
     "path": "scripts/imaging/features/pixelization/fit.py",
-    "summary": "This script performs a single, direct fit (no non-linear search) of a galaxy that has two components:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Features: Pixelization Fit"
   },
   {
@@ -1450,11 +1516,12 @@
       "Reconstruction CSV"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "modeling.py"
     ],
     "notebook": "notebooks/imaging/features/pixelization/galaxy_reconstruction.ipynb",
     "path": "scripts/imaging/features/pixelization/galaxy_reconstruction.py",
-    "summary": "A common pixelization use-case is to reconstruct the irregular component of a galaxy's surface brightness on a pixelization mesh, and then export that reconstruction to perform scientific analysis.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Pixelization: Galaxy Reconstruction"
   },
   {
@@ -1491,6 +1558,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "/guides/advanced/over_sampling.py",
       "imaging/features/linear_light_profiles/likelihood_function.ipynb",
       "imaging/likelihood_function.ipynb",
@@ -1498,7 +1566,7 @@
     ],
     "notebook": "notebooks/imaging/features/pixelization/likelihood_function.ipynb",
     "path": "scripts/imaging/features/pixelization/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Imaging` data with a pixelization (specifically a `RectangularBilinearAdaptDensity` mesh and `Constant` regularization scheme).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Pixelization__"
   },
   {
@@ -1517,6 +1585,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "fit.py",
       "galaxy_reconstruction.py",
       "imaging/modeling.ipynb",
@@ -1524,7 +1593,7 @@
     ],
     "notebook": "notebooks/imaging/features/pixelization/modeling.ipynb",
     "path": "scripts/imaging/features/pixelization/modeling.py",
-    "summary": "This is the canonical example of when (and why) you should reach for a pixelization in **PyAutoGalaxy**.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Features: Pixelization Modeling"
   },
   {
@@ -1537,12 +1606,13 @@
       "Mesh Grids"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "guides/plot/start_here.py",
       "scripts/imaging/features/pixelization/modeling.py"
     ],
     "notebook": "notebooks/imaging/features/pixelization/plot.ipynb",
     "path": "scripts/imaging/features/pixelization/plot.py",
-    "summary": "This example illustrates the API for plotting pixelized galaxy reconstructions, using dedicated functions like `subplot_of_mapper` for mesh-specific visualizations.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Plots: Pixelization"
   },
   {
@@ -1557,14 +1627,36 @@
       "Plane Output"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/features/pixelization/fit.py",
       "imaging/features/pixelization/modeling.py"
     ],
     "notebook": "notebooks/imaging/features/pixelization/simulator.ipynb",
     "path": "scripts/imaging/features/pixelization/simulator.py",
-    "summary": "This script simulates `Imaging` of a galaxy whose light has two distinct components:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Clumpy Galaxy"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/galaxy_reconstruction.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/plot.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/pixelization/simulator.ipynb",
+      "fit.py",
+      "galaxy_reconstruction.py",
+      "likelihood_function.py",
+      "modeling.py",
+      "plot.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/pixelization/start_here.ipynb",
+    "path": "scripts/imaging/features/pixelization/start_here.py",
+    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "title": "Features: Pixelization"
   },
   {
     "contents": [
@@ -1575,15 +1667,28 @@
       "Simulation",
       "Output"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/point_source/start_here.ipynb"
+    ],
     "notebook": "notebooks/imaging/features/point_source/simulator.ipynb",
     "path": "scripts/imaging/features/point_source/simulator.py",
-    "summary": "This script simulates an `Imaging` dataset containing a galaxy with:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/point_source/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Point Source"
   },
   {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/point_source/simulator.ipynb",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/point_source/start_here.ipynb",
+    "path": "scripts/imaging/features/point_source/start_here.py",
+    "summary": "An unresolved source has no measured intrinsic spatial extent at the resolution of the observation. Its observed appearance is set by the instrumental response and its location and flux.",
+    "title": "Features: Point Source"
+  },
+  {
     "contents": [
-      "Advantages & Disadvantages",
+      "Advantages",
       "Dataset & Mask",
       "Basis",
       "Coefficients",
@@ -1598,6 +1703,7 @@
       "Cartesian Shapelets"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/features/multi_gaussian_expansion/modeling.py",
       "imaging/modeling.ipynb",
@@ -1605,12 +1711,12 @@
     ],
     "notebook": "notebooks/imaging/features/shapelets/fit.ipynb",
     "path": "scripts/imaging/features/shapelets/fit.py",
-    "summary": "A shapelet is a basis function that is appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy structure studies to model the light of the galaxy, because it can represent features of disky star forming galaxies that a single Sersic function cannot.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Shapelets"
   },
   {
     "contents": [
-      "Advantages & Disadvantages",
+      "Advantages",
       "Dataset & Mask",
       "Basis",
       "Coefficients",
@@ -1627,6 +1733,7 @@
       "Regularization"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "autolens_workspace_developer/basis_regularization/shapelets_galaxy.py",
       "imaging/modeling.ipynb",
@@ -1636,8 +1743,21 @@
     ],
     "notebook": "notebooks/imaging/features/shapelets/modeling.ipynb",
     "path": "scripts/imaging/features/shapelets/modeling.py",
-    "summary": "A shapelet is a basis function that is appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy structure studies to model the light of the galaxy, because it can represent features of disky star forming galaxies that a single Sersic function cannot.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Modeling Features: Shapelets"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/shapelets/modeling.ipynb",
+      "fit.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/imaging/features/shapelets/start_here.ipynb",
+    "path": "scripts/imaging/features/shapelets/start_here.py",
+    "summary": "Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile, the basis contains functions with different spatial structures, allowing their sum to describe more complicated galaxy morphology.",
+    "title": "Features: Shapelets"
   },
   {
     "contents": [
@@ -1666,11 +1786,12 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb"
     ],
     "notebook": "notebooks/imaging/features/sky_background/fit.ipynb",
     "path": "scripts/imaging/features/sky_background/fit.py",
-    "summary": "The background of an image is the light that is not associated with the galaxy we are interested in. This is due to light from the sky, zodiacal light, and light from other galaxies in the field of view.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Sky Background"
   },
   {
@@ -1689,6 +1810,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/modeling.ipynb",
       "start.here.py",
@@ -1696,7 +1818,7 @@
     ],
     "notebook": "notebooks/imaging/features/sky_background/modeling.ipynb",
     "path": "scripts/imaging/features/sky_background/modeling.py",
-    "summary": "The background of an image is the light that is not associated with the galaxy we are interested in. This is due to light from the sky, zodiacal light, and light from other galaxies in the field of view.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Sky Background"
   },
   {
@@ -1709,13 +1831,29 @@
       "Plane Output"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb",
       "/imaging/features/sky_background/modeling.py",
       "imaging/simulator.ipynb"
     ],
     "notebook": "notebooks/imaging/features/sky_background/simulator.ipynb",
     "path": "scripts/imaging/features/sky_background/simulator.py",
-    "summary": "This script simulates `Imaging` of a galaxy where the sky background is not subtracted from the image and therefore appears in the dataset.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Sky Background"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/features/sky_background/simulator.ipynb",
+      "fit.py",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/imaging/features/sky_background/start_here.ipynb",
+    "path": "scripts/imaging/features/sky_background/start_here.py",
+    "summary": "The background contributes light across an image in addition to the galaxy or lens being studied. If a background contribution remains in the data, it can be included in the model rather than attributed to the target's emission.",
+    "title": "Features: Sky Background"
   },
   {
     "contents": [
@@ -1989,6 +2127,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/start_here.ipynb",
       "/imaging/features/extra_galaxies/modeling.py",
       "/interferometer/features/extra_galaxies/modeling.py",
       "interferometer/modeling.py",
@@ -1997,7 +2136,7 @@
     ],
     "notebook": "notebooks/interferometer/features/extra_galaxies/modeling.ipynb",
     "path": "scripts/interferometer/features/extra_galaxies/modeling.py",
-    "summary": "There may be extra galaxies nearby the main galaxy whose light blends with the main galaxy's emission. For interferometer data \u2014 unlike strong-lensing imaging \u2014 we typically *want* to detect these extra galaxies and fit their light, because autogalaxy is a morphology-fitting tool for multi-galaxy fields rather than a gravitational-lensing tool.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Extra Galaxies (Interferometer)"
   },
   {
@@ -2012,6 +2151,7 @@
       "Extra Galaxies Centres"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/start_here.ipynb",
       "/interferometer/features/extra_galaxies/modeling.py",
       "features/extra_galaxies/modeling.py",
       "interferometer/simulator.ipynb",
@@ -2019,8 +2159,21 @@
     ],
     "notebook": "notebooks/interferometer/features/extra_galaxies/simulator.ipynb",
     "path": "scripts/interferometer/features/extra_galaxies/simulator.py",
-    "summary": "Certain galaxies have extra galaxies nearby their emission, which may overlap the emission of the galaxy we are interested in. For interferometer data \u2014 unlike strong-lensing imaging \u2014 we typically *want* to detect the extra galaxies and fit their light, because autogalaxy is a morphology-fitting tool for multi-galaxy fields rather than a gravitational-lensing tool.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Extra Galaxies (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/extra_galaxies/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/interferometer/features/extra_galaxies/start_here.ipynb",
+    "path": "scripts/interferometer/features/extra_galaxies/start_here.py",
+    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "title": "Features: Extra Galaxies"
   },
   {
     "contents": [
@@ -2035,12 +2188,13 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb",
       "interferometer/start_here.ipynb",
       "modeling.py"
     ],
     "notebook": "notebooks/interferometer/features/linear_light_profiles/fit.ipynb",
     "path": "scripts/interferometer/features/linear_light_profiles/fit.py",
-    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Linear Light Profiles Fit (Interferometer)"
   },
   {
@@ -2066,12 +2220,13 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb",
       "imaging/features/linear_light_profiles/likelihood_function.ipynb",
       "interferometer/likelihood_function.ipynb"
     ],
     "notebook": "notebooks/interferometer/features/linear_light_profiles/likelihood_function.ipynb",
     "path": "scripts/interferometer/features/linear_light_profiles/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data with parametric linear light profiles (e.g. a linear `Sersic` bulge and linear `Exponential` disk).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Linear Light Profile (Interferometer)__"
   },
   {
@@ -2095,6 +2250,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb",
       "/imaging/features/linear_light_profiles/modeling.py",
       "interferometer/modeling.py",
       "interferometer/start_here.ipynb",
@@ -2103,8 +2259,23 @@
     ],
     "notebook": "notebooks/interferometer/features/linear_light_profiles/modeling.ipynb",
     "path": "scripts/interferometer/features/linear_light_profiles/modeling.py",
-    "summary": "A \"linear light profile\" is a variant of a standard light profile where the `intensity` parameter is solved for via linear algebra every time the model is fitted to the data. This uses a process called an \"inversion\" and it always computes the `intensity` values that give the best fit to the data (e.g. maximize the likelihood) given the light profile's other parameters.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Linear Light Profiles (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/linear_light_profiles/modeling.ipynb",
+      "fit.py",
+      "likelihood_function.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/linear_light_profiles/start_here.ipynb",
+    "path": "scripts/interferometer/features/linear_light_profiles/start_here.py",
+    "summary": "A linear light profile has the same spatial form as an ordinary light profile, but its intensity is solved during each likelihood evaluation instead of being sampled by the non-linear search.",
+    "title": "Features: Linear Light Profiles"
   },
   {
     "contents": [
@@ -2120,13 +2291,14 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb",
       "interferometer/start_here.ipynb",
       "linear_light_profiles.py",
       "modeling.py"
     ],
     "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/fit.ipynb",
     "path": "scripts/interferometer/features/multi_gaussian_expansion/fit.py",
-    "summary": "A multi-Gaussian expansion (MGE) decomposes a galaxy's light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via linear algebra using a process called an \"inversion\".",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Multi Gaussian Expansion Fit (Interferometer)"
   },
   {
@@ -2151,6 +2323,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb",
       "features/linear_light_profiles/likelihood_function.py",
       "interferometer/features/linear_light_profiles/likelihood_function.ipynb",
       "interferometer/features/linear_light_profiles/likelihood_function.py",
@@ -2158,7 +2331,7 @@
     ],
     "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/likelihood_function.ipynb",
     "path": "scripts/interferometer/features/multi_gaussian_expansion/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the `log_likelihood_function` which is used to fit `Interferometer` data with a multi-Gaussian expansion (MGE): a `Basis` of many linear `Gaussian` profiles whose `intensity` values are solved for analytically via a linear inversion.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Multi Gaussian Expansion (Interferometer)__"
   },
   {
@@ -2178,6 +2351,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb",
       "/imaging/features/multi_gaussian_expansion/modeling.py",
       "interferometer/modeling.py",
       "interferometer/start_here.ipynb",
@@ -2186,8 +2360,23 @@
     ],
     "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/modeling.ipynb",
     "path": "scripts/interferometer/features/multi_gaussian_expansion/modeling.py",
-    "summary": "A multi-Gaussian expansion (MGE) decomposes a galaxy's light into ~15-100 Gaussians, where the `intensity` of every Gaussian is solved for via linear algebra using a process called an \"inversion\" (see the `linear_light_profiles` feature for a full description of this).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Multi Gaussian Expansion (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/multi_gaussian_expansion/modeling.ipynb",
+      "fit.py",
+      "likelihood_function.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb",
+    "path": "scripts/interferometer/features/multi_gaussian_expansion/start_here.py",
+    "summary": "A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the galaxy.",
+    "title": "Features: Multi Gaussian Expansion"
   },
   {
     "contents": [
@@ -2204,6 +2393,7 @@
       "Result"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/start_here.ipynb",
       "/guides/results/start_here.py",
       "/imaging/features/operated_light_profile/modeling.py",
       "fit.py",
@@ -2213,7 +2403,7 @@
     ],
     "notebook": "notebooks/interferometer/features/operated_light_profile/modeling.ipynb",
     "path": "scripts/interferometer/features/operated_light_profile/modeling.py",
-    "summary": "It is common for galaxies to have point-source emission, for example bright emission right at their centre due to an active galactic nuclei or a very compact knot of star formation.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Operated Light Profiles (Interferometer)"
   },
   {
@@ -2228,18 +2418,31 @@
       "Galaxies json"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/start_here.ipynb",
       "interferometer/simulator.ipynb",
       "modeling.py"
     ],
     "notebook": "notebooks/interferometer/features/operated_light_profile/simulator.ipynb",
     "path": "scripts/interferometer/features/operated_light_profile/simulator.py",
-    "summary": "This script simulates `Interferometer` data of a galaxy using light profiles where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Operated Light Profiles (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/operated_light_profile/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/interferometer/features/operated_light_profile/start_here.ipynb",
+    "path": "scripts/interferometer/features/operated_light_profile/start_here.py",
+    "summary": "An operated light profile describes emission after an instrumental operation has already been included in the profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of compact emission.",
+    "title": "Features: Operated Light Profile"
   },
   {
     "contents": [
       "Advantages",
-      "Disadvantages",
       "Positive Only Solver",
       "Mask",
       "Dataset",
@@ -2262,12 +2465,13 @@
       "Future Ideas / Contributions"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb",
       "pixelization/many_visibilities_preparation.py",
       "simulator.py"
     ],
     "notebook": "notebooks/interferometer/features/pixelization/fit.ipynb",
     "path": "scripts/interferometer/features/pixelization/fit.py",
-    "summary": "This script performs a single, direct fit (no non-linear search) of the `clumpy` interferometer dataset \u2014 the Fourier transform of a galaxy with two very different kinds of light:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Features: Pixelization Fit"
   },
   {
@@ -2276,10 +2480,12 @@
       "Dataset Auto-Simulation",
       "Reconstruction CSV"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb"
+    ],
     "notebook": "notebooks/interferometer/features/pixelization/galaxy_reconstruction.ipynb",
     "path": "scripts/interferometer/features/pixelization/galaxy_reconstruction.py",
-    "summary": "A common pixelization use-case is to reconstruct a galaxy\u2019s surface brightness on a pixelization mesh, and then export this reconstruction to perform scientific analysis.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Pixelization: Galaxy Reconstruction"
   },
   {
@@ -2317,12 +2523,13 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb",
       "interferometer/features/linear_light_profiles/likelihood_function.ipynb",
       "interferometer/likelihood_function.ipynb"
     ],
     "notebook": "notebooks/interferometer/features/pixelization/likelihood_function.ipynb",
     "path": "scripts/interferometer/features/pixelization/likelihood_function.py",
-    "summary": "This script provides a step-by-step guide of the **PyAutoGalaxy** `log_likelihood_function` which is used to fit `Interferometer` data with an inversion (specifically a `RectangularUniform` mesh and `Constant` regularization scheme`).",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "__Log Likelihood Function: Pixelization__"
   },
   {
@@ -2334,16 +2541,17 @@
       "Curvature Preload Output",
       "Wrap Up"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb"
+    ],
     "notebook": "notebooks/interferometer/features/pixelization/many_visibilities_preparation.ipynb",
     "path": "scripts/interferometer/features/pixelization/many_visibilities_preparation.py",
-    "summary": "To perform many visibility modeling, a matrix called `nufft_precision_operator` is created and used, which encodes information and symmetries into the Fourier transform operation performed when modeling interferometer datasets, in a way that exploits the sparsity of the inversion \u2014 pixelizations, linear light profiles, or both \u2014 and means a very small amount of memory or VRAM is used.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Pixelization: Many Visibilities Preparation"
   },
   {
     "contents": [
       "Advantages",
-      "Disadvantages",
       "Positive Only Solver",
       "Model",
       "Mask",
@@ -2366,6 +2574,7 @@
       "Future Ideas / Contributions"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb",
       "autogalaxy_workspace/scripts/imaging/features/pixelization/modeling.py",
       "interferometer/modeling.ipynb",
       "pixelization/fit.py",
@@ -2375,7 +2584,7 @@
     ],
     "notebook": "notebooks/interferometer/features/pixelization/modeling.ipynb",
     "path": "scripts/interferometer/features/pixelization/modeling.py",
-    "summary": "This is the canonical example of when (and why) you should reach for a pixelization to model interferometer visibilities of a galaxy in **PyAutoGalaxy**.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts, advantages and trade-offs. The example-specific choices are explained below.",
     "title": "Features: Pixelization"
   },
   {
@@ -2389,11 +2598,34 @@
       "Visualize",
       "Plane Output"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb"
+    ],
     "notebook": "notebooks/interferometer/features/pixelization/simulator.ipynb",
     "path": "scripts/interferometer/features/pixelization/simulator.py",
-    "summary": "This script simulates `Interferometer` data of a galaxy whose real-space light has two distinct components:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Clumpy Galaxy (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/galaxy_reconstruction.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/likelihood_function.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/many_visibilities_preparation.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/simulator.ipynb",
+      "fit.py",
+      "galaxy_reconstruction.py",
+      "likelihood_function.py",
+      "many_visibilities_preparation.py",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/interferometer/features/pixelization/start_here.ipynb",
+    "path": "scripts/interferometer/features/pixelization/start_here.py",
+    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "title": "Features: Pixelization"
   },
   {
     "contents": [
@@ -2409,11 +2641,12 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/start_here.ipynb",
       "modeling.py"
     ],
     "notebook": "notebooks/interferometer/features/shapelets/fit.ipynb",
     "path": "scripts/interferometer/features/shapelets/fit.py",
-    "summary": "A shapelet is a basis function appropriate for capturing the exponential / disk-like features of a galaxy. The `intensity` of every shapelet is solved for via linear algebra (\"inversion\") rather than being a free parameter of the non-linear search.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Shapelets Fit (Interferometer)"
   },
   {
@@ -2433,6 +2666,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/start_here.ipynb",
       "/imaging/features/shapelets/modeling.py",
       "interferometer/features/multi_gaussian_expansion/modeling.py",
       "interferometer/start_here.ipynb",
@@ -2440,8 +2674,21 @@
     ],
     "notebook": "notebooks/interferometer/features/shapelets/modeling.ipynb",
     "path": "scripts/interferometer/features/shapelets/modeling.py",
-    "summary": "A shapelet is a basis function appropriate for capturing the exponential / disk-like features of a galaxy. It has been employed in galaxy-structure studies to model galaxy light because it can represent disky star-forming features that a single Sersic function cannot.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Shapelets (Interferometer)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/fit.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/shapelets/modeling.ipynb",
+      "fit.py",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/interferometer/features/shapelets/start_here.ipynb",
+    "path": "scripts/interferometer/features/shapelets/start_here.py",
+    "summary": "Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile, the basis contains functions with different spatial structures, allowing their sum to describe more complicated galaxy morphology.",
+    "title": "Features: Shapelets"
   },
   {
     "contents": [
@@ -2612,11 +2859,12 @@
       "Result"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb",
       "multi_dataset/modeling.ipynb"
     ],
     "notebook": "notebooks/multi_dataset/features/dataset_offsets/modeling.ipynb",
     "path": "scripts/multi_dataset/features/dataset_offsets/modeling.py",
-    "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: Dataset Offsets"
   },
   {
@@ -2630,11 +2878,26 @@
       "Visualize",
       "Galaxies json"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb"
+    ],
     "notebook": "notebooks/multi_dataset/features/dataset_offsets/simulator.ipynb",
     "path": "scripts/multi_dataset/features/dataset_offsets/simulator.py",
-    "summary": "Multi-wavelength datasets often have offsets between their images, which are due to the different telescope pointings during the observations.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Dataset Offsets"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/dataset_offsets/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/dataset_offsets/start_here.py",
+    "summary": "Observations of the same object may have small relative coordinate offsets. Joint modeling can account for those offsets while fitting the physical model shared by the datasets.",
+    "title": "Features: Dataset Offsets"
   },
   {
     "contents": [
@@ -2649,10 +2912,12 @@
       "Model-Fit",
       "Result"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb"
+    ],
     "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/modeling.ipynb",
     "path": "scripts/multi_dataset/features/imaging_and_interferometer/modeling.py",
-    "summary": "This script fits an `Imaging` dataset of a galaxy with a model where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling: Imaging & Interferometer"
   },
   {
@@ -2664,12 +2929,26 @@
       "Galaxies json"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb",
       "multi_dataset/simulator.py"
     ],
     "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/simulator.ipynb",
     "path": "scripts/multi_dataset/features/imaging_and_interferometer/simulator.py",
-    "summary": "This script simulates `Interferometer` data of a galaxy where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Mutli Interferometer"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/imaging_and_interferometer/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/imaging_and_interferometer/start_here.py",
+    "summary": "Imaging and interferometer observations can be fitted together using the parameters that their physical models share. Each dataset still requires the forward calculation appropriate to its measurement.",
+    "title": "Features: Imaging And Interferometer"
   },
   {
     "contents": [
@@ -2688,12 +2967,24 @@
       "Second Dataset Offset"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/one_by_one/start_here.ipynb",
       "multi_dataset/modeling.ipynb"
     ],
     "notebook": "notebooks/multi_dataset/features/one_by_one/modeling.ipynb",
     "path": "scripts/multi_dataset/features/one_by_one/modeling.py",
-    "summary": "Multi-wavelength analysis does not necessarily require us to fit all datasets simultaneously. Instead, we can fit one dataset first in order to infer a robust galaxy model, and then fit the next dataset, using the inferred model as the starting point.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/one_by_one/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features: One By One"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/one_by_one/modeling.ipynb",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/one_by_one/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/one_by_one/start_here.py",
+    "summary": "Multi-dataset modeling does not always require fitting every observation simultaneously. A sequential approach fits one dataset first, then uses the result to guide the analysis of another.",
+    "title": "Features: One By One"
   },
   {
     "contents": [
@@ -2710,12 +3001,24 @@
       "Result"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/pixelization/start_here.ipynb",
       "scripts/imaging/features/pixelization/modeling.py"
     ],
     "notebook": "notebooks/multi_dataset/features/pixelization/modeling.ipynb",
     "path": "scripts/multi_dataset/features/pixelization/modeling.py",
-    "summary": "This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling: Pixelized"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/pixelization/modeling.ipynb",
+      "modeling.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/pixelization/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/pixelization/start_here.py",
+    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "title": "Features: Pixelization"
   },
   {
     "contents": [
@@ -2730,11 +3033,12 @@
       "Result"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/start_here.ipynb",
       "multi_dataset/features/dataset_offsets/modeling.py"
     ],
     "notebook": "notebooks/multi_dataset/features/same_wavelength/modeling.ipynb",
     "path": "scripts/multi_dataset/features/same_wavelength/modeling.py",
-    "summary": "This script fits a multiple `Imaging` datasets observed at the same wavelength of a galaxy with a model where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling: Same Wavelength"
   },
   {
@@ -2746,11 +3050,26 @@
       "Visualize",
       "Galaxies json"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/start_here.ipynb"
+    ],
     "notebook": "notebooks/multi_dataset/features/same_wavelength/simulator.ipynb",
     "path": "scripts/multi_dataset/features/same_wavelength/simulator.py",
-    "summary": "This script simulates multiple `Imaging` datasets of a galaxy where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Same Wavelength"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/same_wavelength/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/same_wavelength/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/same_wavelength/start_here.py",
+    "summary": "Repeated observations at the same wavelength can constrain a common light model while retaining their individual instrumental responses and noise properties.",
+    "title": "Features: Same Wavelength"
   },
   {
     "contents": [
@@ -2767,10 +3086,12 @@
       "Model-Fit",
       "Result"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb"
+    ],
     "notebook": "notebooks/multi_dataset/features/wavelength_dependence/modeling.ipynb",
     "path": "scripts/multi_dataset/features/wavelength_dependence/modeling.py",
-    "summary": "This script fits a multi-wavelength `Imaging` dataset of a galaxy with a model where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling: Wavelength Dependence"
   },
   {
@@ -2785,11 +3106,26 @@
       "Visualize",
       "Galaxies json"
     ],
-    "cross_refs": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb"
+    ],
     "notebook": "notebooks/multi_dataset/features/wavelength_dependence/simulator.ipynb",
     "path": "scripts/multi_dataset/features/wavelength_dependence/simulator.py",
-    "summary": "This script simulates multi-wavelength `Imaging` of a galaxy where:",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Wavelength Dependent"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/wavelength_dependence/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb",
+    "path": "scripts/multi_dataset/features/wavelength_dependence/start_here.py",
+    "summary": "A wavelength-dependent model describes how specified galaxy properties change across bands. It links observations through a chosen relationship rather than treating every parameter in every band independently.",
+    "title": "Features: Wavelength Dependence"
   },
   {
     "contents": [
@@ -2904,6 +3240,7 @@
       "Wrap Up"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb",
       "/guides/advanced/over_sampling.ipynb",
       "imaging/features/extra_galaxies/modeling.ipynb",
       "imaging/features/extra_galaxies/modeling.py",
@@ -2913,7 +3250,7 @@
     ],
     "notebook": "notebooks/multi_galaxy/features/extra_galaxies/modeling.ipynb",
     "path": "scripts/multi_galaxy/features/extra_galaxies/modeling.py",
-    "summary": "A blended pair of galaxies rarely sits alone in the field. There are usually other, fainter galaxies whose emission falls inside the mask, and which will bias the decomposition of the pair if nothing is done about them.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Modeling Features (Multi Galaxy): Extra Galaxies"
   },
   {
@@ -2929,6 +3266,7 @@
       "Galaxies json + Centres"
     ],
     "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb",
       "/imaging/data_preparation/examples/optional/extra_galaxies_centres.py",
       "/multi_galaxy/features/extra_galaxies/modeling.ipynb",
       "multi_galaxy/modeling.py",
@@ -2938,8 +3276,21 @@
     ],
     "notebook": "notebooks/multi_galaxy/features/extra_galaxies/simulator.ipynb",
     "path": "scripts/multi_galaxy/features/extra_galaxies/simulator.py",
-    "summary": "A multi-galaxy system \u2014 two galaxies whose light blends together and which are co-equal subjects of the fit \u2014 frequently sits in a field with other, fainter galaxies. Those extra galaxies are not part of the blend being decomposed, but their emission still falls inside the mask and will bias the fit if nothing is done about it.",
+    "summary": "Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb) for the shared concepts and a guide to the examples.",
     "title": "Simulator: Extra Galaxies (Multi Galaxy)"
+  },
+  {
+    "contents": [],
+    "cross_refs": [
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/modeling.ipynb",
+      "//github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/features/extra_galaxies/simulator.ipynb",
+      "modeling.py",
+      "simulator.py"
+    ],
+    "notebook": "notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb",
+    "path": "scripts/multi_galaxy/features/extra_galaxies/start_here.py",
+    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "title": "Features: Extra Galaxies"
   },
   {
     "contents": [

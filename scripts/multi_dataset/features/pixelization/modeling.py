@@ -2,6 +2,8 @@
 Modeling: Pixelized
 ===================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 This script fits multiple multi-wavelength `Imaging` datasets of a galaxy with a model where:
 
  - The galaxy's light is modeled using an `Inversion` with a rectangular pixelization and constant regularization

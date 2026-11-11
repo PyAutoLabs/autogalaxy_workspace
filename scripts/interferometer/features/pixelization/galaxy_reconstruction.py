@@ -2,6 +2,8 @@
 Pixelization: Galaxy Reconstruction
 ===================================
 
+Read the [feature introduction](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/start_here.ipynb) for the shared concepts and a guide to the examples.
+
 A common pixelization use-case is to reconstruct a galaxy’s surface brightness on a pixelization mesh, and then
 export this reconstruction to perform scientific analysis.
 
