@@ -20,6 +20,22 @@ The [**PyAutoGalaxy AI Assistant**](https://github.com/PyAutoLabs/autogalaxy_ass
 
 Examples are available as Python scripts in `scripts/` and Jupyter notebooks in `notebooks/`.
 
+### Galaxy Systems
+
+![A single galaxy, blended galaxies and a cluster field.](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/galaxy_systems.png)
+
+For a single galaxy, choose your data type below. To fit galaxies together, start with [multi_galaxy/](scripts/multi_galaxy) for blended light or [cluster/](scripts/cluster) for a cluster field.
+
+### Dataset Type
+
+![Galaxy imaging, interferometer sampling and multi-band imaging.](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/dataset_types.png)
+
+Match your observations to [imaging/](scripts/imaging), [interferometer/](scripts/interferometer) or [multi_dataset/](scripts/multi_dataset) for multiple wavebands. Each has a `start_here` example to get you going.
+
+*AI-generated illustrations, not observations. Galaxy panels use different angular scales. See the [new user guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html) for details.*
+
+### Browse All Examples
+
 | I want to… | Start here |
 |---|---|
 | Learn the API, customise models or inspect results | [Guides](https://github.com/PyAutoLabs/autogalaxy_workspace/tree/main/scripts/guides) |
