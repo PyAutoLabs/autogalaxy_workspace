@@ -2,9 +2,23 @@
 Features: Shapelets
 ===================
 
-Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile,
-the basis contains functions with different spatial structures, allowing their sum to describe more
-complicated galaxy morphology.
+Describe departures from a smooth galaxy profile with a flexible set of spatial basis functions. Shapelets are useful for studying asymmetric morphology and structured residuals while retaining a compact parameterization of the basis geometry.
+
+__Scientific Use Cases__
+
+- Represent light that a single symmetric profile cannot describe adequately.
+- Explore how basis order and scale affect the recovered morphology.
+- Compare flexible light models while inspecting the summed brightness and residuals.
+
+__This Example__
+
+These examples fit image pixels after accounting for the PSF and noise. The inferred components
+describe galaxy light in the observed field. Examine their individual contributions and the residuals,
+not only whether the sum gives an acceptable fit.
+
+![Shapelets](../../../../images/features/shapelets_illustration.png)
+
+Reused conceptual illustration. “Source model” here means the emitting galaxy; there is no gravitational-lensing source plane. The summed basis represents light, not separate physical structures.
 
 __Basis Functions and Their Sum__
 
@@ -25,36 +39,30 @@ constraints and any regularization in view when interpreting the result.
 As with other flexible light models, inspect the residuals and the reconstructed image together. A useful
 basis should describe the signal without introducing structure solely to follow noise.
 
-__In This Folder__
+__Flexibility and Parameter Choices__
 
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
+Shapelets can represent some departures from elliptical symmetry, including radial changes or asymmetry that
+leave structured residuals with a simpler profile. Their flexibility depends on basis order and geometry.
 
-__Advantages__
+The polar example shares the two centre coordinates and one basis scale, leaving three non-linear geometry
+parameters while solving the coefficients. That count belongs to this construction; it is not a universal
+comparison between all shapelet and Sersic models. The Cartesian example makes its own sharing choices.
 
-Symmetric light profiles (e.g. elliptical Sersics) may leave significant residuals, because they fail to capture
-irregular and asymmetric morphological of galaxies (e.g. isophotal twists, an ellipticity which varies radially).
-Shapelets can capture some of these features and can therefore better represent the emission of complex galaxies.
+__Interpreting Signed Coefficients__
 
-The shapelet model can be composed in a way that has fewer non-linear parameters than an elliptical Sersic. In this
-example, the ~20 shapelets which represent the `bulge` of the galaxy are composed in a model corresponding
-to just N=3 non-linear parameters (a `bulge` comprising a linear Sersic would give N=6).
+A shapelet basis includes signed spatial patterns, and the examples allow signed coefficients. A negative
+coefficient is not by itself a negative-brightness galaxy: inspect the summed light distribution. Negative
+regions in that sum, or unstable oscillations, can signal an inadequate or weakly constrained representation.
 
-Therefore, shapelets fit more complex galaxy morphologies using fewer non-linear parameters than the standard
-light profile models.
+Bars, sharp knots and multiple merging components may be difficult to describe with a single centred basis.
+Increasing its order adds both flexibility and computational cost. Check the basis scale, order and residuals
+rather than assuming that more functions or fewer sampled parameters guarantee a better scientific fit.
 
-__Disadvantages__
+__Basis Teaching Figure__
 
-- There are many types of galaxy structure which shapelets may struggle to represent, such as a bar or asymmetric
-knots of star formation. They also rely on the galaxy having a distinct centre over which the shapelets can be
-centered, which is not the case if the galaxy is multiple merging systems or has bright companion galaxies.
+![Shapelet basis grid](../../../../images/features/shapelets_basis.png)
 
-- The linear algebra used to solve for the `intensity` of each shapelet has to allow for negative values of intensity
-in order for shapelets to work. Negative surface brightnesses are unphysical, and are often inferred in a shapelet
-decomposition, for example if the true galaxy has structure that cannot be captured by the shapelet basis.
-
-- Computationally slower than standard light profiles like the Sersic.
+Retain this basis grid for the detailed lesson: individual patterns are mathematical functions; the galaxy model is their weighted sum.
 
 __Choose An Example__
 

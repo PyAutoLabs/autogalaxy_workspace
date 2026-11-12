@@ -2,12 +2,23 @@
 Features: Multi Gaussian Expansion
 ==================================
 
-A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each
-Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the
-galaxy.
+Describe a galaxy's central light and extended envelope with a flexible sum of Gaussian profiles. An MGE is useful when one simple profile leaves structured residuals, or when you need a smooth light model from which to measure the combined luminosity and radial structure.
 
-This introduction explains how an MGE works, why it can be useful, and what to consider before using one. The
-neighbouring examples show how to construct an MGE, fit it to data and inspect the results.
+__Scientific Use Cases__
+
+- Model light over a wide range of radii without assigning every Gaussian to a separate physical component.
+- Allow more flexible radial structure than a single elliptical Sersic, within the chosen component geometry.
+- Measure integrated properties from the combined light distribution and examine what remains in the residuals.
+
+__This Example__
+
+The fitted data are complex visibilities. The galaxy-light model is transformed into the sampled
+Fourier quantities, with the dataset's visibility noise retained. A dirty image helps with inspection,
+but it is not the image-plane dataset used by the likelihood.
+
+![Multi Gaussian Expansion](../../../../images/features/mge_illustration.png)
+
+Conceptual illustration: the displayed Gaussians are components of one light model. The inset is a decomposition, not a spatial magnification of the galaxy core. The image illustrates sky emission; the likelihood fits complex visibilities.
 
 __Why Use Many Gaussians?__
 
@@ -66,12 +77,6 @@ depends on the dataset and model; an MGE is not guaranteed to make every fit fas
 An MGE is also less directly interpretable than a single Sersic profile. An individual Gaussian is usually a
 component of the mathematical description, rather than a separate physical structure in the galaxy. Quantities
 such as total luminosity or a half-light radius should be derived from the combined light distribution.
-
-__In This Folder__
-
-These examples fit visibilities. The image-plane light prediction is transformed into the measured
-Fourier-domain quantities; a dirty image is an inspection product, not a substitute for that likelihood. Keep
-the visibility sampling, noise and model-specific response choices in view when adapting an imaging example.
 
 __Choose An Example__
 

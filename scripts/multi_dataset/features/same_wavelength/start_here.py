@@ -2,8 +2,23 @@
 Features: Same Wavelength
 =========================
 
-Repeated observations at the same wavelength can constrain a common light model while retaining their
-individual instrumental responses and noise properties.
+Combine repeated observations of a galaxy to constrain one common light model without discarding the PSF and noise information of each exposure. This is useful when several images observe the same emission with different instrumental conditions.
+
+__Scientific Use Cases__
+
+- Use multiple observations to constrain shared galaxy structure.
+- Retain each exposure's PSF and noise in its own forward calculation.
+- Check for exposure-specific residuals that a combined fit might conceal.
+
+__This Example__
+
+The common galaxy model is evaluated separately through each dataset's response. Check exactly which
+parameters are shared, including flux calibration and positional choices. Repeated exposures are not
+identical copies, and the same band does not by itself establish identical calibration.
+
+![Same Wavelength](../../../../images/new_user_guide/dataset_types.png)
+
+Reused PyAutoGalaxy new-user-guide schematic, not measured data. The interferometer panel shows visibility sampling locations, not amplitudes; multi-band panels illustrate changing emission.
 
 __One Model, Several Forward Calculations__
 
@@ -21,12 +36,6 @@ observation. An instrumental mismatch in one exposure may otherwise be hidden by
 
 Use the simulator to see the differences introduced between the observations, then follow how those
 differences are handled in the modeling script.
-
-__In This Folder__
-
-These examples connect several observations. Read which parameters are shared, which are dataset-specific and
-whether the fits are simultaneous or sequential. The per-dataset likelihoods still retain their own response
-and noise treatment.
 
 __Choose An Example__
 

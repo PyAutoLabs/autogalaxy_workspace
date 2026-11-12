@@ -2,8 +2,23 @@
 Features: Imaging And Interferometer
 ====================================
 
-Imaging and interferometer observations can be fitted together using the parameters that their physical models
-share. Each dataset still requires the forward calculation appropriate to its measurement.
+Compare the stellar light and radio or submillimeter emission of the same galaxy by fitting imaging and interferometer observations together. Shared parameters connect the models, while each dataset retains the calculation appropriate to its measured quantities.
+
+__Scientific Use Cases__
+
+- Compare complementary tracers of galaxy structure across instruments.
+- Link selected geometric parameters while allowing the emission to differ.
+- Inspect whether a shared model describes both image pixels and complex visibilities.
+
+__This Example__
+
+The imaging likelihood uses PSF-convolved image pixels; the interferometer likelihood fits complex
+visibilities. Link parameters only where a shared structure is justified: optical and radio/submillimeter
+emission need not have identical sizes, shapes or centroids. Inspect each fit separately.
+
+![Imaging And Interferometer](../../../../images/new_user_guide/dataset_types.png)
+
+Reused PyAutoGalaxy new-user-guide schematic, not measured data. The interferometer panel shows visibility sampling locations, not amplitudes; multi-band panels illustrate changing emission.
 
 __Two Measurements of a Shared System__
 
@@ -19,12 +34,6 @@ __Reading the Model__
 Follow the construction of each dataset's analysis and then their combination. The example retains its actual
 shared parameters, light components and instrumental settings. Inspect the fit to each dataset separately: an
 acceptable joint score can conceal a poor description of one observation.
-
-__In This Folder__
-
-These examples connect several observations. Read which parameters are shared, which are dataset-specific and
-whether the fits are simultaneous or sequential. The per-dataset likelihoods still retain their own response
-and noise treatment.
 
 __Choose An Example__
 

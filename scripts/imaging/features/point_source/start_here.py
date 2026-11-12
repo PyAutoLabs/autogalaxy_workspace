@@ -2,8 +2,23 @@
 Features: Point Source
 ======================
 
-An unresolved source has no measured intrinsic spatial extent at the resolution of the observation. Its
-observed appearance is set by the instrumental response and its location and flux.
+Explore how an unresolved nucleus contributes to a galaxy image and affects measurements of its extended host. The point-source component supplies a position and flux; the instrumental response determines its observed footprint.
+
+__Scientific Use Cases__
+
+- Simulate a compact nucleus embedded in extended galaxy light.
+- Study how the PSF blends unresolved and resolved emission.
+- Prepare controlled examples for testing host–nucleus decomposition.
+
+__This Example__
+
+This folder currently provides a simulator, not a complete inference workflow. It combines an extended
+host with an intrinsic point component and produces an imaging dataset. It does not measure the nucleus's
+intrinsic size. Read the operated-profile example for the related, already-PSF-blurred description.
+
+![Point Source](../../../../images/features/point_source.png)
+
+Conceptual illustration of added unresolved nuclear emission. The bright footprint is set by the response; it does not resolve the intrinsic nucleus.
 
 __Separate the Compact and Extended Emission__
 
@@ -18,12 +33,6 @@ __What This Folder Provides__
 This feature currently supplies a simulator showing an extended host and an unresolved point component. Use it
 to understand the model and the resulting data. It is not presented as a complete inference example; follow
 the listed scripts for the functionality actually demonstrated.
-
-__In This Folder__
-
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
 
 __Choose An Example__
 

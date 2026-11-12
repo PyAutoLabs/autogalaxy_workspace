@@ -2,9 +2,23 @@
 Features: Sky Background
 ========================
 
-The background contributes light across an image in addition to the galaxy or lens being studied. If a
-background contribution remains in the data, it can be included in the model rather than attributed to the
-target's emission.
+Measure faint galaxy outskirts while fitting an uncertain sky level alongside the galaxy light. This is useful for retained backgrounds and residual sky-subtraction offsets, where a small background error can otherwise alter the inferred size or outer profile.
+
+__Scientific Use Cases__
+
+- Fit the mean sky level rather than attributing it to extended galaxy emission.
+- Assess the sensitivity of galaxy sizes and outskirts to background assumptions.
+- Compare masks and priors that constrain the sky–galaxy decomposition.
+
+__This Example__
+
+The example fits a spatially constant background. Its simulated sky is 5.0 electrons per second, while
+the modeling prior spans 0.0 to 5.0: the injected value is at the upper boundary, not inside a surrounding
+interval. Choose an appropriate prior for your own data. Fitting the mean does not remove sky photon noise.
+
+![Sky Background](../../../../images/features/sky_background.png)
+
+Conceptual illustration: the separated layers are additive light and background components, not physical planes in space.
 
 __Why the Outskirts Are Sensitive__
 
@@ -24,12 +38,6 @@ background parameterization explicit when adapting them.
 Inspect residuals across the fitted region and consider how strongly the available background pixels constrain
 the sky. The example's chosen prior and field of view are part of its setup, not universal choices for every
 image.
-
-__In This Folder__
-
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
 
 __Choose An Example__
 

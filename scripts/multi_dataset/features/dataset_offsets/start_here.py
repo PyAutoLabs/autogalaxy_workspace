@@ -2,8 +2,23 @@
 Features: Dataset Offsets
 =========================
 
-Observations of the same object may have small relative coordinate offsets. Joint modeling can account for
-those offsets while fitting the physical model shared by the datasets.
+Align observations within a joint galaxy fit so that small pointing or registration differences are not mistaken for changes in morphology. The relative coordinate shifts are fitted alongside the shared physical model.
+
+__Scientific Use Cases__
+
+- Combine observations with residual astrometric misalignment.
+- Separate a shift of the whole image from a change in the galaxy's structure.
+- Inspect the uncertainty in relative registration when comparing bands.
+
+__This Example__
+
+Choose one dataset as the positional reference and fit the other dataset's relative translations.
+Retain the recipe's coordinate order, angular units and priors. A translation does not correct a
+rotation, a PSF mismatch or genuine wavelength-dependent morphology.
+
+![Dataset Offsets](../../../../images/new_user_guide/dataset_types.png)
+
+Reused PyAutoGalaxy new-user-guide schematic, not measured data. The interferometer panel shows visibility sampling locations, not amplitudes; multi-band panels illustrate changing emission.
 
 __Relative Alignment__
 
@@ -18,12 +33,6 @@ __Following the Example__
 The simulator establishes a known offset and the modeling example shows which dataset provides the reference
 and which offsets are fitted. Retain the coordinate order, units and priors alongside the code. After fitting,
 inspect each dataset in its own coordinates as well as considering the joint result.
-
-__In This Folder__
-
-These examples connect several observations. Read which parameters are shared, which are dataset-specific and
-whether the fits are simultaneous or sequential. The per-dataset likelihoods still retain their own response
-and noise treatment.
 
 __Choose An Example__
 

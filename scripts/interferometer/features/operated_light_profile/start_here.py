@@ -2,34 +2,41 @@
 Features: Operated Light Profile
 ================================
 
-An operated light profile describes emission after an instrumental operation has already been included in the
-profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of
-compact emission.
+Fit compact radio or submillimeter emission together with an extended galaxy directly in visibility space. The operated-profile class can be used for the compact component, but its imaging PSF-bypass interpretation does not apply to this likelihood.
 
-__Avoid Applying the Same Response Twice__
+__Scientific Use Cases__
 
-Ordinary intrinsic light profiles are passed through the instrumental response before comparison with the
-data. An operated profile is already defined at that stage for the relevant operation. Applying the same PSF
-convolution again would broaden it a second time.
+- Separate compact and extended sky emission through their predicted visibilities.
+- Keep the compact-component model explicit when comparing imaging and interferometer observations.
+- Avoid confusing an imaging PSF template with intrinsic sky brightness or a synthesized dirty-image beam.
 
-This distinction is about the meaning of the profile, not simply whether a source is small. Decide whether
-your parameters describe intrinsic emission or its observed appearance before choosing the profile class.
+__This Example__
+
+Here the compact profile is a sky-brightness model that is Fourier transformed into visibilities like
+other light profiles. There is no imaging PSF convolution to skip. The synthesized beam of a dirty image
+is not an additional blur to apply before that transform. The imaging operated-profile interpretation
+therefore cannot be carried over unchanged.
+
+![Operated Light Profile](../../../../images/new_user_guide/dataset_types.png)
+
+Reused PyAutoGalaxy new-user-guide schematic, not measured data. The interferometer panel shows visibility sampling locations, not amplitudes; multi-band panels illustrate changing emission.
+
+__From Compact Sky Light to Visibilities__
+
+For this example, the profile image represents compact sky emission and is Fourier transformed at the measured
+visibility coordinates. The fitted compact width is not automatically an imaging PSF width. The data must
+support any claim that the compact structure is resolved.
+
+An imaging operated profile instead describes light after a specified PSF operation. Sharing a profile class
+between datasets therefore does not justify sharing its fitted size or response interpretation without checking
+the physical model.
 
 __Compact Emission and Extended Light__
 
-Compact nuclear emission can overlap an extended host galaxy. The examples show how those components are
-combined and which instrumental response is already represented. Their decomposition depends on the adopted
-compact-profile shape as well as the host model.
-
-Read the simulator and modeling example together. Imaging and interferometer responses are different, so
-retain the data-type-specific explanation in the recipe rather than applying an imaging PSF assumption to
-every dataset.
-
-__In This Folder__
-
-These examples fit visibilities. The image-plane light prediction is transformed into the measured
-Fourier-domain quantities; a dirty image is an inspection product, not a substitute for that likelihood. Keep
-the visibility sampling, noise and model-specific response choices in view when adapting an imaging example.
+The compact component and host contribute jointly to the predicted visibilities. Their separation depends on
+the visibility coverage, noise and adopted light profiles. Inspect the per-component predictions and the fit,
+not just a displayed dirty image. The modeling script also describes a separate advanced visibility-matrix
+override; that is not required for the ordinary profile transformation illustrated here.
 
 __Choose An Example__
 

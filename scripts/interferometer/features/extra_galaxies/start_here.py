@@ -2,8 +2,23 @@
 Features: Extra Galaxies
 ========================
 
-A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region
-being fitted.
+Measure a target galaxy's light in a crowded field by modeling the neighbouring galaxies whose emission overlaps the fitted region. Separating those contributions helps protect the target's inferred size, shape and flux from contamination.
+
+__Scientific Use Cases__
+
+- Fit overlapping galaxy light instead of assigning all emission to the target.
+- Measure morphology and component fluxes in blended systems.
+- Test how the treatment of faint companions changes the target fit.
+
+__This Example__
+
+The fitted data are complex visibilities. The galaxy-light model is transformed into the sampled
+Fourier quantities, with the dataset's visibility noise retained. A dirty image helps with inspection,
+but it is not the image-plane dataset used by the likelihood.
+
+![Extra Galaxies](../../../../images/new_user_guide/galaxy_systems.png)
+
+Reused PyAutoGalaxy new-user-guide schematic. These are galaxy-light environments, not lensing mass models; the blended-galaxy panel is the relevant comparison here. The image illustrates sky emission; the likelihood fits complex visibilities.
 
 __Deciding What to Include__
 
@@ -21,12 +36,6 @@ parameters can help constrain a fit, but also introduces assumptions about the c
 
 Use the simulator to understand the example field, then follow the modeling example to add the neighbours
 explicitly.
-
-__In This Folder__
-
-These examples fit visibilities. The image-plane light prediction is transformed into the measured
-Fourier-domain quantities; a dirty image is an inspection product, not a substitute for that likelihood. Keep
-the visibility sampling, noise and model-specific response choices in view when adapting an imaging example.
 
 __Choose An Example__
 
