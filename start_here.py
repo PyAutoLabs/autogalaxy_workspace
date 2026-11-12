@@ -275,49 +275,81 @@ __Wrap Up__
 This completes the introduction to **PyAutoGalaxy**, including a brief overview of the core API for galaxy light
 profiles, galaxy modeling, and data simulation.
 
-__What Data Type?__
+__Where To Next__
 
-If you are interested in modeling galaxies, you now need to decide what type of imaging data you want to work with:
+This guide helps you choose a **PyAutoGalaxy example notebook** for your observations. Start with the galaxies you need to model together, then choose your data type. Each example includes Python code you can read, run and adapt.
 
-- **CCD Imaging**: For image data from telescopes like Hubble, James Webb, or ground-based observatories,
-  go to `imaging/start_here.ipynb`.
+If you use AI, describe your galaxies and observations to the [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant). It can help you choose an example and work through it interactively.
 
-- **Interferometer**: For radio / sub-mm interferometer data from instruments like ALMA, where galaxies are
-  observed via visibilities in the uv-plane, go to `interferometer/start_here.ipynb`.
+__Which galaxies need modelling?__
 
-- **Multi-Band Imaging**: For galaxies observed in multiple wavebands (e.g. colour gradients, stellar population
-  studies), go to `multi_band/start_here.ipynb`.
+Choose an example based on how much their light overlaps and how many galaxies you need to fit together.
 
-__Google Colab__
+![Illustrations of an isolated disk galaxy, two galaxies with overlapping light, and a cluster field with a bright central galaxy and many members.](https://raw.githubusercontent.com/PyAutoLabs/autogalaxy_workspace/main/images/new_user_guide/galaxy_systems.png)
 
-You can also open and run each notebook directly in Google Colab, which provides a free cloud computing
-environment with all the required dependencies already installed.
+*AI-generated conceptual illustration, not observations or fitted models. Panels are not shown at the same angular scale.*
 
-This is a great way to get started quickly without needing to install **PyAutoGalaxy** on your own machine,
-so you can check it is the right software for you before going through the installation process:
+__Single galaxy__
 
-- [imaging/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/imaging/start_here.ipynb>):
-  Galaxy modeling with CCD imaging (e.g. Hubble, James Webb, ground-based telescopes).
+One galaxy is the target. Mask unrelated neighbours whose light does not need to be modelled jointly. Start with your data type below.
 
-- [interferometer/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/interferometer/start_here.ipynb):
-  Galaxy modeling with interferometer data (e.g. ALMA), fitting directly in the uv-plane.
+[Choose your data type below](#what-dataset-type)
 
-- [multi_band/start_here.ipynb](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/multi_dataset/start_here.ipynb):
-  Multi-band galaxy modeling to study colour gradients and wavelength-dependent structure.
-  
-__Still Unsure?__
+__Blended galaxies__
 
-Each notebook is short and self-contained, and can be completed and adapted quickly to your particular task. 
-Therefore, if you're unsure exactly which scale of lensing applies to you, or quite what data you want to use, you 
-should just read through a few different notebooks and go from there.
+Two or more galaxies have overlapping light. Fit a separate light model for each galaxy at the same time.
 
-__HowToGalaxy Lectures__
+[Notebook ](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/start_here.ipynb)·[Google Colab ](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/multi_galaxy/start_here.ipynb)
 
-If you are new to galaxy modeling or want a slower, first-principles walk-through of the statistical techniques
-behind it, the **HowToGalaxy** lecture series takes you from the basics through to modeling real galaxy imaging
-data. It now lives in its own repository:
+__Cluster field__
 
-https://github.com/PyAutoLabs/HowToGalaxy
+Model a bright central galaxy and a catalogue of member galaxies. The example uses catalogue photometry to constrain fainter members and reduce the number of free parameters.
+
+[Notebook ](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/cluster/start_here.ipynb)·[Google Colab ](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/cluster/start_here.ipynb)
+
+This cluster example models the galaxies’ light. For strong-lensing mass models and background-source images, use [PyAutoLens](https://pyautolens.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html).
+
+<a id="what-dataset-type"></a>
+
+__What dataset type?__
+
+For a single galaxy, choose the example for your observations. For blended galaxies or cluster fields, begin with the system-specific guide above.
+
+![A pixelated galaxy image, interferometer sampling points in the u–v plane, and illustrative views of the same galaxy in three wavebands.](https://raw.githubusercontent.com/PyAutoLabs/autogalaxy_workspace/main/images/new_user_guide/dataset_types.png)
+
+*AI-generated schematic, not measured data. The interferometer panel shows sampling locations; multi-band images illustrate how the relative prominence of a galaxy’s components can change with wavelength.*
+
+__Imaging__
+
+Images from Hubble, JWST or ground-based telescopes. Model the distribution of starlight using light profiles.
+
+[Notebook ](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/start_here.ipynb)·[Google Colab ](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/imaging/start_here.ipynb)
+
+__Interferometer__
+
+Radio or submillimetre observations, such as ALMA data. Fit the measured visibilities directly.
+
+[Notebook ](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/start_here.ipynb)·[Google Colab ](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/interferometer/start_here.ipynb)
+
+__Multi-band imaging__
+
+Images of the same galaxy in several wavebands. Fit them together to study colour gradients and wavelength-dependent structure.
+
+[Notebook ](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/start_here.ipynb)·[Google Colab ](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/multi_dataset/start_here.ipynb)
+
+Read each notebook on GitHub, open it locally, or use its Google Colab link to run it in your browser. In Colab, run the setup cell first to install the software and prepare the example.
+
+__Still unsure?__
+
+Tell the [AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) which galaxies overlap in your field and what observations you have. It can help you identify a starting example.
+
+__Learn the science__
+
+[HowToGalaxy](https://github.com/PyAutoLabs/HowToGalaxy) teaches galaxy structure and Bayesian modelling through worked notebooks. Use it for a slower explanation of the concepts behind these examples.
+
+__Next steps__
+
+Once you have chosen an example, explore the [Features guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_3_features.html) to find the modelling tools relevant to your science.
 
 __Features__
 
