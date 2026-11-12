@@ -1,27 +1,26 @@
-The `imaging` folder contains example scripts showing how to analyse galaxies with
-using ellipse isophote fitting.
+The `ellipse` folder shows how to measure galaxy-light morphology with PyAutoGalaxy's isophote-fitting tools.
+Fit the centre, ellipticity and position angle at different radii, then use multipoles to describe departures
+from elliptical symmetry.
 
 # Start Here
 
-New users should read the `start_here` example, which gives an overview of all examples in the folder.
+Begin with [`fit.py`](fit.py) to understand the image sampling, residuals and likelihood. Continue with
+[`modeling.py`](modeling.py) to infer ellipse parameters using a non-linear search, and
+[`multipoles.py`](multipoles.py) to fit more complex isophote shapes.
+
+These examples work on the observed image without PSF convolution of a light model. Account for PSF effects
+when interpreting small-radius structure, and mask neighbouring light where appropriate.
 
 # Files
 
-- `start_here`: A simple example illustrating how to analyse CCD imaging data.
-- `modeling`: Detailed example of performing lens modeling of CCD imaging data.
-- `simulator`: Detailed example of how to simulate strong lens CCD imaging data.
-- `fit`: How to CCD imaging data to compute quantities like the residuals, chi squared and likelihood.
-- `multipoles`: Extending ellipse isophote fitting to include multipole expansions.
-- `database` How to use database tools to load results from model-fits.
-- `plot`: How to plot the dataset and fits to it.
-
-# Folders
-
-- `features`: Examples illustrating different core features for CCD imaging analysis and lens modeling.
+- `fit`: Inspect a fixed ellipse fit, residuals, chi-squared and likelihood.
+- `modeling`: Fit ellipse parameters and repeat at multiple radii.
+- `multipoles`: Extend the isophotes with multipole perturbations.
+- `simulator`: Create galaxy imaging for the ellipse examples.
+- `database`: Load and inspect saved fit results.
+- `plot`: Plot ellipses and their fits.
 
 # Results
 
-The `modeling` example performs lens modeling but only give a brief overview of how to analyse and interpret the
-results a lens model fit.
-
-A full guide to result analysis is given at `autolens_workspace/*/guides/results`.
+The modeling example introduces the fit results. See the workspace's
+[results guides](../guides/results/) for more ways to inspect and compare model fits.

@@ -2,28 +2,24 @@
 Simulator: Manual Signal to Noise Ratio
 =======================================
 
-When simulating `Imaging` of a galaxy, one is often not concerned with the actual units of the light (e.g.
-electrons per second, counts, etc.) but instead simple wants the data to correspond to a certain signal to noise
-value.
+Build controlled imaging simulations to test galaxy morphology and separation of overlapping light components as data quality changes.
+The `lp_snr` profiles let you request a signal-to-noise ratio instead of manually tuning each profile's intensity.
+This is useful for comparing model recovery across a range of brightnesses at fixed observing conditions.
 
-This can be difficult to achieve when specifying the `intensity` of the input light profiles.
+__What the Requested S/N Means__
 
-This script illustrates the `lp_snr` light profiles, which when used to simulate a dataset via galaxies, set the
-signal to noise of each light profile to an input value. This uses the `exposure_time` and `background_sky_level`
-of the `SimulatorImaging` object to choose the `intensity` of each light profile such that the input signal to
-noise is used.
+The target is the expected signal-to-noise ratio at the brightest pixel of each component, evaluated on
+the simulation grid with the supplied PSF. It is not an integrated S/N for the galaxy. Each component is
+normalized separately, so overlapping components and the final random noise realization need not reproduce
+those targets in the combined image.
 
-For normal light profiles, the `intensity` is defined in units of electrons per second, meaning that the
-`exposure_time` and `background_sky_level` are used to convert this to counts when adding noise. When the `lp_snr`
-profiles are used, the `exposure_time` and `background_sky_level` are instead used to set its S/N, meaning their input
-values do not set the S/N.
+The normalization solves S/N = S / sqrt(S + B), where S is the component's expected counts in its brightest
+pixel and B is the sky counts there. `exposure_time` still has its usual meaning, and `background_sky_level`
+is still a count rate: together they determine the intensity required to reach the requested S/N.
+Changing either while keeping the target S/N fixed changes the simulated object's brightness as well.
 
-However, the ratio of `exposure_time` and `background_sky_level` does set how much noise is due to Poisson count
-statistics in the CCD imaging detector relative to the background sky. If one doubles the `exposure_time`, the
-Poisson count component will contribute more compared to the background sky component. For detailed scientific
-analysis, one should therefore make sure their values are chosen to produce images with realistic noise properties.
-
-The use of the `light_snr` profiles changes the meaning of `exposure_time` and `background_sky_level`.
+Choose exposure, sky, PSF and sampling to represent the observations you want to study, then inspect the
+resulting image and noise map. An S/N target alone does not specify all of the image's noise properties.
 
 This script simulates `Imaging` of a galaxy where:
 
@@ -99,8 +95,8 @@ simulator = ag.SimulatorImaging(
 """
 __Galaxies__
 
-Setup the galaxy's light (elliptical Sersic + Exponential), mass (SIE+Shear) and galaxy light
-(elliptical Sersic) for this simulation.
+Define two galaxies, each with a Sersic light profile and its own target peak-pixel S/N.
+This is a galaxy-light simulation; no lens mass or external shear is included.
 """
 galaxy_0 = ag.Galaxy(
     redshift=0.5,

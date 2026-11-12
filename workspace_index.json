@@ -1773,7 +1773,7 @@
     ],
     "notebook": "notebooks/imaging/features/simulator_manual_signal_to_noise.ipynb",
     "path": "scripts/imaging/features/simulator_manual_signal_to_noise.py",
-    "summary": "When simulating `Imaging` of a galaxy, one is often not concerned with the actual units of the light (e.g. electrons per second, counts, etc.) but instead simple wants the data to correspond to a certain signal to noise value.",
+    "summary": "Build controlled imaging simulations to test galaxy morphology and separation of overlapping light components as data quality changes. The `lp_snr` profiles let you request a signal-to-noise ratio instead of manually tuning each profile's intensity. This is useful for comparing model recovery across a range of brightnesses at fixed observing conditions.",
     "title": "Simulator: Manual Signal to Noise Ratio"
   },
   {
