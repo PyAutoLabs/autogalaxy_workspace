@@ -2,8 +2,23 @@
 Features: Extra Galaxies
 ========================
 
-A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region
-being fitted.
+Measure a target galaxy's light in a crowded field by modeling the neighbouring galaxies whose emission overlaps the fitted region. Separating those contributions helps protect the target's inferred size, shape and flux from contamination.
+
+__Scientific Use Cases__
+
+- Fit overlapping galaxy light instead of assigning all emission to the target.
+- Measure morphology and component fluxes in blended systems.
+- Test how the treatment of faint companions changes the target fit.
+
+__This Example__
+
+This recipe distinguishes the main blended galaxies from a second tier of fainter companions. The
+main galaxies have their own light models; extra-galaxy centres are fixed to the input catalogue positions
+so a companion cannot wander into a main component. Inspect both tiers separately as well as their sum.
+
+![Extra Galaxies](../../../../images/new_user_guide/galaxy_systems.png)
+
+Reused PyAutoGalaxy new-user-guide schematic. These are galaxy-light environments, not lensing mass models; the blended-galaxy panel is the relevant comparison here.
 
 __Deciding What to Include__
 
@@ -21,12 +36,6 @@ parameters can help constrain a fit, but also introduces assumptions about the c
 
 Use the simulator to understand the example field, then follow the modeling example to add the neighbours
 explicitly.
-
-__In This Folder__
-
-The examples model the light of a blended galaxy system. They do not introduce a gravitational-lensing mass
-model. Inspect the separate light components as well as the combined fit, especially where the galaxies
-overlap.
 
 __Choose An Example__
 

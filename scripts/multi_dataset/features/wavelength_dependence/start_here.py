@@ -2,8 +2,24 @@
 Features: Wavelength Dependence
 ===============================
 
-A wavelength-dependent model describes how specified galaxy properties change across bands. It links
-observations through a chosen relationship rather than treating every parameter in every band independently.
+Measure how galaxy structure changes across bands by linking selected profile parameters through a wavelength-dependent relation. This supports comparisons of bulge and disk morphology while limiting the number of independently sampled parameters.
+
+__Scientific Use Cases__
+
+- Fit a smooth trend of galaxy size with wavelength.
+- Connect bands that constrain the same structural components with different precision.
+- Test whether the chosen wavelength relation describes the observed morphology in every band.
+
+__This Example__
+
+The recipe links the bulge and disk effective radii through separate straight-line functions of
+wavelength, fitting their slopes and intercepts. Other structural choices remain explicit in the model;
+linear-profile intensities are solved for each dataset. A radius trend alone does not identify the
+stellar populations or dust distribution that caused it.
+
+![Wavelength Dependence](../../../../images/new_user_guide/dataset_types.png)
+
+Reused PyAutoGalaxy new-user-guide schematic, not measured data. The interferometer panel shows visibility sampling locations, not amplitudes; multi-band panels illustrate changing emission.
 
 __A Relationship Is a Model Assumption__
 
@@ -22,12 +38,6 @@ unique linking scheme.
 Inspect the predicted morphology and residuals in every band. Differences between bands may reflect the light
 distribution, instrumental response or an inadequate relationship, and the fit should be interpreted
 accordingly.
-
-__In This Folder__
-
-These examples connect several observations. Read which parameters are shared, which are dataset-specific and
-whether the fits are simultaneous or sequential. The per-dataset likelihoods still retain their own response
-and noise treatment.
 
 __Choose An Example__
 

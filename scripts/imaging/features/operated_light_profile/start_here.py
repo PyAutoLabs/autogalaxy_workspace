@@ -2,9 +2,23 @@
 Features: Operated Light Profile
 ================================
 
-An operated light profile describes emission after an instrumental operation has already been included in the
-profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of
-compact emission.
+Separate compact nuclear emission from an extended host using a profile whose imaging PSF response is already included. This is useful when the component you want to fit describes the observed compact glow, rather than an intrinsic light distribution that still needs to be blurred.
+
+__Scientific Use Cases__
+
+- Fit PSF-like nuclear light alongside an extended galaxy model.
+- Prevent a compact component that already includes the PSF from being convolved twice.
+- Assess how the compact-light description affects host-galaxy measurements.
+
+__This Example__
+
+These examples fit image pixels after accounting for the PSF and noise. The inferred components
+describe galaxy light in the observed field. Examine their individual contributions and the residuals,
+not only whether the sum gives an acceptable fit.
+
+![Operated Light Profile](../../../../images/features/operated_light_profile.png)
+
+Conceptual illustration of the imaging response: the compact component already includes its PSF blur. The extended galaxy is still treated with its appropriate response.
 
 __Avoid Applying the Same Response Twice__
 
@@ -24,12 +38,6 @@ compact-profile shape as well as the host model.
 Read the simulator and modeling example together. Imaging and interferometer responses are different, so
 retain the data-type-specific explanation in the recipe rather than applying an imaging PSF assumption to
 every dataset.
-
-__In This Folder__
-
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
 
 __Choose An Example__
 

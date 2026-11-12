@@ -2,9 +2,23 @@
 Features: Shapelets
 ===================
 
-Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile,
-the basis contains functions with different spatial structures, allowing their sum to describe more
-complicated galaxy morphology.
+Describe departures from a smooth galaxy profile with a flexible set of spatial basis functions. Shapelets are useful for studying asymmetric morphology and structured residuals while retaining a compact parameterization of the basis geometry.
+
+__Scientific Use Cases__
+
+- Represent light that a single symmetric profile cannot describe adequately.
+- Explore how basis order and scale affect the recovered morphology.
+- Compare flexible light models while inspecting the summed brightness and residuals.
+
+__This Example__
+
+The fitted data are complex visibilities. The galaxy-light model is transformed into the sampled
+Fourier quantities, with the dataset's visibility noise retained. A dirty image helps with inspection,
+but it is not the image-plane dataset used by the likelihood.
+
+![Shapelets](../../../../images/features/shapelets_illustration.png)
+
+Reused conceptual illustration. “Source model” here means the emitting galaxy; there is no gravitational-lensing source plane. The summed basis represents light, not separate physical structures. The image illustrates sky emission; the likelihood fits complex visibilities.
 
 __Basis Functions and Their Sum__
 
@@ -25,11 +39,11 @@ constraints and any regularization in view when interpreting the result.
 As with other flexible light models, inspect the residuals and the reconstructed image together. A useful
 basis should describe the signal without introducing structure solely to follow noise.
 
-__In This Folder__
+__Basis Teaching Figure__
 
-These examples fit visibilities. The image-plane light prediction is transformed into the measured
-Fourier-domain quantities; a dirty image is an inspection product, not a substitute for that likelihood. Keep
-the visibility sampling, noise and model-specific response choices in view when adapting an imaging example.
+![Shapelet basis grid](../../../../images/features/shapelets_basis.png)
+
+Retain this basis grid for the detailed lesson: individual patterns are mathematical functions; the galaxy model is their weighted sum.
 
 __Choose An Example__
 

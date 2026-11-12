@@ -2,8 +2,23 @@
 Features: Linear Light Profiles
 ===============================
 
-A linear light profile has the same spatial form as an ordinary light profile, but its intensity is solved
-during each likelihood evaluation instead of being sampled by the non-linear search.
+Fit galaxy structure with fewer sampled parameters by solving component brightnesses at every likelihood evaluation. This is especially useful for bulge–disk decomposition and models containing many overlapping light components: the search explores their geometry while their intensities are solved together.
+
+__Scientific Use Cases__
+
+- Measure bulge and disk structure without sampling a separate intensity for each component.
+- Build richer light models while controlling the dimensionality of the non-linear search.
+- Re-solve component fluxes as sizes, shapes and centres change; solved brightness is not fixed brightness.
+
+__This Example__
+
+These examples fit image pixels after accounting for the PSF and noise. The inferred components
+describe galaxy light in the observed field. Examine their individual contributions and the residuals,
+not only whether the sum gives an acceptable fit.
+
+![Linear Light Profiles](../../../../images/features/linear_light_profiles.png)
+
+Conceptual illustration: the paths symbolize different sampled parameter spaces, not measured convergence rates or removal of physical degeneracies.
 
 __What Is Linear About It?__
 
@@ -31,43 +46,16 @@ Start with the direct fit to see how the solved intensities are retrieved. Then 
 see which parameters remain in the non-linear model. The likelihood example explains the underlying
 calculation in more detail.
 
-__In This Folder__
+__Conditional Brightness and Positivity__
 
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
+Solving intensities reduces the sampled dimensions; it does not remove the scientific covariance between
+brightness, size and profile shape. Uncertainty in the geometry still affects the recovered component light.
+The number of removed intensity parameters equals the number of independently solved profile amplitudes.
 
-__Advantages__
-
-Each light profile's `intensity` parameter is therefore not a free parameter in the model-fit, reducing the
-dimensionality of non-linear parameter space by the number of light profiles (in this example by 2 dimensions).
-
-This also removes the degeneracies that occur between the `intensity` and other light profile parameters
-(e.g. `effective_radius`, `sersic_index`), which are difficult degeneracies for the non-linear search to map out
-accurately. This produces more reliable lens model results and the fit converges in fewer iterations, speeding up the
-overall analysis.
-
-The inversion has a relatively small computational cost, thus we reduce the model complexity without much slow-down and
-can therefore fit models more reliably and faster!
-
-__Disadvantages__
-
-Although the computation time of the inversion is small, it is not non-negligible. It is approximately 3-4x slower
-than using a standard light profile.
-
-The gains in run times due to the simpler non-linear parameter space therefore are somewhat balanced by the slower
-likelihood calculation.
-
-__Positive Only Solver__
-
-Many codes which use linear algebra typically rely on a linear algebra solver which allows for positive and negative
-values of the solution (e.g. `np.linalg.solve`), because they are computationally fast.
-
-This is problematic, as it means that negative surface brightnesses values can be computed to represent a galaxy's
-light, which is clearly unphysical.
-
-**PyAutoGalaxy** uses a positive only linear algebra solver which has been extensively optimized to ensure it is as fast
-as positive-negative solvers. This ensures that all light profile intensities are positive and therefore physical.
+The imaging examples use a non-negative solve so positive light profiles cannot cancel each other with large
+positive and negative amplitudes. This constraint alone does not establish that the morphology is correct.
+The cost of the solve and the benefit to the search depend on the model and dataset; benchmark the complete
+fit rather than assuming a universal speed ratio.
 
 __Choose An Example__
 

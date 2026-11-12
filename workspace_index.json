@@ -1209,7 +1209,7 @@
     ],
     "notebook": "notebooks/imaging/features/extra_galaxies/start_here.ipynb",
     "path": "scripts/imaging/features/extra_galaxies/start_here.py",
-    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "summary": "Measure a target galaxy's light in a crowded field by modeling the neighbouring galaxies whose emission overlaps the fitted region. Separating those contributions helps protect the target's inferred size, shape and flux from contamination.",
     "title": "Features: Extra Galaxies"
   },
   {
@@ -1302,7 +1302,7 @@
     ],
     "notebook": "notebooks/imaging/features/linear_light_profiles/start_here.ipynb",
     "path": "scripts/imaging/features/linear_light_profiles/start_here.py",
-    "summary": "A linear light profile has the same spatial form as an ordinary light profile, but its intensity is solved during each likelihood evaluation instead of being sampled by the non-linear search.",
+    "summary": "Fit galaxy structure with fewer sampled parameters by solving component brightnesses at every likelihood evaluation. This is especially useful for bulge\u2013disk decomposition and models containing many overlapping light components: the search explores their geometry while their intensities are solved together.",
     "title": "Features: Linear Light Profiles"
   },
   {
@@ -1425,7 +1425,7 @@
     ],
     "notebook": "notebooks/imaging/features/multi_gaussian_expansion/start_here.ipynb",
     "path": "scripts/imaging/features/multi_gaussian_expansion/start_here.py",
-    "summary": "A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the galaxy.",
+    "summary": "Describe a galaxy's central light and extended envelope with a flexible sum of Gaussian profiles. An MGE is useful when one simple profile leaves structured residuals, or when you need a smooth light model from which to measure the combined luminosity and radial structure.",
     "title": "Features: Multi Gaussian Expansion"
   },
   {
@@ -1484,7 +1484,7 @@
     ],
     "notebook": "notebooks/imaging/features/operated_light_profile/start_here.ipynb",
     "path": "scripts/imaging/features/operated_light_profile/start_here.py",
-    "summary": "An operated light profile describes emission after an instrumental operation has already been included in the profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of compact emission.",
+    "summary": "Separate compact nuclear emission from an extended host using a profile whose imaging PSF response is already included. This is useful when the component you want to fit describes the observed compact glow, rather than an intrinsic light distribution that still needs to be blurred.",
     "title": "Features: Operated Light Profile"
   },
   {
@@ -1655,7 +1655,7 @@
     ],
     "notebook": "notebooks/imaging/features/pixelization/start_here.ipynb",
     "path": "scripts/imaging/features/pixelization/start_here.py",
-    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "summary": "Reconstruct galaxy light that is difficult to describe with a small set of analytic profiles, such as asymmetric or clumpy emission. A pixelization solves brightness on a mesh, allowing the morphology of the emission to be studied while accounting for the observation's response and noise.",
     "title": "Features: Pixelization"
   },
   {
@@ -1683,7 +1683,7 @@
     ],
     "notebook": "notebooks/imaging/features/point_source/start_here.ipynb",
     "path": "scripts/imaging/features/point_source/start_here.py",
-    "summary": "An unresolved source has no measured intrinsic spatial extent at the resolution of the observation. Its observed appearance is set by the instrumental response and its location and flux.",
+    "summary": "Explore how an unresolved nucleus contributes to a galaxy image and affects measurements of its extended host. The point-source component supplies a position and flux; the instrumental response determines its observed footprint.",
     "title": "Features: Point Source"
   },
   {
@@ -1756,7 +1756,7 @@
     ],
     "notebook": "notebooks/imaging/features/shapelets/start_here.ipynb",
     "path": "scripts/imaging/features/shapelets/start_here.py",
-    "summary": "Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile, the basis contains functions with different spatial structures, allowing their sum to describe more complicated galaxy morphology.",
+    "summary": "Describe departures from a smooth galaxy profile with a flexible set of spatial basis functions. Shapelets are useful for studying asymmetric morphology and structured residuals while retaining a compact parameterization of the basis geometry.",
     "title": "Features: Shapelets"
   },
   {
@@ -1852,7 +1852,7 @@
     ],
     "notebook": "notebooks/imaging/features/sky_background/start_here.ipynb",
     "path": "scripts/imaging/features/sky_background/start_here.py",
-    "summary": "The background contributes light across an image in addition to the galaxy or lens being studied. If a background contribution remains in the data, it can be included in the model rather than attributed to the target's emission.",
+    "summary": "Measure faint galaxy outskirts while fitting an uncertain sky level alongside the galaxy light. This is useful for retained backgrounds and residual sky-subtraction offsets, where a small background error can otherwise alter the inferred size or outer profile.",
     "title": "Features: Sky Background"
   },
   {
@@ -2172,7 +2172,7 @@
     ],
     "notebook": "notebooks/interferometer/features/extra_galaxies/start_here.ipynb",
     "path": "scripts/interferometer/features/extra_galaxies/start_here.py",
-    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "summary": "Measure a target galaxy's light in a crowded field by modeling the neighbouring galaxies whose emission overlaps the fitted region. Separating those contributions helps protect the target's inferred size, shape and flux from contamination.",
     "title": "Features: Extra Galaxies"
   },
   {
@@ -2274,7 +2274,7 @@
     ],
     "notebook": "notebooks/interferometer/features/linear_light_profiles/start_here.ipynb",
     "path": "scripts/interferometer/features/linear_light_profiles/start_here.py",
-    "summary": "A linear light profile has the same spatial form as an ordinary light profile, but its intensity is solved during each likelihood evaluation instead of being sampled by the non-linear search.",
+    "summary": "Fit galaxy structure with fewer sampled parameters by solving component brightnesses at every likelihood evaluation. This is especially useful for bulge\u2013disk decomposition and models containing many overlapping light components: the search explores their geometry while their intensities are solved together.",
     "title": "Features: Linear Light Profiles"
   },
   {
@@ -2375,7 +2375,7 @@
     ],
     "notebook": "notebooks/interferometer/features/multi_gaussian_expansion/start_here.ipynb",
     "path": "scripts/interferometer/features/multi_gaussian_expansion/start_here.py",
-    "summary": "A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the galaxy.",
+    "summary": "Describe a galaxy's central light and extended envelope with a flexible sum of Gaussian profiles. An MGE is useful when one simple profile leaves structured residuals, or when you need a smooth light model from which to measure the combined luminosity and radial structure.",
     "title": "Features: Multi Gaussian Expansion"
   },
   {
@@ -2437,7 +2437,7 @@
     ],
     "notebook": "notebooks/interferometer/features/operated_light_profile/start_here.ipynb",
     "path": "scripts/interferometer/features/operated_light_profile/start_here.py",
-    "summary": "An operated light profile describes emission after an instrumental operation has already been included in the profile. For imaging, the common example is a profile that already describes the PSF-blurred appearance of compact emission.",
+    "summary": "Fit compact radio or submillimeter emission together with an extended galaxy directly in visibility space. The operated-profile class can be used for the compact component, but its imaging PSF-bypass interpretation does not apply to this likelihood.",
     "title": "Features: Operated Light Profile"
   },
   {
@@ -2624,7 +2624,7 @@
     ],
     "notebook": "notebooks/interferometer/features/pixelization/start_here.ipynb",
     "path": "scripts/interferometer/features/pixelization/start_here.py",
-    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "summary": "Reconstruct galaxy light that is difficult to describe with a small set of analytic profiles, such as asymmetric or clumpy emission. A pixelization solves brightness on a mesh, allowing the morphology of the emission to be studied while accounting for the observation's response and noise.",
     "title": "Features: Pixelization"
   },
   {
@@ -2687,7 +2687,7 @@
     ],
     "notebook": "notebooks/interferometer/features/shapelets/start_here.ipynb",
     "path": "scripts/interferometer/features/shapelets/start_here.py",
-    "summary": "Shapelets describe light as a weighted combination of basis functions. Unlike a single smooth light profile, the basis contains functions with different spatial structures, allowing their sum to describe more complicated galaxy morphology.",
+    "summary": "Describe departures from a smooth galaxy profile with a flexible set of spatial basis functions. Shapelets are useful for studying asymmetric morphology and structured residuals while retaining a compact parameterization of the basis geometry.",
     "title": "Features: Shapelets"
   },
   {
@@ -2896,7 +2896,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/dataset_offsets/start_here.ipynb",
     "path": "scripts/multi_dataset/features/dataset_offsets/start_here.py",
-    "summary": "Observations of the same object may have small relative coordinate offsets. Joint modeling can account for those offsets while fitting the physical model shared by the datasets.",
+    "summary": "Align observations within a joint galaxy fit so that small pointing or registration differences are not mistaken for changes in morphology. The relative coordinate shifts are fitted alongside the shared physical model.",
     "title": "Features: Dataset Offsets"
   },
   {
@@ -2947,7 +2947,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/imaging_and_interferometer/start_here.ipynb",
     "path": "scripts/multi_dataset/features/imaging_and_interferometer/start_here.py",
-    "summary": "Imaging and interferometer observations can be fitted together using the parameters that their physical models share. Each dataset still requires the forward calculation appropriate to its measurement.",
+    "summary": "Compare the stellar light and radio or submillimeter emission of the same galaxy by fitting imaging and interferometer observations together. Shared parameters connect the models, while each dataset retains the calculation appropriate to its measured quantities.",
     "title": "Features: Imaging And Interferometer"
   },
   {
@@ -2983,7 +2983,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/one_by_one/start_here.ipynb",
     "path": "scripts/multi_dataset/features/one_by_one/start_here.py",
-    "summary": "Multi-dataset modeling does not always require fitting every observation simultaneously. A sequential approach fits one dataset first, then uses the result to guide the analysis of another.",
+    "summary": "Use a well-constrained observation to guide modeling of another band. Sequential fitting is useful for organizing a multi-band decomposition and testing which galaxy properties can be held fixed, transferred as priors or fitted again.",
     "title": "Features: One By One"
   },
   {
@@ -3017,7 +3017,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/pixelization/start_here.ipynb",
     "path": "scripts/multi_dataset/features/pixelization/start_here.py",
-    "summary": "A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a flexible alternative to describing all of the emission with a small collection of analytic profiles.",
+    "summary": "Compare galaxy morphology across bands without forcing every observation into the same analytic light profile. A joint pixelized model reconstructs brightness separately for each dataset, with regularization controlling how much structure each observation supports.",
     "title": "Features: Pixelization"
   },
   {
@@ -3068,7 +3068,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/same_wavelength/start_here.ipynb",
     "path": "scripts/multi_dataset/features/same_wavelength/start_here.py",
-    "summary": "Repeated observations at the same wavelength can constrain a common light model while retaining their individual instrumental responses and noise properties.",
+    "summary": "Combine repeated observations of a galaxy to constrain one common light model without discarding the PSF and noise information of each exposure. This is useful when several images observe the same emission with different instrumental conditions.",
     "title": "Features: Same Wavelength"
   },
   {
@@ -3124,7 +3124,7 @@
     ],
     "notebook": "notebooks/multi_dataset/features/wavelength_dependence/start_here.ipynb",
     "path": "scripts/multi_dataset/features/wavelength_dependence/start_here.py",
-    "summary": "A wavelength-dependent model describes how specified galaxy properties change across bands. It links observations through a chosen relationship rather than treating every parameter in every band independently.",
+    "summary": "Measure how galaxy structure changes across bands by linking selected profile parameters through a wavelength-dependent relation. This supports comparisons of bulge and disk morphology while limiting the number of independently sampled parameters.",
     "title": "Features: Wavelength Dependence"
   },
   {
@@ -3289,7 +3289,7 @@
     ],
     "notebook": "notebooks/multi_galaxy/features/extra_galaxies/start_here.ipynb",
     "path": "scripts/multi_galaxy/features/extra_galaxies/start_here.py",
-    "summary": "A target rarely occupies an otherwise empty field. Nearby galaxies may contribute light inside the region being fitted.",
+    "summary": "Measure a target galaxy's light in a crowded field by modeling the neighbouring galaxies whose emission overlaps the fitted region. Separating those contributions helps protect the target's inferred size, shape and flux from contamination.",
     "title": "Features: Extra Galaxies"
   },
   {

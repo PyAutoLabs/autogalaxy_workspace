@@ -2,8 +2,25 @@
 Features: Pixelization
 ======================
 
-A pixelization represents light using a mesh whose brightness values are solved during the fit. It provides a
-flexible alternative to describing all of the emission with a small collection of analytic profiles.
+Reconstruct galaxy light that is difficult to describe with a small set of analytic profiles, such as asymmetric or clumpy emission. A pixelization solves brightness on a mesh, allowing the morphology of the emission to be studied while accounting for the observation's response and noise.
+
+__Scientific Use Cases__
+
+- Map irregular light rather than forcing it into a smooth elliptical profile.
+- Separate a smooth component from more complex emission when both are included in the model.
+- Inspect and export the reconstructed galaxy light, checking which structure is supported by the data.
+
+__This Example__
+
+The fitted data are complex visibilities. The galaxy-light model is transformed into the sampled
+Fourier quantities, with the dataset's visibility noise retained. A dirty image helps with inspection,
+but it is not the image-plane dataset used by the likelihood.
+
+For galaxy science, continue to [galaxy_reconstruction.py](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/features/pixelization/galaxy_reconstruction.ipynb) to inspect and export the inferred light.
+
+![Pixelization](../../../../images/features/pixelization_illustration.png)
+
+Conceptual illustration, not a fitted reconstruction. The two views represent the same galaxy brightness; the schematic triangular overlay is not a claim about the mesh used in every example. The image illustrates sky emission; the likelihood fits complex visibilities.
 
 __From a Mesh to the Data__
 
@@ -38,12 +55,6 @@ __Interpreting the Reconstruction__
 Check the fit in the space where the data were measured as well as inspecting the reconstructed light. A
 plausible reconstruction can still accompany an inadequate PSF, an unsuitable mask or an incomplete physical
 model. Fine structure should be interpreted in light of the resolution and assumptions of the full analysis.
-
-__In This Folder__
-
-These examples fit visibilities. The image-plane light prediction is transformed into the measured
-Fourier-domain quantities; a dirty image is an inspection product, not a substitute for that likelihood. Keep
-the visibility sampling, noise and model-specific response choices in view when adapting an imaging example.
 
 __Disadvantages__
 

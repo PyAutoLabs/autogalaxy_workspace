@@ -2,12 +2,23 @@
 Features: Multi Gaussian Expansion
 ==================================
 
-A multi Gaussian expansion (MGE) represents a galaxy's light as the sum of many Gaussian profiles. Each
-Gaussian describes emission on a particular spatial scale; together, they can provide a flexible model of the
-galaxy.
+Describe a galaxy's central light and extended envelope with a flexible sum of Gaussian profiles. An MGE is useful when one simple profile leaves structured residuals, or when you need a smooth light model from which to measure the combined luminosity and radial structure.
 
-This introduction explains how an MGE works, why it can be useful, and what to consider before using one. The
-neighbouring examples show how to construct an MGE, fit it to data and inspect the results.
+__Scientific Use Cases__
+
+- Model light over a wide range of radii without assigning every Gaussian to a separate physical component.
+- Allow more flexible radial structure than a single elliptical Sersic, within the chosen component geometry.
+- Measure integrated properties from the combined light distribution and examine what remains in the residuals.
+
+__This Example__
+
+These examples fit image pixels after accounting for the PSF and noise. The inferred components
+describe galaxy light in the observed field. Examine their individual contributions and the residuals,
+not only whether the sum gives an acceptable fit.
+
+![Multi Gaussian Expansion](../../../../images/features/mge_illustration.png)
+
+Conceptual illustration: the displayed Gaussians are components of one light model. The inset is a decomposition, not a spatial magnification of the galaxy core.
 
 __Why Use Many Gaussians?__
 
@@ -66,12 +77,6 @@ depends on the dataset and model; an MGE is not guaranteed to make every fit fas
 An MGE is also less directly interpretable than a single Sersic profile. An individual Gaussian is usually a
 component of the mathematical description, rather than a separate physical structure in the galaxy. Quantities
 such as total luminosity or a half-light radius should be derived from the combined light distribution.
-
-__In This Folder__
-
-These examples fit imaging data, so the model is compared with image pixels after accounting for the PSF. The
-galaxy light is modeled in the observed field; there is no lens-source plane mapping. Retain the particular
-light-component choices stated in each recipe.
 
 __Choose An Example__
 
