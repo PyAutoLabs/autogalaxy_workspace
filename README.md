@@ -28,9 +28,27 @@ For a single galaxy, choose your data type below. To fit galaxies together, star
 
 ### Dataset Type
 
-![Galaxy imaging, interferometer sampling and multi-band imaging.](https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/dataset_types.png)
+Choose the example for your observations. Each folder has a `start_here` example to get you going.
 
-Match your observations to [imaging/](scripts/imaging), [interferometer/](scripts/interferometer) or [multi_dataset/](scripts/multi_dataset) for multiple wavebands. Each has a `start_here` example to get you going.
+<table>
+<tr>
+<td width="33%" valign="top">
+<strong>Imaging</strong><br>
+<a href="scripts/imaging"><img src="https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/galaxy_imaging.png" alt="A pixelated telescope image of a spiral galaxy." width="300"></a><br>
+Fit images from Hubble, JWST and ground-based telescopes with <a href="scripts/imaging">imaging/</a>.
+</td>
+<td width="33%" valign="top">
+<strong>Interferometry</strong><br>
+<a href="scripts/interferometer"><img src="https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/galaxy_interferometry.png" alt="Radio dishes observing emission from a galaxy." width="300"></a><br>
+Fit radio and submillimetre observations with <a href="scripts/interferometer">interferometer/</a>.
+</td>
+<td width="33%" valign="top">
+<strong>Multi-band Imaging</strong><br>
+<a href="scripts/multi_dataset"><img src="https://raw.githubusercontent.com/PyAutoLabs/PyAutoGalaxy/main/docs/overview/images/overview_2/galaxy_multi_wavelength.png" alt="The same galaxy in three wavebands." width="300"></a><br>
+Fit several wavebands together with <a href="scripts/multi_dataset">multi_dataset/</a>.
+</td>
+</tr>
+</table>
 
 *AI-generated illustrations, not observations. Galaxy panels use different angular scales. See the [new user guide](https://pyautogalaxy.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html) for details.*
 
