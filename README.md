@@ -6,7 +6,7 @@ Example scripts and notebooks for modeling galaxy structure and morphology with 
 
 ### Explore It Yourself
 
-- **[Try it in your browser](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/start_here.ipynb)** — run the introductory notebook on Google Colab without installing anything.
+- **[Try it in your browser](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/start_here.ipynb)** — run the introductory notebook on Google Colab without installing anything.
 - **[Run it locally](https://pyautogalaxy.readthedocs.io/en/latest/installation/overview.html)** — follow the installation guide, then open `start_here.ipynb`.
 - **[Browse examples with images](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/markdown/README.md)** — read worked examples and view their results directly on GitHub.
 

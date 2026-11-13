@@ -11,7 +11,7 @@ PyAutoGalaxy
 
 __Using This Guide__
 
-This notebook gives an overview of the **PyAutoGalaxy Python API**, including how to import `autogalaxy`, create light profiles and galaxies, and simulate and fit galaxy images. You can read through the examples or run the cells below, either locally or in your web browser using [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/start_here.ipynb).
+This notebook gives an overview of the **PyAutoGalaxy Python API**, including how to import `autogalaxy`, create light profiles and galaxies, and simulate and fit galaxy images. You can read through the examples or run the cells below, either locally or in your web browser using [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/start_here.ipynb).
 
 If you use AI, the [PyAutoGalaxy AI Assistant](https://github.com/PyAutoLabs/autogalaxy_assistant) can give you an interactive walkthrough. Paste this prompt into Claude Code, Codex or another AI coding agent:
 
@@ -377,13 +377,13 @@ __Blended galaxies__
 
 Two or more galaxies have overlapping light.
 
-[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/multi_galaxy/start_here.ipynb)
+[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_galaxy/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/notebooks/multi_galaxy/start_here.ipynb)
 
 __Cluster field__
 
 A bright central galaxy and surrounding cluster members.
 
-[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/cluster/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/cluster/start_here.ipynb)
+[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/cluster/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/notebooks/cluster/start_here.ipynb)
 
 These examples model the galaxies’ own light, including in cluster fields. If your goal is to model gravitational lensing and the distorted images of background sources, start with [PyAutoLens](https://pyautolens.readthedocs.io/en/latest/overview/overview_2_new_user_guide.html).
 
@@ -402,7 +402,7 @@ __Imaging__
 
 Galaxy images from Hubble, JWST or ground-based telescopes.
 
-[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/imaging/start_here.ipynb)
+[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/imaging/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/notebooks/imaging/start_here.ipynb)
 
 __Interferometer__
 
@@ -410,7 +410,7 @@ __Interferometer__
 
 Radio or submillimetre observations, such as ALMA visibilities.
 
-[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/interferometer/start_here.ipynb)
+[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/interferometer/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/notebooks/interferometer/start_here.ipynb)
 
 __Multi-band imaging__
 
@@ -418,7 +418,7 @@ __Multi-band imaging__
 
 Images of the same galaxy in several wavebands.
 
-[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.12.1/notebooks/multi_dataset/start_here.ipynb)
+[Notebook](https://github.com/PyAutoLabs/autogalaxy_workspace/blob/main/notebooks/multi_dataset/start_here.ipynb) · [Google Colab](https://colab.research.google.com/github/PyAutoLabs/autogalaxy_workspace/blob/2026.11.13.1/notebooks/multi_dataset/start_here.ipynb)
 
 Combining wavebands can help you study colour gradients and how a galaxy’s apparent structure changes with wavelength. The multi-band example introduces fitting those observations together.
 
