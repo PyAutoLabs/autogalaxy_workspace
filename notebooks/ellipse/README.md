@@ -4,9 +4,9 @@ from elliptical symmetry.
 
 # Start Here
 
-Begin with [`fit.ipynb`](fit.ipynb) to understand the image sampling, residuals and likelihood. Continue with
-[`modeling.ipynb`](modeling.ipynb) to infer ellipse parameters using a non-linear search, and
-[`multipoles.ipynb`](multipoles.ipynb) to fit more complex isophote shapes.
+Begin with [`fit.py`](fit.py) to understand the image sampling, residuals and likelihood. Continue with
+[`modeling.py`](modeling.py) to infer ellipse parameters using a non-linear search, and
+[`multipoles.py`](multipoles.py) to fit more complex isophote shapes.
 
 These examples work on the observed image without PSF convolution of a light model. Account for PSF effects
 when interpreting small-radius structure, and mask neighbouring light where appropriate.
