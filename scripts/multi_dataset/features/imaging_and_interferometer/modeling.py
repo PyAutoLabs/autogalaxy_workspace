@@ -129,13 +129,11 @@ __Analysis__
 
 We create analysis objects for both datasets.
 
-Both pass `use_jax=True`. A factor graph fits every dataset with one compute setup, and the setup an analysis
-chooses automatically can differ between imaging and interferometer data, so we choose the backend ourselves.
+A factor graph fits every dataset with one compute setup. The backend is chosen once, on the `FactorGraphModel`
+below (`use_jax=True`), and analyses left on their default setup adopt it.
 """
-analysis_imaging = ag.AnalysisImaging(dataset=imaging, use_jax=True)
-analysis_interferometer = ag.AnalysisInterferometer(
-    dataset=interferometer, use_jax=True
-)
+analysis_imaging = ag.AnalysisImaging(dataset=imaging)
+analysis_interferometer = ag.AnalysisInterferometer(dataset=interferometer)
 
 """
 We now combine them using the factor analysis class, which allows us to fit the two datasets simultaneously.

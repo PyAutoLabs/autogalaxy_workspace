@@ -131,12 +131,10 @@ __Analysis__
 
 We create an `Analysis` object for every dataset.
 
-Each passes `use_jax=True`, matching the `FactorGraphModel(use_jax=True)` below. A factor graph fits every dataset
-with one compute setup, and on a CPU the setup a pixelized analysis chooses automatically may not be JAX.
+A factor graph fits every dataset with one compute setup. The backend is chosen once, on the
+`FactorGraphModel(use_jax=True)` below, and analyses left on their default setup adopt it.
 """
-analysis_list = [
-    ag.AnalysisImaging(dataset=dataset, use_jax=True) for dataset in dataset_list
-]
+analysis_list = [ag.AnalysisImaging(dataset=dataset) for dataset in dataset_list]
 
 """
 __Model__

@@ -256,7 +256,7 @@ check your model and data are sensible, then `Nautilus` when you need results yo
 __JAX__
 
 `ag.AnalysisInterferometer` chooses its compute setup automatically with
-`setup="auto"` (the default from the next release); pass `use_jax=True` or
+`setup="auto"` (the default); pass `use_jax=True` or
 `use_jax=False` to choose the backend yourself. On JAX, the search driver wraps
 the likelihood in `jax.vmap(jax.jit(...))`.
 Force NumPy with `use_jax=False` (or `PYAUTO_DISABLE_JAX=1`) when

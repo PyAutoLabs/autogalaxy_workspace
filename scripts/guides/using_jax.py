@@ -29,7 +29,7 @@ __Contents__
 __Auto-Enabled Modeling__
 
 The `AnalysisImaging` and `AnalysisInterferometer` classes choose their compute setup automatically with
-`setup="auto"` (the default from the next release; earlier releases default to `use_jax=True`). Pass
+`setup="auto"` (the default). Pass
 `use_jax=True` or `use_jax=False` to choose the backend yourself. On JAX, the non-linear search driver (Nautilus, dynesty, ...) batches parameter vectors and evaluates the likelihood through
 `jax.vmap(jax.jit(...))` internally. You'll see a one-time log line like
 `JAX: Applying vmap and jit to likelihood function -- may take a few seconds.` the first time a search starts;
