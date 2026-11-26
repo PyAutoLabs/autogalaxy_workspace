@@ -253,7 +253,7 @@ then run `Nautilus` when you need results you can quote.
 __JAX__
 
 `ag.AnalysisImaging` chooses its compute setup automatically with `setup="auto"`
-(the default from the next release); pass `use_jax=True` or `use_jax=False` to
+(the default); pass `use_jax=True` or `use_jax=False` to
 choose the backend yourself. On JAX, the search driver wraps the likelihood in `jax.vmap(jax.jit(...))` —
 batches of parameter vectors evaluate in parallel on a single GPU call.
 Watch for `JAX: Applying vmap and jit to likelihood function -- may take

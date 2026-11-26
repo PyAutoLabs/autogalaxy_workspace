@@ -248,7 +248,7 @@ When there are multiple datasets, a list of analysis objects is created, once fo
 __JAX__
 
 `AnalysisImaging` runs per-band and chooses its compute setup automatically
-with `setup="auto"` (the default from the next release); pass `use_jax=True` or
+with `setup="auto"` (the default); pass `use_jax=True` or
 `use_jax=False` to choose the backend yourself. `FactorGraphModel(use_jax=True)`
 below stitches them into the joint multi-band likelihood. The non-linear
 search driver wraps the joint likelihood in `jax.vmap(jax.jit(...))` —
