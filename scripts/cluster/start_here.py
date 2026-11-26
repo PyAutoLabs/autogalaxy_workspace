@@ -45,8 +45,8 @@ __Contents__
 
 __JAX__
 
-PyAutoGalaxy runs model-fits on JAX by default — `ag.AnalysisImaging` auto-enables `use_jax=True` (JAX
-installs with `autogalaxy` itself). The member tier adds fixed-shape profiles, which JIT-compile into the same
+PyAutoGalaxy runs model-fits on JAX (JAX installs with `autogalaxy` itself), and `ag.AnalysisImaging` chooses
+its compute setup for you. The member tier adds fixed-shape profiles, which JIT-compile into the same
 batched likelihood, so population size barely moves the fit cost.
 
 __Google Colab Setup__
@@ -226,7 +226,6 @@ search = af.MultiStartProdigy(
 
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    use_jax=True,
 )
 
 print("""

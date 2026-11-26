@@ -283,7 +283,7 @@ __Analysis__
 
 Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data. 
 """
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 
 """

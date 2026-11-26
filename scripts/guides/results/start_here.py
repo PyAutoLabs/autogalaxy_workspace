@@ -157,7 +157,7 @@ search = af.Nautilus(
     n_like_max=300,
 )
 
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 result = search.fit(model=model, analysis=analysis)
 

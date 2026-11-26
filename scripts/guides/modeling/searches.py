@@ -75,7 +75,7 @@ boundary around the current live point set, using only evaluations of the likeli
 differentiates the likelihood, and unlike `MultiStartProdigy` below it neither needs nor uses JAX's gradients.
 
 It does, however, exploit JAX on a GPU. Nautilus proposes points in batches rather than one at a time, and when
-the analysis is JAX-traceable (created via `use_jax=True`) **PyAutoFit** evaluates each batch through the
+the analysis runs on JAX (pass `use_jax=True` to be sure) **PyAutoFit** evaluates each batch through the
 `jax.vmap(jax.jit(...))` wrapped likelihood in a single call. All `n_batch` models are therefore fitted
 simultaneously on the GPU, and the JAX speed-up applies in full to a Nautilus fit -- it simply comes from batched
 likelihood evaluation instead of gradient descent.
@@ -119,7 +119,7 @@ Prodigy is a *learning-rate free* update rule: it estimates its own step size as
 
 (`MultiStartLion` is a further sign-based alternative that prefers a ~10x smaller `learning_rate`.)
 
-Because it is gradient-based, it requires a JAX-traceable analysis (created via `use_jax=True`). It also manages
+Because it is gradient-based, it requires an analysis that runs on JAX (pass `use_jax=True` to be sure). It also manages
 its own broad starting points, so unlike `LBFGS` it does not use the start-point API described below.
 
 Like all optimizers it returns a single best-fit model, not a posterior with errors, so `Nautilus` above remains

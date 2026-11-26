@@ -16,9 +16,9 @@ of the `autolens_workspace`.
 
 __JAX__
 
-PyAutoGalaxy runs imaging model-fits on JAX by default (JAX installs with
-`autogalaxy` itself) — the `ag.AnalysisImaging(dataset=dataset)` line below
-auto-enables `use_jax=True`. JAX is what makes the gradient-based search
+PyAutoGalaxy runs imaging model-fits on JAX (JAX installs with `autogalaxy`
+itself), and the `ag.AnalysisImaging(dataset=dataset)` line below chooses its
+compute setup for you. JAX is what makes the gradient-based search
 used below possible at all — it supplies the derivatives of the likelihood
 and evaluates all of the search's parallel starts in one batched call. If
 you do not have a GPU locally, Google Colab provides free GPUs.
@@ -252,8 +252,9 @@ then run `Nautilus` when you need results you can quote.
 
 __JAX__
 
-`ag.AnalysisImaging` defaults to `use_jax=True` when JAX is installed.
-The search driver wraps the likelihood in `jax.vmap(jax.jit(...))` —
+`ag.AnalysisImaging` chooses its compute setup automatically with `setup="auto"`
+(the default from the next release); pass `use_jax=True` or `use_jax=False` to
+choose the backend yourself. On JAX, the search driver wraps the likelihood in `jax.vmap(jax.jit(...))` —
 batches of parameter vectors evaluate in parallel on a single GPU call.
 Watch for `JAX: Applying vmap and jit to likelihood function -- may take
 a few seconds.` in the log; that's the JIT compile starting, after which
@@ -299,7 +300,6 @@ search = af.MultiStartProdigy(
 
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
 
 """

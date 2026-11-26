@@ -202,7 +202,7 @@ for dataset_name in dataset_names:
         n_like_max=300,  # Caps the search so this example runs quickly; omit it for a real fit.
     )
 
-    analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+    analysis = ag.AnalysisImaging(dataset=dataset)
 
     search.fit(analysis=analysis, model=model, info=info)
 

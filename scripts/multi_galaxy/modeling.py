@@ -138,7 +138,6 @@ search = af.Nautilus(
 
 analysis = ag.AnalysisImaging(
     dataset=dataset,
-    use_jax=True,
 )
 
 result = search.fit(model=model, analysis=analysis)

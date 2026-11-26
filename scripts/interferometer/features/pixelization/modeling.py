@@ -322,7 +322,6 @@ Create the `AnalysisInterferometer` object defining how via Nautilus the model i
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
     settings=settings,
-    use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
 
 """

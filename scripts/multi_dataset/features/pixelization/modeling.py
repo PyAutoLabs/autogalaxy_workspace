@@ -130,6 +130,9 @@ mesh_shape = (mesh_pixels_yx, mesh_pixels_yx)
 __Analysis__
 
 We create an `Analysis` object for every dataset.
+
+Each passes `use_jax=True`, matching the `FactorGraphModel(use_jax=True)` below. A factor graph fits every dataset
+with one compute setup, and on a CPU the setup a pixelized analysis chooses automatically may not be JAX.
 """
 analysis_list = [
     ag.AnalysisImaging(dataset=dataset, use_jax=True) for dataset in dataset_list

@@ -97,7 +97,6 @@ search = af.Nautilus(
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
     settings=settings,
-    use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
 )
 
 result = search.fit(model=model, analysis=analysis)

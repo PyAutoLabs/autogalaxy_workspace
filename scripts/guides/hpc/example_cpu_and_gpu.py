@@ -298,7 +298,7 @@ __Analysis__
 
 Create the `AnalysisImaging` object defining how the via Nautilus the model is fitted to the data.
 """
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 """
 __Model-Fit__
@@ -317,8 +317,8 @@ The only difference is which batch script you submit. The GPU script at:
 
   scripts/guides/hpc/batch_gpu/submit
 
-requests a GPU partition and a single GPU via `--gres=gpu:1`. JAX auto-detects the GPU and uses it
-automatically because `use_jax=True` is set on the analysis object. The CPU thread-pinning and
+requests a GPU partition and a single GPU via `--gres=gpu:1`. JAX auto-detects the GPU and the analysis
+chooses its compute setup automatically (pass `use_jax=True` to pin JAX yourself). The CPU thread-pinning and
 JAX_PLATFORM_NAME overrides in the CPU batch script are omitted, and `nvidia-smi` is called at the
 start of the job to confirm the GPU allocation in the log.
 

@@ -28,8 +28,9 @@ __Contents__
 
 __Auto-Enabled Modeling__
 
-If JAX is installed, the `AnalysisImaging` and `AnalysisInterferometer` classes default to `use_jax=True`. The
-non-linear search driver (Nautilus, dynesty, ...) batches parameter vectors and evaluates the likelihood through
+The `AnalysisImaging` and `AnalysisInterferometer` classes choose their compute setup automatically with
+`setup="auto"` (the default from the next release; earlier releases default to `use_jax=True`). Pass
+`use_jax=True` or `use_jax=False` to choose the backend yourself. On JAX, the non-linear search driver (Nautilus, dynesty, ...) batches parameter vectors and evaluates the likelihood through
 `jax.vmap(jax.jit(...))` internally. You'll see a one-time log line like
 `JAX: Applying vmap and jit to likelihood function -- may take a few seconds.` the first time a search starts;
 that's the JIT compile kicking in, after which evaluations re-use the compiled trace.
@@ -111,7 +112,7 @@ problematic value is of type ModelInstance`.
 the whole calculation for you, so `@jax.jit` is the only JAX you write:
 
 ```python
-analysis = ag.AnalysisImaging(dataset=dataset)  # use_jax=True by default
+analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
 
 @jax.jit
 def log_likelihood(instance):
@@ -175,7 +176,7 @@ The advanced path is JIT-ing library methods directly (`galaxy.image_2d_from`, `
 without going through a `Simulator` or `Analysis`.
 
 Audience: users building custom forward models or scientific tools using PyAutoGalaxy primitives directly — not
-running standard fits (which go through `Analysis(use_jax=True)` and need zero JAX code from you) or standard
+running standard fits (which go through an `Analysis` and need zero JAX code from you) or standard
 simulations (which use `Simulator(use_jax=True)` similarly).
 
 Everything from here down is executable. First the imports — `jax_wrapper` must come before the other imports,
@@ -214,7 +215,7 @@ When a jitted function takes a `Galaxy` or `Galaxies` as an *argument*, JAX must
 object across the JIT boundary — i.e. the class must be registered as a JAX **pytree**. The library handles this
 for you automatically in two situations:
 
-1. You constructed an `Analysis` with `use_jax=True` (the default for modeling fits). Its first `fit_from` call
+1. You constructed an `Analysis` that runs on JAX (for example with `use_jax=True`). Its first `fit_from` call
    walks the dataset and registers every reachable `Galaxy` / profile class.
 2. You constructed a `Simulator` with `use_jax=True` and made a call — the same walk happens.
 
