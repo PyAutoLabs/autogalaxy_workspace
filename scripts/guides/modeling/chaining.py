@@ -132,7 +132,7 @@ search_1 = af.Nautilus(
     path_prefix=path_prefix, name="search[1]__api", unique_tag=dataset_name, n_live=100
 )
 
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 result_1 = search_1.fit(model=model_1, analysis=analysis)
 

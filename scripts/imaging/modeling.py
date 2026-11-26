@@ -345,7 +345,7 @@ JAX will still provide a speed up via multithreading, with fits taking around 20
 
 If you don’t have a GPU locally, consider Google Colab which provides free GPUs, so your modeling runs are much faster.
 """
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 """
 __VRAM Use__

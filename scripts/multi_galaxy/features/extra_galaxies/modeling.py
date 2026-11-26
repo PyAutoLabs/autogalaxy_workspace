@@ -237,7 +237,7 @@ search = af.Nautilus(
     iterations_per_quick_update=1000,
 )
 
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 result = search.fit(model=model, analysis=analysis)
 
@@ -367,7 +367,7 @@ search = af.Nautilus(
     iterations_per_quick_update=1000,
 )
 
-analysis = ag.AnalysisImaging(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisImaging(dataset=dataset)
 
 """
 __Run Time__

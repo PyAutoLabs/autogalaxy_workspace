@@ -23,9 +23,9 @@ scale systems are strong lensing analyses, covered by the `group` and `cluster` 
 
 __JAX__
 
-PyAutoGalaxy runs multi-wavelength galaxy fits on JAX by default. The
-per-band `ag.AnalysisImaging(dataset=dataset, use_jax=True)` instances
-below auto-enable JAX, and the `af.FactorGraphModel(*analysis_factor_list,
+PyAutoGalaxy runs multi-wavelength galaxy fits on JAX. The per-band
+`ag.AnalysisImaging(dataset=dataset)` instances below choose their compute
+setup for you, and the `af.FactorGraphModel(*analysis_factor_list,
 use_jax=True)` further down stitches them into the joint multi-band
 likelihood with JAX-aware broadcasting. Expect 1-10 minutes per band on
 GPU vs hours on CPU.
@@ -247,7 +247,9 @@ When there are multiple datasets, a list of analysis objects is created, once fo
 
 __JAX__
 
-`AnalysisImaging(use_jax=True)` runs per-band; `FactorGraphModel(use_jax=True)`
+`AnalysisImaging` runs per-band and chooses its compute setup automatically
+with `setup="auto"` (the default from the next release); pass `use_jax=True` or
+`use_jax=False` to choose the backend yourself. `FactorGraphModel(use_jax=True)`
 below stitches them into the joint multi-band likelihood. The non-linear
 search driver wraps the joint likelihood in `jax.vmap(jax.jit(...))` —
 batches of parameter vectors evaluate in parallel across all bands on a
@@ -257,7 +259,6 @@ on either constructor when debugging.
 analysis_list = [
     ag.AnalysisImaging(
         dataset=dataset,
-        use_jax=True,  # JAX will use GPUs for acceleration if available, else JAX will use multithreaded CPUs.
     )
     for dataset in dataset_masked_list
 ]

@@ -58,7 +58,9 @@ recipe here — that script is kept current with the API.
 
 Two conventions worth knowing: linear light profiles (`ag.lp_linear.*`) are preferred over standard
 profiles (`ag.lp.*`) because they solve for `intensity` via linear inversion rather than as a free
-parameter; and `Analysis` objects accept `use_jax=True` for JAX-accelerated fits.
+parameter; and `Analysis` objects choose their compute setup automatically (`setup="auto"`, the
+default from the next release), with `use_jax=True/False` to choose the backend explicitly. Do not
+add `use_jax=True` to analysis constructors in examples.
 
 ## Testing
 

@@ -186,7 +186,7 @@ __Analysis__
 
 Create the `AnalysisInterferometer` object defining how the via Nautilus the model is fitted to the data.
 """
-analysis = ag.AnalysisInterferometer(dataset=dataset, use_jax=True)
+analysis = ag.AnalysisInterferometer(dataset=dataset)
 
 """
 __VRAM__

@@ -245,7 +245,6 @@ solver, as discussed above.
 analysis = ag.AnalysisInterferometer(
     dataset=dataset,
     settings=ag.Settings(use_positive_only_solver=False),
-    use_jax=True,
 )
 
 """

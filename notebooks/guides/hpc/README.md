@@ -413,8 +413,8 @@ sbatch scripts/guides/hpc/batch_gpu/submit
 ```{eval-rst}
 .. note::
 
-   GPU jobs use JAX with ``use_jax=True`` in the analysis object, which is
-   already the default in PyAutoGalaxy. No code changes are required to switch
+   GPU jobs use JAX, which the analysis object picks for you (pass
+   ``use_jax=True`` to choose it yourself). No code changes are required to switch
    from CPU to GPU — only the batch script changes.
 ```
 
